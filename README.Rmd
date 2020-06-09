@@ -39,7 +39,7 @@ The goal of Open Justice Oklahoma is to collect and analyze hard-to-access data 
 
 We're generally not interested in what happens in a single case, though. What we're really interested in is the aggregate effects. In the case linked above, for instance, we see that the eviction case was filed on January 2, 2019, and granted by default judgment on January 11. We can use our database to figure out how many eviction cases are filed and how many resulted in a default judgment.
 
-This is information that isn't compiled anywhere else, so our database  gives us the opportunity to 
+This is information that isn't compiled anywhere else, so our database gives us the unique opportunity to understand what is really happening, day by day and in close to real-time, in our justice system.
 
 ## Exploring the OJO database
 

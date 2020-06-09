@@ -46,7 +46,9 @@ use our database to figure out how many eviction cases are filed and how
 many resulted in a default judgment.
 
 This is information that isn’t compiled anywhere else, so our database
-gives us the opportunity to
+gives us the unique opportunity to understand what is really happening,
+day-to-day and in close to real-time, in courtrooms and jails all across
+the state.
 
 ## Exploring the OJO database
 
