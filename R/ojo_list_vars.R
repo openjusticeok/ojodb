@@ -7,7 +7,7 @@
 
 ojo_list_vars <- function(table) {
 
-  d <- dbListFields(ojo_db, table) %>%
+  d <- dbListFields(ojo_db, table)
 
   return(d)
 }
