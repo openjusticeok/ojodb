@@ -59,8 +59,9 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="ojodb" class="section level1">
+<div id="ojo" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
+<<<<<<< HEAD
 <a href="#ojodb" class="anchor"></a>ojodb</h1></div>
 <p>ojodb is a package that assists <a href="https://openjustice.okpolicy.org/">Open Justice Oklahoma</a> analysts to access and analyze court, jail, prison, and other data collected from various sources.</p>
 <p>The pkgdown website for the ojodb package can be found <a href="https://openjusticeok.github.io/ojodb/">here</a>.</p>
@@ -69,6 +70,16 @@
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install the ojodb package from GitHub with:</p>
 <div class="sourceCode" id="cb1"><pre class="r"><span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"openjusticeok/ojodb"</span>)</pre></div>
+=======
+<a href="#ojo" class="anchor"></a>ojo</h1></div>
+<p>ojo is a package that assists <a href="https://openjustice.okpolicy.org/">Open Justice Oklahoma</a> analysts to access and analyze court, jail, prison, and other data collected from various sources.</p>
+<p>The pkgdown website for the ojo package can be found <a href="https://openjusticeok.github.io/ojo/">here</a>.</p>
+<div id="installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h2>
+<p>You can install the ojo package from GitHub with:</p>
+<div class="sourceCode" id="cb1"><pre class="r"><span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"openjusticeok/ojo"</span>)</pre></div>
+>>>>>>> 60c21913736bbaa38c772e0c63b72c83a3e27391
 <p>After installation, update it with:</p>
 <div class="sourceCode" id="cb2"><pre class="r"><span class="fu">ojo_reinstall</span>()</pre></div>
 </div>
@@ -82,7 +93,11 @@
 <div id="exploring-the-ojo-database" class="section level2">
 <h2 class="hasAnchor">
 <a href="#exploring-the-ojo-database" class="anchor"></a>Exploring the OJO database</h2>
+<<<<<<< HEAD
 <p>To list all tables in the OJO database, use <code><a href="reference/ojo_list_tables.html">ojo_list_tables()</a></code>. Each table name begins with a prefix indicating the source of the data.</p>
+=======
+<p>To list all tables in the OJO database, use <code><a href="reference/ojo_list_tables.html">ojo_list_tables()</a></code>. Any table that is split according to year/casetype is collapsed into the general table in the output to this function. For instance, while you would query the <code>oscn_mins_2019SC</code> table to get minutes from small claims (SC) cases filed in 2019, it appears here as <code>oscn_mins_</code> to avoid overwhelming the eyes.</p>
+>>>>>>> 60c21913736bbaa38c772e0c63b72c83a3e27391
 <div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ojo</span>)
 
 <span class="fu"><a href="reference/ojo_list_tables.html">ojo_list_tables</a></span>()</pre></div>
