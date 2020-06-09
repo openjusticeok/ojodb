@@ -9,9 +9,8 @@
 #' @seealso ojo_list_tables()
 
 ojo_tbl <- function(tbl_name) {
-  
-  d <- tryCatch(tbl(ojo_db, tbl_name),
-           error = connect_ojo())
-  
+
+  d <- tbl(ojo_db, tbl_name)
+
   return(d)
 }
