@@ -1,22 +1,22 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# ojo
+# ojodb
 
-ojo is a package that assists [Open Justice
+ojodb is a package that assists [Open Justice
 Oklahoma](https://openjustice.okpolicy.org/) analysts to access and
 analyze court, jail, prison, and other data collected from various
 sources.
 
-The pkgdown website for the ojo package can be found
-[here](https://openjusticeok.github.io/ojo/).
+The pkgdown website for the ojodb package can be found
+[here](https://openjusticeok.github.io/ojodb/).
 
 ## Installation
 
-You can install the ojo package from GitHub with:
+You can install the ojodb package from GitHub with:
 
 ``` r
-devtools::install_github("openjusticeok/ojo")
+devtools::install_github("openjusticeok/ojodb")
 ```
 
 After installation, update it with:
@@ -50,12 +50,8 @@ gives us the opportunity to
 
 ## Exploring the OJO database
 
-To list all tables in the OJO database, use `ojo_list_tables()`. Any
-table that is split according to year/casetype is collapsed into the
-general table in the output to this function. For instance, while you
-would query the `oscn_mins_2019SC` table to get minutes from small
-claims (SC) cases filed in 2019, it appears here as `oscn_mins_` to
-avoid overwhelming the eyes.
+To list all tables in the OJO database, use `ojo_list_tables()`. Each
+table name begins with a prefix indicating the source of the data.
 
 ``` r
 library(ojo)
