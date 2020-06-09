@@ -35,21 +35,26 @@ ojo_reinstall()
 
 ## The big picture
 
-The goal of Open Justice Oklahoma is to collect and analyze hard-to-access data in order to better understand our state's justice system. The backbone of our work is our database, which consists of administrative data gathered mainly from courts, jails, and prisons across the state. OJO processes go out to each of these data sources periodically and pull new data into our database. For example, we have OSCN scrapers set up to periodically visit small claims case pages like [this one](https://www.oscn.net/dockets/GetCaseInformation.aspx?db=tulsa&number=SC-2019-10) every few days, gathering new data that appears in the course of a case.
+The goal of Open Justice Oklahoma is to collect and analyze hard-to-access data in order to better understand our state's justice system. The backbone of our work is our database, which consists of administrative data gathered mainly from courts, jails, and prisons across the state. The data is collected through a variety of methods including webscraping and automated file downloads.
 
-We're generally not interested in what happens in a single case, though. What we're really interested in is the aggregate effects. In the case linked above, for instance, we see that the eviction case was filed on January 2, 2019, and granted by default judgment on January 11. We can use our database to figure out how many eviction cases are filed and how many resulted in a default judgment.
+For some data sources, OJO processes periodically pull new data into our database. For example, we have OSCN scrapers set up to periodically visit small claims case pages like [this one](https://www.oscn.net/dockets/GetCaseInformation.aspx?db=tulsa&number=SC-2019-10) every few days, gathering new data that appears in the course of a case.
+
+We're generally not interested in what happens in a single case, but rather in aggregate trends at the county or state level. In the case linked above, for instance, we see that the eviction case was filed on January 2, 2019, and granted by default judgment on January 11. We can use our database to figure out how many eviction cases are filed and how many resulted in a default judgment.
 
 This is information that isn't compiled anywhere else, so our database gives us the unique opportunity to understand what is really happening, day by day and in close to real-time, in our justice system.
 
 ## Exploring the OJO database
 
-To list all tables in the OJO database, use `ojo_list_tables()`. Each table name begins with a prefix indicating the source of the data.
+We've collected tons and tons of data, and it can be overwhelming to approach it at first. To list all tables in the OJO database, use `ojo_list_tables()`.
 
 ```{r, message=FALSE}
-library(ojo)
+library(ojodb)
 
 ojo_list_tables()
 ```
+
+Each table name begins with a prefix indicating the source of the data.
+
 
 To see the variables and first 10 rows of a table, call `ojo_tbl()` on it:
 

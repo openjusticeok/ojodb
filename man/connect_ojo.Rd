@@ -15,6 +15,7 @@ Opens a connection to the Open Justice Oklahoma database using credentials store
 \examples{
 \dontrun{
 connect_ojo()
+disconnect_ojo()
 }
 }
 \seealso{
