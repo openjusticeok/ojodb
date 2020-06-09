@@ -6,6 +6,7 @@
 #' @examples
 #' \dontrun{
 #' connect_ojo()
+#' disconnect_ojo()
 #' }
 #' @seealso disconnect_ojo()
 
