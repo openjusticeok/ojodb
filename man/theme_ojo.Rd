@@ -7,7 +7,7 @@
 theme_ojo()
 }
 \description{
-Connects to the ojo database, if no connection exists, and creates a pointer to a specified table.
+Add OJO styling to a ggplot
 }
 \examples{
 \dontrun{
