@@ -67,36 +67,88 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install the ojodb package from GitHub with:</p>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"openjusticeok/ojodb"</span>)</pre></div>
+<p>Install the devtools package if you don’t have it yet, then install the ojodb package from GitHub with:</p>
+<div class="sourceCode" id="cb1"><pre class="r"><span class="kw">if</span> (!<span class="st">"devtools"</span> <span class="kw">%in%</span> <span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span>()) {
+  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"devtools"</span>)
+}
+
+<span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"openjusticeok/ojodb"</span>)</pre></div>
 <p>After installation, update it with:</p>
 <div class="sourceCode" id="cb2"><pre class="r"><span class="fu">ojo_reinstall</span>()</pre></div>
 </div>
 <div id="the-big-picture" class="section level2">
 <h2 class="hasAnchor">
 <a href="#the-big-picture" class="anchor"></a>The big picture</h2>
-<p>The goal of Open Justice Oklahoma is to collect and analyze hard-to-access data in order to better understand our state’s justice system. The backbone of our work is our database, which consists of administrative data gathered mainly from courts, jails, and prisons across the state. OJO processes go out to each of these data sources periodically and pull new data into our database. For example, we have OSCN scrapers set up to periodically visit small claims case pages like <a href="https://www.oscn.net/dockets/GetCaseInformation.aspx?db=tulsa&amp;number=SC-2019-10">this one</a> every few days, gathering new data that appears in the course of a case.</p>
-<p>We’re generally not interested in what happens in a single case, though. What we’re really interested in is the aggregate effects. In the case linked above, for instance, we see that the eviction case was filed on January 2, 2019, and granted by default judgment on January 11. We can use our database to figure out how many eviction cases are filed and how many resulted in a default judgment.</p>
-<p>This is information that isn’t compiled anywhere else, so our database gives us the opportunity to</p>
+<p>The goal of Open Justice Oklahoma is to collect and analyze hard-to-access data in order to better understand our state’s justice system. The backbone of our work is our database, which consists of administrative data gathered mainly from courts, jails, and prisons across the state. The data is collected through a variety of methods including webscraping and database file downloads. The ojodb package was built to give analysts a way to access this data and analyze it using shared methodological standards.</p>
+<p>Because the data we analyze is mostly administrative data generated for case-by-case uses, it is always messy and contains errors. OJO’s work depends on our processes to work through and around the imperfections in order to extract useful knowledge, while acknowledging the limitations of the data.</p>
+<p>For some data sources, OJO processes periodically pull new data into our database. For example, we have OSCN scrapers set up to periodically visit small claims case pages like <a href="https://www.oscn.net/dockets/GetCaseInformation.aspx?db=tulsa&amp;number=SC-2019-10">this one</a> every few days, gathering new data that appears in the course of a case.</p>
+<p>We’re generally not interested in what happens in a single case, but rather in aggregate trends at the county or state level. In the case linked above, for instance, we see that the eviction case was filed on January 2, 2019, and granted by default judgment on January 11. We can use small claims data collected from OSCN and ODCR to figure out how many eviction cases are filed, resulted in a judgment, and dismissed. This is information that isn’t compiled anywhere else, so our database gives us the unique opportunity to understand what is really happening, day by day and in close to real-time, in Oklahoma’s justice system.</p>
+<p>In addition to court data, which is available on OSCN in near-real time, we collect data from the Oklahoma Department of Corrections, the Tulsa County Jail, Pardon and Parole Board, and other sources.</p>
 </div>
 <div id="exploring-the-ojo-database" class="section level2">
 <h2 class="hasAnchor">
 <a href="#exploring-the-ojo-database" class="anchor"></a>Exploring the OJO database</h2>
-<p>To list all tables in the OJO database, use <code><a href="reference/ojo_list_tables.html">ojo_list_tables()</a></code>. Each table name begins with a prefix indicating the source of the data.</p>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ojo</span>)
+<p>We’ve collected tons and tons of data, and it can be overwhelming to approach it at first. To list all tables in the OJO database, use <code><a href="reference/ojo_list_tables.html">ojo_list_tables()</a></code>.</p>
+<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ojodb</span>)
 
-<span class="fu"><a href="reference/ojo_list_tables.html">ojo_list_tables</a></span>()</pre></div>
-<p>To see the variables and first 10 rows of a table, call <code>ojo_tbl()</code> on it:</p>
-<div class="sourceCode" id="cb4"><pre class="r"><span class="fu">ojo_tbl</span>(<span class="st">"oscn_crim_disps"</span>)</pre></div>
+<span class="fu"><a href="reference/connect_ojo.html">connect_ojo</a></span>()
+<span class="no">t</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/ojo_list_tables.html">ojo_list_tables</a></span>()</pre></div>
+<p>Each table name begins with a prefix indicating the source of the data. The most commonly used data sources are listed below.</p>
+<table class="table">
+<colgroup>
+<col width="12%">
+<col width="33%">
+<col width="53%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">Prefix</th>
+<th align="left">Source</th>
+<th align="left">Link</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">dlm_, dlm2_</td>
+<td align="left">Tulsa County Jail</td>
+<td align="left"><a href="http://iic.tulsacounty.org/expInmateBookings/Reindex" class="uri">http://iic.tulsacounty.org/expInmateBookings/Reindex</a></td>
+</tr>
+<tr class="even">
+<td align="left">doc_</td>
+<td align="left">Oklahoma Department of Corrections</td>
+<td align="left"><a href="http://doc.ok.gov/odoc-public-inmate-data" class="uri">http://doc.ok.gov/odoc-public-inmate-data</a></td>
+</tr>
+<tr class="odd">
+<td align="left">odcr_</td>
+<td align="left">On Demand Court Records</td>
+<td align="left"><a href="https://www1.odcr.com/" class="uri">https://www1.odcr.com/</a></td>
+</tr>
+<tr class="even">
+<td align="left">ojo_</td>
+<td align="left">Open Justice Oklahoma</td>
+<td align="left">Tables containing data generated by OJO processes</td>
+</tr>
+<tr class="odd">
+<td align="left">oscn_</td>
+<td align="left">Oklahoma State Court Network</td>
+<td align="left"><a href="https://www.oscn.net/dockets/search.aspx" class="uri">https://www.oscn.net/dockets/search.aspx</a></td>
+</tr>
+<tr class="even">
+<td align="left">ppb_</td>
+<td align="left">Oklahoma Pardon and Parole Board</td>
+<td align="left"><a href="https://www.ok.gov/ppb/Dockets_and_Results/index.html" class="uri">https://www.ok.gov/ppb/Dockets_and_Results/index.html</a></td>
+</tr>
+</tbody>
+</table>
+<p>To see the variables and first 10 rows of a table, call <code><a href="reference/ojo_tbl.html">ojo_tbl()</a></code> on it:</p>
+<div class="sourceCode" id="cb4"><pre class="r"><span class="fu"><a href="reference/ojo_tbl.html">ojo_tbl</a></span>(<span class="st">"oscn_crim_disps"</span>)</pre></div>
 </div>
 <div id="pulling-data-into-r" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pulling-data-into-r" class="anchor"></a>Pulling data into R</h2>
-<p>In many cases, you’ll only be interested in a particular county, time period, and/or case type. You can now limit the data using the <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code> function, then use <code><a href="reference/ojo_collect.html">ojo_collect()</a></code> to bring the pre-filtered data into R.</p>
-<div class="sourceCode" id="cb5"><pre class="r"><span class="no">d</span> <span class="kw">&lt;-</span> <span class="fu">ojo_tbl</span>(<span class="st">"oscn_crim_disps"</span>) <span class="kw">%&gt;%</span>
+<p>In many cases, you’ll only be interested in a particular county, time period, and/or case type. You can now limit the data using the <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code> function, then use <code>ojo_collect()</code> to bring the pre-filtered data into R.</p>
+<div class="sourceCode" id="cb5"><pre class="r"><span class="no">d</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/ojo_tbl.html">ojo_tbl</a></span>(<span class="st">"oscn_crim_disps"</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="no">court</span> <span class="kw">==</span> <span class="st">"ROGERS"</span>, <span class="no">casetype</span> <span class="kw">==</span> <span class="st">"CM"</span>, <span class="no">file_year</span> <span class="kw">==</span> <span class="fl">2019</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="reference/ojo_collect.html">ojo_collect</a></span>()</pre></div>
-<p>The first line points to the <code>oscn_crim_disps</code> table (basically <code>SELECT \* FROM oscn_crim_disps</code>). The second line limits the query (<code>WHERE court = 'ROGERS' AND casetype = 'CM' AND file_year = 2019</code>), so you’re only getting the data you want, not querying the entire table. <code><a href="reference/ojo_collect.html">ojo_collect()</a></code> executes the query, creates a dataframe in R, and closes the connection to the database (<code>disconnect_ojo()</code>). This should mostly eliminate the need for calling <code><a href="reference/connect_ojo.html">connect_ojo()</a></code> before querying and <code>disconnect_ojo()</code> afterward.</p>
+  <span class="fu">ojo_collect</span>()</pre></div>
+<p>The first line points to the <code>oscn_crim_disps</code> table (basically <code>SELECT \* FROM oscn_crim_disps</code>). The second line limits the query (<code>WHERE court = 'ROGERS' AND casetype = 'CM' AND file_year = 2019</code>), so you’re only getting the data you want, not querying the entire table. <code>ojo_collect()</code> executes the query, creates a dataframe in R, and closes the connection to the database (<code>disconnect_ojo()</code>). This should mostly eliminate the need for calling <code><a href="reference/connect_ojo.html">connect_ojo()</a></code> before querying and <code>disconnect_ojo()</code> afterward.</p>
 </div>
 </div>
   </div>

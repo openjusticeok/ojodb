@@ -128,38 +128,7 @@
     <p>A character vector listing the tables in the <code>ojo</code> database that match the pattern</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>ojo_list_tables</span>()</div><div class='output co'>#&gt;  [1] "agencies"              "aoc_collections"       "apt_master"           
-#&gt;  [4] "dlm2_inmates"          "dlm2_offenses"         "dlm2_updates"         
-#&gt;  [7] "dlm_inmates"           "dlm_offenses"          "doc_admit_sentences"  
-#&gt; [10] "doc_facilities"        "doc_pdfs"              "doc_profile"          
-#&gt; [13] "doc_sentences"         "doc_tracker"           "nibrs_activity_type"  
-#&gt; [16] "odcr_780data"          "odcr_caseinfo"         "odcr_disps"           
-#&gt; [19] "odcr_events"           "odcr_lastupdate"       "odcr_mins_"           
-#&gt; [22] "odcr_party"            "odcr_party_profile"    "odcr_pays_"           
-#&gt; [25] "odcr_queue"            "odcr_scrapers"         "odcr_updates"         
-#&gt; [28] "ojo_civ_cases"         "ojo_court_tracker"     "ojo_crim_cases"       
-#&gt; [31] "ojo_crim_code"         "ojo_definfo"           "ojo_gender"           
-#&gt; [34] "ojo_lastcase"          "oscn_780data"          "oscn_atts"            
-#&gt; [37] "oscn_caseinfo"         "oscn_citations"        "oscn_civ_disps"       
-#&gt; [40] "oscn_crim_disps"       "oscn_debt"             "oscn_disp_mins"       
-#&gt; [43] "oscn_dockets"          "oscn_events"           "oscn_eviction_address"
-#&gt; [46] "oscn_html"             "oscn_last_update"      "oscn_lastupdate"      
-#&gt; [49] "oscn_mins"             "oscn_mins_"            "oscn_parties"         
-#&gt; [52] "oscn_party"            "oscn_party_address"    "oscn_party_names"     
-#&gt; [55] "oscn_party_profile"    "oscn_pays_"            "oscn_queue"           
-#&gt; [58] "oscn_scrapers"         "oscn_updates"          "ppb_cases"            
-#&gt; [61] "ppb_comm_results"      "ppb_defs"              "ppb_members"          
-#&gt; [64] "ppb_raw"               "rogco_inmates"         "rogco_offenses"       
-#&gt; [67] "test_data"             "timestamps"            "tmp1"                 
-#&gt; [70] "tul_apt_master"        "tul_eviction_outcomes"</div><div class='input'><span class='fu'>ojo_list_tables</span>(<span class='st'>"oscn"</span>)</div><div class='output co'>#&gt;  [1] "oscn_780data"          "oscn_atts"             "oscn_caseinfo"        
-#&gt;  [4] "oscn_citations"        "oscn_civ_disps"        "oscn_crim_disps"      
-#&gt;  [7] "oscn_debt"             "oscn_disp_mins"        "oscn_dockets"         
-#&gt; [10] "oscn_events"           "oscn_eviction_address" "oscn_html"            
-#&gt; [13] "oscn_last_update"      "oscn_lastupdate"       "oscn_mins"            
-#&gt; [16] "oscn_mins_"            "oscn_parties"          "oscn_party"           
-#&gt; [19] "oscn_party_address"    "oscn_party_names"      "oscn_party_profile"   
-#&gt; [22] "oscn_pays_"            "oscn_queue"            "oscn_scrapers"        
-#&gt; [25] "oscn_updates"         </div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>ojo_list_tables</span>()</div><div class='output co'>#&gt; <span class='error'>Error in dbListTables(ojo_db): object 'ojo_db' not found</span></div><div class='input'><span class='fu'>ojo_list_tables</span>(<span class='st'>"oscn"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in dbListTables(ojo_db): object 'ojo_db' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

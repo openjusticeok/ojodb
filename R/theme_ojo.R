@@ -4,7 +4,12 @@
 #'
 #' @examples
 #' \dontrun{
-#' theme_ojo()
+#' ggplot(ojo_example, aes(file_year, n_cases, color = court)) +
+#'    geom_line(size = 1.5) +
+#'    theme_ojo() +
+#'    ojo_colors() +
+#'    scale_x_continuous(breaks = 2010:2019,
+#'                    limits = c(NA, 2019))
 #' }
 
 theme_ojo <- function() {
@@ -16,6 +21,3 @@ theme_ojo <- function() {
       legend.key = element_rect(fill="transparent", colour=NA)
     )
 }
-
-ojo_pal <- c("#F8D64E", "black", "#0D0887FF", "#6A00A8FF",
-             "#B12A90FF", "#E16462FF", "#FCA636FF", "#F0F921FF")

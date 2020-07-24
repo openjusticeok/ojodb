@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Collect data from the ojo database and close the database connection — ojo_collect • ojodb</title>
+<title>Browse the source court record of a row — show_row • ojodb</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Collect data from the ojo database and close the database connection — ojo_collect" />
-<meta property="og:description" content="Collect data from the ojo database and close the database connection" />
+<meta property="og:title" content="Browse the source court record of a row — show_row" />
+<meta property="og:description" content="Displays the OSCN court record for a given row in a dataframe with columns named `court` and `casenum`" />
 
 
 
@@ -103,26 +103,34 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Collect data from the ojo database and close the database connection</h1>
+    <h1>Browse the source court record of a row</h1>
     
-    <div class="hidden name"><code>ojo_collect.Rd</code></div>
+    <div class="hidden name"><code>show_row.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Collect data from the ojo database and close the database connection</p>
+    <p>Displays the OSCN court record for a given row in a dataframe with columns named `court` and `casenum`</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ojo_collect</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>show_row</span>(<span class='no'>df</span>, <span class='no'>row_number</span>)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>df</th>
+      <td><p>A local dataframe with columns named `court` and `casenum`</p></td>
+    </tr>
+    <tr>
+      <th>row_number</th>
+      <td><p>The number of the row of the case to be shown</p></td>
+    </tr>
+    </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A tibble</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='ojo_tbl.html'>ojo_tbl</a></span>(<span class='st'>"oscn_caseinfo"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span>(<span class='no'>court</span> <span class='kw'>==</span> <span class='st'>"TULSA"</span>, <span class='no'>casetype</span> <span class='kw'>==</span> <span class='st'>"CM"</span>, <span class='no'>file_year</span> <span class='kw'>==</span> <span class='fl'>2019</span>) <span class='kw'>%&gt;%</span>
-    <span class='no'>ojo_collect</span></div><div class='output co'>#&gt; <span class='error'>Error in tbl(ojo_db, tbl_name): object 'ojo_db' not found</span></div></pre>
+    <pre class="examples"><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

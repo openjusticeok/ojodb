@@ -75,5 +75,6 @@ OJO_HOST='{host}'"))
 
 
 disconnect_ojo <- function() {
-  DBI::dbDisconnect(ojo_db)
+  lapply(dbListConnections(dbDriver(drv = "MySQL")), dbDisconnect)
 }
+

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Collect data from the ojo database and close the database connection — ojo_collect • ojodb</title>
+<title>List the variables in an <code>ojo</code> database table — ojo_list_vars • ojodb</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Collect data from the ojo database and close the database connection — ojo_collect" />
-<meta property="og:description" content="Collect data from the ojo database and close the database connection" />
+<meta property="og:title" content="List the variables in an <code>ojo</code> database table — ojo_list_vars" />
+<meta property="og:description" content="List the variables in an ojo database table" />
 
 
 
@@ -103,26 +103,32 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Collect data from the ojo database and close the database connection</h1>
+    <h1>List the variables in an <code>ojo</code> database table</h1>
     
-    <div class="hidden name"><code>ojo_collect.Rd</code></div>
+    <div class="hidden name"><code>ojo_list_vars.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Collect data from the ojo database and close the database connection</p>
+    <p>List the variables in an <code>ojo</code> database table</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ojo_collect</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>ojo_list_vars</span>(<span class='no'>table</span>)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>pattern</th>
+      <td><p>Filter tables that contain a string or match a regular expression</p></td>
+    </tr>
+    </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble</p>
+    <p>A character vector listing the tables in the <code>ojo</code> database that match the pattern</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='ojo_tbl.html'>ojo_tbl</a></span>(<span class='st'>"oscn_caseinfo"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span>(<span class='no'>court</span> <span class='kw'>==</span> <span class='st'>"TULSA"</span>, <span class='no'>casetype</span> <span class='kw'>==</span> <span class='st'>"CM"</span>, <span class='no'>file_year</span> <span class='kw'>==</span> <span class='fl'>2019</span>) <span class='kw'>%&gt;%</span>
-    <span class='no'>ojo_collect</span></div><div class='output co'>#&gt; <span class='error'>Error in tbl(ojo_db, tbl_name): object 'ojo_db' not found</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>ojo_list_vars</span>(<span class='st'>"oscn_civ_disps"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in dbListFields(ojo_db, table): object 'ojo_db' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
