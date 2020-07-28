@@ -98,25 +98,3 @@ it:
 ``` r
 ojo_tbl("oscn_crim_disps")
 ```
-
-## Pulling data into R
-
-In many cases, you’ll only be interested in a particular county, time
-period, and/or case type. You can now limit the data using the
-`filter()` function, then use `ojo_collect()` to bring the pre-filtered
-data into R.
-
-``` r
-d <- ojo_tbl("oscn_crim_disps") %>% 
-  filter(court == "ROGERS", casetype == "CM", file_year == 2019) %>% 
-  ojo_collect()
-```
-
-The first line points to the `oscn_crim_disps` table (basically `SELECT
-\* FROM oscn_crim_disps`). The second line limits the query (`WHERE
-court = 'ROGERS' AND casetype = 'CM' AND file_year = 2019`), so you’re
-only getting the data you want, not querying the entire table.
-`ojo_collect()` executes the query, creates a dataframe in R, and closes
-the connection to the database (`disconnect_ojo()`). This should mostly
-eliminate the need for calling `connect_ojo()` before querying and
-`disconnect_ojo()` afterward.
