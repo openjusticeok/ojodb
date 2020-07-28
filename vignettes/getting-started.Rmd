@@ -1,0 +1,83 @@
+---
+title: "Getting Started"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The workflow for an analyst will typically follow the model outlined in [R for Data Science](https://r4ds.had.co.nz/introduction.html):
+
+![](https://d33wubrfki0l68.cloudfront.net/571b056757d68e6df81a3e3853f54d3c76ad6efc/32d37/diagrams/data-science.png)
+
+The ojodb package is here to make those first two steps - Import and Tidy - easy for you.
+
+## First things first
+
+As you start a script, you'll want to load the ojodb package and connect to the database.
+
+```{r, message=FALSE}
+library(ojodb)
+
+connect_ojo()
+```
+
+## Import: Get some data
+
+Most of the tables in the OJO database are very big: often hundreds of thousands of rows and dozens of columns. To avoid bringing entire unwieldy tables, we can limit the data we bring in by identifying the table we want with `ojo_tbl()`, `filter()`ing it to the subset we're interested in, then `collect()`ing it into R.
+
+The ojo_civ_cases table contains data collected from OSCN and ODCR and summarized to the case level, so there is (or should be) one row for every case for which we have data. We can see the variables by running:
+
+
+```{r}
+ojo_list_vars("ojo_civ_cases")
+```
+
+Let's take a look at small claims eviction data in Tulsa County over the last five years. To do that, we will:
+
+1. Identify the table ("ojo_civ_cases") with `ojo_tbl()`
+2. Narrow the query using logical expressions within `filter()`
+3. Bring the data into R using `collect()`
+
+```{r}
+d <- ojo_tbl("ojo_civ_cases") %>% 
+  filter(court == "TULSA",
+         file_year >= 2015,
+         issue == "EVICTION",
+         casetype == "SC") %>% 
+  collect()
+```
+
+To see how many rows we have in the data we got, we can run:
+
+```{r}
+nrow(d)
+```
+
+Over 77,000 cases and counting! That's a good sample to work with.
+
+## Transform and Visualize
+
+The data stored in the OJO database, imperfect as it is, is already "tidy" according to the [principles outlined in R for Data Science](https://r4ds.had.co.nz/tidy-data.html). You can read more about what makes tidy data easier to work with there.
+
+That means the next step in our process is transforming and visualizing. This is the fun part of data analysis, where you get to explore the data and come up with hypotheses for why things are they way they are.
+
+First, let's look at the number of cases filed each month during this time period. There's no variable for the month of filing yet, but when we listed variables above, there was a field called `file_date` that contains the date that the case was filed in court. So to get the number of cases filed each month, we need to do a few things:
+
+1. Create a new variable `file_month` that contains 
+
+```{r}
+
+```
+
+
+
+

@@ -12,6 +12,9 @@
 #'                    limits = c(NA, 2019))
 #' }
 
+ojo_pal <- c("#F8D64E", "black", "#0D0887FF", "#6A00A8FF",
+             "#B12A90FF", "#E16462FF", "#FCA636FF", "#F0F921FF")
+
 ojo_colors <- function(numbers = 1:8) {
   scale_color_manual(values = ojo_pal[numbers]) +
     scale_fill_manual(values = ojo_pal[numbers])

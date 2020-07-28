@@ -1,0 +1,61 @@
+---
+title: "Overview of OSCN data"
+output: rmarkdown::html_vignette
+description: >
+  Learn more about OSCN data in the OJO database
+vignette: >
+  %\VignetteIndexEntry{Linking between pkgdown sites}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo = FALSE}
+library(tibble)
+library(htmlTable)
+```
+
+The [Oklahoma State Courts Network (OSCN)](http://www.oscn.net/) holds information on all types of criminal and civil cases filed in District Courts across Oklahoma. For 13 counties, including the 6 largest by population, the information available is extensive and structured consistently. Those 13 counties are:
+
+1. Adair County (Stilwell)
+2. Canadian County (El Reno)
+3. Cleveland County (Norman)
+4. Comanche County (Lawton)
+5. Ellis County
+6. Garfield County (Enid)
+7. Logan County (Guthrie)
+8. Oklahoma County (Oklahoma City)
+9. Payne County (Stillwater)
+10. Pushmataha County 
+11. Roger Mills County
+12. Rogers County (Claremore)
+13. Tulsa County (Tulsa)
+
+The relative ease of using data collected from OSCN allows us to perform more reliable and granular analysis. For this reason, we will begin a new project using this data rather than from ODCR. 
+
+## Collection method
+
+The `oscn_scrape()` function, included in the ojo R package, collects data from a given case and stores it in the OJO database. The function visits a case page ([example here](https://www.oscn.net/dockets/GetCaseInformation.aspx?db=canadian&number=TR-2016-6275&cmid=364366)) and attempts to recognize types of data in the tables it finds in the page's HTML, puts the data into a dataframe in R, then uploads it. See function documentation for further details. 
+
+### Case numbers
+Each case filed in a District Court is given a case number following a straightforward pattern:
+
+> [Two letter case type abbreviation]-[Year of filing]-[Sequential number of filing in District Court of filing]
+
+For example, criminal misdemeanors are given the abbreviation "CM", so the first misdemeanor case filed in Adair County in 2020 is numbered CM-2020-1. The first misdemeanor case filed in Pushmataha County in 2020 is also numbered CM-2020-1.
+
+In the OJO database, case numbers follow the same pattern, but we add filler zeroes to make all case numbers the same length. CM-2020-1 appears as CM-2020-00001 in the OJO database, for instance.
+
+### Collection schedule
+Certain case types and periods are updated regularly by scripts that run either on our computers or on Amazon Web Services EC2 instances, but most are updated manually.
+
+Functions useful for collecting this data are:
+
+- `oscn_scrape_all()`, which searches OSCN for the last case filed for the specified courts, case types, and years, then scrapes all numbers from 1 to the last case.
+- `oscn_scrape_remaining()`, which finds two numbers for each court, case type, and year: (1) the highest case number found in the OJO database, and (2) the last case filed that year. This is especially useful if you've started collecting data for a certain year with `oscn_scrape_all()` but were interrupted or if you only want to scrape newly filed cases in the current year. 
+
+### Criminal case information
+Criminal cases are filed under three case types: felony ("CF"), misdemeanor ("CM"), and traffic ("TR"). OJO began continuous collection of felony and misdemeanor cases filed 2008-present in the 13 OSCN counties in the summer of 2019, but automatic collection was interrupted in March 2020.
+
+The follow
+
+
