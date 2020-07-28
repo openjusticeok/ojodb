@@ -4,7 +4,7 @@ output: rmarkdown::html_vignette
 description: >
   Learn more about OSCN data in the OJO database
 vignette: >
-  %\VignetteIndexEntry{Linking between pkgdown sites}
+  %\VignetteIndexEntry{Overview of OSCN data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

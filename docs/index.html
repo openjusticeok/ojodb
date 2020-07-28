@@ -159,15 +159,6 @@
 <p>To see the variables and first 10 rows of a table, call <code><a href="reference/ojo_tbl.html">ojo_tbl()</a></code> on it:</p>
 <div class="sourceCode" id="cb4"><pre class="r"><span class="fu"><a href="reference/ojo_tbl.html">ojo_tbl</a></span>(<span class="st">"oscn_crim_disps"</span>)</pre></div>
 </div>
-<div id="pulling-data-into-r" class="section level2">
-<h2 class="hasAnchor">
-<a href="#pulling-data-into-r" class="anchor"></a>Pulling data into R</h2>
-<p>In many cases, you’ll only be interested in a particular county, time period, and/or case type. You can now limit the data using the <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code> function, then use <code>ojo_collect()</code> to bring the pre-filtered data into R.</p>
-<div class="sourceCode" id="cb5"><pre class="r"><span class="no">d</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/ojo_tbl.html">ojo_tbl</a></span>(<span class="st">"oscn_crim_disps"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="no">court</span> <span class="kw">==</span> <span class="st">"ROGERS"</span>, <span class="no">casetype</span> <span class="kw">==</span> <span class="st">"CM"</span>, <span class="no">file_year</span> <span class="kw">==</span> <span class="fl">2019</span>) <span class="kw">%&gt;%</span>
-  <span class="fu">ojo_collect</span>()</pre></div>
-<p>The first line points to the <code>oscn_crim_disps</code> table (basically <code>SELECT \* FROM oscn_crim_disps</code>). The second line limits the query (<code>WHERE court = 'ROGERS' AND casetype = 'CM' AND file_year = 2019</code>), so you’re only getting the data you want, not querying the entire table. <code>ojo_collect()</code> executes the query, creates a dataframe in R, and closes the connection to the database (<code>disconnect_ojo()</code>). This should mostly eliminate the need for calling <code><a href="reference/connect_ojo.html">connect_ojo()</a></code> before querying and <code>disconnect_ojo()</code> afterward.</p>
-</div>
 </div>
   </div>
 

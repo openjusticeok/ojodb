@@ -79,9 +79,7 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Getting Started</h1>
-                        <h4 class="author">Ryan Gentzler</h4>
             
-            <h4 class="date">2020-07-24</h4>
       
       
       <div class="hidden name"><code>getting-started.Rmd</code></div>
@@ -90,9 +88,55 @@
 
     
     
-<div id="get-some-data" class="section level2">
+<p>The workflow for an analyst will typically follow the model outlined in <a href="https://r4ds.had.co.nz/introduction.html">R for Data Science</a>:</p>
+<p><img src="https://d33wubrfki0l68.cloudfront.net/571b056757d68e6df81a3e3853f54d3c76ad6efc/32d37/diagrams/data-science.png"></p>
+<p>The ojodb package is here to make those first two steps - Import and Tidy - easy for you.</p>
+<div id="first-things-first" class="section level2">
 <h2 class="hasAnchor">
-<a href="#get-some-data" class="anchor"></a>Get some data</h2>
+<a href="#first-things-first" class="anchor"></a>First things first</h2>
+<p>As you start a script, you’ll want to load the ojodb package and connect to the database.</p>
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ojodb</span>)
+
+<span class="fu"><a href="../reference/connect_ojo.html">connect_ojo</a></span>()</pre></body></html></div>
+</div>
+<div id="import-get-some-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#import-get-some-data" class="anchor"></a>Import: Get some data</h2>
+<p>Most of the tables in the OJO database are very big: often hundreds of thousands of rows and dozens of columns. To avoid bringing entire unwieldy tables, we can limit the data we bring in by identifying the table we want with <code><a href="../reference/ojo_tbl.html">ojo_tbl()</a></code>, <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code>ing it to the subset we’re interested in, then <code>collect()</code>ing it into R.</p>
+<p>The ojo_civ_cases table contains data collected from OSCN and ODCR and summarized to the case level, so there is (or should be) one row for every case for which we have data. We can see the variables by running:</p>
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="../reference/ojo_list_vars.html">ojo_list_vars</a></span>(<span class="st">"ojo_civ_cases"</span>)
+<span class="co">#&gt;  [1] "court"        "casenum"      "casetype"     "file_year"    "file_date"   </span>
+<span class="co">#&gt;  [6] "close_date"   "judge"        "plaintiff"    "defname"      "issue"       </span>
+<span class="co">#&gt; [11] "disp_date"    "disp_case"    "summary_date" "iss_desc"</span></pre></body></html></div>
+<p>Let’s take a look at small claims eviction data in Tulsa County over the last five years. To do that, we will:</p>
+<ol style="list-style-type: decimal">
+<li>Identify the table (“ojo_civ_cases”) with <code><a href="../reference/ojo_tbl.html">ojo_tbl()</a></code>
+</li>
+<li>Narrow the query using logical expressions within <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code>
+</li>
+<li>Bring the data into R using <code>collect()</code>
+</li>
+</ol>
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">d</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/ojo_tbl.html">ojo_tbl</a></span>(<span class="st">"ojo_civ_cases"</span>) <span class="kw">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="no">court</span> <span class="kw">==</span> <span class="st">"TULSA"</span>,
+         <span class="no">file_year</span> <span class="kw">&gt;=</span> <span class="fl">2015</span>,
+         <span class="no">issue</span> <span class="kw">==</span> <span class="st">"EVICTION"</span>,
+         <span class="no">casetype</span> <span class="kw">==</span> <span class="st">"SC"</span>) <span class="kw">%&gt;%</span>
+  <span class="fu">collect</span>()</pre></body></html></div>
+<p>To see how many rows we have in the data we got, we can run:</p>
+<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">d</span>)
+<span class="co">#&gt; [1] 77694</span></pre></body></html></div>
+<p>Over 77,000 cases and counting! That’s a good sample to work with.</p>
+</div>
+<div id="transform-and-visualize" class="section level2">
+<h2 class="hasAnchor">
+<a href="#transform-and-visualize" class="anchor"></a>Transform and Visualize</h2>
+<p>The data stored in the OJO database, imperfect as it is, is already “tidy” according to the <a href="https://r4ds.had.co.nz/tidy-data.html">principles outlined in R for Data Science</a>. You can read more about what makes tidy data easier to work with there.</p>
+<p>That means the next step in our process is transforming and visualizing. This is the fun part of data analysis, where you get to explore the data and come up with hypotheses for why things are they way they are.</p>
+<p>First, let’s look at the number of cases filed each month during this time period. There’s no variable for the month of filing yet, but when we listed variables above, there was a field called <code>file_date</code> that contains the date that the case was filed in court. So to get the number of cases filed each month, we need to do a few things:</p>
+<ol style="list-style-type: decimal">
+<li>Create a new variable <code>file_month</code> that contains</li>
+</ol>
 </div>
   </div>
 

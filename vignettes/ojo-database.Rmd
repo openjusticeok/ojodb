@@ -4,7 +4,7 @@ output: rmarkdown::html_vignette
 description: >
   Learn what's in the OJO database and how it's organized
 vignette: >
-  %\VignetteIndexEntry{Linking between pkgdown sites}
+  %\VignetteIndexEntry{Overview of the OJO database}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
