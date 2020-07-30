@@ -94,5 +94,5 @@ To see the variables and first 10 rows of a table, call `ojo_tbl()` on it:
 ojo_tbl("oscn_crim_disps")
 ```
 
-
+See the vignettes under the Articles tab for more information on our database and how to use it.
 

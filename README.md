@@ -98,3 +98,6 @@ it:
 ``` r
 ojo_tbl("oscn_crim_disps")
 ```
+
+See the vignettes under the Articles tab for more information on our
+database and how to use it.
