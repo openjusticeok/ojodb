@@ -1,0 +1,19 @@
+---
+title: "Identifying Specific Charges"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Identifying Specific Charges}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(ojodb)
+```
