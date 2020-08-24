@@ -24,7 +24,7 @@ The ojodb package is here to make those first two steps - Import and Tidy - easy
 
 ## First things first
 
-As you start a script, you'll want to load the ojodb package and connect to the database.
+When you start a script, you'll want to load the ojodb package and connect to the database.
 
 ```{r, message=FALSE}
 library(ojodb)
@@ -68,7 +68,7 @@ nrow(d)
 
 Over 77,000 cases and counting! That's a good sample to work with.
 
-One other piece of preparation: when pulling from the database, dates are formatted as character strings rather than dates. We can convert all date variables to dates by running:
+One other piece of preparation: when pulling from the database, dates are formatted as character strings rather than dates. We can convert all date variables to dates by running:ww
 
 ```{r}
 d <- d %>% 

@@ -1,0 +1,43 @@
+---
+title: "DOC Data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{doc-data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(ojodb)
+```
+
+Notes:
+
+Send a table and the data
+Male and female sentences
+- Sort by longest sentence - by FY
+
+Add fiscal year
+Sort longest sentences at the top
+Grab inmate id, county, fiscal year, unduplicated
+
+```{r}
+connect_ojo()
+
+sents <- ojo_tbl("doc_sentences") %>%
+  filter(js_date > "2017-06-30") %>%
+  left_join(ojo_tbl("doc_profile")) %>% 
+  collect()
+
+
+```
+
+
+

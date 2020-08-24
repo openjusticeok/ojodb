@@ -21,7 +21,7 @@ PAWNEE,059-,http://www1.odcr.com/detail?court=059-&casekey=059-XX+YY0ZZZZ,ODCR
 OTTAWA,058-,http://www1.odcr.com/detail?court=058-&casekey=058-XX+YY0ZZZZ,ODCR
 OSAGE,057-,http://www1.odcr.com/detail?court=057-&casekey=057-XX+YY0ZZZZ,ODCR
 OKMULGEE,056-,http://www1.odcr.com/detail?court=056-&casekey=056-XX+YY0ZZZZ,ODCR
-OKMULGEE HENRYETTA,056H,https://www1.odcr.com/detail?court=056H&casekey=056HXX+YY0ZZZZ,ODCR
+HENRYETTA,056H,https://www1.odcr.com/detail?court=056H&casekey=056HXX+YY0ZZZZ,ODCR
 OKLAHOMA,055-,http://www.oscn.net/dockets/GetCaseInformation.aspx?db=oklahoma&number=XX-YYYY-ZZZZZ,OSCN
 OKFUSKEE,054-,http://www1.odcr.com/detail?court=054-&casekey=054-XX+YY0ZZZZ,ODCR
 NOWATA,053-,http://www1.odcr.com/detail?court=053-&casekey=053-XX+YY0ZZZZ,ODCR
@@ -58,9 +58,8 @@ ELLIS,023-,http://www.oscn.net/dockets/GetCaseInformation.aspx?db=ellis&number=X
 DEWEY,022-,http://www1.odcr.com/detail?court=022-&casekey=022-XX+YY0ZZZZ,ODCR
 DELAWARE,021-,http://www1.odcr.com/detail?court=021-&casekey=021-XX+YY0ZZZZ,ODCR
 CUSTER,020-,http://www1.odcr.com/detail?court=020-&casekey=020-XX+YY0ZZZZ,ODCR
-CREEK DRUMWRIGHT,019D,http://www1.odcr.com/detail?court=019D&casekey=019DXX+YY0ZZZZ,ODCR
-CREEK BRISTOW,019B,http://www1.odcr.com/detail?court=019B&casekey=019BXX+YY0ZZZZ,ODCR
-CREEK SAPULPA,019-,http://www1.odcr.com/detail?court=019-&casekey=019-XX+YY0ZZZZ,ODCR
+DRUMWRIGHT,019D,http://www1.odcr.com/detail?court=019D&casekey=019DXX+YY0ZZZZ,ODCR
+BRISTOW,019B,http://www1.odcr.com/detail?court=019B&casekey=019BXX+YY0ZZZZ,ODCR
 CREEK,019-,http://www1.odcr.com/detail?court=019-&casekey=019-XX+YY0ZZZZ,ODCR
 CRAIG,018-,http://www1.odcr.com/detail?court=018-&casekey=018-XX+YY0ZZZZ,ODCR
 COTTON,017-,http://www1.odcr.com/detail?court=017-&casekey=017-XX+YY0ZZZZ,ODCR

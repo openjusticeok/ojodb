@@ -14,6 +14,16 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r, echo = FALSE}
 library(ojodb)
+```
+
+Many of the questions we ask require us to focus on specific criminal charges (*e.g*., [drug possession](https://okpolicy.org/in-its-first-year-sq-780-reversed-10-years-of-growth-in-felony-filings/) or burglary) or civil issues (*e.g.*, [evidctions](https://openjustice.okpolicy.org/blog/oklahoma-court-tracker/)). Because the data we collect is not always clean or entered uniformly, identifying cases requires some patience and diligence. This document provides a process to do that.
+
+## Identifying criminal charges
+
+Let's say we want to look 
+
+```{r}
+
 ```
