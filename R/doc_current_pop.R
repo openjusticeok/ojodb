@@ -4,7 +4,7 @@ doc_current_pop <- function() {
   d <- ojo_tbl("doc_profile") %>%
     filter(status == "Active") %>%
     collect() %>%
-    mutate(inside = str_detect(facility, "CORR|PENIT|RECEPT") & !str_detect(facility, "ESCAPE"))
+    mutate(inside = str_detect(facility, "CORR|PENIT|RECEPT|REFORM") & !str_detect(facility, "ESCAPE"))
   disconnect_ojo()
 
   return(d)
