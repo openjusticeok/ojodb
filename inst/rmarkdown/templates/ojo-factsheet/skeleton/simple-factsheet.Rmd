@@ -1,0 +1,108 @@
+---
+fontsize: 10pt
+output: pdf_document
+geometry: "left=1in,right=1in,top=0.35in,bottom=0.6in"
+urlcolor: #169d62
+---
+
+\raggedright
+
+```{r rmarkdown-setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(dev = "cairo_pdf")
+options(knitr.kable.NA = "")
+options(kableExtra.latex.load_packages = FALSE)
+
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+library(urbnthemes)
+
+set_urbn_defaults(style = "print")
+```
+
+
+\urbntitle{Title of a Simple Factsheet Template}
+\urbnsubtitle{Subtitle of a Simple Factsheet Template}
+\urbnauthors{Aaron Williams, Irvin Mull, and Graham MacDonald}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+\urbnheadingone{Heading 1}
+
+\urbnheadingtwo{Heading 2}
+
+Lorem ipsum dolor sit amet, adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in qui officia deserunt mollit anim id est laborum.
+
+\urbnfigurenumber{1}
+\urbnfiguretitle{Figure Title}
+
+[figure]
+
+\urbnsource{This is text for a source}
+\urbnsource{This is text for a note}
+
+This factsheet has powerful footnote\footnote{Don't worry about numbering!} capabilities. 
+
+\begin{urbnbullets}
+  \item Bulleted list
+  \item Bulleted list
+  \item Bulleted list
+\end{urbnbullets}
+
+\begin{urbnenumerate}
+  \item Numbered list
+  \item Numbered list
+  \item Numbered list
+\end{urbnenumerate}
+
+\contactinfo{}
+
+\newpage{}
+\newgeometry{left=1in,right=1in,top=1in,bottom=1.5in}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+Here's a second instance\footnote{Footnotes on the second page appear below the funder statement} of footnotes.
+several features.
+
+\vspace{5mm}
+\urbntablenumber{1}
+\urbntabletitle{An Informative Table Title in Title Case}
+\urbntablesubtitle{An informative table subtitle in sentence case}
+
+```{r echo=FALSE,  fig.width =7 , fig.height =2}
+# arbitrary data to demonstrate a table
+data <- tribble(~Industry, ~workers, ~increase,
+  "Retail trade", 1000, 10,
+  "Accomodation and food services", 989, 10,
+  "Manufacturing", 54, 10,
+  "Health care", 54, 10,
+  "Administrative services", 10, 10,
+  "Construction", 12, 10,
+  "Male, unmarried or spouse not present", 145, 10,
+  "Female, unmarried or spouse not present", 88, 10,
+  "Married couple", 89, 10)
+
+kable(data, format = "latex", booktabs = TRUE,
+      col.names = c(" ", "Thousands of variable 1", "Variable 2 ($)"),
+      align = c("l", "c", "c"),
+      linesep = "") %>%
+  kable_styling(full_width = TRUE) %>%
+  pack_rows("Industry", 1, 6) %>%
+  pack_rows("Sex and marital status", 7, 9) %>%
+  column_spec(1, width = "7cm") %>%
+  column_spec(2, width = "4.75cm") %>%
+  row_spec(0, bold = TRUE,
+           extra_css = "border-top: 0; border-bottom:5px solid red;") %>%
+  add_header_above(c(" " , " ", " "))
+```
+
+\urbnsource{\textbf{Source:} Urban Institute Analysis of invented data.}
+
+\urbnboilerplate{The Urban Institute R Users Group}{April}{2018}
+

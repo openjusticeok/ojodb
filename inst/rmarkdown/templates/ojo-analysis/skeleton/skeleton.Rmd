@@ -1,0 +1,136 @@
+---
+title: "Project Name"
+author:
+  - Author's Name, Job Title
+  - Open Justice Oklahoma
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    number_sections: yes
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+library(ojo)
+library(knitr)
+
+
+nc <- function(x) {comma(x, digits = 0)}
+
+```
+
+Background information: Why are we researching this topic? What is the expected product? A blog post? Analysis for an internal or external partner?
+
+> **Research Question**
+
+# Data sources
+
+Where is the data from? The ojo database? OSCN? ODCR? Crime in Oklahoma reports? 
+
+## Timeframe
+
+What years/months are you looking at? Year of case filing, first disposition, prison admission, etc.? Be as specific as possible.
+
+## Geography
+
+What courts/counties/states are you looking at?
+
+## Variables
+
+What variables did you use? What types of cases, crimes, etc.?
+
+## Query
+
+If you're using data from the OJO database, include the query you used to pull your data. This may be a function that starts `ojo_query_` or `dbGetQuery`.
+
+``` {r}
+# d <- ojo_query_disps("TULSA", "CM", 2019)
+```
+
+# Checking Data
+
+Explain the results of the checks of your data.
+
+## Check for Completeness
+
+If you're using court data, you can use the `ojo_check_comp` to see how complete the data is.
+
+```{r}
+# ojo_check_comp(sc)
+```
+
+## Check for NAs
+
+Detail the NAs and blank items in your data and, if necessary and possible, fill them in.
+
+``` {r}
+# rog_nas <- rog %>% 
+#   summarize(nas = sum(is.na(defname) | defname == "")) # checks for NA and blank ("") defendant names
+# 
+# rog_nas
+```
+
+## Check for outliers
+
+If you're looking at numeric data, look at the highest and lowest values and explain your procedures to deal with them in this section.
+
+# Defining Measures
+
+This is where you'll likely spend the biggest chunk of time if you're using court data. There are a lot of ways things can go wrong, so we want to be able to trace back all of our steps and document all the decisions we're making.
+
+Because each analysis project is a bit different, the number and length of subsections in this section will vary a lot. 
+
+## Measure 1
+
+Describe how you defined the first measure.
+
+# Summarizing and Visualizing Data
+
+There will likely be several sections here too. Summarize and visualize the data in different ways and identify trends that you see.
+
+## Summary 1
+
+- How you summarized and why
+- How you visualized the data
+- Potential leads and trends
+
+```{r results="asis", echo=FALSE}
+cat("
+<style>
+body {
+  padding-top: 63px;
+}
+
+h1.title.toc-ignore {
+  font-family: 'Pluto Sans';
+  font-weight: bold;
+  background-color: #F8D64E;
+}
+
+h1, h2, h3 {
+  font-family: 'Pluto Sans';
+  font-weight: bold;
+}
+
+#TOC {
+  font-family: 'Menlo'
+}
+
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    font-weight: bold;
+    color: black;
+    background-color: #F8D64E;
+}
+
+p a {
+  color: black;
+  background-color: #F8D64E;
+  font-weight: bold;
+}
+
+</style>
+")
+```

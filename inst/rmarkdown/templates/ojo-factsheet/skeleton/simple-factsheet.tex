@@ -1,0 +1,177 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames*,x11names*}{xcolor}
+%
+\documentclass[
+  10pt,
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=Maroon,
+  filecolor=Maroon,
+  citecolor=Blue,
+  urlcolor=Blue,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[left=1in,right=1in,top=0.35in,bottom=0.6in]{geometry}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\raggedright
+
+\urbntitle{Title of a Simple Factsheet Template}
+\urbnsubtitle{Subtitle of a Simple Factsheet Template}
+\urbnauthors{Aaron Williams, Irvin Mull, and Graham MacDonald}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+mollit anim id est laborum.
+
+\urbnheadingone{Heading 1}
+
+\urbnheadingtwo{Heading 2}
+
+Lorem ipsum dolor sit amet, adipiscing elit, sed do eiusmod tempor
+incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat. Duis aute irure dolor in reprehenderit in voluptate velit
+esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+cupidatat non proident, sunt in culpa qui officia deserunt mollit anim
+id est laborum.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+occaecat cupidatat non proident, sunt in qui officia deserunt mollit
+anim id est laborum.
+
+\urbnfigurenumber{1}
+\urbnfiguretitle{Figure Title}
+
+{[}figure{]}
+
+\urbnsource{This is text for a source}
+\urbnsource{This is text for a note}
+
+This factsheet has powerful
+footnote\footnote{Don't worry about numbering!} capabilities.
+
+\begin{urbnbullets}
+  \item Bulleted list
+  \item Bulleted list
+  \item Bulleted list
+\end{urbnbullets}
+
+\begin{urbnenumerate}
+  \item Numbered list
+  \item Numbered list
+  \item Numbered list
+\end{urbnenumerate}
+
+\contactinfo{}
+
+\newpage{}
+\newgeometry{left=1in,right=1in,top=1in,bottom=1.5in}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ea
+commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+mollit anim id est laborum.
+
+Here's a second
+instance\footnote{Footnotes on the second page appear below the funder statement}
+of footnotes. several features.
+
+\vspace{5mm}
+\urbntablenumber{1}
+\urbntabletitle{An Informative Table Title in Title Case}
+\urbntablesubtitle{An informative table subtitle in sentence case}
+
+\begin{tabu} to \linewidth {>{\raggedright\arraybackslash}p{7cm}>{\centering\arraybackslash}p{4.75cm}>{\centering}X}
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{1}{c}{ } & \multicolumn{1}{c}{ } \\
+
+\textbf{ } & \textbf{Thousands of variable 1} & \textbf{Variable 2 (\$)}\\
+\midrule
+\addlinespace[0.3em]
+\multicolumn{3}{l}{\textbf{Industry}}\\
+\hspace{1em}Retail trade & 1000 & 10\\
+\hspace{1em}Accomodation and food services & 989 & 10\\
+\hspace{1em}Manufacturing & 54 & 10\\
+\hspace{1em}Health care & 54 & 10\\
+\hspace{1em}Administrative services & 10 & 10\\
+\hspace{1em}Construction & 12 & 10\\
+\addlinespace[0.3em]
+\multicolumn{3}{l}{\textbf{Sex and marital status}}\\
+\hspace{1em}Male, unmarried or spouse not present & 145 & 10\\
+\hspace{1em}Female, unmarried or spouse not present & 88 & 10\\
+\hspace{1em}Married couple & 89 & 10\\
+\bottomrule
+\end{tabu}
+
+\urbnsource{\textbf{Source:} Urban Institute Analysis of invented data.}
+
+\urbnboilerplate{The Urban Institute R Users Group}{April}{2018}
+
+\end{document}
