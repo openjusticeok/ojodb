@@ -1,3 +1,14 @@
+#' Get population data by race and sex for Oklahoma from the Census Bureau's American Community Survey
+#'
+#' Summarizes tables in the ACS B01001 series to return Oklahoma's population by race and sex for desired years. Useful for calculating per capita rates of incarceration.
+#'
+#' @param years A numeric vector of years for which to get population data
+#' @return A table of Oklahoma's population by race and sex in each year specified
+#' @examples
+#' \dontrun{
+#' race_pop(2018)
+#' }
+
 race_pop <- function(years) {
 
   data <- tibble()

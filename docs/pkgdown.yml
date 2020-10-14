@@ -1,9 +1,11 @@
 pandoc: 2.7.3
-pkgdown: 1.5.0
+pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
+  doc-data: doc-data.html
   getting-started: getting-started.html
+  identifying-charges: identifying-charges.html
   ojo-database: ojo-database.html
   oscn-tables: oscn-tables.html
-last_built: 2020-07-28T20:27Z
+last_built: 2020-10-14T18:27Z
 

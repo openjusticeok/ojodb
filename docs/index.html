@@ -54,7 +54,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="articles/doc-data.html">DOC Data</a>
+    </li>
+    <li>
       <a href="articles/getting-started.html">Getting Started</a>
+    </li>
+    <li>
+      <a href="articles/identifying-charges.html">Identifying Specific Charges</a>
     </li>
     <li>
       <a href="articles/ojo-database.html">Overview of the OJO database</a>
@@ -86,13 +92,15 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>Install the devtools package if you don’t have it yet, then install the ojodb package from GitHub with:</p>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="kw">if</span> (!<span class="st">"devtools"</span> <span class="kw">%in%</span> <span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span>()) {
-  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"devtools"</span>)
-}
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="st">"devtools"</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
+<span class="op">}</span>
 
-<span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"openjusticeok/ojodb"</span>)</pre></div>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"openjusticeok/ojodb"</span><span class="op">)</span></pre></div>
 <p>After installation, update it with:</p>
-<div class="sourceCode" id="cb2"><pre class="r"><span class="fu">ojo_reinstall</span>()</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="fu">ojo_reinstall</span><span class="op">(</span><span class="op">)</span></pre></div>
 </div>
 <div id="the-big-picture" class="section level2">
 <h2 class="hasAnchor">
@@ -107,10 +115,11 @@
 <h2 class="hasAnchor">
 <a href="#exploring-the-ojo-database" class="anchor"></a>Exploring the OJO database</h2>
 <p>We’ve collected tons and tons of data, and it can be overwhelming to approach it at first. To list all tables in the OJO database, use <code><a href="reference/ojo_list_tables.html">ojo_list_tables()</a></code>.</p>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ojodb</span>)
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">ojodb</span><span class="op">)</span>
 
-<span class="fu"><a href="reference/connect_ojo.html">connect_ojo</a></span>()
-<span class="no">t</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/ojo_list_tables.html">ojo_list_tables</a></span>()</pre></div>
+<span class="fu"><a href="reference/connect_ojo.html">connect_ojo</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ojo_list_tables.html">ojo_list_tables</a></span><span class="op">(</span><span class="op">)</span></pre></div>
 <p>Each table name begins with a prefix indicating the source of the data. The most commonly used data sources are listed below.</p>
 <table class="table">
 <colgroup>
@@ -157,7 +166,9 @@
 </tbody>
 </table>
 <p>To see the variables and first 10 rows of a table, call <code><a href="reference/ojo_tbl.html">ojo_tbl()</a></code> on it:</p>
-<div class="sourceCode" id="cb4"><pre class="r"><span class="fu"><a href="reference/ojo_tbl.html">ojo_tbl</a></span>(<span class="st">"oscn_crim_disps"</span>)</pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="fu"><a href="reference/ojo_tbl.html">ojo_tbl</a></span><span class="op">(</span><span class="st">"oscn_crim_disps"</span><span class="op">)</span></pre></div>
+<p>See the vignettes under the Articles tab for more information on our database and how to use it.</p>
 </div>
 </div>
   </div>
@@ -187,7 +198,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

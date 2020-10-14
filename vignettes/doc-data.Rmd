@@ -14,35 +14,27 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, echo=FALSE, message=FALSE}
 library(ojodb)
 ```
 
-Notes:
-
-Send a table and the data
-Male and female sentences
-- Sort by longest sentence - by FY
-
-Add fiscal year
-Sort longest sentences at the top
-Grab inmate id, county, fiscal year, unduplicated
+This article is under development.
 
 ```{r query}
-current_quarter <- Sys.Date() %>% 
-  floor_date("quarter")
-
-if (paste(current_quarter, "sentence data.csv") %in% )
-connect_ojo()
-
-sents <- ojo_tbl("doc_sentences") %>%
-  filter(js_date > "2009-06-30") %>%
-  left_join(ojo_tbl("doc_profile")) %>% 
-  collect()
-
-disconnect_ojo()
-
-write_csv(sents, paste(current_quarter, "sentence data.csv"))
+# current_quarter <- Sys.Date() %>% 
+#   floor_date("quarter")
+# 
+# if (paste(current_quarter, "sentence data.csv") %in% )
+# connect_ojo()
+# 
+# sents <- ojo_tbl("doc_sentences") %>%
+#   filter(js_date > "2009-06-30") %>%
+#   left_join(ojo_tbl("doc_profile")) %>% 
+#   collect()
+# 
+# disconnect_ojo()
+# 
+# write_csv(sents, paste(current_quarter, "sentence data.csv"))
 
 ```
 

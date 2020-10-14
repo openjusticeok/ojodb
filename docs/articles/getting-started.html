@@ -54,7 +54,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/doc-data.html">DOC Data</a>
+    </li>
+    <li>
       <a href="../articles/getting-started.html">Getting Started</a>
+    </li>
+    <li>
+      <a href="../articles/identifying-charges.html">Identifying Specific Charges</a>
     </li>
     <li>
       <a href="../articles/ojo-database.html">Overview of the OJO database</a>
@@ -75,7 +81,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="getting-started_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Getting Started</h1>
@@ -94,10 +100,11 @@
 <div id="first-things-first" class="section level2">
 <h2 class="hasAnchor">
 <a href="#first-things-first" class="anchor"></a>First things first</h2>
-<p>As you start a script, you’ll want to load the ojodb package and connect to the database.</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ojodb</span>)
+<p>When you start a script, you’ll want to load the ojodb package and connect to the database.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">ojodb</span><span class="op">)</span>
 
-<span class="fu"><a href="../reference/connect_ojo.html">connect_ojo</a></span>()</pre></body></html></div>
+<span class="fu"><a href="../reference/connect_ojo.html">connect_ojo</a></span><span class="op">(</span><span class="op">)</span></pre></div>
 </div>
 <div id="import-get-some-data" class="section level2">
 <h2 class="hasAnchor">
@@ -107,10 +114,11 @@
 <p>Remember: to get help with a function in R, you can type <code>?{function_name}</code>, e.g. <code>?floor_date</code>. This works for any function, including those in the ojo package.</p>
 </blockquote>
 <p>The ojo_civ_cases table contains data collected from OSCN and ODCR and summarized to the case level, so there is (or should be) one row for every case for which we have data. We can see the variables by running:</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="../reference/ojo_list_vars.html">ojo_list_vars</a></span>(<span class="st">"ojo_civ_cases"</span>)
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="fu"><a href="../reference/ojo_list_vars.html">ojo_list_vars</a></span><span class="op">(</span><span class="st">"ojo_civ_cases"</span><span class="op">)</span>
 <span class="co">#&gt;  [1] "court"        "casenum"      "casetype"     "file_year"    "file_date"   </span>
 <span class="co">#&gt;  [6] "close_date"   "judge"        "plaintiff"    "defname"      "issue"       </span>
-<span class="co">#&gt; [11] "disp_date"    "disp_case"    "summary_date" "iss_desc"</span></pre></body></html></div>
+<span class="co">#&gt; [11] "disp_date"    "disp_case"    "summary_date" "iss_desc"</span></pre></div>
 <p>Let’s take a look at small claims eviction data in Tulsa County over the last five years. To do that, we will:</p>
 <ol style="list-style-type: decimal">
 <li>Identify the table (“ojo_civ_cases”) with <code><a href="../reference/ojo_tbl.html">ojo_tbl()</a></code>
@@ -119,19 +127,22 @@
 <li>Bring the data into R using <code>collect()</code>
 </li>
 </ol>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">d</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/ojo_tbl.html">ojo_tbl</a></span>(<span class="st">"ojo_civ_cases"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="no">court</span> <span class="kw">==</span> <span class="st">"TULSA"</span>,
-         <span class="no">file_year</span> <span class="kw">&gt;=</span> <span class="fl">2015</span>,
-         <span class="no">issue</span> <span class="kw">==</span> <span class="st">"EVICTION"</span>,
-         <span class="no">casetype</span> <span class="kw">==</span> <span class="st">"SC"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu">collect</span>()</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ojo_tbl.html">ojo_tbl</a></span><span class="op">(</span><span class="st">"ojo_civ_cases"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">court</span> <span class="op">==</span> <span class="st">"TULSA"</span>,
+         <span class="va">file_year</span> <span class="op">&gt;=</span> <span class="fl">2015</span>,
+         <span class="va">issue</span> <span class="op">==</span> <span class="st">"EVICTION"</span>,
+         <span class="va">casetype</span> <span class="op">==</span> <span class="st">"SC"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">collect</span><span class="op">(</span><span class="op">)</span></pre></div>
 <p>To see how many rows we have in the data we got, we can run:</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">d</span>)
-<span class="co">#&gt; [1] 77694</span></pre></body></html></div>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>
+<span class="co">#&gt; [1] 79583</span></pre></div>
 <p>Over 77,000 cases and counting! That’s a good sample to work with.</p>
-<p>One other piece of preparation: when pulling from the database, dates are formatted as character strings rather than dates. We can convert all date variables to dates by running:</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">d</span> <span class="kw">&lt;-</span> <span class="no">d</span> <span class="kw">%&gt;%</span>
-  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">ends_with</span>(<span class="st">"_date"</span>), <span class="no">ymd</span>))</pre></body></html></div>
+<p>One other piece of preparation: when pulling from the database, dates are formatted as character strings rather than dates. We can convert all date variables to dates by running:ww</p>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="va">d</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">%&gt;%</span> 
+  <span class="fu">mutate</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu">ends_with</span><span class="op">(</span><span class="st">"_date"</span><span class="op">)</span>, <span class="va">ymd</span><span class="op">)</span><span class="op">)</span></pre></div>
 </div>
 <div id="transform-and-visualize" class="section level2">
 <h2 class="hasAnchor">
@@ -143,67 +154,76 @@
 <li>Use <code>mutate()</code> to create a new variable <code>file_month</code> with the month and year of filing</li>
 <li>Count the number of cases filed in each month</li>
 </ol>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">month_filings</span> <span class="kw">&lt;-</span> <span class="no">d</span> <span class="kw">%&gt;%</span>
-  <span class="fu">mutate</span>(<span class="kw">file_month</span> <span class="kw">=</span> <span class="fu">floor_date</span>(<span class="no">file_date</span>, <span class="st">"month"</span>)) <span class="kw">%&gt;%</span>
-  <span class="fu">count</span>(<span class="no">file_month</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="va">month_filings</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">%&gt;%</span> 
+  <span class="fu">mutate</span><span class="op">(</span>file_month <span class="op">=</span> <span class="fu">floor_date</span><span class="op">(</span><span class="va">file_date</span>, <span class="st">"month"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">count</span><span class="op">(</span><span class="va">file_month</span><span class="op">)</span></pre></div>
 <p>That gives us a summarized data frame with one line for each month and a variable <code>n</code> with the number of evictions filed. Now we can make a simple line graph:</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu">ggplot</span>(<span class="no">month_filings</span>, <span class="fu">aes</span>(<span class="kw">x</span> <span class="kw">=</span> <span class="no">file_month</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="no">n</span>)) +
-  <span class="fu">geom_line</span>()</pre></body></html></div>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="fu">ggplot</span><span class="op">(</span><span class="va">month_filings</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">file_month</span>, y <span class="op">=</span> <span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span></pre></div>
 <p><img src="getting-started_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
 <p>Now let’s pretty it up a little bit by adding <code><a href="../reference/theme_ojo.html">theme_ojo()</a></code> and giving it a title with <code>ggtitle()</code>:</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu">ggplot</span>(<span class="no">month_filings</span>, <span class="fu">aes</span>(<span class="kw">x</span> <span class="kw">=</span> <span class="no">file_month</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="no">n</span>)) +
-  <span class="fu">geom_line</span>() +
-  <span class="fu"><a href="../reference/theme_ojo.html">theme_ojo</a></span>() +
-  <span class="fu">ggtitle</span>(<span class="st">"Evictions filed in Tulsa County"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="fu">ggplot</span><span class="op">(</span><span class="va">month_filings</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">file_month</span>, y <span class="op">=</span> <span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/theme_ojo.html">theme_ojo</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Evictions filed in Tulsa County"</span><span class="op">)</span></pre></div>
 <p><img src="getting-started_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
 <p>That big dropoff at the end looks like it could be a mistake, but it’s really the effect of covid-19 court closures. We can use <code>geom_vline()</code> to mark March 2020, when the world fell apart and took the courts with it, and use <code>geom_label()</code> to label the line.</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu">ggplot</span>(<span class="no">month_filings</span>, <span class="fu">aes</span>(<span class="kw">x</span> <span class="kw">=</span> <span class="no">file_month</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="no">n</span>)) +
-  <span class="fu">geom_line</span>() +
-  <span class="fu"><a href="../reference/theme_ojo.html">theme_ojo</a></span>() +
-  <span class="fu">ggtitle</span>(<span class="st">"Evictions filed in Tulsa County by month"</span>) +
-  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="kw">xintercept</span> <span class="kw">=</span> <span class="fu">ymd</span>(<span class="st">"2020-03-01"</span>)), <span class="kw">linetype</span> <span class="kw">=</span> <span class="st">"dashed"</span>) +
-  <span class="fu">geom_label</span>(<span class="fu">aes</span>(<span class="kw">x</span> <span class="kw">=</span> <span class="fu">ymd</span>(<span class="st">"2020-03-01"</span>), <span class="kw">y</span> <span class="kw">=</span> <span class="fl">1600</span>,
-                 <span class="kw">label</span> <span class="kw">=</span> <span class="st">"Apocalypse here"</span>,
-                 <span class="kw">family</span> <span class="kw">=</span> <span class="st">"Menlo"</span>,
-                 <span class="kw">hjust</span> <span class="kw">=</span> <span class="fl">1</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="fu">ggplot</span><span class="op">(</span><span class="va">month_filings</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">file_month</span>, y <span class="op">=</span> <span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/theme_ojo.html">theme_ojo</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Evictions filed in Tulsa County by month"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_vline</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fu">ymd</span><span class="op">(</span><span class="st">"2020-03-01"</span><span class="op">)</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_label</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="fu">ymd</span><span class="op">(</span><span class="st">"2020-03-01"</span><span class="op">)</span>, y <span class="op">=</span> <span class="fl">1600</span>, 
+                 label <span class="op">=</span> <span class="st">"Apocalypse here"</span>,
+                 family <span class="op">=</span> <span class="st">"Menlo"</span>,
+                 hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></pre></div>
 <p><img src="getting-started_files/figure-html/unnamed-chunk-9-1.png" width="672"></p>
 <div id="exploring-dispositions" class="section level3">
 <h3 class="hasAnchor">
 <a href="#exploring-dispositions" class="anchor"></a>Exploring dispositions</h3>
 <p>Another thing we might do is look at dispositions. How do these filings usually turn out? How many actually end in an eviction? For this, we’ll use the <code>disp_case</code> column, which contains the last disposition entered on the case.</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">disp_count</span> <span class="kw">&lt;-</span> <span class="no">d</span> <span class="kw">%&gt;%</span>
-  <span class="fu">count</span>(<span class="no">disp_case</span>)
+<div class="sourceCode" id="cb10"><pre class="downlit">
+<span class="va">disp_count</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">%&gt;%</span> 
+  <span class="fu">count</span><span class="op">(</span><span class="va">disp_case</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">disp_count</span>)
-<span class="co">#&gt; [1] 27</span></pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">disp_count</span><span class="op">)</span>
+<span class="co">#&gt; [1] 27</span></pre></div>
 <p>There are 27 rows in this dataframe, meaning there are 27 different ways that dispositions are entered. Looking at the dataframe, we see there are ten rows that include the word “DISMISSED” and quite a few with a dozen or fewer total cases in this five year period. Let’s use <code>if_else()</code> to collapse all the dismissed cases into one category by changing any disposition that includes the word “DISMISSED” – identified with the <code>str_detect()</code> function – to just say “DISMISSED”.</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">disp_count</span> <span class="kw">&lt;-</span> <span class="no">d</span> <span class="kw">%&gt;%</span>
-  <span class="fu">mutate</span>(<span class="kw">disp_case</span> <span class="kw">=</span> <span class="fu">if_else</span>(<span class="fu">str_detect</span>(<span class="no">disp_case</span>, <span class="st">"DISMISSED"</span>),
-                             <span class="st">"DISMISSED"</span>,
-                             <span class="no">disp_case</span>)) <span class="kw">%&gt;%</span>
-  <span class="fu">count</span>(<span class="no">disp_case</span>)
+<div class="sourceCode" id="cb11"><pre class="downlit">
+<span class="va">disp_count</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">%&gt;%</span> 
+  <span class="fu">mutate</span><span class="op">(</span>disp_case <span class="op">=</span> <span class="fu">if_else</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">disp_case</span>, <span class="st">"DISMISSED"</span><span class="op">)</span>, 
+                             <span class="st">"DISMISSED"</span>, 
+                             <span class="va">disp_case</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">count</span><span class="op">(</span><span class="va">disp_case</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">disp_count</span>)
-<span class="co">#&gt; [1] 18</span></pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">disp_count</span><span class="op">)</span>
+<span class="co">#&gt; [1] 18</span></pre></div>
 <p>There are still a lot of dispositions, many of which we’re not interested in. Let’s limit to a few categories: judgments and dismissed cases. We’ll do that by <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code>ing our dataset using <code>str_detect()</code> again, then limit to categories with 10 or more cases:</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">disp_count</span> <span class="kw">&lt;-</span> <span class="no">disp_count</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="fu">str_detect</span>(<span class="no">disp_case</span>, <span class="st">"JUDG|DISMIS"</span>),
-         <span class="no">n</span> <span class="kw">&gt;=</span> <span class="fl">10</span>)
+<div class="sourceCode" id="cb12"><pre class="downlit">
+<span class="va">disp_count</span> <span class="op">&lt;-</span> <span class="va">disp_count</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">disp_case</span>, <span class="st">"JUDG|DISMIS"</span><span class="op">)</span>,
+         <span class="va">n</span> <span class="op">&gt;=</span> <span class="fl">10</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">disp_count</span>)
-<span class="co">#&gt; [1] 4</span></pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">disp_count</span><span class="op">)</span>
+<span class="co">#&gt; [1] 4</span></pre></div>
 <p>Now we’ve got only 4 rows. We can calculate the percentage in each group with:</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">disp_count</span> <span class="kw">&lt;-</span> <span class="no">disp_count</span> <span class="kw">%&gt;%</span>
-  <span class="fu">mutate</span>(<span class="kw">perc</span> <span class="kw">=</span> <span class="no">n</span>/<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">n</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb13"><pre class="downlit">
+<span class="va">disp_count</span> <span class="op">&lt;-</span> <span class="va">disp_count</span> <span class="op">%&gt;%</span> 
+  <span class="fu">mutate</span><span class="op">(</span>perc <span class="op">=</span> <span class="va">n</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span></pre></div>
 <p>And make a little bar graph. Let’s add a label for each bar with <code>geom_text()</code> this time. The <code>nudge_y</code> argument bumps it above the bar.</p>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu">ggplot</span>(<span class="no">disp_count</span>, <span class="fu">aes</span>(<span class="no">disp_case</span>, <span class="no">n</span>)) +
-  <span class="fu">geom_col</span>(<span class="kw">fill</span> <span class="kw">=</span> <span class="st">"black"</span>) +
-  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="kw">label</span> <span class="kw">=</span> <span class="no">n</span>),
-            <span class="kw">family</span> <span class="kw">=</span> <span class="st">"Menlo"</span>,
-            <span class="kw">nudge_y</span> <span class="kw">=</span> <span class="fl">1000</span>) +
-  <span class="fu"><a href="../reference/theme_ojo.html">theme_ojo</a></span>() +
-  <span class="fu">ggtitle</span>(<span class="st">"Number of dispositions in eviction cases"</span>,
-          <span class="st">"Tulsa County cases filed 2015-2020"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb14"><pre class="downlit">
+<span class="fu">ggplot</span><span class="op">(</span><span class="va">disp_count</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">disp_case</span>, <span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_col</span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_text</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>label <span class="op">=</span> <span class="va">n</span><span class="op">)</span>,
+            family <span class="op">=</span> <span class="st">"Menlo"</span>,
+            nudge_y <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/theme_ojo.html">theme_ojo</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Number of dispositions in eviction cases"</span>,
+          <span class="st">"Tulsa County cases filed 2015-2020"</span><span class="op">)</span></pre></div>
 <p><img src="getting-started_files/figure-html/unnamed-chunk-14-1.png" width="672"> Let’s make a few more improvements:</p>
 <ol style="list-style-type: decimal">
 <li>To make the x-axis readable, we can rotate the graph using <code>coord_flip()</code>
@@ -215,19 +235,20 @@
 <li>Add the percent of total dispositions by using <code><a href="https://rdrr.io/r/base/paste.html">paste0()</a></code> and a little bit of data manipulation on <code>perc</code>
 </li>
 </ol>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu">ggplot</span>(<span class="no">disp_count</span>, <span class="fu">aes</span>(<span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span>(<span class="no">disp_case</span>, <span class="no">n</span>), <span class="no">n</span>)) +
-  <span class="fu">geom_col</span>(<span class="kw">fill</span> <span class="kw">=</span> <span class="st">"black"</span>) +
-  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="kw">label</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="no">n</span>, <span class="st">"\n("</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="no">perc</span>*<span class="fl">100</span>, <span class="fl">1</span>), <span class="st">"%)"</span>)),
-            <span class="kw">family</span> <span class="kw">=</span> <span class="st">"Menlo"</span>,
-            <span class="kw">nudge_y</span> <span class="kw">=</span> <span class="fl">100</span>,
-            <span class="kw">hjust</span> <span class="kw">=</span> <span class="fl">0</span>) +
-  <span class="fu"><a href="../reference/theme_ojo.html">theme_ojo</a></span>() +
-  <span class="fu">ggtitle</span>(<span class="st">"Number of dispositions\nin eviction cases"</span>,
-          <span class="st">"Tulsa County cases filed 2015-2020"</span>) +
-  <span class="fu">coord_flip</span>() +
-  <span class="fu">xlab</span>(<span class="kw">NULL</span>) +
-  <span class="fu">ylab</span>(<span class="kw">NULL</span>) +
-  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.window.html">ylim</a></span>(<span class="fl">0</span>, <span class="fl">45000</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb15"><pre class="downlit">
+<span class="fu">ggplot</span><span class="op">(</span><span class="va">disp_count</span>, <span class="fu">aes</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span><span class="op">(</span><span class="va">disp_case</span>, <span class="va">n</span><span class="op">)</span>, <span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_col</span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_text</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">n</span>, <span class="st">"\n("</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">perc</span><span class="op">*</span><span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span>, <span class="st">"%)"</span><span class="op">)</span><span class="op">)</span>,
+            family <span class="op">=</span> <span class="st">"Menlo"</span>,
+            nudge_y <span class="op">=</span> <span class="fl">100</span>,
+            hjust <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/theme_ojo.html">theme_ojo</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Number of dispositions\nin eviction cases"</span>,
+          <span class="st">"Tulsa County cases filed 2015-2020"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">coord_flip</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">xlab</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">ylab</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.window.html">ylim</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">45000</span><span class="op">)</span></pre></div>
 <p><img src="getting-started_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
 <p>This shows us that about half of eviction cases end in default judgments, which usually means the tenant didn’t show up and the case was decided in favor of the landlord. Another 11% were decided for the plaintiff (landlord), and about 41% were dismissed for one reason or another. That leaves just 0.1% of cases over the course of these 5 years - 39 out of about 70,000 total cases - that were decided in favor of the tenant. It’s staggering!</p>
 </div>
@@ -262,7 +283,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

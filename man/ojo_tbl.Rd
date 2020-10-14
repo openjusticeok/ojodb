@@ -16,7 +16,15 @@ A pointer to a table that can be passed to dplyr functions and/or pulled into a 
 Identifies a table in the OJO database from which to query data. Remember to run \code{connect_ojo()} to establish a connection before attempting to query and to close the connection afterwards with \code{disconnect_ojo()}.
 }
 \examples{
+\dontrun{
+# Identifies the table
 ojo_tbl("oscn_caseinfo")
+
+# Pulls down case information data for every Tulsa felony filed in 2020 into a dataframe d
+d <- ojo_tbl("oscn_caseinfo") \%>\%
+    filter(court == "TULSA", casetype == "CF", file_year == 2020) \%>\%
+    collect()
+}
 }
 \seealso{
 ojo_list_tables(), ojo_list_vars()

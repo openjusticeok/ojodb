@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>List the variables in an <code>ojo</code> database table — ojo_list_vars • ojodb</title>
+<title>List the variables in an ojo database table — ojo_list_vars • ojodb</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="List the variables in an <code>ojo</code> database table — ojo_list_vars" />
+<meta property="og:title" content="List the variables in an ojo database table — ojo_list_vars" />
 <meta property="og:description" content="List the variables in an ojo database table" />
 
 
@@ -95,7 +95,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/doc-data.html">DOC Data</a>
+    </li>
+    <li>
       <a href="../articles/getting-started.html">Getting Started</a>
+    </li>
+    <li>
+      <a href="../articles/identifying-charges.html">Identifying Specific Charges</a>
     </li>
     <li>
       <a href="../articles/ojo-database.html">Overview of the OJO database</a>
@@ -130,14 +136,14 @@
     <p>List the variables in an <code>ojo</code> database table</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ojo_list_vars</span>(<span class='no'>table</span>)</pre>
+    <pre class="usage"><span class='fu'>ojo_list_vars</span><span class='op'>(</span><span class='va'>table</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pattern</th>
-      <td><p>Filter tables that contain a string or match a regular expression</p></td>
+      <th>table</th>
+      <td><p>Name of the table as a string, e.g. "ojo_crim_cases"</p></td>
     </tr>
     </table>
 
@@ -146,7 +152,10 @@
     <p>A character vector listing the tables in the <code>ojo</code> database that match the pattern</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>ojo_list_vars</span>(<span class='st'>"oscn_civ_disps"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in dbListFields(ojo_db, table): object 'ojo_db' not found</span></div></pre>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='fu'>ojo_list_vars</span><span class='op'>(</span><span class='st'>"oscn_civ_disps"</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -162,7 +171,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

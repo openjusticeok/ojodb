@@ -1,4 +1,4 @@
-#' Give a plot
+#' Add OJO styling to a ggplot
 #'
 #' Add OJO styling to a ggplot
 #'

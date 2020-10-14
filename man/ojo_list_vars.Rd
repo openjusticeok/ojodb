@@ -7,7 +7,7 @@
 ojo_list_vars(table)
 }
 \arguments{
-\item{pattern}{Filter tables that contain a string or match a regular expression}
+\item{table}{Name of the table as a string, e.g. "ojo_crim_cases"}
 }
 \value{
 A character vector listing the tables in the \code{ojo} database that match the pattern
@@ -16,5 +16,7 @@ A character vector listing the tables in the \code{ojo} database that match the 
 List the variables in an \code{ojo} database table
 }
 \examples{
+\dontrun{
 ojo_list_vars("oscn_civ_disps")
+}
 }

@@ -3,7 +3,7 @@
 \docType{data}
 \name{ojo_pal}
 \alias{ojo_pal}
-\title{Give a plot}
+\title{Add OJO styling to a ggplot}
 \format{
 An object of class \code{character} of length 8.
 }

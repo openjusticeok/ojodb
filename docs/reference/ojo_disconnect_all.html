@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Close all connections to the <code>ojo</code> database — ojo_disconnect_all • ojodb</title>
+<title>Close all connections to the ojo database — ojo_disconnect_all • ojodb</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Close all connections to the <code>ojo</code> database — ojo_disconnect_all" />
+<meta property="og:title" content="Close all connections to the ojo database — ojo_disconnect_all" />
 <meta property="og:description" content="Close all connections to the ojo database" />
 
 
@@ -95,7 +95,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/doc-data.html">DOC Data</a>
+    </li>
+    <li>
       <a href="../articles/getting-started.html">Getting Started</a>
+    </li>
+    <li>
+      <a href="../articles/identifying-charges.html">Identifying Specific Charges</a>
     </li>
     <li>
       <a href="../articles/ojo-database.html">Overview of the OJO database</a>
@@ -130,12 +136,15 @@
     <p>Close all connections to the <code>ojo</code> database</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ojo_disconnect_all</span>()</pre>
+    <pre class="usage"><span class='fu'>ojo_disconnect_all</span><span class='op'>(</span><span class='op'>)</span></pre>
 
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>ojo_disconnect_all</span>()</div><div class='output co'>#&gt; list()</div></pre>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='fu'>ojo_disconnect_all</span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -151,7 +160,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

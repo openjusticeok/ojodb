@@ -3,8 +3,11 @@
 #' @param pattern Filter tables that contain a string or match a regular expression
 #' @return A character vector listing the tables in the \code{ojo} database that match the pattern
 #' @examples
+#' \dontrun{
 #' ojo_list_tables()
 #' ojo_list_tables("oscn")
+#' }
+#'
 
 ojo_list_tables <- function(pattern = "") {
 
