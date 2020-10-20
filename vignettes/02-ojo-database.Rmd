@@ -1,8 +1,8 @@
 ---
-title: "Overview of the OJO Database and Summary Tables"
+title: "02 OJO Database and Summary Tables"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{03 Overview of the OJO Database}
+  %\VignetteIndexEntry{02 OJO Database and Summary Tables}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

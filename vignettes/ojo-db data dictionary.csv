@@ -1,4 +1,4 @@
-table,table,description
+Table,Variable,Description
 rogco_offenses,rog_off_id,Unique (OJO-generated) Rogers County offender id number
 rogco_offenses,book_num,Rogers County booking number
 rogco_offenses,defname,legal name of defendant

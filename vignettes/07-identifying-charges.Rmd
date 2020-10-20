@@ -1,8 +1,8 @@
 ---
-title: "Identifying Specific Charges"
+title: "07 Identifying Specific Charges"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Identifying Specific Charges}
+  %\VignetteIndexEntry{07 Identifying Specific Charges}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
