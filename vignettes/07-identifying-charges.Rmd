@@ -124,10 +124,10 @@ counts <- d %>%
   arrange(desc(n))
 ```
 
-This is an inexact process for now, and we need to be transparent about what we're doing. Since our database isn't open to the public, we'll include a csv file on the GitHub repository with a list of all of the raw charges and their frequency for each analysis that uses this classification method. To do that, just write the `counts` dataframe produced above to a csv:
+This is an inexact process for now, and we need to be transparent about what we're doing. Since our database isn't open to the public, we'll include a csv file on the GitHub repository with a list of all of the raw charges and their frequency for each analysis that uses this classification method. To do that, write the `counts` dataframe produced above to a csv:
 
 ```{r, eval=FALSE}
 write_csv(count, "PWID charge descriptions.csv")
 ```
 
-There is 
+
