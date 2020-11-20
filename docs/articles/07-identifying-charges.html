@@ -81,7 +81,8 @@
 
       
 
-      </header><script src="07-identifying-charges_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="07-identifying-charges_files/header-attrs-2.5/header-attrs.js"></script><link href="07-identifying-charges_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="07-identifying-charges_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>07 Identifying Specific Charges</h1>
@@ -195,10 +196,9 @@
   <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">pwid</span> <span class="op">==</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu">count</span><span class="op">(</span><span class="va">top_ct_desc</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu">arrange</span><span class="op">(</span><span class="fu">desc</span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span></pre></div>
-<p>This is an inexact process for now, and we need to be transparent about what we’re doing. Since our database isn’t open to the public, we’ll include a csv file on the GitHub repository with a list of all of the raw charges and their frequency for each analysis that uses this classification method. To do that, just write the <code>counts</code> dataframe produced above to a csv:</p>
+<p>This is an inexact process for now, and we need to be transparent about what we’re doing. Since our database isn’t open to the public, we’ll include a csv file on the GitHub repository with a list of all of the raw charges and their frequency for each analysis that uses this classification method. To do that, write the <code>counts</code> dataframe produced above to a csv:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit">
 <span class="fu">write_csv</span><span class="op">(</span><span class="va">count</span>, <span class="st">"PWID charge descriptions.csv"</span><span class="op">)</span></pre></div>
-<p>There is</p>
 </div>
   </div>
 

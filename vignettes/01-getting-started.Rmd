@@ -66,9 +66,9 @@ To see how many rows we have in the data we got, we can run:
 nrow(d)
 ```
 
-Over 77,000 cases and counting! That's a good sample to work with.
+There are `r formattable::comma(nrow(d), digits = 0)` cases and counting! That's a good sample to work with.
 
-One other piece of preparation: when pulling from the database, dates are formatted as character strings rather than dates. We can convert all date variables to dates by running:ww
+One other piece of preparation: when pulling from the database, dates are formatted as character strings rather than dates. We can convert all date variables to dates by running:
 
 ```{r}
 d <- d %>% 

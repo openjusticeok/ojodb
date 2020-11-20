@@ -81,7 +81,8 @@
 
       
 
-      </header><script src="01-getting-started_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="01-getting-started_files/header-attrs-2.5/header-attrs.js"></script><link href="01-getting-started_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="01-getting-started_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>01 Getting Started</h1>
@@ -137,9 +138,9 @@
 <p>To see how many rows we have in the data we got, we can run:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>
-<span class="co">#&gt; [1] 79708</span></pre></div>
-<p>Over 77,000 cases and counting! That’s a good sample to work with.</p>
-<p>One other piece of preparation: when pulling from the database, dates are formatted as character strings rather than dates. We can convert all date variables to dates by running:ww</p>
+<span class="co">#&gt; [1] 80466</span></pre></div>
+<p>There are 80,466 cases and counting! That’s a good sample to work with.</p>
+<p>One other piece of preparation: when pulling from the database, dates are formatted as character strings rather than dates. We can convert all date variables to dates by running:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="va">d</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">%&gt;%</span> 
   <span class="fu">mutate</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu">ends_with</span><span class="op">(</span><span class="st">"_date"</span><span class="op">)</span>, <span class="va">ymd</span><span class="op">)</span><span class="op">)</span></pre></div>

@@ -56,12 +56,6 @@ For example, criminal misdemeanors are given the abbreviation "CM", so the first
 
 In the OJO database, case numbers follow the same pattern, but we add filler zeroes to make all case numbers the same length. CM-2020-1 appears as CM-2020-00001 in the OJO database, for instance.
 
-# OSCN Data
-
-## Collection method
-
-OSCN data are scraped from [OSCN](http://www.oscn.net) using the `ojo` R package.
-
 ## `oscn_` tables
 
 All tables containing OSCN data begin with the prefix `oscn_`. Below are the data dictionaries for each table, followed by screenshots showing where each variable comes from on a case record.

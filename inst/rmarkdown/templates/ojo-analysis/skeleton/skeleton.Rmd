@@ -41,13 +41,15 @@ What courts/counties/states are you looking at?
 
 What variables did you use? What types of cases, crimes, etc.?
 
-## Query
+# Defining Measures
 
-If you're using data from the OJO database, include the query you used to pull your data. This may be a function that starts `ojo_query_` or `dbGetQuery`.
+This is where you'll likely spend the biggest chunk of time if you're using court data. There are a lot of ways things can go wrong, so we want to be able to trace back all of our steps and document all the decisions we're making.
 
-``` {r}
-# d <- ojo_query_disps("TULSA", "CM", 2019)
-```
+Because each analysis project is a bit different, the number and length of subsections in this section will vary a lot. 
+
+## Measure 1
+
+Describe how you defined the first measure.
 
 # Checking Data
 
@@ -75,16 +77,6 @@ Detail the NAs and blank items in your data and, if necessary and possible, fill
 ## Check for outliers
 
 If you're looking at numeric data, look at the highest and lowest values and explain your procedures to deal with them in this section.
-
-# Defining Measures
-
-This is where you'll likely spend the biggest chunk of time if you're using court data. There are a lot of ways things can go wrong, so we want to be able to trace back all of our steps and document all the decisions we're making.
-
-Because each analysis project is a bit different, the number and length of subsections in this section will vary a lot. 
-
-## Measure 1
-
-Describe how you defined the first measure.
 
 # Summarizing and Visualizing Data
 
