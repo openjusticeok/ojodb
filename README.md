@@ -3,13 +3,13 @@
 
 # ojodb
 
-ojodb is a package that assists [Open Justice
-Oklahoma](https://openjustice.okpolicy.org/) analysts to access and
-analyze court, jail, prison, and other data collected from various
-sources.
+ojodb is a package that assists
+<a href="https://openjustice.okpolicy.org/" target="_blank">Open Justice Oklahoma</a>
+analysts to access and analyze court, jail, prison, and other data
+collected from various sources.
 
 The pkgdown website for the ojodb package can be found
-[here](https://openjusticeok.github.io/ojodb/).
+<a href="https://openjusticeok.github.io/ojodb/" target="_blank">here</a>.
 
 ## Installation
 
@@ -50,9 +50,13 @@ of the data.
 
 For some data sources, OJO processes periodically pull new data into our
 database. For example, we have OSCN scrapers set up to periodically
-visit small claims case pages like [this
-one](https://www.oscn.net/dockets/GetCaseInformation.aspx?db=tulsa&number=SC-2019-10)
+visit small claims case pages like
+<a href="https://www.oscn.net/dockets/GetCaseInformation.aspx?db=tulsa&amp;number=SC-2019-10" target="_blank">this one</a>
 every few days, gathering new data that appears in the course of a case.
+
+<figure>
+<img src="man/figures/case_example.png" style="width:110.0%" alt="Example case" /><figcaption aria-hidden="true">Example case</figcaption>
+</figure>
 
 We’re generally not interested in what happens in a single case, but
 rather in aggregate trends at the county or state level. In the case
@@ -85,7 +89,7 @@ Each table name begins with a prefix indicating the source of the data.
 The most commonly used data sources are listed below.
 
 | Prefix        | Source                             | Link                                                    |
-| :------------ | :--------------------------------- | :------------------------------------------------------ |
+|:--------------|:-----------------------------------|:--------------------------------------------------------|
 | dlm\_, dlm2\_ | Tulsa County Jail                  | <http://iic.tulsacounty.org/expInmateBookings/Reindex>  |
 | doc\_         | Oklahoma Department of Corrections | <http://doc.ok.gov/odoc-public-inmate-data>             |
 | odcr\_        | On Demand Court Records            | <https://www1.odcr.com/>                                |
@@ -94,7 +98,7 @@ The most commonly used data sources are listed below.
 | ppb\_         | Oklahoma Pardon and Parole Board   | <https://www.ok.gov/ppb/Dockets_and_Results/index.html> |
 
 To see the variables and first 10 rows of a table, call `ojo_tbl()` on
-it:
+the name of the table:
 
 ``` r
 ojo_tbl("oscn_crim_disps")

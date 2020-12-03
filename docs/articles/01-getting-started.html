@@ -95,7 +95,7 @@
 
     
     
-<p>The workflow for an analyst will typically follow the model outlined in <a href="https://r4ds.had.co.nz/introduction.html">R for Data Science</a>:</p>
+<p>The workflow for an analyst will typically follow the model outlined in <a href="https://r4ds.had.co.nz/introduction.html" target="_blank">R for Data Science</a>:</p>
 <p><img src="https://d33wubrfki0l68.cloudfront.net/571b056757d68e6df81a3e3853f54d3c76ad6efc/32d37/diagrams/data-science.png"></p>
 <p>The ojodb package is here to make those first two steps - Import and Tidy - easy for you. This document will cover those two steps and the Transform and Visualize portions of the Understand cycle, which is where analysts will spend most of their time.</p>
 <div id="first-things-first" class="section level2">
@@ -138,8 +138,8 @@
 <p>To see how many rows we have in the data we got, we can run:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>
-<span class="co">#&gt; [1] 80466</span></pre></div>
-<p>There are 80,466 cases and counting! That’s a good sample to work with.</p>
+<span class="co">#&gt; [1] 80750</span></pre></div>
+<p>There are 80,750 cases and counting! That’s a good sample to work with.</p>
 <p>One other piece of preparation: when pulling from the database, dates are formatted as character strings rather than dates. We can convert all date variables to dates by running:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="va">d</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">%&gt;%</span> 
@@ -148,7 +148,7 @@
 <div id="transform-and-visualize" class="section level2">
 <h2 class="hasAnchor">
 <a href="#transform-and-visualize" class="anchor"></a>Transform and Visualize</h2>
-<p>The data stored in the OJO database, imperfect as it is, is already “tidy” according to the <a href="https://r4ds.had.co.nz/tidy-data.html">principles outlined in R for Data Science</a>. You can read more about what makes tidy data easier to work with there.</p>
+<p>The data stored in the OJO database, imperfect as it is, is already “tidy” according to the <a href="https://r4ds.had.co.nz/tidy-data.html" target="_blank">principles outlined in R for Data Science</a>. You can read more about what makes tidy data easier to work with there.</p>
 <p>That means the next step in our process is transforming and visualizing. This is the fun part of data analysis, where you explore the data, come up with hypotheses for why things are they way they are, and test those hypotheses.</p>
 <p>First, let’s look at the number of cases filed each month during this time period. There’s no variable for the month of filing yet, but when we listed variables above, there was a field called <code>file_date</code> that contains the date that the case was filed in court. So to get the number of cases filed each month, we need to do two things:</p>
 <ol style="list-style-type: decimal">

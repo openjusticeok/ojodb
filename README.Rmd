@@ -15,9 +15,9 @@ knitr::opts_chunk$set(
 
 # ojodb
 
-ojodb is a package that assists [Open Justice Oklahoma](https://openjustice.okpolicy.org/) analysts to access and analyze court, jail, prison, and other data collected from various sources.
+ojodb is a package that assists [Open Justice Oklahoma](https://openjustice.okpolicy.org/){target="_blank"} analysts to access and analyze court, jail, prison, and other data collected from various sources.
 
-The pkgdown website for the ojodb package can be found [here](https://openjusticeok.github.io/ojodb/).
+The pkgdown website for the ojodb package can be found [here](https://openjusticeok.github.io/ojodb/){target="_blank"}.
 
 ## Installation
 
@@ -45,6 +45,8 @@ Because the data we analyze is mostly administrative data generated for case-by-
 
 For some data sources, OJO processes periodically pull new data into our database. For example, we have OSCN scrapers set up to periodically visit small claims case pages like [this one](https://www.oscn.net/dockets/GetCaseInformation.aspx?db=tulsa&number=SC-2019-10){target="_blank"} every few days, gathering new data that appears in the course of a case.
 
+![Example case](man/figures/case_example.png){width=110%}
+
 We're generally not interested in what happens in a single case, but rather in aggregate trends at the county or state level. In the case linked above, for instance, we see that the eviction case was filed on January 2, 2019, and granted by default judgment on January 11. We can use small claims data collected from OSCN and ODCR to figure out how many eviction cases are filed, resulted in a judgment, and dismissed. This is information that isn't compiled anywhere else, so our database gives us the unique opportunity to understand what is really happening, day by day and in close to real-time, in Oklahoma's justice system.
 
 In addition to court data, which is available on OSCN in near-real time, we collect data from the Oklahoma Department of Corrections, the Tulsa County Jail, Pardon and Parole Board, and other sources. 
@@ -58,7 +60,6 @@ library(ojodb)
 
 connect_ojo()
 t <- ojo_list_tables()
-
 ```
 
 Each table name begins with a prefix indicating the source of the data. The most commonly used data sources are listed below.

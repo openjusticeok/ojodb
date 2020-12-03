@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The workflow for an analyst will typically follow the model outlined in [R for Data Science](https://r4ds.had.co.nz/introduction.html):
+The workflow for an analyst will typically follow the model outlined in [R for Data Science](https://r4ds.had.co.nz/introduction.html){target="_blank"}:
 
 ![](https://d33wubrfki0l68.cloudfront.net/571b056757d68e6df81a3e3853f54d3c76ad6efc/32d37/diagrams/data-science.png)
 
@@ -77,7 +77,7 @@ d <- d %>%
 
 ## Transform and Visualize
 
-The data stored in the OJO database, imperfect as it is, is already "tidy" according to the [principles outlined in R for Data Science](https://r4ds.had.co.nz/tidy-data.html). You can read more about what makes tidy data easier to work with there.
+The data stored in the OJO database, imperfect as it is, is already "tidy" according to the [principles outlined in R for Data Science](https://r4ds.had.co.nz/tidy-data.html){target="_blank"}. You can read more about what makes tidy data easier to work with there.
 
 That means the next step in our process is transforming and visualizing. This is the fun part of data analysis, where you explore the data, come up with hypotheses for why things are they way they are, and test those hypotheses.
 

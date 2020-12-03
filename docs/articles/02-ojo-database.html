@@ -188,7 +188,8 @@ Tulsa County Jail
 <h3 class="hasAnchor">
 <a href="#case-types" class="anchor"></a>Case types</h3>
 <p>What case types are and how to call the casetype_codes dataframe</p>
-<p>Case-level summaries are stored in two tables: ojo_crim_cases for criminal cases and ojo_civ_cases for civil cases. You can see a table of case type abbreviations and descriptions by running <code>view(casetype_codes)</code>. This is what the table contains:</p>
+<p>Case-level summaries are stored in two tables, ojo_crim_cases for criminal cases and ojo_civ_cases for civil cases, depending on the case type. You can see a table of case type abbreviations and descriptions by running <code>view(casetype_codes)</code> when the ojodb package is loaded.</p>
+<p>That table looks like this:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="fu">htmlTable</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/htmlTable/man/htmlTable.html">htmlTable</a></span><span class="op">(</span>
   <span class="fu">tibble</span><span class="op">(</span>
@@ -521,7 +522,6 @@ Youthful Offender
 </tr>
 </tbody>
 </table>
-<p>OSCN and ODCR</p>
 </div>
 <div id="ojo_crim_cases" class="section level3">
 <h3 class="hasAnchor">
