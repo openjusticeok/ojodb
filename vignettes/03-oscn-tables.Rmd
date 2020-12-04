@@ -25,7 +25,7 @@ library(knitr)
 dict <- read_csv("ojo-db data dictionary.csv")
 ```
 
-The [Oklahoma State Courts Network (OSCN)](http://www.oscn.net/) holds information on all types of criminal and civil cases filed in District Courts across Oklahoma. For 13 counties, including the 6 largest by population, the information available is extensive and structured consistently. Those 13 counties are:
+The [Oklahoma State Courts Network (OSCN)](http://www.oscn.net/){target="_blank"} holds information on all types of criminal and civil cases filed in District Courts across Oklahoma. For 13 counties, including the 6 largest by population, the information available is extensive and structured consistently. Those 13 counties are:
 
 1. Adair County (Stilwell)
 2. Canadian County (El Reno)
@@ -45,7 +45,7 @@ The relative ease of using data collected from OSCN allows us to perform more re
 
 ## Collection method
 
-The `oscn_scrape()` function, included in the ojo R package, collects data from a given case and stores it in the OJO database. The function visits a case page ([example here](https://www.oscn.net/dockets/GetCaseInformation.aspx?db=canadian&number=TR-2016-6275&cmid=364366)) and attempts to recognize types of data in the tables it finds in the page's HTML, puts the data into a dataframe in R, then uploads it. See function documentation for further details. 
+The `oscn_scrape()` function, included in the ojo R package, collects data from a given case and stores it in the OJO database. The function visits a case page ([example here](https://www.oscn.net/dockets/GetCaseInformation.aspx?db=canadian&number=TR-2016-6275&cmid=364366){target="_blank"}) and attempts to recognize types of data in the tables it finds in the page's HTML, puts the data into a dataframe in R, then uploads it. See function documentation for further details. 
 
 ### Case numbers
 Each case filed in a District Court is given a case number following a straightforward pattern:
