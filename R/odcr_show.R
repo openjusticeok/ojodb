@@ -11,7 +11,7 @@
 #' odcr_show("TULSA", "CF", 2020, 1)
 #' }
 
-odcr_show <- function(court, casetype, year, case_seq) {
+odcr_show <- function(court, casetype, year, caseseq) {
   u <- court_ref[court_ref$court == court, "url_pattern"] %>%
     str_replace("XX", paste0(casetype, "+")) %>%
     str_replace("YY", str_sub(year, 3, 4)) %>%
