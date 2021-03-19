@@ -16,8 +16,9 @@ A character vector listing the tables in the \code{ojo} database that match the 
 List the tables in the \code{ojo} database
 }
 \examples{
-#' \dontrun{
+\dontrun{
 ojo_list_tables()
 ojo_list_tables("oscn")
 }
+
 }
