@@ -78,3 +78,5 @@ disconnect_ojo <- function() {
   lapply(dbListConnections(dbDriver(drv = "MySQL")), dbDisconnect)
 }
 
+ojo_connect <- connect_ojo
+ojo_disconnect <- disconnect_ojo
