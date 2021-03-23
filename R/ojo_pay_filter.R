@@ -17,7 +17,7 @@ ojo_pay_filter <- function(df) {
 
   fdf <- df %>%
     filter(!str_detect(pay_acct, "CASH BOND|FORFEIT|JAIL COSTS|HOLDING"),
-           pay_amt < 2000)
+           pay_amt < 2000 | !is.na(adj_amt))
 
   message(scales::comma(nrow(df) - nrow(fdf)), " (", round((nrow(df) - nrow(fdf))/nrow(df)*100, 1), "%) rows removed by ojo_pay_filter()")
 
