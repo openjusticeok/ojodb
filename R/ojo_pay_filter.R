@@ -1,6 +1,6 @@
 #' Filter OSCN fines and fees for inclusion in analysis
 #'
-#' Filters a data frame of fees from the OJO database using consistent criteria. ojo_fee_filter removes rows that contain certain strings and those that are over $300,000. Requires columns named 'min_desc' and 'fee_amt'.
+#' Filters a data frame of payments from the OJO database using consistent criteria. ojo_pay_filter removes rows that contain certain strings and those that are over $2,000. Requires columns named 'pay_acct' and 'pay_amt'.
 #'
 #' Filter code:
 #' filter(!str_detect(pay_acct, "CASH BOND|FORFEIT|JAIL COSTS|HOLDING"),
@@ -23,11 +23,3 @@ ojo_pay_filter <- function(df) {
 
   return(fdf)
 }
-
-connect_ojo()
-df <- ojo_tbl("oscn_pays_2015") %>%
-  filter(casetype == "CM", court == "TULSA") %>%
-  collect()
-
-fdf <- df %>%
-  ojo_pay_filter()
