@@ -9,12 +9,18 @@
 #' }
 #'
 
-ojo_list_tables <- function(pattern = "") {
+ojo_list_tables <- function(pattern = "", complete = FALSE) {
 
-  d <- dbListTables(ojo_db) %>%
-    str_remove_all("\\d{4}.*") %>%
-    unique %>%
-    str_subset(pattern)
-
+  if(!complete) {
+    d <- dbListTables(ojo_db) %>%
+        str_remove_all("\\d{4}.*") %>%
+        unique %>%
+        str_subset(pattern)
+  } else {
+    d <- dbListTables(ojo_db) %>%
+        unique %>%
+        str_subset(pattern)
+  }
+  
   return(d)
 }

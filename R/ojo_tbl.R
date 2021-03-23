@@ -21,3 +21,5 @@ ojo_tbl <- function(tbl_name) {
   tbl(ojo_db, tbl_name)
 
 }
+
+ojo_table <- ojo_tbl
