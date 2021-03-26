@@ -53,6 +53,9 @@ OJO_DEFAULT_USER='{username}'
 OJO_DEFAULT_PW='{pw}'
 OJO_HOST='{host}'"))
 
+  } else if (username == "default") {
+    ojo_db <<- good
+    return(invisible())
   }
 
   if (username == "default") {
@@ -71,6 +74,8 @@ OJO_HOST='{host}'"))
                               user = Sys.getenv("OJO_ADMIN_USER"),
                               password = Sys.getenv("OJO_ADMIN_PW"))
   }
+
+  return(invisible())
 }
 
 
