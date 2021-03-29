@@ -90,7 +90,7 @@ The ojo_civ_cases table contains case summaries for civil case types including s
 ```{r, echo = FALSE}
 htmlTable::htmlTable(
   tibble(
-    read.delim("data/ojo_civ_cases.csv", quote = "\"", sep = ",")
+    read.delim("../data/ojo_civ_cases.csv", quote = "\"", sep = ",")
   ),
   align = "l"
 )
