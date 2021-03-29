@@ -2,6 +2,9 @@
 % Please edit documentation in R/connect_ojo.R
 \name{connect_ojo}
 \alias{connect_ojo}
+\alias{ojo_connect}
+\alias{disconnect_ojo}
+\alias{ojo_disconnect}
 \title{Connect to the Open Justice Oklahoma database}
 \usage{
 connect_ojo(username = "default")

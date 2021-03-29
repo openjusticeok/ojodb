@@ -2,6 +2,9 @@
 #'
 #' Opens a connection to the Open Justice Oklahoma database using credentials stored in the .Renviron file. If no credentials exist, prompts for user, password, and host name and provides instructions to store them for future sessions.
 #'
+#' @aliases connect_ojo ojo_connect
+#' @aliases disconnect_ojo ojo_disconnect
+#' @export connect_ojo ojo_connect disconnect_ojo ojo_disconnect
 #' @return ojo_db, a database connection object
 #' @examples
 #' \dontrun{

@@ -4,7 +4,7 @@
 \alias{ojo_list_tables}
 \title{List the tables in the \code{ojo} database}
 \usage{
-ojo_list_tables(pattern = "")
+ojo_list_tables(pattern = "", complete = FALSE)
 }
 \arguments{
 \item{pattern}{Filter tables that contain a string or match a regular expression}

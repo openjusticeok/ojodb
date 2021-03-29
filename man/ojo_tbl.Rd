@@ -2,6 +2,7 @@
 % Please edit documentation in R/ojo_tbl.R
 \name{ojo_tbl}
 \alias{ojo_tbl}
+\alias{ojo_table}
 \title{Identify a table from the OJO database}
 \usage{
 ojo_tbl(tbl_name)
