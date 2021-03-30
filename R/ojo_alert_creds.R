@@ -5,6 +5,7 @@
 #' @examples
 #' \dontrun{
 #' ojo_alert_creds()
+#' }
 
 ojo_alert_creds <- function() {
   blastula::create_smtp_creds_file(file = "~/sib",
