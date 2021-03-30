@@ -15,6 +15,12 @@ ojo_db, a database connection object
 \description{
 Opens a connection to the Open Justice Oklahoma database using credentials stored in the .Renviron file. If no credentials exist, prompts for user, password, and host name and provides instructions to store them for future sessions.
 }
+\section{Aliases}{
+
+ For comfort, `connect_ojo` and `ojo_connect` can be used interchangeably.
+ So too can `disconnect_ojo` and `ojo_disconnect`.
+}
+
 \examples{
 \dontrun{
 connect_ojo()

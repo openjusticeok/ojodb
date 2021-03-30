@@ -6,6 +6,8 @@
 #' @export ojo_tbl ojo_table
 #' @param tbl_name The name of a table in the OJO database. To get a list of tables, run \code{ojo_list_tables()}
 #' @return A pointer to a table that can be passed to dplyr functions and/or pulled into a dataframe using \code{ojo_collect()}
+#' @section Aliases:
+#'  For comfort, `ojo_tbl` and `ojo_table` can be used interchangeably.
 #' @examples
 #' \dontrun{
 #' # Identifies the table

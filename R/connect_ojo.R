@@ -11,6 +11,9 @@
 #' connect_ojo()
 #' disconnect_ojo()
 #' }
+#' @section Aliases:
+#'  For comfort, `connect_ojo` and `ojo_connect` can be used interchangeably.
+#'  So too can `disconnect_ojo` and `ojo_disconnect`.
 #' @seealso disconnect_ojo()
 
 connect_ojo <- function(username = "default") {
