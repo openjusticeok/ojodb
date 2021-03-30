@@ -1,4 +1,4 @@
-﻿Variable,Definition,Value
+Variable,Definition,Value
 court,Court in which case was filed,character
 casenum,Case number assigned to case by court,character
 casetype,"Two-letter case type (e.g., ""CF"" for felony, ""CM"" for misdemeanor)",character

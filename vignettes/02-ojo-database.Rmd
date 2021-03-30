@@ -77,7 +77,7 @@ The ojo_crim_cases table contains case summaries for felony ("CF") and misdemean
 ```{r, echo = FALSE}
 htmlTable::htmlTable(
   tibble(
-    read_csv("../data/ojo_crim_cases.csv")
+    read.delim("../data/ojo_crim_cases.csv", quote = "\"", sep = ",", header = T)
   ),
   align = "l"
 )
@@ -90,7 +90,7 @@ The ojo_civ_cases table contains case summaries for civil case types including s
 ```{r, echo = FALSE}
 htmlTable::htmlTable(
   tibble(
-    read_csv("../data/ojo_civ_cases.csv")
+    read.delim("../data/ojo_civ_cases.csv", quote = "\"", sep = ",", header = T)
   ),
   align = "l"
 )
