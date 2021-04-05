@@ -15,7 +15,7 @@
 
 ojo_fee_filter <- function(df) {
 
-  filter_terms <- c("CASH BOND",
+  filter_desc_terms <- c("CASH BOND",
                     "FORFEIT",
                     "WARR(E|A)NT RETUR",
                     "JAIL COSTS",
@@ -23,24 +23,29 @@ ojo_fee_filter <- function(df) {
                     "PAID BY DIS",
                     "DECEASED",
                     "ADJUSTING ENTRY",
-                    "CASE NOT PROCESSED",
-                    "AC22",               # Incarceration costs
-                    "AC35",               # Incarceration costs
-                    "AC72",               # Incarceration costs (split between Sheriff and DA in Pushmataha)
-                    "SFIJC",              # Incarceration costs
-                    "TR")                 # Account transfers
+                    "CASE NOT PROCESSED")
+  
+  filter_code_terms <- c("AC22", 
+                         "AC35", 
+                         "AC72", 
+                         "SFIJC", 
+                         "TR")
 
-  filter_string <- paste(filter_terms, collapse = "|")
+  filter_string_desc <- paste(filter_desc_terms, collapse = "|")
+  filter_string_codes <- paste(filter_code_terms, collapse = "|")
 
   fdf <- df %>%
-    filter(!str_detect(min_desc, filter_string),
+    filter(!str_detect(min_desc, filter_string_desc),
+           !str_detect(min_code, filter_string_codes),
            fee_amt < 300000,
            fee_amt > 0)
 
   filtered_results <- df %>%
-    mutate(exclusion = if_else(fee_amt > 300000,
-                               "AMOUNT OVER $300k",
-                               str_extract(min_desc, filter_string))) %>%
+    mutate(exclusion = if_else(fee_amt > 300000, "AMOUNT TOO HIGH (> $300,000)",
+                               ifelse(fee_amt < 0, "AMOUNT TOO LOW (< $0)",
+                                      ifelse(str_detect(min_desc, filter_string_desc), str_extract(min_desc, filter_string_desc),
+                                             ifelse(str_detect(min_code, filter_string_codes), min_code, NA))))) %>%
+                                 
     group_by(exclusion) %>%
     filter(!is.na(exclusion)) %>%
     summarize(rows_filtered = n(),
