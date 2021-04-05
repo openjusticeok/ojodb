@@ -32,7 +32,7 @@ ojo_fee_filter <- function(df) {
                          "TR")
 
   filter_string_desc <- paste(filter_desc_terms, collapse = "|")
-  filter_string_codes <- paste(filter_code_terms, collapse = "|")
+  filter_string_codes <- paste("\\b", filter_code_terms, "\\b", sep = "", collapse = "|")
 
   fdf <- df %>%
     filter(!str_detect(min_desc, filter_string_desc),
