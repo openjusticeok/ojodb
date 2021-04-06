@@ -3,7 +3,7 @@
 #' Filters a data frame of fees from the OJO database using consistent criteria. ojo_fee_filter removes rows that contain certain strings and those that are over $300,000. Requires columns named 'min_desc' and 'fee_amt'.
 #'
 #' Filter code:
-#' filter(!str_detect(min_desc, "CASH BOND|FORFEIT|WARR(E|A)NT RETUR|JAIL COSTS|CREDIT TIME SERVED|PAID BY DIS|DECEASED|ADJUSTING ENTRY|CASE NOT PROCESSED"), fee_amt < 300000)
+#' filter(!str_detect(min_desc, "CASH BOND|FORFEIT|WARR(E|A)NT RETUR|JAIL COSTS|CREDIT TIME SERVED|PAID BY DIS|DECEASED|ADJUSTING ENTRY|CASE NOT PROCESSED|AC22|AC36|AC72|SFIJC|TR"), fee_amt < 300000, fee_amt > 0)
 #'
 #' @examples
 #' \dontrun{
@@ -15,26 +15,36 @@
 
 ojo_fee_filter <- function(df) {
 
-  filter_terms <- c("CASH BOND",
-                    "FORFEIT",
-                    "WARR(E|A)NT RETUR",
-                    "JAIL COSTS",
-                    "CREDIT TIME SERVED",
-                    "PAID BY DIS",
-                    "DECEASED",
-                    "ADJUSTING ENTRY",
-                    "CASE NOT PROCESSED")
+  filter_desc_terms <- c("CASH BOND",
+                         "FORFEIT",
+                         "WARR(E|A)NT RETUR",
+                         "JAIL COSTS",
+                         "CREDIT TIME SERVED",
+                         "PAID BY DIS",
+                         "DECEASED",
+                         "ADJUSTING ENTRY",
+                         "CASE NOT PROCESSED")
 
-  filter_string <- paste(filter_terms, collapse = "|")
+  filter_code_terms <- c("AC22",
+                         "AC35",
+                         "AC72",
+                         "SFIJC",
+                         "TR")
+
+  filter_string_desc <- paste(filter_desc_terms, collapse = "|")
+  filter_string_codes <- paste("\\b", filter_code_terms, "\\b", sep = "", collapse = "|")
 
   fdf <- df %>%
-    filter(!str_detect(min_desc, filter_string),
-           fee_amt < 300000)
+    filter(!str_detect(min_desc, filter_string_desc),
+           !str_detect(min_code, filter_string_codes),
+           fee_amt < 300000,
+           fee_amt > 0)
 
   filtered_results <- df %>%
-    mutate(exclusion = if_else(fee_amt > 300000,
-                               "AMOUNT OVER $300k",
-                               str_extract(min_desc, filter_string))) %>%
+    mutate(exclusion = case_when(fee_amt > 300000 ~ "AMOUNT TOO HIGH (> $300,000)",
+                                 str_detect(min_desc, filter_string_desc) ~ str_extract(min_desc, filter_string_desc),
+                                 str_detect(min_code, filter_string_codes) ~ min_code,
+                                 TRUE ~ as.character(NA)))  %>%
     group_by(exclusion) %>%
     filter(!is.na(exclusion)) %>%
     summarize(rows_filtered = n(),
