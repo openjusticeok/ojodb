@@ -23,10 +23,10 @@ set_urbn_defaults(style = "print")
 
 \begin{tcolorbox}[grow to left by=.35in, enlarge top by=-0.2in, boxrule=0pt, arc=0pt, colback=black, width=\paperwidth]
 
-\vspace{10mm}\hspace{0.17in}
+\setlength\intextsep{0mm}
 \ojologo
 
-\begin{ojomainheader}
+\vspace{10mm}\hspace{0.17in}\begin{ojomainheader}
 \ojotitle{\color{white}~~Title of a Simple Factsheet Template} \vspace{2mm}
 \ojosubtitle{\color{white}~~Analysis by Open Justice Oklahoma Director}
 \ojosubtitle{\color{white}~~Ryan Gentzler / rgentzler@okpolicy.org}
@@ -35,7 +35,7 @@ set_urbn_defaults(style = "print")
 \end{tcolorbox}
  \vspace{3mm}
 
-This research brief examines the most frequent filers of small claims evictions cases in Tulsa County in 2019 and 2020. Data collected by Open Justice Oklahoma show that the top [4, 10, etc.] most frequent plaintiffs account for x filings in this time period, or x% of all filings.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 \ojoheading{~Heading}
 
@@ -48,6 +48,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 \newpage{}
 
 \begin{tcolorbox}[grow to left by=.35in, enlarge top by=-0.2in, boxrule=0pt, arc=0pt, colback=black, width=\paperwidth]
+
+\coppedojologo
 
 \vspace{10mm}\hspace{0.17in}\begin{ojomainheader}
 \ojotitle{\color{white}~~Title of a Simple Factsheet Template} \vspace{2mm}
