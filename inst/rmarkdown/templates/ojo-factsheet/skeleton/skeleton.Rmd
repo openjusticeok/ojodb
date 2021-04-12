@@ -24,9 +24,9 @@ set_urbn_defaults(style = "print")
 \begin{tcolorbox}[grow to left by=.35in, enlarge top by=-0.2in, boxrule=0pt, arc=0pt, colback=black, width=\paperwidth]
 
 \setlength\intextsep{0mm}
-\ojologo
 
 \vspace{10mm}\hspace{0.17in}\begin{ojomainheader}
+\ojologo
 \ojotitle{\color{white}~~Title of a Simple Factsheet Template} \vspace{2mm}
 \ojosubtitle{\color{white}~~Analysis by Open Justice Oklahoma Director}
 \ojosubtitle{\color{white}~~Ryan Gentzler / rgentzler@okpolicy.org}
