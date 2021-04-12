@@ -11,13 +11,13 @@ Filters a data frame of fees from the OJO database using consistent criteria. oj
 }
 \details{
 Filter code:
-filter(!str_detect(min_desc, "CASH BOND|FORFEIT|WARR(E|A)NT RETUR|JAIL COSTS|CREDIT TIME SERVED|PAID BY DIS|DECEASED|ADJUSTING ENTRY|CASE NOT PROCESSED"), fee_amt < 300000)
+filter(!str_detect(min_desc, "CASH BOND|FORFEIT|WARR(E|A)NT RETUR|JAIL COSTS|CREDIT TIME SERVED|PAID BY DIS|DECEASED|ADJUSTING ENTRY|CASE NOT PROCESSED|AC22|AC36|AC72|SFIJC|TR"), fee_amt < 300000, fee_amt > 0)
 }
 \examples{
 \dontrun{
 ojo_tbl("oscn_mins_2015CF") \%>\%
    filter(!is.na(fee_amt)) \%>\%
    collect() \%>\%
-   ojo_fee_filter() \%>\%
+   ojo_fee_filter()
 }
 }
