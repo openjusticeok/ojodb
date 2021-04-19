@@ -1,0 +1,3 @@
+[submodule "inst/rmarkdown/templates/ojo-factsheet"]
+	path = inst/rmarkdown/templates/ojo-factsheet
+	url = https://github.com/openjusticeok/ojo-markdown-factsheet-template
