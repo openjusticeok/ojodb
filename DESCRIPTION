@@ -6,8 +6,17 @@ Author: Ryan Gentzler
 Maintainer: Ryan Gentzler <rgentzler@okpolicy.org>
 Description: Provides convenient functions to query court data from the Open Justice Oklahoma database
 License: MIT + file LICENSE
-Depends: tidyverse, RMySQL, lubridate, httr, 
-          rvest, glue, sp, leaflet, dbx
+Depends: 
+    tidyverse,
+    RMySQL,
+    lubridate,
+    httr,
+    rvest,
+    glue,
+    sp,
+    leaflet,
+    dbx,
+    R (>= 2.10)
 Imports: tidyverse, RMySQL, lubridate, httr, 
           rvest, glue, sp, leaflet, dbx
 Encoding: UTF-8
