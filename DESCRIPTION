@@ -10,7 +10,8 @@ Depends: tidyverse, RMySQL, lubridate, httr,
           rvest, glue, sp, leaflet, dbx
 Imports: 
     tidyverse,
-    RMySQL,
+    pool,
+    RPostgres,
     lubridate,
     httr,
     rvest,
