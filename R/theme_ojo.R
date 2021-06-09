@@ -17,6 +17,7 @@ theme_ojo <- function() {
     theme(
       panel.background  = element_blank(),
       plot.background = element_blank(),
+      plot.title = element_text(face = "bold"),
       legend.background = element_rect(fill="transparent", colour=NA),
       legend.key = element_rect(fill="transparent", colour=NA)
     )
