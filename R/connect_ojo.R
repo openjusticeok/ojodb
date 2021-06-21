@@ -28,15 +28,18 @@ ojo_auth <- function(host, port, username, password, .admin = F, .overwrite = T,
     } else{
       if(isTRUE(.overwrite)){
         message("Your original .Renviron will be backed up and stored in your R HOME directory if needed.")
-        oldenv=read.table(renv, stringsAsFactors = FALSE)
-        newenv <- oldenv[-grep("NEW_OJO_HOST", oldenv),]
-        newenv <- newenv[-grep("NEW_OJO_PORT", newenv),]
+        oldenv <- read.table(renv, stringsAsFactors = FALSE)
+        newenv <- oldenv |>
+          as_tibble() |>
+          filter(!str_detect(V1, "(NEW_OJO_HOST)|(NEW_OJO_PORT)"))
         if(.admin == T) {
-          newenv <- newenv[-grep("NEW_OJO_ADMIN_USER", newenv),]
-          newenv <- newenv[-grep("NEW_OJO_ADMIN_PASS", newenv),]
+          newenv <- newenv |>
+            filter(!str_detect(V1, "(NEW_OJO_ADMIN_USER)|(NEW_OJO_ADMIN_PASS)")) |>
+            as.data.frame()
         } else {
-          newenv <- newenv[-grep("NEW_OJO_DEFAULT_USER", newenv),]
-          newenv <- newenv[-grep("NEW_OJO_DEFAULT_PASS", newenv),]
+          newenv <- newenv |>
+            filter(!str_detect(V1, "(NEW_OJO_DEFAULT_USER)|(NEW_OJO_DEFAULT_PASS)")) |>
+            as.data.frame()
         }
         write.table(newenv, renv, quote = FALSE, sep = "\n",
                     col.names = FALSE, row.names = FALSE)
@@ -67,7 +70,7 @@ ojo_auth <- function(host, port, username, password, .admin = F, .overwrite = T,
     write(userconcat, renv, sep = "\n", append = TRUE)
     write(passconcat, renv, sep = "\n", append = TRUE)
     message('Your configuration has been stored in your .Renviron. \nTo use now, restart R or run `readRenviron("~/.Renviron")`')
-    return()
+    invisible()
   } else {
     message("To install your configuration for use in future sessions, run this function with `.install = TRUE`.")
     Sys.setenv(NEW_OJO_HOST = host)
@@ -80,6 +83,7 @@ ojo_auth <- function(host, port, username, password, .admin = F, .overwrite = T,
       Sys.setenv(NEW_OJO_DEFAULT_PASS = password)
     }
   }
+  invisible()
 }
 
 connect_ojo <- function(.admin = F) {
@@ -100,7 +104,7 @@ connect_ojo <- function(.admin = F) {
   } else {
     if(Sys.getenv("NEW_OJO_HOST") == "") {
       message("No configuration for the OJO database was found. Please create one now using `ojo_auth()`.")
-      return()
+      invisible()
     } else {
       ojodb <- dbPool(
         drv = Postgres(),
