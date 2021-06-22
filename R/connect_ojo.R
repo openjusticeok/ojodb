@@ -91,8 +91,8 @@ connect_ojo <- function(.admin = F) {
     if(Sys.getenv("NEW_OJO_ADMIN") == "") {
       message("No admin configuration for the OJO database was found. Please create one now using `ojo_auth(.admin = T)`.")
     } else {
-      ojodb <- dbPool(
-        drv = Postgres(),
+      ojodb <- pool::dbPool(
+        drv = RPostgres::Postgres(),
         host = Sys.getenv("NEW_OJO_HOST"),
         dbname = "ojo",
         port = Sys.getenv("NEW_OJO_PORT"),
@@ -106,8 +106,8 @@ connect_ojo <- function(.admin = F) {
       message("No configuration for the OJO database was found. Please create one now using `ojo_auth()`.")
       invisible()
     } else {
-      ojodb <- dbPool(
-        drv = Postgres(),
+      ojodb <- pool::dbPool(
+        drv = RPostgres::Postgres(),
         host = Sys.getenv("NEW_OJO_HOST"),
         dbname = "ojo",
         port = Sys.getenv("NEW_OJO_PORT"),
