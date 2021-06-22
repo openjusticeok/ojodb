@@ -9,46 +9,52 @@
 #' race_pop(2018)
 #' }
 
-race_pop <- function(years) {
+race_pop <- function(years, .incl_total = F, .race_type = "distinct") {
 
-  data <- tibble()
+  d <- tibble()
 
-  state_race <- tibble()
-
-  for (y in years) {
-    for (l in LETTERS[1:9]) {
-      state_race <- get_acs("county",
-                            year = y,
-                            table = paste0("B01001", l),
-                            state = "OK",
-                            survey = "acs5",
-                            cache_table = TRUE) %>%
-        bind_rows(state_race)
-    }
-
-    message("Data for ", y, " returned.")
-
-    race_sum <- state_race %>%
-      mutate(tno = str_sub(variable, 9, 11) %>%
-               as.numeric,
-             sex = case_when(tno >= 7 & tno <= 16 ~ "M",
-                             tno >= 22 & tno <= 31 ~ "F",
-                             TRUE ~ as.character(NA)),
-             race = case_when(str_detect(variable, "1B") ~ "BLACK",
-                              str_detect(variable, "1C") ~ "NATIVE AMERICAN",
-                              str_detect(variable, "1D") ~ "ASIAN",
-                              str_detect(variable, "1E") ~ "PACIFIC ISLANDER",
-                              str_detect(variable, "1H") ~ "WHITE",
-                              str_detect(variable, "1I") ~ "HISPANIC",
-
-                              TRUE ~ as.character(NA)
-             )) %>%
-      filter(!is.na(sex), !is.na(race)) %>%
-      group_by(sex, race) %>%
-      summarize(pop = sum(estimate)) %>%
-      mutate(year = y)
-
-    data <- bind_rows(data, race_sum)
+  for(y in years) {
+    d <- tidycensus::get_estimates(product = "characteristics",
+                                   breakdown = c("RACE", "SEX", "HISP", "AGEGROUP"),
+                                   breakdown_labels = T,
+                                   year = y,
+                                   geography = "county",
+                                   state = "OK") |>
+      mutate(year = y) |>
+      bind_rows(d)
   }
-  return(data)
+
+  d <- d |>
+    mutate(court = NAME |>
+             str_remove(" County.*") |>
+             str_to_upper() |>
+             str_remove_all(" "),
+           pop = value,
+           race = RACE,
+           sex = SEX,
+           hisp = HISP,
+           age = AGEGROUP) |>
+    select(year, court, pop, race, sex, hisp, age)
+
+  if(.incl_total == F) {
+    d <- d |>
+      filter(!race == "All races",
+             !sex == "Both sexes",
+             !hisp == "Both Hispanic Origins",
+             !age == "All ages")
+  }
+
+  if(.race_type == "distinct") {
+    d <- d |>
+      filter(str_detect(race, "alone|(Two)") & !str_detect(race, "combination"))
+  } else if(.race_type == "mixed") {
+    d <- d |>
+      filter(str_detect(race, "combination"))
+  } else {
+    stop('`.race_type` must be one of "distinct" or "mixed"')
+  }
+
+  return(d)
 }
+
+
