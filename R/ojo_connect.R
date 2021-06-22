@@ -4,15 +4,15 @@
 #'
 #' @aliases connect_ojo ojo_connect
 #' @aliases ojo_auth
-#' @export connect_ojo ojo_connect ojo_auth
+#' @export ojo_connect connect_ojo ojo_auth
 #' @return ojo_db, a database connection object
 #' @examples
 #' \dontrun{
-#' connect_ojo()
+#' ojo_connect()
 #' ojo_auth()
 #' }
 #' @section Aliases:
-#'  For comfort, `connect_ojo` and `ojo_connect` can be used interchangeably.
+#'  For comfort, `ojo_connect` and `connect_ojo` can be used interchangeably.
 #' @seealso ojo_auth()
 
 ojo_auth <- function(host, port, username, password, .admin = F, .overwrite = T, .install = T) {
@@ -86,7 +86,7 @@ ojo_auth <- function(host, port, username, password, .admin = F, .overwrite = T,
   invisible()
 }
 
-connect_ojo <- function(.admin = F) {
+ojo_connect <- function(.admin = F) {
   if(.admin == T) {
     if(Sys.getenv("NEW_OJO_ADMIN") == "") {
       message("No admin configuration for the OJO database was found. Please create one now using `ojo_auth(.admin = T)`.")
@@ -119,4 +119,5 @@ connect_ojo <- function(.admin = F) {
   }
 }
 
-ojo_connect <- connect_ojo
+connect_ojo <- ojo_connect
+
