@@ -11,18 +11,19 @@
 #' @examples
 #' \dontrun{
 #' # Identifies the table
-#' ojo_tbl("oscn_caseinfo")
+#' ojo_tbl("case")
 #'
 #' # Pulls down case information data for every Tulsa felony filed in 2020 into a dataframe d
-#' d <- ojo_tbl("oscn_caseinfo") %>%
-#'     filter(court == "TULSA", casetype == "CF", file_year == 2020) %>%
+#' d <- ojo_tbl("case") %>%
+#'     filter(district == "TULSA", case_type == "CF", year == 2020) %>%
 #'     collect()
 #'}
 #' @seealso ojo_list_tables(), ojo_list_vars()
 
 ojo_tbl <- function(tbl_name) {
 
-  tbl(ojo_db, tbl_name)
+  ojo_connect |>
+  tbl(tbl_name)
 
 }
 
