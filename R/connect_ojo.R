@@ -94,7 +94,7 @@ connect_ojo <- function(.admin = F) {
       ojodb <- dbPool(
         drv = Postgres(),
         host = Sys.getenv("NEW_OJO_HOST"),
-        dbname = "ojo",
+        dbname = "ojodb",
         port = Sys.getenv("NEW_OJO_PORT"),
         user = Sys.getenv("NEW_OJO_ADMIN_USER"),
         password = Sys.getenv("NEW_OJO_ADMIN_PASS")
@@ -109,7 +109,7 @@ connect_ojo <- function(.admin = F) {
       ojodb <- dbPool(
         drv = Postgres(),
         host = Sys.getenv("NEW_OJO_HOST"),
-        dbname = "ojo",
+        dbname = "ojodb",
         port = Sys.getenv("NEW_OJO_PORT"),
         user = Sys.getenv("NEW_OJO_DEFAULT_USER"),
         password = Sys.getenv("NEW_OJO_DEFAULT_PASS")
