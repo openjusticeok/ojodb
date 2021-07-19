@@ -1,15 +1,15 @@
 #' Get population data by county for Oklahoma from the Census Bureau's American Community Survey
 #'
-#' Summarizes and manipulates the ACS B01003_001 table to return Oklahoma's population by county for desired years. Useful for calculating per capita rates of county-level data.
+#' Summarizes and manipulates the PEP series to return Oklahoma's population by county for desired years. Useful for calculating per capita rates of county-level data.
 #'
 #' @param years A numeric vector of years for which to get population data
 #' @return A table of Oklahoma's population by county in each year specified
 #' @examples
 #' \dontrun{
-#' county_pop(2018)
+#' ojo_county_population(2018)
 #' }
 
-county_pop <- function(years) {
+ojo_county_population <- function(years) {
   d <- tibble()
 
   for (y in years) {

@@ -5,13 +5,13 @@
 #' @return Fiscal year of a date as an integer
 #' @examples
 #' \dontrun{
-#' date_to_fy(ymd("2018-06-30"))
+#' ojo_date_to_fy(ymd("2018-06-30"))
 #' # Returns 2018
 #'
-#' date_to_fy(ymd("2018-07-01"))
+#' ojo_date_to_fy(ymd("2018-07-01"))
 #' # Returns 2019
 #'}
 
-date_to_fy <- function(date) {
+ojo_date_to_fy <- function(date) {
   ifelse(month(date) > 6, year(date) + 1, year(date))
 }
