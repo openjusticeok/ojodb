@@ -22,7 +22,11 @@
 
 ojo_tbl <- function(tbl_name) {
 
-  ojo_connect |>
+  if(!exists("ojodb", where = .GlobalEnv)) {
+    ojo_connect()
+  }
+
+  ojodb |>
   tbl(tbl_name)
 
 }

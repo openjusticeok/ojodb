@@ -99,7 +99,8 @@ ojo_connect <- function(.admin = F) {
         user = Sys.getenv("NEW_OJO_ADMIN_USER"),
         password = Sys.getenv("NEW_OJO_ADMIN_PASS")
       )
-      return(ojodb)
+      assign("ojodb", ojodb, envir = .GlobalEnv)
+      invisible()
     }
   } else {
     if(Sys.getenv("NEW_OJO_HOST") == "") {
@@ -114,7 +115,8 @@ ojo_connect <- function(.admin = F) {
         user = Sys.getenv("NEW_OJO_DEFAULT_USER"),
         password = Sys.getenv("NEW_OJO_DEFAULT_PASS")
       )
-      return(ojodb)
+      assign("ojodb", ojodb, envir = .GlobalEnv)
+      invisible()
     }
   }
 }
