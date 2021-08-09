@@ -1,7 +1,5 @@
 #' Translates the OSCN fine / fee codes ('min_code' and 'pay_code') for use in analysis. Adds one column "translating" the fee code and one column with a category (e.g. "Indigent Defense", "Jail Costs", etc.)
 #'
-#'
-#'
 #' @examples
 #' \dontrun{
 #' ojo_tbl("oscn_mins_2015CF") %>%
