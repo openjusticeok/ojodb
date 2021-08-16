@@ -13,16 +13,18 @@
 #' }
 #'
 
-ojo_crim_cases <- function(districts = "all", vars = NULL, ...) {
+ojo_crim_cases <- function(districts = "all", vars = NULL, case_types = c("CM", "CF", "TR"),
+                           file_years = 2000:year(Sys.Date()), ...) {
   data <- ojo_tbl("case") |>
-    filter(case_type %in% c("CF", "CM"))
+    filter(case_type %in% case_types,
+           year %in% file_years)
 
   if(districts != "all") {
     data <- data |>
       filter(district %in% districts)
   }
 
-  selection <- c("id", "district", "case_type", "date_filed", "date_closed")
+  selection <- c("id", "district", "case_number", "case_type", "date_filed", "date_closed")
 
   if(is.null(vars)) {
     data <- data |>
@@ -55,7 +57,8 @@ ojo_add_counts <- function(data, vars = NULL, ...) {
 
   if(is.null(vars)) {
     counts <- counts |>
-      select(case_id, disposition, disposition_date)
+      select(case_id, rank, count_as_filed, violation_of, date_of_offense,
+             count_as_disposed, disposition, disposition_detail, disposition_date)
   } else {
     if(vars != "all") {
       selection <- c(case_id, disposition, disposition_date, vars)
@@ -71,5 +74,4 @@ ojo_add_counts <- function(data, vars = NULL, ...) {
 
   return(data)
 }
-
 
