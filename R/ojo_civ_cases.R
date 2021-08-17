@@ -13,9 +13,11 @@
 #' }
 #'
 
-ojo_civ_cases <- function(districts = "all", vars = NULL, ...) {
+ojo_civ_cases <- function(districts = "all", vars = NULL, case_types = c("CS", "SC", "CJ"),
+                          file_years = 2000:year(Sys.Date()), ...) {
   data <- ojo_tbl("case") |>
-    filter(case_type %in% c("SC"))
+    filter(case_type %in% case_types,
+           year %in% file_years)
 
   if(districts != "all") {
     data <- data |>
@@ -48,16 +50,17 @@ ojo_add_issues <- function(data, vars = NULL, ...) {
     stop("Don't use `collect()` before this function")
   }
 
-  columns <- colnames(data)
+  columns <- colnames(d)
 
-  counts <- ojo_tbl("count")
+  counts <- ojo_tbl("issue")
 
   if(is.null(vars)) {
     counts <- counts |>
-      select(case_id, disposition, disposition_date)
+      select(case_id, rank, description,
+             disposition, disposition_date)
   } else {
     if(vars != "all") {
-      selection <- c(case_id, disposition, disposition_date, vars)
+      selection <- c(id, disposition, disposition_date, vars)
       counts <- counts |>
         select(all_of(selection))
     }
@@ -70,3 +73,4 @@ ojo_add_issues <- function(data, vars = NULL, ...) {
 
   return(data)
 }
+
