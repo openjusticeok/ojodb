@@ -2,15 +2,15 @@
 #'
 #' Query the Open Justice Oklahoma database for the minutes of a case
 #'
-#' @export ojo_get_minutes
+#' @export ojo_add_minutes
 #' @return data, a lazy tibble containing the resulting cases with minutes
 #' @examples
 #' \dontrun{
-#' ojo_get_minutes()
+#' ojo_add_minutes()
 #' }
 #'
 
-ojo_get_minutes <- function(data, ...) {
+ojo_add_minutes <- function(data, ...) {
   minutes <- ojo_tbl("minute")
 
   data <- data |>
