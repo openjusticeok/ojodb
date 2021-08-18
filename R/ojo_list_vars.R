@@ -16,6 +16,6 @@ ojo_list_vars <- function(table) {
   }
 
   ojodb |>
-    dbListFields(name = table)
+    dbListFields(name = SQL(table))
 }
 
