@@ -2,23 +2,21 @@
 % Please edit documentation in R/ojo_list_tables.R
 \name{ojo_list_tables}
 \alias{ojo_list_tables}
-\title{List the tables in the \code{ojo} database}
+\title{List all tableson the ojodb database}
 \usage{
-ojo_list_tables(pattern = "", complete = FALSE)
-}
-\arguments{
-\item{pattern}{Filter tables that contain a string or match a regular expression}
+ojo_list_tables(schema = "public", ...)
 }
 \value{
-A character vector listing the tables in the \code{ojo} database that match the pattern
+data, a tibble containing the names of all tables
 }
 \description{
-List the tables in the \code{ojo} database
+Query the Open Justice Oklahoma database for the names of all tables
 }
 \examples{
 \dontrun{
 ojo_list_tables()
-ojo_list_tables("oscn")
+ojo_list_tables("all")
+ojo_list_tables("iic")
 }
 
 }
