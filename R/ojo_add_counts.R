@@ -35,8 +35,6 @@ ojo_add_counts <- function(data, vars = NULL, ...) {
   }
 
   open_counts <- ojo_tbl("case") %>%
-    filter(district == "ALFALFA",
-           case_type == "CF") %>%
     mutate(open_count = sql("UNNEST(open_counts)"),
            party = sql("UNNEST(parties)")) %>%
     left_join(ojo_tbl("party"),
