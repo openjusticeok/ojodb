@@ -50,7 +50,7 @@ ojo_add_issues <- function(data, vars = NULL, ...) {
     stop("Don't use `collect()` before this function")
   }
 
-  columns <- colnames(d)
+  columns <- colnames(data)
 
   counts <- ojo_tbl("issue")
 
