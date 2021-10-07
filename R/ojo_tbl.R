@@ -26,9 +26,10 @@ ojo_tbl <- function(tbl_name) {
     ojo_connect()
   }
 
-  ojodb |>
-  tbl(tbl_name)
-
+  pool_src <- poolCheckout(ojodb)
+  on.exit(poolReturn(pool_src))
+  pool_src |>
+    tbl(tbl_name)
 }
 
 ojo_table <- ojo_tbl
