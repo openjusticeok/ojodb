@@ -30,21 +30,57 @@ ojo_crim_cases <- function(districts = "all", vars = NULL, case_types = c("CM", 
 
   if(is.null(vars)) {
     data <- data |>
-      select(all_of(selection))
+      select(all_of(selection)) |>
+      ojo_add_counts()
     return(data)
   } else {
-    if(vars == "all") {
+    if(all(vars == "all")) {
+      data <- data |>
+        ojo_add_counts()
       return(data)
     } else {
       selection <- append(selection, vars) |>
         unique()
 
       data <- data |>
-        select(all_of(selection))
+        select(all_of(selection)) |>
+        ojo_add_counts()
 
       return(data)
     }
   }
 }
 
+ojo_add_counts <- function(data, vars = NULL, ...) {
+  if(!"tbl_lazy" %in% class(data)) {
+    stop("Don't use `collect()` before this function")
+  }
 
+  columns <- colnames(data)
+
+  counts <- ojo_tbl("count")
+
+  if(is.null(vars)) {
+    counts <- counts |>
+      select(case_id, number, rank, party, count_as_filed, violation_of, date_of_offense,
+             count_as_disposed, disposition, disposition_detail, disposition_date)
+  } else {
+    if(vars != "all") {
+      selection <- c(case_id, disposition, disposition_date, vars)
+      counts <- counts |>
+        select(all_of(selection))
+    }
+  }
+
+  data <- data |>
+    left_join(counts,
+              by = c("id" = "case_id"),
+              suffix = c("", ".count")) |>
+    select(district, case_number, case_type, date_filed,
+           date_closed,
+           number, rank, count_as_filed, violation_of,
+           date_of_offense, count_as_disposed,
+           disposition, disposition_detail, disposition_date)
+
+  return(data)
+}
