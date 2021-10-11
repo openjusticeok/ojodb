@@ -14,7 +14,7 @@
 #'
 
 ojo_civ_cases <- function(districts = "all", vars = NULL, case_types = c("CS", "SC", "CJ"),
-                          file_years = 2000:year(Sys.Date()), ...) {
+                          file_years = year(Sys.Date()), ...) {
   data <- ojo_tbl("case") |>
     filter(case_type %in% case_types,
            year %in% file_years)
@@ -28,17 +28,21 @@ ojo_civ_cases <- function(districts = "all", vars = NULL, case_types = c("CS", "
 
   if(is.null(vars)) {
     data <- data |>
-      select(all_of(selection))
+      select(all_of(selection)) |>
+      ojo_add_issues()
     return(data)
   } else {
     if(vars == "all") {
+      data <- data |>
+        ojo_add_issues()
       return(data)
     } else {
       selection <- append(selection, vars) |>
         unique()
 
       data <- data |>
-        select(all_of(selection))
+        select(all_of(selection)) |>
+        ojo_add_issues()
 
       return(data)
     }
@@ -52,22 +56,22 @@ ojo_add_issues <- function(data, vars = NULL, ...) {
 
   columns <- colnames(data)
 
-  counts <- ojo_tbl("issue")
+  issues <- ojo_tbl("issue")
 
   if(is.null(vars)) {
-    counts <- counts |>
+    issues <- issues |>
       select(case_id, rank, description,
              disposition, disposition_date)
   } else {
     if(vars != "all") {
       selection <- c(id, disposition, disposition_date, vars)
-      counts <- counts |>
+      issues <- issues |>
         select(all_of(selection))
     }
   }
 
   data <- data |>
-    left_join(counts,
+    left_join(issues,
               by = c("id" = "case_id"),
               suffix = c("", ".issue"))
 
