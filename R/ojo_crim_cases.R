@@ -76,7 +76,7 @@ ojo_add_counts <- function(data, vars = NULL, ...) {
     left_join(counts,
               by = c("id" = "case_id"),
               suffix = c("", ".count")) |>
-    select(district, case_number, case_type, date_filed,
+    select(id, district, case_number, case_type, date_filed,
            date_closed,
            number, rank, count_as_filed, violation_of,
            date_of_offense, count_as_disposed,
