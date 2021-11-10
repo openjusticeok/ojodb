@@ -9,7 +9,6 @@
 #' ojo_search_minutes("mcgirt")
 #' }
 #'
-
 ojo_search_minutes <- function(query) {
   ojo_connect()
   q <- glue_sql("SELECT * FROM minute WHERE to_tsvector('english', description) @@ to_tsquery('english', {query});",

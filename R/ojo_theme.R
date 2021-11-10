@@ -2,7 +2,7 @@
 #'
 #' Add OJO styling to a ggplot
 #'
-#' @export
+#' @export ojo_theme
 #'
 #' @examples
 #' \dontrun{
@@ -13,7 +13,6 @@
 #'    scale_x_continuous(breaks = 2010:2019,
 #'                    limits = c(NA, 2019))
 #' }
-
 ojo_theme <- function() {
   theme_bw(base_size=14, base_family="Menlo") %+replace%
     theme(
