@@ -2,6 +2,8 @@
 #'
 #' Add OJO styling to a ggplot
 #'
+#' @export
+#'
 #' @examples
 #' \dontrun{
 #' ggplot(ojo_example, aes(file_year, n_cases, color = court)) +
