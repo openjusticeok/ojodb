@@ -20,7 +20,7 @@
 #'     filter(district == "TULSA", case_type == "CF", year == 2020) %>%
 #'     collect()
 #'}
-#' @seealso ojo_list_tables(), ojo_list_vars()
+#' @seealso ojo_list_tables(), ojo_list_vars(), ojo_list_schemas()
 #'
 ojo_tbl <- function(table, schema = "public") {
 
