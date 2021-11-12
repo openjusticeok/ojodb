@@ -5,10 +5,12 @@
 \alias{ojo_table}
 \title{Identify a table from the OJO database}
 \usage{
-ojo_tbl(tbl_name)
+ojo_tbl(table, schema = "public")
 }
 \arguments{
-\item{tbl_name}{The name of a table in the OJO database. To get a list of tables, run \code{ojo_list_tables()}}
+\item{table}{The name of a table in the OJO database. To get a list of tables, run \code{ojo_list_tables()}}
+
+\item{schema}{The name of a schema in the OJO database. To get a list of schemas, run \code{ojo_list_schemas()}}
 }
 \value{
 A pointer to a table that can be passed to dplyr functions and/or pulled into a dataframe using \code{ojo_collect()}
@@ -33,5 +35,5 @@ d <- ojo_tbl("case") \%>\%
 }
 }
 \seealso{
-ojo_list_tables(), ojo_list_vars()
+ojo_list_tables(), ojo_list_vars(), ojo_list_schemas()
 }
