@@ -26,31 +26,44 @@ ojo_crim_cases <- function(districts = "all", vars = NULL, case_types = c("CM", 
     }
   )
 
-  selection <- c("id", "district", "case_number", "case_type", "date_filed", "date_closed")
+  data <- data |>
+    ojo_add_counts()
+
+  selection <- c("id", "district", "case_number", "case_type", "date_filed", "date_closed", "count_as_filed")
 
   if(is.null(vars)) {
     data <- data |>
-      select(all_of(selection)) |>
-      ojo_add_counts()
+      select(all_of(selection))
     return(data)
   } else {
     if(all(vars == "all")) {
-      data <- data |>
-        ojo_add_counts()
       return(data)
     } else {
       selection <- append(selection, vars) |>
         unique()
 
       data <- data |>
-        select(all_of(selection)) |>
-        ojo_add_counts()
+        select(all_of(selection))
 
       return(data)
     }
   }
 }
 
+
+#' Add counts to a tibble of cases
+#'
+#' @param data A tibble returned by an `ojo_` prefixed function
+#' @param vars Variable names from the `count` table to include
+#' @param ... Placeholder for future arguments
+#'
+#' @return A tibble with counts for each case
+#' @export
+#'
+#' @examples
+#' ojo_crim_cases() |>
+#'   ojo_add_counts()
+#'
 ojo_add_counts <- function(data, vars = NULL, ...) {
   if(!"tbl_lazy" %in% class(data)) {
     stop("Don't use `collect()` before this function")
@@ -58,29 +71,30 @@ ojo_add_counts <- function(data, vars = NULL, ...) {
 
   columns <- colnames(data)
 
-  counts <- ojo_tbl("count")
-
-  if(is.null(vars)) {
-    counts <- counts |>
-      select(case_id, number, rank, party, count_as_filed, violation_of, date_of_offense,
-             count_as_disposed, disposition, disposition_detail, disposition_date)
-  } else {
-    if(vars != "all") {
-      selection <- c(case_id, disposition, disposition_date, vars)
-      counts <- counts |>
-        select(all_of(selection))
-    }
+  if(!all(c("counts", "open_counts") %in% columns)) {
+    stop("`data` must have the columns `counts` and `open_counts`")
   }
 
   data <- data |>
-    left_join(counts,
-              by = c("id" = "case_id"),
+    mutate(count = unnest(counts),
+           open_count = unnest(open_counts)) |>
+    left_join(ojo_tbl("count"),
+              by = c("count" = "id"),
               suffix = c("", ".count")) |>
-    select(id, district, case_number, case_type, date_filed,
-           date_closed,
-           number, rank, count_as_filed, violation_of,
-           date_of_offense, count_as_disposed,
-           disposition, disposition_detail, disposition_date)
+    mutate(count_as_filed = if_else(is.na(open_count),
+                                    count_as_filed,
+                                    open_count))
+
+  if(is.null(vars)) {
+    data <- data |>
+      select(all_of(columns), count_as_filed)
+  } else {
+    if(vars != "all") {
+      selection <- c(all_of(columns), all_of(vars))
+      data <- data |>
+        select(all_of(selection))
+    }
+  }
 
   return(data)
 }
