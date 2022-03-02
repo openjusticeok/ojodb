@@ -1,16 +1,28 @@
 Package: ojodb
 Type: Package
 Title: Analyze data from the Open Justice Oklahoma Database
-Version: 1.0.3
+Version: 2.0.0
 Author: Ryan Gentzler
 Maintainer: Ryan Gentzler <rgentzler@okpolicy.org>
 Description: Provides convenient functions to query court data from the Open Justice Oklahoma database
 License: MIT + file LICENSE
-Depends: tidyverse, RMySQL, lubridate, httr, 
-          rvest, glue, sp, leaflet, dbx
-Imports: 
+Depends:
+    DBI,
     tidyverse,
-    RMySQL,
+    pool,
+    RPostgres,
+    lubridate,
+    httr,
+    rvest,
+    glue,
+    sp,
+    leaflet,
+    dbx
+Imports:
+    DBI,
+    tidyverse,
+    pool,
+    RPostgres,
     lubridate,
     httr,
     rvest,
@@ -22,6 +34,8 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.2
 Suggests: 
+    testthat (>= 3.0.0),
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+Config/testthat/edition: 3

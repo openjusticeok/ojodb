@@ -2,21 +2,20 @@
 % Please edit documentation in R/ojo_list_vars.R
 \name{ojo_list_vars}
 \alias{ojo_list_vars}
-\title{List the variables in an \code{ojo} database table}
+\title{List all variables in a table on the ojodb database}
 \usage{
-ojo_list_vars(table)
-}
-\arguments{
-\item{table}{Name of the table as a string, e.g. "ojo_crim_cases"}
+ojo_list_vars(table, schema = "public", ...)
 }
 \value{
-A character vector listing the tables in the \code{ojo} database that match the pattern
+data, a tibble containing the names of all variables in a table
 }
 \description{
-List the variables in an \code{ojo} database table
+Query the Open Justice Oklahoma database for the names of all variables in a table
 }
 \examples{
 \dontrun{
-ojo_list_vars("oscn_civ_disps")
+ojo_list_vars("case")
+ojo_list_vars("inmate", "iic")
 }
+
 }

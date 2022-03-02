@@ -4,26 +4,34 @@
 #'
 #' @aliases ojo_tbl ojo_table
 #' @export ojo_tbl ojo_table
-#' @param tbl_name The name of a table in the OJO database. To get a list of tables, run \code{ojo_list_tables()}
+#' @param table The name of a table in the OJO database. To get a list of tables, run \code{ojo_list_tables()}
+#' @param schema The name of a schema in the OJO database. To get a list of schemas, run \code{ojo_list_schemas()}
+#' @import dbplyr
 #' @return A pointer to a table that can be passed to dplyr functions and/or pulled into a dataframe using \code{ojo_collect()}
 #' @section Aliases:
 #'  For comfort, `ojo_tbl` and `ojo_table` can be used interchangeably.
 #' @examples
 #' \dontrun{
 #' # Identifies the table
-#' ojo_tbl("oscn_caseinfo")
+#' ojo_tbl("case")
 #'
 #' # Pulls down case information data for every Tulsa felony filed in 2020 into a dataframe d
-#' d <- ojo_tbl("oscn_caseinfo") %>%
-#'     filter(court == "TULSA", casetype == "CF", file_year == 2020) %>%
+#' d <- ojo_tbl("case") %>%
+#'     filter(district == "TULSA", case_type == "CF", year == 2020) %>%
 #'     collect()
 #'}
-#' @seealso ojo_list_tables(), ojo_list_vars()
+#' @seealso ojo_list_tables(), ojo_list_vars(), ojo_list_schemas()
+#'
+ojo_tbl <- function(table, schema = "public") {
 
-ojo_tbl <- function(tbl_name) {
+  if(!exists("ojodb", where = .GlobalEnv)) {
+    ojo_connect()
+  }
 
-  tbl(ojo_db, tbl_name)
-
+  pool_src <- poolCheckout(ojodb)
+  on.exit(poolReturn(pool_src))
+  pool_src |>
+    tbl(in_schema(schema, table))
 }
 
 ojo_table <- ojo_tbl

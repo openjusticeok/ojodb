@@ -1,15 +1,24 @@
-#' List the variables in an \code{ojo} database table
+#' List all variables in a table on the ojodb database
 #'
-#' @param table Name of the table as a string, e.g. "ojo_crim_cases"
-#' @return A character vector listing the tables in the \code{ojo} database that match the pattern
+#' Query the Open Justice Oklahoma database for the names of all variables in a table
+#'
+#' @export ojo_list_vars
+#' @return data, a tibble containing the names of all variables in a table
 #' @examples
 #' \dontrun{
-#' ojo_list_vars("oscn_civ_disps")
+#' ojo_list_vars("case")
+#' ojo_list_vars("inmate", "iic")
 #' }
+#'
 
-ojo_list_vars <- function(table) {
+ojo_list_vars <- function(table, schema = "public", ...) {
+  if(!exists("ojodb", where = .GlobalEnv)) {
+    ojo_connect()
+  }
 
-  d <- dbListFields(ojo_db, table)
+  query <- str_c(schema, ".", table)
 
-  return(d)
+  ojodb |>
+    dbListFields(name = SQL(query))
 }
+
