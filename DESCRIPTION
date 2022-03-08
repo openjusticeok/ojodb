@@ -17,7 +17,10 @@ Depends:
     glue,
     sp,
     leaflet,
-    dbx
+    dbx,
+    odbc,
+    dbplyr,
+    tidycensus
 Imports:
     DBI,
     tidyverse,
@@ -29,7 +32,10 @@ Imports:
     glue,
     sp,
     leaflet,
-    dbx
+    dbx,
+    odbc,
+    dbplyr,
+    tidycensus
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.2

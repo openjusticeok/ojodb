@@ -16,9 +16,12 @@
 #' @seealso ojo_auth()
 
 ojo_auth <- function(host, port, username, password, .admin = F, .overwrite = T, .install = T) {
+  home <- Sys.getenv("HOME")
+  renv <- file.path(home, ".Renviron")
+  rootcert <- file.path(home, ".postgresql/ojodb/server-ca.pem")
+  clientcert <- file.path(home, ".postgresql/ojodb/client-cert.pem")
+  clientkey <- file.path(home, ".postgresql/ojodb/client-key.pk8")
   if (.install) {
-    home <- Sys.getenv("HOME")
-    renv <- file.path(home, ".Renviron")
     if(file.exists(renv)) {
       # Backup original .Renviron before doing anything else here.
       file.copy(renv, file.path(home, ".Renviron_backup"))
@@ -31,7 +34,7 @@ ojo_auth <- function(host, port, username, password, .admin = F, .overwrite = T,
         oldenv <- read.table(renv, stringsAsFactors = FALSE)
         newenv <- oldenv |>
           as_tibble() |>
-          filter(!str_detect(V1, "(NEW_OJO_HOST)|(NEW_OJO_PORT)"))
+          filter(!str_detect(V1, "(NEW_OJO_HOST)|(NEW_OJO_PORT)|(NEW_OJO_DRIVER)|(NEW_OJO_SSL)"))
         if(.admin == T) {
           newenv <- newenv |>
             filter(!str_detect(V1, "(NEW_OJO_ADMIN_USER)|(NEW_OJO_ADMIN_PASS)")) |>
@@ -65,10 +68,19 @@ ojo_auth <- function(host, port, username, password, .admin = F, .overwrite = T,
       userconcat <- paste0("NEW_OJO_DEFAULT_USER='", username, "'")
       passconcat <- paste0("NEW_OJO_DEFAULT_PASS='", password, "'")
     }
+    driverconcat <- paste0("NEW_OJO_DRIVER='PostgreSQL Driver'")
+    sslmodeconcat <- paste0("NEW_OJO_SSL_MODE='verify-ca'")
+    rootcertconcat <- paste0("NEW_OJO_SSL_ROOT_CERT='", rootcert, "'")
+    clientcertconcat <- paste0("NEW_OJO_SSL_CERT='", clientcert, "'")
+    clientkeyconcat <- paste0("NEW_OJO_SSL_KEY='", clientkey, "'")
     write(hostconcat, renv, sep = "\n", append = TRUE)
     write(portconcat, renv, sep = "\n", append = TRUE)
     write(userconcat, renv, sep = "\n", append = TRUE)
     write(passconcat, renv, sep = "\n", append = TRUE)
+    write(sslmodeconcat, renv, sep = "\n", append = TRUE)
+    write(rootcertconcat, renv, sep = "\n", append = TRUE)
+    write(clientcertconcat, renv, sep = "\n", append = TRUE)
+    write(clientkeyconcat, renv, sep = "\n", append = TRUE)
     message('Your configuration has been stored in your .Renviron. \nTo use now, restart R or run `readRenviron("~/.Renviron")`')
     invisible()
   } else {
@@ -82,6 +94,11 @@ ojo_auth <- function(host, port, username, password, .admin = F, .overwrite = T,
       Sys.setenv(NEW_OJO_DEFAULT_USER = username)
       Sys.setenv(NEW_OJO_DEFAULT_PASS = password)
     }
+    Sys.setenv(NEW_OJO_DRIVER = "PostgreSQL Driver")
+    Sys.setenv(NEW_OJO_SSL_MODE = "verify-ca")
+    Sys.setenv(NEW_OJO_SSL_ROOT_CERT = rootcert)
+    Sys.setenv(NEW_OJO_SSL_CERT = clientcert)
+    Sys.setenv(NEW_OJO_SSL_KEY = clientkey)
   }
   invisible()
 }
@@ -92,12 +109,19 @@ ojo_connect <- function(.admin = F) {
       message("No admin configuration for the OJO database was found. Please create one now using `ojo_auth(.admin = T)`.")
     } else {
       ojodb <- pool::dbPool(
-        drv = RPostgres::Postgres(),
-        host = Sys.getenv("NEW_OJO_HOST"),
-        dbname = "ojodb",
-        port = Sys.getenv("NEW_OJO_PORT"),
-        user = Sys.getenv("NEW_OJO_ADMIN_USER"),
-        password = Sys.getenv("NEW_OJO_ADMIN_PASS")
+        drv = odbc::odbc(),
+        Driver = Sys.getenv("NEW_OJO_DRIVER"),
+        Server = Sys.getenv("NEW_OJO_HOST"),
+        Database = "ojodb",
+        Port = Sys.getenv("NEW_OJO_PORT"),
+        Username = Sys.getenv("NEW_OJO_ADMIN_USER"),
+        Password = Sys.getenv("NEW_OJO_ADMIN_PASS"),
+        list(
+          sslmode = Sys.getenv("NEW_OJO_SSL_MODE"),
+          sslrootcert = Sys.getenv("NEW_OJO_SSL_ROOT_CERT"),
+          sslcert = Sys.getenv("NEW_OJO_SSL_CERT"),
+          sslkey = Sys.getenv("NEW_OJO_SSL_KEY")
+        )
       )
       assign("ojodb", ojodb, envir = .GlobalEnv)
       invisible()
@@ -108,12 +132,19 @@ ojo_connect <- function(.admin = F) {
       invisible()
     } else {
       ojodb <- pool::dbPool(
-        drv = RPostgres::Postgres(),
-        host = Sys.getenv("NEW_OJO_HOST"),
-        dbname = "ojodb",
-        port = Sys.getenv("NEW_OJO_PORT"),
-        user = Sys.getenv("NEW_OJO_DEFAULT_USER"),
-        password = Sys.getenv("NEW_OJO_DEFAULT_PASS")
+        drv = odbc::odbc(),
+        Driver = Sys.getenv("NEW_OJO_DRIVER"),
+        Server = Sys.getenv("NEW_OJO_HOST"),
+        Database = "ojodb",
+        Port = Sys.getenv("NEW_OJO_PORT"),
+        Username = Sys.getenv("NEW_OJO_DEFAULT_USER"),
+        Password = Sys.getenv("NEW_OJO_DEFAULT_PASS"),
+        list(
+          sslmode = Sys.getenv("NEW_OJO_SSL_MODE"),
+          sslrootcert = Sys.getenv("NEW_OJO_SSL_ROOT_CERT"),
+          sslcert = Sys.getenv("NEW_OJO_SSL_CERT"),
+          sslkey = Sys.getenv("NEW_OJO_SSL_KEY")
+        )
       )
       assign("ojodb", ojodb, envir = .GlobalEnv)
       invisible()
