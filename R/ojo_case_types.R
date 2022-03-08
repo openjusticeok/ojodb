@@ -2,6 +2,7 @@
 #'
 #' Returns a tibble containing all the case types present in the OJO database
 #'
+#' @export ojo_case_types
 #' @return Tibble of case types
 #' @examples
 #'
