@@ -116,12 +116,8 @@ ojo_connect <- function(.admin = F) {
         Port = Sys.getenv("NEW_OJO_PORT"),
         Username = Sys.getenv("NEW_OJO_ADMIN_USER"),
         Password = Sys.getenv("NEW_OJO_ADMIN_PASS"),
-        list(
-          sslmode = Sys.getenv("NEW_OJO_SSL_MODE"),
-          sslrootcert = Sys.getenv("NEW_OJO_SSL_ROOT_CERT"),
-          sslcert = Sys.getenv("NEW_OJO_SSL_CERT"),
-          sslkey = Sys.getenv("NEW_OJO_SSL_KEY")
-        )
+        SSLmode = Sys.getenv("NEW_OJO_SSL_MODE"),
+        Pqopt = stringr::str_glue('{sslrootcert={{Sys.getenv("NEW_OJO_SSL_ROOT_CERT")}} sslcert={{Sys.getenv("NEW_OJO_SSL_CERT")}} sslkey={{Sys.getenv("NEW_OJO_SSL_KEY")}}}', .open = "{{", .close = "}}")
       )
       assign("ojodb", ojodb, envir = .GlobalEnv)
       invisible()
@@ -139,12 +135,8 @@ ojo_connect <- function(.admin = F) {
         Port = Sys.getenv("NEW_OJO_PORT"),
         Username = Sys.getenv("NEW_OJO_DEFAULT_USER"),
         Password = Sys.getenv("NEW_OJO_DEFAULT_PASS"),
-        list(
-          sslmode = Sys.getenv("NEW_OJO_SSL_MODE"),
-          sslrootcert = Sys.getenv("NEW_OJO_SSL_ROOT_CERT"),
-          sslcert = Sys.getenv("NEW_OJO_SSL_CERT"),
-          sslkey = Sys.getenv("NEW_OJO_SSL_KEY")
-        )
+        SSLmode = Sys.getenv("NEW_OJO_SSL_MODE"),
+        Pqopt = stringr::str_glue('{sslrootcert={{Sys.getenv("NEW_OJO_SSL_ROOT_CERT")}} sslcert={{Sys.getenv("NEW_OJO_SSL_CERT")}} sslkey={{Sys.getenv("NEW_OJO_SSL_KEY")}}}', .open = "{{", .close = "}}")
       )
       assign("ojodb", ojodb, envir = .GlobalEnv)
       invisible()
