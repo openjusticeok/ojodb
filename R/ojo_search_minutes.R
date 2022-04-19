@@ -6,7 +6,23 @@
 #' @return data, a lazy tibble containing the resulting minutes
 #' @examples
 #' \dontrun{
+#'
+#' # Minutes containing words like 'mcgirt'
 #' ojo_search_minutes("mcgirt")
+#'
+#' # Minutes containing 'mcgirt' AND 'jursdiction
+#' ojo_search_minutes("mcgirt & jurisdiction")
+#'
+#' # Minutes containing 'mcgirt' OR 'jurisdiction
+#' ojo_search_minutes("mcgirt | jurisdiction")
+#'
+#' # Minutes NOT containing 'mcgirt'
+#' ## Use sparingly! It is likely to return rows in the hundreds of thousands or millions!
+#' ojo_search_minutes("!! mcgirt")
+#'
+#' # Minutes containing 'tribal' FOLLOWED BY 'jurisdiction'
+#' ojo_search_minutes("tribal <-> jurisdiction")
+#'
 #' }
 #'
 ojo_search_minutes <- function(query) {
