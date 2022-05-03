@@ -10,7 +10,7 @@
 #'
 
 ojo_case_types <- function() {
-  ojo_table("case") |>
+  ojo_tbl("case") |>
     count(case_type, sort = T) |>
     collect()
 }
