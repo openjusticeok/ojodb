@@ -1,7 +1,7 @@
 Package: ojodb
 Type: Package
 Title: Analyze data from the Open Justice Oklahoma Database
-Version: 2.0.2
+Version: 2.1.0
 Author: Ryan Gentzler
 Maintainer: Ryan Gentzler <rgentzler@okpolicy.org>
 Description: Provides convenient functions to query court data from the Open Justice Oklahoma database
