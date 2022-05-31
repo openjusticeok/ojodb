@@ -10,9 +10,24 @@
 #' }
 #'
 
-ojo_parse_account_minutes <- function(data, ...) {
+ojo_parse_account_minutes <- function(data, ..., .parallel = F, .progress = T) {
+  if(parallel) {
+    data <- data |>
+      mutate(
+        type = future_map_chr(description, extract_account_minute_type, .progress = .progress),
+        total_amount_paid = future_map_chr(description, extract_receipt_total_amount_paid, .progress = .progress) |>
+          as.numeric()
+      )
+  } else {
+    data <- data |>
+      mutate(
+        type = map_chr(description, extract_account_minute_type),
+        total_amount_paid = map_chr(description, extract_receipt_total_amount_paid) |>
+          as.numeric()
+      )
+  }
 
-  return(NA)
+  return(data)
 }
 
 extract_account_minute_type <- function(description, ...) {
