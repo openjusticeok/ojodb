@@ -10,26 +10,26 @@
 #' }
 #'
 
-ojo_parse_account_minute <- function(data, ...) {
+ojo_parse_account_minutes <- function(data, ...) {
 
   return(NA)
 }
 
-get_account_minute_type <- function(description, ...) {
+extract_account_minute_type <- function(description, ...) {
   if(!is.character(description) | !length(description) == 1) {
     stop("Argument 'description' should be a 'character' of length '1'")
   }
 
   type <- case_when(
+    str_detect(description, "REFUND") ~ "refund",
     str_detect(description, "VOUCHER") ~ "voucher",
     str_detect(description, "VOIDED") ~ "voided",
     str_detect(description, "RECEIPT") &
-      (!str_detect(description, "REFUND") |
+      (!str_detect(description, "REFUND") &
       !str_detect(description, "CHARGEBACK")) ~ "receipt",
     str_detect(description, "ADJUSTING") ~ "adjustment",
     str_detect(description, "DISBURSEMENT") &
       !str_detect(description, "VOUCHER") ~ "disbursement",
-    str_detect(description, "REFUND") ~ "refund",
     str_detect(description, "CHARGEBACK") ~ "chargeback",
     !str_detect(description, "RECEIPT|ADJUSTING|DISBURSEMENT|VOUCHER|REFUND|VOIDED|CHARGEBACK") ~ "other",
     TRUE ~ NA_character_
@@ -38,14 +38,23 @@ get_account_minute_type <- function(description, ...) {
   return(type)
 }
 
-test <- ojo_tbl("minute") |>
-  filter(code == "ACCOUNT") |>
-  select(description) |>
-  head(n = 10000) |>
-  collect() |>
-  mutate(
-    type = map_chr(description, get_account_minute_type)
-  )
+extract_receipt_number <- function(description, ...) {
+  if(!is.character(description) | !length(description) == 1) {
+    stop("Argument 'description' should be a 'character' of length '1'")
+  }
 
-test |>
-  count(type)
+  receipt_number <- str_extract(description, "(?<=RECEIPT # ).*?(?= ON)")
+
+  return(receipt_number)
+}
+
+extract_receipt_total_amount_paid <- function(description, ...) {
+  if(!is.character(description) | !length(description) == 1) {
+    stop("Argument 'description' should be a 'character' of length '1'")
+  }
+
+  total_amount_paid <- str_extract(description, "(?<=TOTAL AMOUNT PAID:[\\s]?\\$[\\s]?)[\\-]?[\\d\\,]*.[\\d]*(?=\\.[\\s]?LINE)") |>
+    str_remove_all(",")
+
+  return(total_amount_paid)
+}
