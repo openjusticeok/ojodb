@@ -53,8 +53,8 @@ extract_receipt_total_amount_paid <- function(description, ...) {
     stop("Argument 'description' should be a 'character' of length '1'")
   }
 
-  total_amount_paid <- str_extract(description, "(?<=TOTAL AMOUNT PAID:[\\s]?\\$[\\s]?)[\\-]?[\\d\\,]*.[\\d]*(?=\\.[\\s]?LINE)") |>
-    str_remove_all(",")
+  total_amount_paid <- str_extract(description, "(?<=TOTAL AMOUNT PAID:[\\s]?\\$[\\s]?)[\\-]?[\\d\\,]*.[\\d]*(?=\\.[\\s]?(LINE)?)") |>
+    str_remove_all(",|\\s")
 
   return(total_amount_paid)
 }

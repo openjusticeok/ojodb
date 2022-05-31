@@ -1,6 +1,10 @@
 # Initialize testing data
-data <- ojo_tbl("minute") |>
-  filter(code == "ACCOUNT") |>
+data <- ojo_tbl("case") |>
+  filter(date_filed >= "2010-01-01") |>
+  ojo_add_minutes() |>
+  filter(
+    code == "ACCOUNT"
+  ) |>
   select(description) |>
   collect()
 
