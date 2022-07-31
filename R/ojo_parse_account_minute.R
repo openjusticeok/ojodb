@@ -11,12 +11,15 @@
 #'
 
 ojo_parse_account_minutes <- function(data, ..., .parallel = F, .progress = T) {
-  if(parallel) {
+  if(.parallel) {
     data <- data |>
       mutate(
         type = future_map_chr(description, extract_account_minute_type, .progress = .progress),
-        total_amount_paid = future_map_chr(description, extract_receipt_total_amount_paid, .progress = .progress) |>
-          as.numeric()
+        total_amount_paid = case_when(
+          type == "receipt" ~ future_map_chr(description, extract_receipt_total_amount_paid, .progress = .progress) |>
+            as.numeric(),
+          TRUE ~ NA_real_
+        )
       )
   } else {
     data <- data |>
