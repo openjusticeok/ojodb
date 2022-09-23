@@ -6,6 +6,7 @@
 #'@param row_number The number of the row of the case to be shown
 #'
 #' @examples
+#' show_row(df, 1)
 #'
 
 ojo_show_row <- function(df, row_number) {
