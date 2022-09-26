@@ -89,6 +89,7 @@ ojo_arrests <- function(county = "TULSA",
                                    as.numeric(NA),
                                    bond_amount))
 
+    # For admits with no charges, use most recent before booking date
     data_old_d <- data_old_a |>
       ungroup() |>
       anti_join(data_old_b |>
@@ -104,7 +105,8 @@ ojo_arrests <- function(county = "TULSA",
       arrange(booking_date, dlm) |>
       select(-min_days,
              #-disposition,
-             -court_date)
+             #-court_date
+             )
 
     data <- data_old_f |>
       mutate(dlm = as.numeric(dlm)) |>
@@ -132,3 +134,5 @@ ojo_arrests <- function(county = "TULSA",
   tictoc::toc()
   return(data)
 }
+dc <- ojo_arrests(years = 2020,
+                  include_charges = TRUE)
