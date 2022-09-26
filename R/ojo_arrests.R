@@ -16,7 +16,8 @@ ojo_arrests <- function(county = "TULSA",
                         years = 2018:year(Sys.Date()),
                         include_charges = FALSE) {
 
-  message("Querying current and archived schemas . . .")
+  message(paste0("Querying current and archived schemas, sent at ",
+          Sys.time()))
 
   tictoc::tic()
   data_new <- ojo_tbl("arrest", schema = "iic") |>
@@ -101,7 +102,9 @@ ojo_arrests <- function(county = "TULSA",
     data_old_f <- data_old_b |>
       bind_rows(data_old_d) |>
       arrange(booking_date, dlm) |>
-      select(-min_days, -disposition, -court_date)
+      select(-min_days,
+             #-disposition,
+             -court_date)
 
     data <- data_old_f |>
       mutate(dlm = as.numeric(dlm)) |>
