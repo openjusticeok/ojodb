@@ -100,25 +100,31 @@ ojo_arrests <- function(county = "TULSA",
 
     data_old_f <- data_old_b |>
       bind_rows(data_old_d) |>
-      arrange(booking_date, dlm)
+      arrange(booking_date, dlm) |>
+      select(-min_days, -disposition, -court_date)
 
-    data_old <- data_old_f
-    data_new <- data_new_c
+    data <- data_old_f |>
+      mutate(dlm = as.numeric(dlm)) |>
+      bind_rows(data_new_c)
+
   } else {
 
-    data_new <- collect(data_new)
-    data_old <- collect(data_old)
+    data_new <- data_new |>
+      select(1:12) |>
+      collect()
+
+    data_old <- data_old |>
+      collect()
+
+    data <- data_old |>
+      mutate(dlm = as.numeric(dlm)) |>
+      bind_rows(data_new) |>
+      arrange(booking_date) |>
+      filter(year(booking_date) %in% years) |>
+      select(-id) |>
+      distinct()
 
   }
-
-  data <- data_old |>
-    mutate(dlm = str_remove(dlm, "^0+") |>
-             as.numeric()) |>
-    bind_rows(data_new) |>
-    arrange(booking_date) |>
-    filter(year(booking_date) %in% years) |>
-    distinct()
-
 
   tictoc::toc()
   return(data)
