@@ -20,7 +20,7 @@ ojo_crim_cases <- function(districts = "all", vars = NULL, case_types = c("CM", 
            year %in% file_years)
 
   suppressWarnings(
-    if(districts != "all") {
+    if(!"all" %in% districts) {
       data <- data |>
         filter(district %in% districts)
     }
