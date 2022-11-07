@@ -463,7 +463,7 @@ parse_page <- function(ht) {
 
     if (!str_detect(ht, "Citation Information")) { }
     else {
-      c <- ht |>
+      citation_tmp <- ht |>
         html_nodes("blockquote") |>
         html_text() |>
         as.tibble() |>
@@ -478,7 +478,7 @@ parse_page <- function(ht) {
                id = case_id_tmp)
 
       if ("Accident" %in% names(c)) {
-        c <- c |>
+        citation_tmp <- citation_tmp |>
           janitor::clean_names() |>
           mutate(bond_amount = str_remove_all(bond_amount, "\\$|\\s") |>
                    as.numeric(),
@@ -515,8 +515,10 @@ parse_page <- function(ht) {
           )
       }
 
-      if (exists("citation")) {citation <<- bind_rows(citation, c)}
-      else {citations <<- c}
+      if (exists("citation_tbl")) {
+        citation_tbl <<- bind_rows(citation_tbl, citation_tmp)
+        }
+      else {citation_tbl <<- citation_tmp}
     }
 
     #### If an ODCR county, navigate to ODCR case page to scrape payments table
