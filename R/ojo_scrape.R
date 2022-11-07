@@ -443,7 +443,6 @@ parse_page <- function(ht) {
             left_join(docs,
                       by = "document") |>
             select(id, case_id,
-                   document,
                    party,
                    date,
                    rank,
