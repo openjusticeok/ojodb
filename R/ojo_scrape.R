@@ -352,8 +352,8 @@ parse_page <- function(ht) {
                    disposition_date,
                    count_as_disposed)
 
-          if (exists("count")) {count <<- bind_rows(count, crim_disps_tmp)}
-          else {count <<- crim_disps_tmp}
+          if (exists("count_tbl")) {count_tbl <<- bind_rows(count_tbl, crim_disps_tmp)}
+          else {count_tbl <<- crim_disps_tmp}
         }
 
         ##### issue table ####
