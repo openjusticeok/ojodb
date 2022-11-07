@@ -18,6 +18,7 @@
 #'  For comfort, `ojo_connect` and `connect_ojo` can be used interchangeably.
 #' @seealso ojo_scrape_all()
 
+court_ref <- read_csv("inst/extdata/court reference.csv")
 
 parse_page <- function(ht) {
   options(warn = -1)
