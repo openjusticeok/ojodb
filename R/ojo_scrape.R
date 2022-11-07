@@ -477,7 +477,7 @@ parse_page <- function(ht) {
                case_number = case_number_tmp,
                id = case_id_tmp)
 
-      if ("Accident" %in% names(c)) {
+      if ("Accident" %in% names(citation_tmp)) {
         citation_tmp <- citation_tmp |>
           janitor::clean_names() |>
           mutate(bond_amount = str_remove_all(bond_amount, "\\$|\\s") |>
