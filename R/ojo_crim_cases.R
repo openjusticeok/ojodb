@@ -19,12 +19,10 @@ ojo_crim_cases <- function(districts = "all", vars = NULL, case_types = c("CM", 
     filter(case_type %in% case_types,
            year %in% file_years)
 
-  suppressWarnings(
-    if(!"all" %in% districts) {
-      data <- data |>
-        filter(district %in% districts)
-    }
-  )
+  if(all(districts != "all")) {
+    data <- data |>
+      filter(district %in% districts)
+  }
 
   data <- data |>
     ojo_add_counts()
@@ -36,7 +34,7 @@ ojo_crim_cases <- function(districts = "all", vars = NULL, case_types = c("CM", 
       select(all_of(selection))
     return(data)
   } else {
-    if(all(vars == "all")) {
+    if(any(vars == "all")) {
       return(data)
     } else {
       selection <- append(selection, vars) |>
