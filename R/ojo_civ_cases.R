@@ -19,7 +19,7 @@ ojo_civ_cases <- function(districts = "all", vars = NULL, case_types = c("CS", "
     filter(case_type %in% case_types,
            year %in% file_years)
 
-  if(districts != "all") {
+  if(all(districts != "all")) {
     data <- data |>
       filter(district %in% districts)
   }
@@ -32,7 +32,7 @@ ojo_civ_cases <- function(districts = "all", vars = NULL, case_types = c("CS", "
       ojo_add_issues()
     return(data)
   } else {
-    if(vars == "all") {
+    if(any(vars == "all")) {
       data <- data |>
         ojo_add_issues()
       return(data)
