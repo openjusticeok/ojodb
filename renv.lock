@@ -739,10 +739,10 @@
     },
     "rgdal": {
       "Package": "rgdal",
-      "Version": "1.5-31",
+      "Version": "1.5-32",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "3ea75f292fceaa9ba09a88a70f8d1085"
+      "Hash": "7e8f18c3a55c90a44ea05e0620c05a7e"
     },
     "rlang": {
       "Package": "rlang",
