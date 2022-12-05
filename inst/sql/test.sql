@@ -41,8 +41,6 @@ CREATE ROLE all_table_writer WITH
   NOCREATEROLE
   NOLOGIN
   INHERIT
-  -- NOREPLICATION
-  -- NOBYPASSRLS
   CONNECTION LIMIT -1;
 
 GRANT all_table_reader, INSERT, UPDATE
@@ -60,8 +58,6 @@ CREATE ROLE all_table_admin WITH
   CREATEROLE
   NOLOGIN
   INHERIT
-  -- NOREPLICATION
-  -- NOBYPASSRLS
   CONNECTION LIMIT -1;
 
   GRANT all_table_writer, DELETE
@@ -117,12 +113,10 @@ CREATE ROLE ocdc_table_reader WITH
   NOCREATEROLE
   NOLOGIN
   INHERIT
-  -- NOREPLICATION
-  -- NOBYPASSRLS
   CONNECTION LIMIT -1;
 
 GRANT SELECT
-  ON TABLE ocdc
+  ON ALL TABLES IN SCHEMA ocdc 
   TO ocdc_table_reader;
 
 -----------------------
@@ -135,15 +129,11 @@ CREATE ROLE ocdc_table_writer WITH
     NOCREATEROLE
   NOLOGIN
   INHERIT
-  -- NOREPLICATION
-  -- NOBYPASSRLS
   CONNECTION LIMIT -1;
 
 GRANT oscn_table_reader, INSERT, UPDATE
-    ON TABLE ocdc 
-    TO ocdc_table_writer;
-
-
+  ON ALL TABLES IN SCHEMA ocdc 
+  TO ocdc_table_writer;
 
 ----------------------------
 -- product_cjac_dashboard --
@@ -155,13 +145,25 @@ CREATE ROLE product_cjac_dashboard WITH
     NOCREATEROLE
   NOLOGIN
   INHERIT
-  -- NOREPLICATION
-  -- NOBYPASSRLS
   CONNECTION LIMIT -1;
 
 GRANT ocdc_table_reader
-    -- ON TABLE ocdc 
     TO product_cjac_dashboard;
+    
+----------------------------
+-- product_cjac_api --
+----------------------------
+
+CREATE ROLE product_cjac_api WITH
+  NOSUPERUSER
+  NOCREATEDB
+    NOCREATEROLE
+  NOLOGIN
+  INHERIT
+  CONNECTION LIMIT -1;
+
+GRANT ocdc_table_writer
+    TO product_cjac_api;
 
 
 --------------------------------------------------------------------------------
@@ -178,31 +180,27 @@ CREATE ROLE odoc_table_reader WITH
   NOCREATEROLE
   NOLOGIN
   INHERIT
-  -- NOREPLICATION
-  -- NOBYPASSRLS
   CONNECTION LIMIT -1;
 
 GRANT SELECT
-  ON TABLE odoc
-  TO ocdc_table_reader;
+  ON ALL TABLES IN SCHEMA odoc
+  TO odoc_table_reader;
 
 -----------------------
--- ocdc_table_writer --
+-- odoc_table_reader --
 -----------------------
 
-CREATE ROLE ocdc_table_writer WITH
+CREATE ROLE odoc_table_writer WITH
   NOSUPERUSER
   NOCREATEDB
-    NOCREATEROLE
+  NOCREATEROLE
   NOLOGIN
   INHERIT
-  -- NOREPLICATION
-  -- NOBYPASSRLS
   CONNECTION LIMIT -1;
 
-GRANT ocdc_table_reader, INSERT, UPDATE
-    ON TABLE ocdc 
-    TO ocdc_table_writer;
+GRANT odoc_table_reader, INSERT, UPDATE
+    ON ALL TABLES IN SCHEMA odoc 
+    TO odoc_table_writer;
 
 ----------------------------
 -- scraper_odoc --
@@ -211,17 +209,13 @@ GRANT ocdc_table_reader, INSERT, UPDATE
 CREATE ROLE scraper_odoc WITH
   NOSUPERUSER
   NOCREATEDB
-    NOCREATEROLE
+  NOCREATEROLE
   NOLOGIN
   INHERIT
-  -- NOREPLICATION
-  -- NOBYPASSRLS
   CONNECTION LIMIT -1;
 
-GRANT ocdc_table_writer
-    -- ON TABLE odoc
+GRANT odoc_table_writer
     TO scraper_odoc;
-
 
 
 --------------------------------------------------------------------------------
@@ -238,12 +232,10 @@ CREATE ROLE oscn_table_reader WITH
   NOCREATEROLE
   NOLOGIN
   INHERIT
-  -- NOREPLICATION
-  -- NOBYPASSRLS
   CONNECTION LIMIT -1;
 
 GRANT SELECT
-  ON TABLE oscn
+  ON ALL TABLES IN SCHEMA public -- TODO: I think public just has all the oscn stuff? 
   TO oscn_table_reader;
 
 -----------------------
@@ -253,15 +245,13 @@ GRANT SELECT
 CREATE ROLE oscn_table_writer WITH
   NOSUPERUSER
   NOCREATEDB
-    NOCREATEROLE
+  NOCREATEROLE
   NOLOGIN
   INHERIT
-  -- NOREPLICATION
-  -- NOBYPASSRLS
   CONNECTION LIMIT -1;
 
 GRANT oscn_table_reader, INSERT, UPDATE
-    ON TABLE ocdc 
+  ON ALL TABLES IN SCHEMA public -- TODO: I think public just has all the oscn stuff? 
     TO oscn_table_writer;
 
 ----------------------------
@@ -271,17 +261,33 @@ GRANT oscn_table_reader, INSERT, UPDATE
 CREATE ROLE scraper_oscn WITH
   NOSUPERUSER
   NOCREATEDB
-    NOCREATEROLE
+  NOCREATEROLE
   NOLOGIN
   INHERIT
-  -- NOREPLICATION
-  -- NOBYPASSRLS
   CONNECTION LIMIT -1;
 
 GRANT oscn_table_writer
-    -- ON TABLE oscn 
     TO scraper_oscn;
 
+--------------------------------------------------------------------------------
+-- DOMAIN: Eviction Tables --
+--------------------------------------------------------------------------------
+
+---------------------------
+-- eviction_table_reader --
+---------------------------
+
+CREATE ROLE eviction_table_reader WITH
+  NOSUPERUSER
+  NOCREATEDB
+  NOCREATEROLE
+  NOLOGIN
+  INHERIT
+  CONNECTION LIMIT -1;
+
+GRANT SELECT
+  ON ALL TABLES IN SCHEMA eviction_addresses, eviction_dashboard 
+  TO eviction_table_reader;
 
 
 
@@ -294,13 +300,10 @@ GRANT oscn_table_writer
 
 
 
+------------------------------------------------------
+-- Altering default privileges for new tables (???) --
+------------------------------------------------------
 
-
-
-------------------------------------------------
--- Altering default privileges for new tables --
-------------------------------------------------
-7
 ALTER DEFAULT PRIVILEGES
   FOR ROLE ojo_table_owner
   IN SCHEMA public
