@@ -8,7 +8,7 @@ ojo_crim_cases(
   districts = "all",
   vars = NULL,
   case_types = c("CM", "CF", "TR"),
-  file_years = 2000:year(Sys.Date()),
+  file_years = 2000:lubridate::year(Sys.Date()),
   ...
 )
 }

@@ -14,6 +14,3 @@ ojo_show_row(df, row_number)
 \description{
 Displays the OSCN court record for a given row in a dataframe with columns named `court` and `casenum`
 }
-\examples{
-
-}

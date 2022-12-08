@@ -12,8 +12,12 @@
 #'
 #' ojo_fiscal_year(ymd("2018-07-01"))
 #' # Returns 2019
-#'}
-
+#' }
+#'
 ojo_fiscal_year <- function(date) {
-  if_else(month(date) > 6, year(date) + 1, year(date))
+  dplyr::if_else(
+    lubridate::month(date) > 6,
+    lubridate::year(date) + 1,
+    lubridate::year(date)
+  )
 }

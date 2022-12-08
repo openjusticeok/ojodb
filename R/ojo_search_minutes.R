@@ -22,13 +22,13 @@
 #'
 #' # Minutes containing 'tribal' FOLLOWED BY 'jurisdiction'
 #' ojo_search_minutes("tribal <-> jurisdiction")
-#'
 #' }
 #'
 ojo_search_minutes <- function(query) {
   ojo_connect()
-  q <- glue_sql("SELECT * FROM minute WHERE to_tsvector('english', description) @@ to_tsquery('english', {query});",
-                .con = ojodb)
-  dbGetQuery(ojodb, q) |>
-    as_tibble()
+  q <- glue::glue_sql("SELECT * FROM minute WHERE to_tsvector('english', description) @@ to_tsquery('english', {query});",
+    .con = ojodb
+  )
+  pool::dbGetQuery(ojodb, q) |>
+    dplyr::as_tibble()
 }

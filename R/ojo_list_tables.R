@@ -11,31 +11,33 @@
 #' ojo_list_tables("iic")
 #' }
 #'
-
 ojo_list_tables <- function(schema = "public", ...) {
-  if(!exists("ojodb", where = .GlobalEnv)) {
+  if (!exists("ojodb", where = .GlobalEnv)) {
     ojo_connect()
   }
 
   list_tables <- function(x) {
-    query <- sqlInterpolate(ojodb, "SELECT * FROM information_schema.tables WHERE table_schema = ?schema",
-                            schema = x)
+    query <- DBI::sqlInterpolate(
+      ojodb,
+      "SELECT * FROM information_schema.tables WHERE table_schema = ?schema",
+      schema = x
+    )
 
-    dbGetQuery(ojodb, query) |>
-      as_tibble() |>
-      select(table = table_name)
+    pool::dbGetQuery(ojodb, query) |>
+      dplyr::as_tibble() |>
+      dplyr::select(table = table_name)
   }
 
-  if(schema == "all") {
+  if (schema == "all") {
     schemas <- ojo_list_schemas()
     data <- schemas |>
-      mutate(table = map(schema, list_tables)) |>
-      unnest(cols = table)
+      dplyr::mutate(table = purrr::map(schema, list_tables)) |>
+      tidyr::unnest(cols = table)
     return(data)
   } else {
     data <- list_tables(schema)
     data <- data |>
-      mutate(schema = schema, .before = table)
+      dplyr::mutate(schema = schema, .before = table)
     return(data)
   }
 }

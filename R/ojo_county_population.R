@@ -8,31 +8,30 @@
 #' \dontrun{
 #' ojo_county_population(2018)
 #' }
-
+#'
 ojo_county_population <- function(years) {
-  d <- tibble()
+  rlang::check_installed(pkg = "tidycensus")
+
+  d <- dplyr::tibble()
 
   for (y in years) {
-    d <- tidycensus::get_estimates(product = "population",
-                                   year = y,
-                                   geography = "county",
-                                   state = "OK") |>
-      filter(variable == "POP") |>
-      mutate(year = y) |>
-      bind_rows(d)
+    d <- tidycensus::get_estimates(
+      product = "population",
+      year = y,
+      geography = "county",
+      state = "OK"
+    ) |>
+      dplyr::filter(variable == "POP") |>
+      dplyr::mutate(year = y) |>
+      dplyr::bind_rows(d)
   }
 
   d <- d |>
-    mutate(court = NAME |>
-             str_remove(" County.*") |>
-             str_to_upper() |>
-             str_remove_all(" ")) |>
-    select(court, year, pop = value)
+    dplyr::mutate(court = NAME |>
+      stringr::str_remove(" County.*") |>
+      stringr::str_to_upper() |>
+      stringr::str_remove_all(" ")) |>
+    dplyr::select(court, year, pop = value)
 
   return(d)
 }
-
-
-
-
-

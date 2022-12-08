@@ -10,15 +10,13 @@
 #' ojo_list_vars("inmate", "iic")
 #' }
 #'
-
 ojo_list_vars <- function(table, schema = "public", ...) {
-  if(!exists("ojodb", where = .GlobalEnv)) {
+  if (!exists("ojodb", where = .GlobalEnv)) {
     ojo_connect()
   }
 
-  query <- str_c(schema, ".", table)
+  query <- stringr::str_c(schema, ".", table)
 
   ojodb |>
-    dbListFields(name = SQL(query))
+    pool::dbListFields(name = dplyr::sql(query))
 }
-

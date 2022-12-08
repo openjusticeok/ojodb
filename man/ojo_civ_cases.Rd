@@ -8,7 +8,7 @@ ojo_civ_cases(
   districts = "all",
   vars = NULL,
   case_types = c("CS", "SC", "CJ"),
-  file_years = year(Sys.Date()),
+  file_years = lubridate::year(Sys.Date()),
   ...
 )
 }

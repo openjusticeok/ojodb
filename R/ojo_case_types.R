@@ -8,9 +8,8 @@
 #'
 #' ojo_case_types()
 #'
-
 ojo_case_types <- function() {
   ojo_tbl("case") |>
-    count(case_type, sort = T) |>
-    collect()
+    dplyr::count(case_type, sort = T) |>
+    dplyr::collect()
 }

@@ -9,16 +9,14 @@
 #' ojo_add_minutes()
 #' }
 #'
-
 ojo_add_minutes <- function(data, ...) {
   minutes <- ojo_tbl("minute")
 
   data <- data |>
-    left_join(minutes,
-              by = c("id" = "case_id"),
-              suffix = c("", ".minute"))
+    dplyr::left_join(minutes,
+      by = c("id" = "case_id"),
+      suffix = c("", ".minute")
+    )
 
   return(data)
 }
-
-
