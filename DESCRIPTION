@@ -48,7 +48,7 @@ Suggests:
   roxygen2,
   rvest,
   styler,
-  testthat,
+  testthat (>= 3.0.0),
   tidycensus,
   usethis
 License: GPL (>= 3)
@@ -57,3 +57,4 @@ LazyData: true
 RoxygenNote: 7.2.2
 VignetteBuilder: knitr
 Config/testthat/edition: 3
+Config/testthat/parallel: true
