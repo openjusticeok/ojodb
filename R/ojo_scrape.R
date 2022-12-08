@@ -23,6 +23,8 @@ court_ref <- readr::read_csv("inst/extdata/court_reference.csv")
 parse_page <- function(ht) {
   rlang::check_installed("httr")
   rlang::check_installed("rvest")
+  rlang::check_installed("janitor")
+  rlang::check_installed("xml2")
 
   options(warn = -1)
   start <- Sys.time()
@@ -829,6 +831,8 @@ ojo_scrape <- function(districts,
 
   rlang::check_installed("httr")
   rlang::check_installed("rvest")
+  rlang::check_installed("janitor")
+  rlang::check_installed("xml2")
 
   for (l in districts) {
     district_tmp <- stringr::str_to_upper(l)

@@ -43,6 +43,7 @@ Imports:
 Suggests:
   devtools,
   httr,
+  janitor,
   knitr,
   readr,
   roxygen2,
@@ -50,7 +51,8 @@ Suggests:
   styler,
   testthat (>= 3.0.0),
   tidycensus,
-  usethis
+  usethis,
+  xml2
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
