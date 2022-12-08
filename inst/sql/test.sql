@@ -225,16 +225,16 @@ GRANT oscn_table_reader, INSERT, UPDATE
 -- product_cjac_dashboard --
 ----------------------------
 
-CREATE ROLE product_cjac_dashboard WITH
-  NOSUPERUSER
-  NOCREATEDB
-    NOCREATEROLE
-  NOLOGIN
-  INHERIT
-  CONNECTION LIMIT -1;
-
-GRANT ocdc_table_reader
-    TO product_cjac_dashboard;
+-- CREATE ROLE product_cjac_dashboard WITH
+--   NOSUPERUSER
+--   NOCREATEDB
+--   NOCREATEROLE
+--   NOLOGIN
+--   INHERIT
+--   CONNECTION LIMIT -1;
+--
+-- GRANT ocdc_table_reader
+--   TO product_cjac_dashboard;
     
 ----------------------------
 -- product_cjac_api --
@@ -391,11 +391,11 @@ GRANT eviction_table_reader, INSERT, UPDATE
   ON ALL TABLES IN SCHEMA eviction_addresses, eviction_dashboard 
   TO eviction_table_writer;
 
---------------------------------
--- product_eviction_dashboard --
---------------------------------
+------------------------------------------
+-- product_eviction_addresses_dashboard --
+------------------------------------------
 
-CREATE ROLE product_eviction_dashboard WITH
+CREATE ROLE product_eviction_addresses_dashboard WITH
   NOSUPERUSER
   NOCREATEDB
   NOCREATEROLE
@@ -403,7 +403,7 @@ CREATE ROLE product_eviction_dashboard WITH
   INHERIT
   CONNECTION LIMIT -1;
   
-GRANT eviction_table_reader
+GRANT eviction_table_writer
 TO product_eviction_dashboard
 
 --------------------------------
@@ -437,9 +437,9 @@ GRANT eviction_table_reader
 TO integration_tps_eviction
 
 
---------------------------------
+---------------------------------------
 -- integration_restore_hope_eviction --
---------------------------------
+---------------------------------------
 
 CREATE ROLE integration_restore_hope_eviction WITH
   NOSUPERUSER
@@ -453,7 +453,11 @@ GRANT eviction_table_reader
 TO integration_restore_hope_eviction
 
 
+--------------------------------------------------------------------------------
+-- DOMAIN: Special roles --
+--------------------------------------------------------------------------------
 
+-- Need Asemio role
 
 
 
