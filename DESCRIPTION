@@ -32,6 +32,7 @@ Imports:
   ggplot2,
   glue,
   lubridate,
+  odbc,
   pool,
   purrr,
   readr,
@@ -42,8 +43,10 @@ Imports:
   utils
 Suggests:
   devtools,
+  httr,
   knitr,
   roxygen2,
+  rvest,
   styler,
   testthat,
   tidycensus,
