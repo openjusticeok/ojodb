@@ -1,6 +1,9 @@
 #' List all tableson the ojodb database
 #'
 #' Query the Open Justice Oklahoma database for the names of all tables
+#' 
+#' @param schema The name of the schema to query
+#' @param ... Placeholder for additional arguments
 #'
 #' @export ojo_list_tables
 #' @return data, a tibble containing the names of all tables

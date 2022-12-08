@@ -2,6 +2,12 @@
 #'
 #' Query the Open Justice Oklahoma database for criminal cases with a casetype of'CM' (misdemeanor) or 'CF' (felony)
 #'
+#' @param districts A character vector of districts to query
+#' @param vars A character vector of variables to return
+#' @param case_types A character vector of case types to query
+#' @param file_years A character vector of years to query
+#' @param ... Placeholder for additional arguments 
+#'
 #' @export ojo_crim_cases
 #' @return data, a lazy tibble containing the resulting criminal cases
 #' @examples

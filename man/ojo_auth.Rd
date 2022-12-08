@@ -16,12 +16,36 @@ ojo_auth(
   .install = T
 )
 }
+\arguments{
+\item{host}{The host name of the database server}
+
+\item{port}{The port number of the database server}
+
+\item{username}{The username to use to connect to the database}
+
+\item{password}{The password to use to connect to the database}
+
+\item{.admin}{A logical value indicating whether to connect to the database as an administrator}
+
+\item{.overwrite}{A logical value indicating whether to overwrite the existing .Renviron file}
+
+\item{.install}{A logical value indicating whether to install the database connection or use it only for the current session}
+}
 \value{
 ojo_db, a database connection object
 }
 \description{
-Opens a connection to the Open Justice Oklahoma database using credentials stored in the .Renviron file. If no credentials exist, prompts for user, password, and host name and provides instructions to store them for future sessions.
+Opens a connection to the Open Justice Oklahoma database using credentials stored in the .Renviron file.
+If no credentials exist, prompts for user, password, and host name and provides instructions to store them for future sessions.
 }
+\section{Side Effects}{
+
+The first time this function is run, it will prompt the user for a username, password, and host name.
+It will then store these credentials in the user's .Renviron file.
+If the .Renviron file already exists, it will be backed up and the new credentials will be appended to the end of the file.
+If the .Renviron file does not exist, it will be created and the credentials will be stored there.
+}
+
 \section{Aliases}{
 
  For comfort, `ojo_connect` and `connect_ojo` can be used interchangeably.

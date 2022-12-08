@@ -6,6 +6,13 @@
 \usage{
 ojo_add_party_details(data, vars = NULL, ...)
 }
+\arguments{
+\item{data}{A lazy tibble containing the results of a parties query}
+
+\item{vars}{A character vector of variables to return}
+
+\item{...}{Placeholder for additional arguments}
+}
 \value{
 data, a lazy tibble containing the resulting party details
 }

@@ -12,6 +12,17 @@ ojo_crim_cases(
   ...
 )
 }
+\arguments{
+\item{districts}{A character vector of districts to query}
+
+\item{vars}{A character vector of variables to return}
+
+\item{case_types}{A character vector of case types to query}
+
+\item{file_years}{A character vector of years to query}
+
+\item{...}{Placeholder for additional arguments}
+}
 \value{
 data, a lazy tibble containing the resulting criminal cases
 }

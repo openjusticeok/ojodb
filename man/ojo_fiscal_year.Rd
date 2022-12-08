@@ -23,4 +23,5 @@ ojo_fiscal_year(ymd("2018-06-30"))
 ojo_fiscal_year(ymd("2018-07-01"))
 # Returns 2019
 }
+
 }

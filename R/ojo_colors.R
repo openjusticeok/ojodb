@@ -25,6 +25,8 @@ ojo_pal <- c(
 #' Add OJO styling to a ggplot
 #'
 #' Add OJO styling to a ggplot
+#' 
+#' @param numbers A vector of numbers to use for the color palette
 #'
 #' @export
 #'
@@ -48,6 +50,8 @@ ojo_color <- function(numbers = 1:8) {
 #' Add OJO styling to a ggplot
 #'
 #' Add OJO styling to a ggplot
+#' 
+#' @param numbers A vector of numbers to use for the color palette
 #'
 #' @export
 #'

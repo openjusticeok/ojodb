@@ -19,4 +19,5 @@ Summarizes and manipulates the PEP series to return Oklahoma's population by cou
 \dontrun{
 ojo_county_population(2018)
 }
+
 }

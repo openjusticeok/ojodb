@@ -24,8 +24,8 @@ ojo_tbl("case")
 
 # Pulls down case information data for every Tulsa felony filed in 2020 into a dataframe d
 d <- ojo_tbl("case") \%>\%
-    filter(district == "TULSA", case_type == "CF", year == 2020) \%>\%
-    collect()
+  filter(district == "TULSA", case_type == "CF", year == 2020) \%>\%
+  collect()
 }
 }
 \seealso{

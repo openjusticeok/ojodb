@@ -2,6 +2,10 @@
 #'
 #' Query the Open Justice Oklahoma database for party details
 #'
+#' @param data A lazy tibble containing the results of a parties query
+#' @param vars A character vector of variables to return
+#' @param ... Placeholder for additional arguments
+#'
 #' @export ojo_add_party_details
 #' @return data, a lazy tibble containing the resulting party details
 #' @examples
@@ -26,14 +30,6 @@ ojo_add_party_details <- function(data, vars = NULL, ...) {
     }
     stop("Data must contain a column named `party`")
   }
-  #
-  #   if(is.null(vars)) {
-  #
-  #   } else {
-  #     if(vars != "all") {
-  #
-  #     }
-  #   }
 
   data <- data |>
     dplyr::left_join(ojo_tbl("person_record"), by = c("party" = "id"))

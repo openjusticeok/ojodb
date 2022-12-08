@@ -6,6 +6,9 @@
 \usage{
 ojo_search_minutes(query)
 }
+\arguments{
+\item{query}{A term or phrase to search for using the PostgreSQL full text search syntax}
+}
 \value{
 data, a lazy tibble containing the resulting minutes
 }
@@ -30,7 +33,6 @@ ojo_search_minutes("!! mcgirt")
 
 # Minutes containing 'tribal' FOLLOWED BY 'jurisdiction'
 ojo_search_minutes("tribal <-> jurisdiction")
-
 }
 
 }
