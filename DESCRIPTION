@@ -17,7 +17,7 @@ Authors@R: c(
   person(
     given = "Andrew",
     family = "Bell",
-    role = "ctb"
+    role = "aut"
   ),
   person(
     given = "Elizabeth",
