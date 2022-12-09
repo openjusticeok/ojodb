@@ -41,12 +41,17 @@ Imports:
   tidyr,
   utils
 Suggests:
+  attachment,
+  badger,
+  covr,
   devtools,
   fledge,
+  fs,
   httr,
   janitor,
   knitr,
   lifecycle,
+  lintr,
   readr,
   roxygen2,
   rvest,

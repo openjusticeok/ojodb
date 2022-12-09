@@ -5,7 +5,7 @@
 
 ## Package Maintenance
 * Pruned as many dependencies as possible and moved many more to `Suggests`.
-* Added `person()` syntax to `DESCRIPTION`
+* Added `person()` syntax to `DESCRIPTION`.
 
 # ojodb 2.1.0 (2022-05-03)
 
