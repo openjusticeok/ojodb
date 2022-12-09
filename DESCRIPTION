@@ -42,9 +42,11 @@ Imports:
   utils
 Suggests:
   devtools,
+  fledge,
   httr,
   janitor,
   knitr,
+  lifecycle,
   readr,
   roxygen2,
   rvest,
