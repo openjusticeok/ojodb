@@ -7,16 +7,15 @@
 #' \dontrun{
 #' # Identifies the table
 #' ojo_check_ssl()
-#'}
+#' }
 #'
 ojo_check_ssl <- function() {
-
-  if(!exists("ojodb", where = .GlobalEnv)) {
+  if (!exists("ojodb", where = .GlobalEnv)) {
     ojo_connect()
   }
 
-  pool_src <- poolCheckout(ojodb)
-  on.exit(poolReturn(pool_src))
+  pool_src <- pool::poolCheckout(ojodb)
+  on.exit(pool::poolReturn(pool_src))
   pool_src |>
-    dbGetQuery("select * from pg_stat_ssl where pid = pg_backend_pid();")
+    pool::dbGetQuery("select * from pg_stat_ssl where pid = pg_backend_pid();")
 }

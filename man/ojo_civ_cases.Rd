@@ -8,9 +8,20 @@ ojo_civ_cases(
   districts = "all",
   vars = NULL,
   case_types = c("CS", "SC", "CJ"),
-  file_years = year(Sys.Date()),
+  file_years = lubridate::year(Sys.Date()),
   ...
 )
+}
+\arguments{
+\item{districts}{A character vector of districts to query}
+
+\item{vars}{A character vector of variables to return}
+
+\item{case_types}{A character vector of case types to query}
+
+\item{file_years}{A character vector of years to query}
+
+\item{...}{Placeholder for additional arguments}
 }
 \value{
 data, a lazy tibble containing the resulting civil cases

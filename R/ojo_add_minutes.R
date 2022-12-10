@@ -2,23 +2,25 @@
 #'
 #' Query the Open Justice Oklahoma database for the minutes of a case
 #'
+#' @param data A lazy tibble containing the cases to query
+#' @param ... Placeholder for additional arguments
+#' 
 #' @export ojo_add_minutes
-#' @return data, a lazy tibble containing the resulting cases with minutes
+#' @returns A lazy tibble containing the resulting cases with minutes
+#' 
 #' @examples
 #' \dontrun{
 #' ojo_add_minutes()
 #' }
 #'
-
 ojo_add_minutes <- function(data, ...) {
   minutes <- ojo_tbl("minute")
 
   data <- data |>
-    left_join(minutes,
-              by = c("id" = "case_id"),
-              suffix = c("", ".minute"))
+    dplyr::left_join(minutes,
+      by = c("id" = "case_id"),
+      suffix = c("", ".minute")
+    )
 
   return(data)
 }
-
-

@@ -6,17 +6,22 @@
 \usage{
 ojo_fill(numbers = 1:8)
 }
+\arguments{
+\item{numbers}{A vector of numbers to use for the color palette}
+}
 \description{
 Add OJO styling to a ggplot
 }
 \examples{
 \dontrun{
 ggplot(ojo_example, aes(file_year, n_cases, color = court)) +
-   geom_line(size = 1.5) +
-   theme_ojo() +
-   ojo_color() +
-   scale_x_continuous(breaks = 2010:2019,
-                   limits = c(NA, 2019))
+  geom_line(size = 1.5) +
+  theme_ojo() +
+  ojo_color() +
+  scale_x_continuous(
+    breaks = 2010:2019,
+    limits = c(NA, 2019)
+  )
 }
 
 }

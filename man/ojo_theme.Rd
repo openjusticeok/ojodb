@@ -12,10 +12,12 @@ Add OJO styling to a ggplot
 \examples{
 \dontrun{
 ggplot(ojo_example, aes(file_year, n_cases, color = court)) +
-   geom_line(size = 1.5) +
-   ojo_theme() +
-   ojo_colors() +
-   scale_x_continuous(breaks = 2010:2019,
-                   limits = c(NA, 2019))
+  geom_line(size = 1.5) +
+  ojo_theme() +
+  ojo_colors() +
+  scale_x_continuous(
+    breaks = 2010:2019,
+    limits = c(NA, 2019)
+  )
 }
 }

@@ -11,10 +11,14 @@ ojo_show_row(df, row_number)
 
 \item{row_number}{The number of the row of the case to be shown}
 }
+\value{
+Nothing
+}
 \description{
 Displays the OSCN court record for a given row in a dataframe with columns named `court` and `casenum`
 }
-\examples{
-show_row(df, 1)
+\section{Side effects}{
 
+Opens a browser window to the OSCN court record
 }
+
