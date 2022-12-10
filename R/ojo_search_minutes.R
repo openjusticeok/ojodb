@@ -1,6 +1,8 @@
 #' Query minutes for a given search term
 #'
 #' Query the Open Justice Oklahoma database for minutes matching a search term
+#' 
+#' @param query A term or phrase to search for using the PostgreSQL full text search syntax
 #'
 #' @export ojo_search_minutes
 #' @return data, a lazy tibble containing the resulting minutes
@@ -22,13 +24,13 @@
 #'
 #' # Minutes containing 'tribal' FOLLOWED BY 'jurisdiction'
 #' ojo_search_minutes("tribal <-> jurisdiction")
-#'
 #' }
 #'
 ojo_search_minutes <- function(query) {
   ojo_connect()
-  q <- glue_sql("SELECT * FROM minute WHERE to_tsvector('english', description) @@ to_tsquery('english', {query});",
-                .con = ojodb)
-  dbGetQuery(ojodb, q) |>
-    as_tibble()
+  q <- glue::glue_sql("SELECT * FROM minute WHERE to_tsvector('english', description) @@ to_tsquery('english', {query});",
+    .con = ojodb
+  )
+  pool::dbGetQuery(ojodb, q) |>
+    dplyr::as_tibble()
 }

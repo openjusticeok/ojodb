@@ -6,6 +6,11 @@
 \usage{
 ojo_list_tables(schema = "public", ...)
 }
+\arguments{
+\item{schema}{The name of the schema to query}
+
+\item{...}{Placeholder for additional arguments}
+}
 \value{
 data, a tibble containing the names of all tables
 }

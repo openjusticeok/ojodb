@@ -9,15 +9,14 @@
 #' ojo_list_schemas()
 #' }
 #'
-
 ojo_list_schemas <- function() {
-  if(!exists("ojodb", where = .GlobalEnv)) {
+  if (!exists("ojodb", where = .GlobalEnv)) {
     ojo_connect()
   }
 
   ojodb |>
-    dbGetQuery(sql("SELECT schema_name FROM information_schema.schemata")) |>
-    as_tibble() |>
-    rename(schema = schema_name) |>
-    filter(!schema %in% c("pg_catalog", "information_schema"))
+    pool::dbGetQuery(dbplyr::sql("SELECT schema_name FROM information_schema.schemata")) |>
+    dplyr::as_tibble() |>
+    dplyr::rename(schema = schema_name) |>
+    dplyr::filter(!schema %in% c("pg_catalog", "information_schema"))
 }

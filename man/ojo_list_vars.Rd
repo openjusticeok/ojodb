@@ -6,6 +6,13 @@
 \usage{
 ojo_list_vars(table, schema = "public", ...)
 }
+\arguments{
+\item{table}{The name of the table to query}
+
+\item{schema}{The name of the schema to query}
+
+\item{...}{Placeholder for additional arguments}
+}
 \value{
 data, a tibble containing the names of all variables in a table
 }

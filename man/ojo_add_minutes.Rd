@@ -6,8 +6,13 @@
 \usage{
 ojo_add_minutes(data, ...)
 }
+\arguments{
+\item{data}{A lazy tibble containing the cases to query}
+
+\item{...}{Placeholder for additional arguments}
+}
 \value{
-data, a lazy tibble containing the resulting cases with minutes
+A lazy tibble containing the resulting cases with minutes
 }
 \description{
 Query the Open Justice Oklahoma database for the minutes of a case
