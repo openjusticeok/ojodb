@@ -573,7 +573,7 @@ parse_page <- function(ht) {
       }
     }
 
-    if (!stringr::str_detect(ht, "Citation Information")) { } else {
+    if (!any(stringr::str_detect(t, "Citation Information"))) { } else {
       citation_tmp <- ht |>
         rvest::html_elements("blockquote") |>
         rvest::html_text() |>
