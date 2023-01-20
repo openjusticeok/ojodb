@@ -82,7 +82,7 @@ ojo_add_counts <- function(data, vars = NULL, ...) {
 
   data <- data |>
     dplyr::mutate(
-      count = tidyr::unnest(counts),
+      count = tidyr::unnest(.data$counts),
       open_count = tidyr::unnest(open_counts)
     ) |>
     dplyr::left_join(ojo_tbl("count"),
