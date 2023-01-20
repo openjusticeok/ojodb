@@ -13,7 +13,7 @@
 #'
 
 ojo_arrests <- function(county = "TULSA",
-                        years = 2018:year(Sys.Date()),
+                        years = 2018:lubridate::year(Sys.Date()),
                         include_charges = FALSE) {
 
   message(paste0("Querying current and archived schemas, sent at ",
@@ -21,7 +21,7 @@ ojo_arrests <- function(county = "TULSA",
 
   tictoc::tic()
   data_new <- ojo_tbl("arrest", schema = "iic") |>
-    filter(year(booking_date) %in% years,
+    filter(lubridate::year(booking_date) %in% years,
            !is.na(date)) |>
     select(-updated_at)
 
@@ -38,7 +38,7 @@ ojo_arrests <- function(county = "TULSA",
            booking_datetime = book_datetime,
            release_date, release_time,
            release_datetime) |>
-    filter(year(booking_date) %in% years)
+    filter(lubridate::year(booking_date) %in% years)
 
   if (include_charges == TRUE) {
     data_new_c <- data_new |>
@@ -50,7 +50,7 @@ ojo_arrests <- function(county = "TULSA",
       ungroup() |>
       select(1:12, 19:26, 28) |>
       collect() |>
-      mutate(rank = str_extract(offense_id, '(?<=rank": )\\d') |>
+      mutate(rank = str_extract(.data$offense_id, '(?<=rank": )\\d') |>
                as.numeric()) |>
       filter(rank == 0) |>
       select(-rank, -offense_id, -case_uri, -updated_at) |>
@@ -72,7 +72,7 @@ ojo_arrests <- function(county = "TULSA",
 
     # Calculate days from arrest to court date
     data_old_a <- data_old_c |>
-      mutate(days_to_court = as.numeric(court_date) - as.numeric(booking_date)) |>
+      mutate(days_to_court = as.numeric(.data$court_date) - as.numeric(.data$booking_date)) |>
       ungroup() |>
       group_by(.dots = dots) |>
       summarize(case_number = first(case_number[which(!is.na(case_number) & case_number != "")]),
@@ -85,9 +85,9 @@ ojo_arrests <- function(county = "TULSA",
     data_old_b <- data_old_a |>
       filter(min_days <= 90,
              min_days >= 0) |>
-      mutate(bond_amount = if_else(bond_amount == Inf,
+      mutate(bond_amount = if_else(.data$bond_amount == Inf,
                                    as.numeric(NA),
-                                   bond_amount))
+                                   .data$bond_amount))
 
     # For admits with no charges, use most recent before booking date
     data_old_d <- data_old_a |>
@@ -106,7 +106,7 @@ ojo_arrests <- function(county = "TULSA",
       select(-min_days)
 
     data <- data_old_f |>
-      mutate(dlm = as.numeric(dlm)) |>
+      mutate(dlm = as.numeric(.data$dlm)) |>
       bind_rows(data_new_c)
 
   } else {
@@ -119,10 +119,10 @@ ojo_arrests <- function(county = "TULSA",
       collect()
 
     data <- data_old |>
-      mutate(dlm = as.numeric(dlm)) |>
+      mutate(dlm = as.numeric(.data$dlm)) |>
       bind_rows(data_new) |>
       arrange(booking_date) |>
-      filter(year(booking_date) %in% years) |>
+      filter(lubridate::year(booking_date) %in% years) |>
       select(-id) |>
       distinct()
 

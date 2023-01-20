@@ -6,7 +6,7 @@
 #' @param vars A character vector of variables to return
 #' @param case_types A character vector of case types to query
 #' @param file_years A character vector of years to query
-#' @param ... Placeholder for additional arguments 
+#' @param ... Placeholder for additional arguments
 #'
 #' @export ojo_crim_cases
 #' @return data, a lazy tibble containing the resulting criminal cases
@@ -22,33 +22,34 @@ ojo_crim_cases <- function(districts = "all", vars = NULL, case_types = c("CM", 
                            file_years = 2000:lubridate::year(Sys.Date()), ...) {
   data <- ojo_tbl("case") |>
     dplyr::filter(
-      case_type %in% case_types,
-      year %in% file_years
+      .data$case_type %in% case_types,
+      .data$year %in% file_years
     )
 
   if (all(districts != "all")) {
     data <- data |>
-      dplyr::filter(district %in% districts)
+      dplyr::filter(.data$district %in% districts)
   }
 
-  data <- data |>
-    ojo_add_counts()
-
-  selection <- c("id", "district", "case_number", "case_type", "date_filed", "date_closed", "count_as_filed")
+  selection <- c("id", "district", "case_number", "case_type", "date_filed", "date_closed", "counts", "open_counts")
 
   if (is.null(vars)) {
     data <- data |>
-      dplyr::select(dplyr::all_of(selection))
+      dplyr::select(dplyr::all_of(selection)) |>
+      ojo_add_counts()
     return(data)
   } else {
     if (any(vars == "all")) {
+      data <- data |>
+        ojo_add_counts()
       return(data)
     } else {
       selection <- append(selection, vars) |>
         unique()
 
       data <- data |>
-        dplyr::select(dplyr::all_of(selection))
+        dplyr::select(dplyr::all_of(selection)) |>
+        ojo_add_counts()
 
       return(data)
     }
@@ -82,21 +83,25 @@ ojo_add_counts <- function(data, vars = NULL, ...) {
 
   data <- data |>
     dplyr::mutate(
-      count = tidyr::unnest(.data$counts),
-      open_count = tidyr::unnest(open_counts)
+      # The `unnest`s are evaluated in SQL; debug and use `show_query()` to verify
+      count = unnest(.data$counts),
+      open_count = unnest(.data$open_counts)
     ) |>
     dplyr::left_join(ojo_tbl("count"),
       by = c("count" = "id"),
       suffix = c("", ".count")
     ) |>
-    dplyr::mutate(count_as_filed = dplyr::if_else(is.na(open_count),
-      count_as_filed,
-      open_count
-    ))
+    dplyr::mutate(
+      count_as_filed = dplyr::if_else(
+        is.na(.data$open_count),
+        .data$count_as_filed,
+        .data$open_count
+      )
+    )
 
   if (is.null(vars)) {
     data <- data |>
-      dplyr::select(dplyr::all_of(columns), count_as_filed)
+      dplyr::select(dplyr::all_of(columns), .data$count_as_filed)
   } else {
     if (vars != "all") {
       selection <- c(dplyr::all_of(columns), dplyr::all_of(vars))
