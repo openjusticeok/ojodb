@@ -2,19 +2,18 @@
 #'
 #' Query the Open Justice Oklahoma database for the minutes of a case
 #'
-#' @export ojo_parse_account_minute
+#' @export
 #' @return data, a lazy tibble containing the resulting cases with minutes
 #' @examples
 #' \dontrun{
 #' ojo_add_minutes()
 #' }
 #'
-
 ojo_parse_account_minutes <- function(data, ..., .parallel = F, .progress = T) {
   if(.parallel) {
     data <- data |>
-      mutate(
-        type = future_map_chr(description, extract_account_minute_type, .progress = .progress),
+      dplyr::mutate(
+        type = furrr::future_map_chr(description, extract_account_minute_type, .progress = .progress),
         total_amount_paid = case_when(
           type == "receipt" ~ future_map_chr(description, extract_receipt_total_amount_paid, .progress = .progress) |>
             as.numeric(),

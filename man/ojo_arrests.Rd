@@ -6,7 +6,7 @@
 \usage{
 ojo_arrests(
   county = "TULSA",
-  years = 2018:year(Sys.Date()),
+  years = 2018:lubridate::year(Sys.Date()),
   include_charges = FALSE
 )
 }

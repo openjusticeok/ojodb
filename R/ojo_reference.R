@@ -1,3 +1,6 @@
-library(tidyverse)
-
-court_ref <- read_csv("reference/court_reference.csv")
+#' @title Court Reference
+#' @description Court reference data
+#' 
+#' @export
+#' 
+court_ref <- readr::read_csv("inst/extdata/court_reference.csv")
