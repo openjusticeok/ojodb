@@ -10,11 +10,11 @@
 #' }
 #'
 ojo_parse_account_minutes <- function(data, ..., .parallel = F, .progress = T) {
-  if(.parallel) {
+  if (.parallel) {
     data <- data |>
       dplyr::mutate(
         type = furrr::future_map_chr(description, extract_account_minute_type, .progress = .progress),
-        total_amount_paid = case_when(
+        total_amount_paid = dplyr::case_when(
           type == "receipt" ~ future_map_chr(description, extract_receipt_total_amount_paid, .progress = .progress) |>
             as.numeric(),
           TRUE ~ NA_real_
@@ -22,8 +22,8 @@ ojo_parse_account_minutes <- function(data, ..., .parallel = F, .progress = T) {
       )
   } else {
     data <- data |>
-      mutate(
-        type = map_chr(description, extract_account_minute_type),
+      dplyr::mutate(
+        type = purrr::map_chr(description, extract_account_minute_type),
         total_amount_paid = map_chr(description, extract_receipt_total_amount_paid) |>
           as.numeric()
       )
@@ -33,17 +33,17 @@ ojo_parse_account_minutes <- function(data, ..., .parallel = F, .progress = T) {
 }
 
 extract_account_minute_type <- function(description, ...) {
-  if(!is.character(description) | !length(description) == 1) {
+  if (!is.character(description) || !length(description) == 1) {
     stop("Argument 'description' should be a 'character' of length '1'")
   }
 
-  type <- case_when(
+  type <- dplyr::case_when(
     str_detect(description, "REFUND") ~ "refund",
     str_detect(description, "VOUCHER") ~ "voucher",
     str_detect(description, "VOIDED") ~ "voided",
     str_detect(description, "RECEIPT") &
       (!str_detect(description, "REFUND") &
-      !str_detect(description, "CHARGEBACK")) ~ "receipt",
+        !str_detect(description, "CHARGEBACK")) ~ "receipt",
     str_detect(description, "ADJUSTING") ~ "adjustment",
     str_detect(description, "DISBURSEMENT") &
       !str_detect(description, "VOUCHER") ~ "disbursement",
@@ -56,22 +56,22 @@ extract_account_minute_type <- function(description, ...) {
 }
 
 extract_receipt_number <- function(description, ...) {
-  if(!is.character(description) | !length(description) == 1) {
+  if (!is.character(description) | !length(description) == 1) {
     stop("Argument 'description' should be a 'character' of length '1'")
   }
 
-  receipt_number <- str_extract(description, "(?<=RECEIPT # ).*?(?= ON)")
+  receipt_number <- stringr::str_extract(description, "(?<=RECEIPT # ).*?(?= ON)")
 
   return(receipt_number)
 }
 
 extract_receipt_total_amount_paid <- function(description, ...) {
-  if(!is.character(description) | !length(description) == 1) {
+  if (!is.character(description) || !length(description) == 1) {
     stop("Argument 'description' should be a 'character' of length '1'")
   }
 
-  total_amount_paid <- str_extract(description, "(?<=TOTAL AMOUNT PAID:[\\s]?\\$[\\s]?)[\\-]?[\\d\\,]*.[\\d]*(?=\\.[\\s]?(LINE)?)") |>
-    str_remove_all(",|\\s")
+  total_amount_paid <- stringr::str_extract(description, "(?<=TOTAL AMOUNT PAID:[\\s]?\\$[\\s]?)[\\-]?[\\d\\,]*.[\\d]*(?=\\.[\\s]?(LINE)?)") |>
+    stringr::str_remove_all(",|\\s")
 
   return(total_amount_paid)
 }

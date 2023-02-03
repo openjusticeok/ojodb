@@ -7,7 +7,7 @@
 #' @param case_types A character vector of case types to query
 #' @param file_years A character vector of years to query
 #' @param ... Placeholder for additional arguments
-#' 
+#'
 #' @export ojo_civ_cases ojo_add_issues
 #' @return data, a lazy tibble containing the resulting civil cases
 #' @examples
