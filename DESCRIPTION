@@ -17,11 +17,13 @@ Authors@R: c(
   person(
     given = "Andrew",
     family = "Bell",
+    email = "abell@okpolicy.org",
     role = "aut"
   ),
   person(
     given = "Elizabeth",
     family = "Spencer",
+    email = "espencer@okpolicy.org",
     role = "ctb"
   ))
 Description: {ojodb} provides convenient functions to query court data from the Open Justice Oklahoma database.
@@ -29,6 +31,7 @@ Imports:
   DBI,
   dplyr,
   dbplyr,
+  furrr,
   ggplot2,
   glue,
   lubridate,
@@ -47,6 +50,7 @@ Suggests:
   devtools,
   fledge,
   fs,
+  gert,
   httr,
   janitor,
   knitr,
