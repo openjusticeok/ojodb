@@ -10,7 +10,7 @@
 #' }
 #'
 ojo_parse_account_minutes <- function(data, ..., .parallel = F, .progress = T) {
-  if(.parallel) {
+  if (.parallel) {
     data <- data |>
       dplyr::mutate(
         type = furrr::future_map_chr(description, extract_account_minute_type, .progress = .progress),
@@ -33,7 +33,7 @@ ojo_parse_account_minutes <- function(data, ..., .parallel = F, .progress = T) {
 }
 
 extract_account_minute_type <- function(description, ...) {
-  if(!is.character(description) | !length(description) == 1) {
+  if (!is.character(description) | !length(description) == 1) {
     stop("Argument 'description' should be a 'character' of length '1'")
   }
 
@@ -43,7 +43,7 @@ extract_account_minute_type <- function(description, ...) {
     str_detect(description, "VOIDED") ~ "voided",
     str_detect(description, "RECEIPT") &
       (!str_detect(description, "REFUND") &
-      !str_detect(description, "CHARGEBACK")) ~ "receipt",
+        !str_detect(description, "CHARGEBACK")) ~ "receipt",
     str_detect(description, "ADJUSTING") ~ "adjustment",
     str_detect(description, "DISBURSEMENT") &
       !str_detect(description, "VOUCHER") ~ "disbursement",
@@ -56,7 +56,7 @@ extract_account_minute_type <- function(description, ...) {
 }
 
 extract_receipt_number <- function(description, ...) {
-  if(!is.character(description) | !length(description) == 1) {
+  if (!is.character(description) | !length(description) == 1) {
     stop("Argument 'description' should be a 'character' of length '1'")
   }
 
@@ -66,7 +66,7 @@ extract_receipt_number <- function(description, ...) {
 }
 
 extract_receipt_total_amount_paid <- function(description, ...) {
-  if(!is.character(description) | !length(description) == 1) {
+  if (!is.character(description) | !length(description) == 1) {
     stop("Argument 'description' should be a 'character' of length '1'")
   }
 

@@ -17,8 +17,9 @@ output:
 library(ojodb)
 library(knitr)
 
-nc <- function(x) {comma(x, digits = 0)}
-
+nc <- function(x) {
+  comma(x, digits = 0)
+}
 ```
 
 Background information: Why are we researching this topic? What is the expected product? A blog post? Analysis for an internal or external partner?
@@ -68,9 +69,9 @@ If you're using court data, you can use the `ojo_check_comp` to see how complete
 Detail the NAs and blank items in your data and, if necessary and possible, fill them in.
 
 ``` {r}
-# rog_nas <- rog %>% 
+# rog_nas <- rog %>%
 #   summarize(nas = sum(is.na(defname) | defname == "")) # checks for NA and blank ("") defendant names
-# 
+#
 # rog_nas
 ```
 

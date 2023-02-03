@@ -1,7 +1,7 @@
 #' List all variables in a table on the ojodb database
 #'
 #' Query the Open Justice Oklahoma database for the names of all variables in a table
-#' 
+#'
 #' @param table The name of the table to query
 #' @param schema The name of the schema to query
 #' @param ... Placeholder for additional arguments

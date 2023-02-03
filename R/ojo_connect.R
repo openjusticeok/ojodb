@@ -5,14 +5,14 @@
 #'
 #' @aliases connect_ojo ojo_connect
 #' @aliases ojo_auth
-#' 
+#'
 #' @param host The host name of the database server
 #' @param port The port number of the database server
 #' @param username The username to use to connect to the database
 #' @param password The password to use to connect to the database
 #' @param .admin A logical value indicating whether to connect to the database as an administrator
 #' @param .overwrite A logical value indicating whether to overwrite the existing .Renviron file
-#' @param .install A logical value indicating whether to install the database connection or use it only for the current session  
+#' @param .install A logical value indicating whether to install the database connection or use it only for the current session
 #'
 #' @export ojo_connect connect_ojo ojo_auth
 #' @return ojo_db, a database connection object
@@ -27,11 +27,11 @@
 #' It will then store these credentials in the user's .Renviron file.
 #' If the .Renviron file already exists, it will be backed up and the new credentials will be appended to the end of the file.
 #' If the .Renviron file does not exist, it will be created and the credentials will be stored there.
-#' 
+#'
 #' @section Aliases:
 #'  For comfort, `ojo_connect` and `connect_ojo` can be used interchangeably.
 #' @seealso ojo_auth()
-#' 
+#'
 ojo_auth <- function(host, port, username, password, .admin = F, .overwrite = T, .install = T) {
   home <- Sys.getenv("HOME")
   renv <- file.path(home, ".Renviron")
