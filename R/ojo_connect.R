@@ -35,20 +35,21 @@ ojo_connect <- function(..., .admin = FALSE, .global = rlang::is_interactive()) 
   }
 
   conn <- pool::dbPool(
-    drv = odbc::odbc(),
-    Driver = Sys.getenv("OJO_DRIVER"),
-    Server = Sys.getenv("OJO_HOST"),
-    Database = "ojodb",
-    Port = Sys.getenv("OJO_PORT"),
-    Username = Sys.getenv(glue::glue("OJO_{user_type}_USER")),
-    Password = Sys.getenv(glue::glue("OJO_{user_type}_PASS")),
-    SSLmode = Sys.getenv("OJO_SSL_MODE"),
-    Pqopt = glue::glue('{sslrootcert={{Sys.getenv("OJO_SSL_ROOT_CERT")}} sslcert={{Sys.getenv("OJO_SSL_CERT")}} sslkey={{Sys.getenv("OJO_SSL_KEY")}}}', .open = "{{", .close = "}}")
+    drv = RPostgres::Postgres(),
+    dbname = "ojodb",
+    host = Sys.getenv("OJO_HOST"),
+    port = Sys.getenv("OJO_PORT"),
+    user = Sys.getenv(glue::glue("OJO_{user_type}_USER")),
+    password = Sys.getenv(glue::glue("OJO_{user_type}_PASS")),
+    sslmode = Sys.getenv("OJO_SSL_MODE"),
+    sslrootcert = Sys.getenv("OJO_SSL_ROOT_CERT"),
+    sslcert = Sys.getenv("OJO_SSL_CERT"),
+    sslkey = Sys.getenv("OJO_SSL_KEY")
   )
 
   if (.global) {
     assign("ojodb", conn, envir = .GlobalEnv)
   }
 
-  return(conn)
+  invisible(conn)
 }

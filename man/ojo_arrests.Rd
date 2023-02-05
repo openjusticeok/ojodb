@@ -19,8 +19,10 @@ Query the Open Justice Oklahoma database for jail records from Tulsa County.
 \examples{
 \dontrun{
 ojo_arrests()
-ojo_arrests(years = 2019:2022,
-            include_charges = TRUE)
+ojo_arrests(
+  years = 2019:2022,
+  include_charges = TRUE
+)
 }
 
 }

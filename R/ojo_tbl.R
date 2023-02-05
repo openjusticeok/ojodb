@@ -21,12 +21,12 @@
 #' }
 #' @seealso ojo_list_tables(), ojo_list_vars(), ojo_list_schemas()
 #'
-ojo_tbl <- function(table, schema = "public") {
-  if (!exists("ojodb", where = .GlobalEnv)) {
-    ojo_connect()
+ojo_tbl <- function(table, schema = "public", .con = NULL) {
+  if (is.null(.con) && !exists("ojodb", where = .GlobalEnv)) {
+    .con <- ojo_connect()
   }
 
-  pool_src <- pool::poolCheckout(ojodb)
+  pool_src <- pool::poolCheckout(.con)
   on.exit(pool::poolReturn(pool_src))
   pool_src |>
     dplyr::tbl(dbplyr::in_schema(schema, table))
