@@ -44,7 +44,9 @@ ojo_connect <- function(..., .admin = FALSE, .global = rlang::is_interactive()) 
     sslmode = Sys.getenv("OJO_SSL_MODE"),
     sslrootcert = Sys.getenv("OJO_SSL_ROOT_CERT"),
     sslcert = Sys.getenv("OJO_SSL_CERT"),
-    sslkey = Sys.getenv("OJO_SSL_KEY")
+    sslkey = Sys.getenv("OJO_SSL_KEY"),
+    bigint = "integer",
+    ...
   )
 
   if (.global) {
