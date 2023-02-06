@@ -40,3 +40,25 @@ ojo_tbl <- function(..., con = ojodb) {
     from = dbplyr::in_schema("public", "case")
   )
 }
+
+
+ojo_query <- function(query, con = ojodb) {
+
+}
+
+ojo_execute <- function(query, con = ojodb) {
+
+}
+
+
+tbl_ojo <- function(con, from) {
+  
+  pool_src <- pool::poolCheckout(ojodb)
+  on.exit(pool::poolReturn(pool_src))
+
+  dbplyr::tbl_sql(
+    subclass = "ojo_tbl",
+    src = con,
+    from = from
+  )
+}
