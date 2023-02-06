@@ -31,3 +31,12 @@ ojo_tbl <- function(table, schema = "public") {
   pool_src |>
     dplyr::tbl(dbplyr::in_schema(schema, table))
 }
+
+
+ojo_tbl <- function(..., con = ojodb) {
+  dbplyr::tbl_sql(
+    subclass = "ojo_tbl",
+    src = con,
+    from = dbplyr::in_schema("public", "case")
+  )
+}
