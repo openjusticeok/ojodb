@@ -22,10 +22,10 @@ ojo_list_vars <- function(table, schema = "public", ...) {
     ojo_connect()
   }
 
-  query <- dbplyr::sql(stringr::str_c("SELECT column_name FROM information_schema.columns WHERE table_schema = '",
+  query <- glue::glue_sql("SELECT column_name FROM information_schema.columns WHERE table_schema = '",
                                       schema,
                                       "' AND table_name = '",
-                                      table, "'"))
+                                      table, "'")
 
   ojodb |>
     pool::dbGetQuery(query)
