@@ -1,0 +1,88 @@
+---
+title: "Pulling court data with ojodb"
+resource_files:
+  - images/oscn-screenshot.png
+output: rmarkdown::html_vignette
+description: >
+  This guide will walk through the process of pulling and analyzing court data from the OJO databse.
+vignette: >
+  %\VignetteIndexEntry{Pulling court data with ojodb}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+[![A screenshot of the OSCN homepage](images/oscn-screenshot.png)](https://www.oscn.net/v4/)
+
+# Intro: The OJO database
+
+Many of our projects and requests involve pulling court data from our OJO database. There are a few other organizations and authorities who have collected this type of data in Oklahoma, but we're somewhat unique in the amount of data we have and the tools we've developed to pull and analyze it.
+
+Our court data comes from two sources:
+
+-   The [Oklahoma State Court Network website](https://www.oscn.net/v4/), the official record for the most populous and organized counties in the state, and
+
+<!-- -->
+
+-   The [On Demand Court Records website](https://www1.odcr.com/), an alternate official record used by the less populous states.
+
+We scrape the data posted on these websites each day, and store the contents in our database.
+
+Having the data scraped and wrangled like this lets us answer questions that are harder to get a handle on otherwise. For example, legislators and stakeholders will often want to know things like "How many felonies were filed from 2018-2022?", or "How did eviction filings change during COVID, or as a result of X policy change?" It can be shockingly hard to answer even basic questions like that, even for government officials, and that's where our database comes in!
+
+To get an idea of how to use the database to answer these kinds of questions, we'll walk through how to answer one of these basic types of questions:
+
+> How many misdemeanor cases involving drugs were filed in Oklahoma county in each month from 2016-2022?
+
+# Step 1: Getting the lay of the land
+
+This vignette assumes that your credentials and access to the database are properly configured -- most of the `{ojodb}` functions won't work if it's not. For more information on how to get this set up, see `vignette("vignette-connecting-to-ojo")`. It can be a bit tricky to get working, so please ask for help if you have any issues!
+
+We'll start by going through the basic functions. Just for educational purposes, we'll start by taking a look around database and seeing exactly where the court data lives.
+
+```{r}
+library(ojodb)
+
+ojo_list_schemas()
+
+```
+
+Our database is divided into a few "schemas" -- if our database is a big filing cabinet, we can imagine the schemas as separate drawers. You can see all of them using the `ojo_list_schemas()` function.
+
+Each schema, generally speaking, relates to one of our data types / topics / policy areas. For example, there's a schema for `ocdc` (Oklahoma County Detention Center, i.e. the jail in Oklahoma City), another one for `odoc` (Oklahoma Department of Corrections, i.e. Oklahoma state prisons), another for `eviction_addresses` (this one contains data related to a specific eviction-related project), etc.
+
+The court data that we're interested in right now is stored in the default schema, `public`. Let's open the "drawer" and see what kind of data is inside.
+
+```{r}
+ojo_list_tables(schema = "public")
+
+```
+
+If a schema is a drawer in our filing cabinet, then tables are the folders inside. The `public` schema contains several different tables, all of which relate back to our court data. Here are the most important ones to know:
+
+-   The `case` table contains the basic information about each case. This includes variables like the case number, the date it was filed, the judge it was assigned to, etc. It also includes ID columns that allow you to join it with the other tables in this schema in order to see things like the defendant's name and DOB, attorneys involved, etc. Each row is one **case**.
+
+-   The `count` table contains the individual charges filed in each case; most cases involve more than one. Each row is one **charge**.
+
+-   The `minute` table contains the court minutes for each case. This is where we get data about court fines and fees, among many other things. There are a ton of minutes per case, so working with the minute data often means having to spend a lot of time waiting for data to download. Each row is one **court minute**.
+
+We can see exactly which variables are included in each table using the `ojo_list_vars()` function. For example, let's take a closer look at the main `case` table:
+
+```{r}
+ojo_list_vars(schema = "public", table = "case")
+
+```
+
+# Step 2: Pulling felony cases from selected counties and years
+
+
+# Step 3: Wrangling and cleaning the data
+
+
+# Step 4: Analyzing and graphing the data

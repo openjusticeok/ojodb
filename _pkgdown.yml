@@ -1,0 +1,39 @@
+url: ~
+template:
+  bootstrap: 5
+
+reference:
+- title: "Functions for pulling court data"
+  desc: "These functions are for pulling and manipulating Oklahoma district court data scraped from OSCN.net and ODCR.net."
+  contents:
+  - ojo_civ_cases
+  - ojo_crim_cases
+  - ojo_add_counts
+  - ojo_add_minutes
+  - ojo_add_party_details
+  - ojo_search_minutes
+- title: "Functions to help aid with analysis"
+  desc: "These include some other helpful functions you might use in your analysis."
+  contents:
+  - ojo_color
+  - ojo_fill
+  - ojo_pal
+  - ojo_theme
+  - ojo_county_population
+  - ojo_fiscal_year
+- title: "Database management functions"
+  desc: "These functions allow you to look at and interact with the OJO database's structure."
+  contents:
+  - ojo_list_schemas
+  - ojo_list_tables
+  - ojo_list_vars
+  - ojo_case_types
+  - ojo_show_row
+- title: "'Behind the scenes' functions"
+  desc: "These are the most basic / fundamental functions in the package. Generally, we shouldn't need to use them directly."
+  contents:
+  - ojo_tbl
+  - ojo_check_ssl
+  - ojo_auth
+  - court_ref
+

@@ -4,43 +4,16 @@
     <loc>/404.html</loc>
   </url>
   <url>
-    <loc>/LICENSE-text.html</loc>
-  </url>
-  <url>
     <loc>/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>/articles/01-getting-started.html</loc>
-  </url>
-  <url>
-    <loc>/articles/02-ojo-database.html</loc>
-  </url>
-  <url>
-    <loc>/articles/03-oscn-tables.html</loc>
-  </url>
-  <url>
-    <loc>/articles/05-doc-data.html</loc>
-  </url>
-  <url>
-    <loc>/articles/07-identifying-charges.html</loc>
-  </url>
-  <url>
-    <loc>/articles/doc-data.html</loc>
-  </url>
-  <url>
-    <loc>/articles/getting-started.html</loc>
-  </url>
-  <url>
-    <loc>/articles/identifying-charges.html</loc>
   </url>
   <url>
     <loc>/articles/index.html</loc>
   </url>
   <url>
-    <loc>/articles/ojo-database.html</loc>
+    <loc>/articles/vignette-connecting-to-ojo.html</loc>
   </url>
   <url>
-    <loc>/articles/oscn-tables.html</loc>
+    <loc>/articles/vignette-pulling-data.html</loc>
   </url>
   <url>
     <loc>/authors.html</loc>
@@ -52,25 +25,10 @@
     <loc>/news/index.html</loc>
   </url>
   <url>
-    <loc>/reference/connect_ojo.html</loc>
-  </url>
-  <url>
-    <loc>/reference/county_pop.html</loc>
-  </url>
-  <url>
     <loc>/reference/court_ref.html</loc>
   </url>
   <url>
-    <loc>/reference/date_to_fy.html</loc>
-  </url>
-  <url>
-    <loc>/reference/doc_current_pop.html</loc>
-  </url>
-  <url>
     <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/odcr_show.html</loc>
   </url>
   <url>
     <loc>/reference/ojo_add_counts.html</loc>
@@ -94,25 +52,13 @@
     <loc>/reference/ojo_civ_cases.html</loc>
   </url>
   <url>
-    <loc>/reference/ojo_classify_ct.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ojo_collect.html</loc>
-  </url>
-  <url>
     <loc>/reference/ojo_color.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ojo_colors.html</loc>
   </url>
   <url>
     <loc>/reference/ojo_county_population.html</loc>
   </url>
   <url>
     <loc>/reference/ojo_crim_cases.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ojo_disconnect_all.html</loc>
   </url>
   <url>
     <loc>/reference/ojo_fill.html</loc>
@@ -133,9 +79,6 @@
     <loc>/reference/ojo_pal.html</loc>
   </url>
   <url>
-    <loc>/reference/ojo_reform_line.html</loc>
-  </url>
-  <url>
     <loc>/reference/ojo_search_minutes.html</loc>
   </url>
   <url>
@@ -146,14 +89,5 @@
   </url>
   <url>
     <loc>/reference/ojo_theme.html</loc>
-  </url>
-  <url>
-    <loc>/reference/race_pop.html</loc>
-  </url>
-  <url>
-    <loc>/reference/show_row.html</loc>
-  </url>
-  <url>
-    <loc>/reference/theme_ojo.html</loc>
   </url>
 </urlset>
