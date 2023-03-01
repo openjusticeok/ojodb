@@ -94,7 +94,9 @@ ojo_list_vars(schema = "public", table = "case")
 
 ```
 
-### One more important note!
+We're interested in criminal cases right now, so we'll be pulling data from this table for our example research question.
+
+### One more note:
 
 You'll notice that the `case` table includes most of the things you'd expect -- the filing district, year, case type, etc. However, you might be wondering why there are also columns for things like `minutes` and `issues` -- as we just saw, this information is actually stored in a separate table within the `public` schema. The answer is that these columns aren't storing the data in and of themselves; instead, they contain keys that we can use to join the `case` table with the others.
 
@@ -126,7 +128,7 @@ Keeping our research question in mind, we'll start by pulling all the **misdemea
 
 ```{r}
 case_data <- ojo_crim_cases(districts = "OKLAHOMA",
-                            case_types = "CM", # "CM" is short for "Criminal Misdemeanor"
+                            case_types = "CM", # "CM" is short for "criminal misdemeanor"
                             file_years = 2018:2022) |>
   collect()
 
