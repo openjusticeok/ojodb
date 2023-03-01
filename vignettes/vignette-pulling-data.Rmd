@@ -38,11 +38,11 @@ Having the data scraped and wrangled like this lets us answer questions that are
 
 To get an idea of how to use the database to answer these kinds of questions, this vignette will walk through all the steps for a hypothetical research question.
 
-### Research Question:
+## Research Question:
 
-> How many misdemeanor cases involving drugs were filed in Oklahoma county in each month from 2016-2022?
+> How many misdemeanor cases involving drugs were filed in Oklahoma and Tulsa county in each month from 2016-2022?
 
-### Before you proceed:
+## Before you proceed:
 
 This vignette assumes that A) you've already installed `{ojodb}`, and B) your credentials and access to the database are properly configured -- most of the `{ojodb}` functions won't work if not. For more information on how to get everything set up, see `vignette("vignette-connecting-to-ojo")`. It can be a bit tricky to get working, so please ask for help if you have any issues!
 
@@ -120,25 +120,112 @@ As you can see, these columns look a bit different, and don't store any data the
 
 To be clear, it's not crucial that you become an expert on database systems or anything like that. It is only mentioned here because it can be pretty confusing if you're new to databases.
 
-# Step 2: Pulling case data
+# Step 2: Pulling our data -- `ojo_crim_cases()`
 
 Now that we understand the basic layout of the database, we can start pulling the data we're interested in! Fortunately, we have helper functions that save us from having to think too much about schemas and tables in our daily work. 
 
-Keeping our research question in mind, we'll start by pulling all the **misdemeanor criminal cases** filed in **Oklahoma county** from **2018-2022**. We'll use one of our helper functions, `ojo_crim_cases()`, to do so. Note that there's also `ojo_civ_cases()` for when we want to look at civil court data.
-
+Keeping our research question in mind, we'll start by pulling all the **misdemeanor criminal cases** filed in **Oklahoma and Tulsa counties** from **2018-2022**. We'll use one of our helper functions, `ojo_crim_cases()`, to do so. It first queries the `case` table, then combines that table of **cases** with each case's **charges** from the `count` table. 
+ 
 ```{r}
-case_data <- ojo_crim_cases(districts = "OKLAHOMA",
-                            case_types = "CM", # "CM" is short for "criminal misdemeanor"
-                            file_years = 2018:2022) |>
+# This function combines the "case" and "count" tables in our database,
+# and returns a cleaned dataframe where each row is one charge in a case.
+charge_data <- ojo_crim_cases(districts = c("OKLAHOMA", "TULSA"),
+                              case_types = "CM", # "CM" is short for "criminal misdemeanor"
+                              file_years = 2018:2022) |>
+  # you can add things like filter(), select(), etc. here
   collect()
-
-nrow(case_data)
 
 ```
 
 The `collect()` function we're using is from the `{dplyr}` package. Our helper function `ojo_crim_cases()` uses the provided arguments to put together a query to our database, and the `collect()` function executes that query and returns the result as a lazy tibble into your R environment. If we wanted to, we could add in additional filtering, sorting, etc. by adding `{dplyr}` functions like `filter()`, `select()`, etc. before the `collect()` call. But for now, we want to see everything.
 
-Now we've got our case data saved as the object `case_data`, nice! It looks like it includes `r nrow(case_data) |> format(big.mark = ",")` rows / cases.
+## Exploring the data we've pulled
+
+Now we've got our data saved as the object `charge_data`, nice! Before we do anything else, let's start by taking a look at our dataframe in RStudio using the `view()` function (or just by clicking on it in your RStudio "Data" panel).
+
+<center>
+![The result of view(charge_data)](images/view-case-data.png)
+</center>
+
+You'll probably notice those array columns like `id` and `counts` are still present; `ojo_crim_cases()` used them behind the scenes to join the charge data onto the case data, but we can more or less ignore those now since we're not using them in our analysis.
+
+## Charges vs. Cases?
+
+You'll probably also notice that our dataframe includes data on the individual charges in each case, stored in `count_as_filed` and `disposition`. As discussed above, there's often going to be more than one charge involved in a given case, which means that we should note that our data is in terms of **charges**, not **cases**. Let's start by seeing how many of each we have here:
+
+```{r, message=FALSE}
+# How many total charges? ------------------------------------------------------
+# The data are already in terms of charges (1 charge per row), so we can simply
+# count the rows.
+charge_data |>
+  nrow()
+
+# How many total cases? --------------------------------------------------------
+# There's more than one charge per case sometimes, so we need to see how many
+# unique cases there are total. Here are two possible approaches:
+
+# Approach #1: Creating a new, unique district + case_number variable
+charge_data |>
+  # Case numbers are unique within districts; 
+  # e.g. Tulsa's CM-2023-001 is a different case than Oklahoma's CM-2023-001.
+  # We can create a new variable that will always be unique -- district + case_number
+  mutate(case_number_with_district = paste(district, case_number)) |>
+  distinct(case_number_with_district) |>
+  nrow()
+
+# This approach returns the number of unique case_number / district combinations, 
+# but not much else.
+
+# Approach 2: Making a new summary dataset with group_by() + summarize()
+case_summary <- charge_data |>
+  group_by(district, case_number) |>
+  summarize(
+    n_charges = n()
+    # Note: if you want, you can add further summary variables here. 
+    # For example, maybe you want to know how many charges in each case led to
+    # a conviction. You could do something like this:
+    # n_convictions = sum(disposition == "CONVICTION", na.rm = T)
+    )
+
+nrow(case_summary)
+
+# This tells us the number, and also leaves us with a helpful new case_summary
+# dataset that we can use later on, if we want to know more.
+
+```
+
+It looks like `charge_data` includes `r nrow(charge_data) |> format(big.mark = ",")` rows. In other words, our data shows that there were `r nrow(charge_data) |> format(big.mark = ",")` total **charges** filed in Oklahoma and Tulsa county misdemeanor cases from 2018-2022.
+
+On the other hand, it looks like there are `r charge_data |> dplyr::mutate(district_case_number = paste(district, case_number)) |> distinct(district_case_number) |> nrow() |> format(big.mark = ",")` unique combinations of `district` and `case_number` (and an equal number of rows in our new summary dataframe, `case_summary`). In other words, our data shows `r charge_data |> dplyr::mutate(district_case_number = paste(district, case_number)) |> distinct(district_case_number) |> nrow() |> format(big.mark = ",")` total misdemeanor **cases** filed in Oklahoma and Tulsa county from 2018-2022. 
+
+If we wanted to, we could divide those numbers (or use our handy `case_summary` dataframe) to see the average number of charges per case:
+
+```{r}
+# Total charges / total cases = Avg. number of charges per case
+nrow(charge_data) / nrow(case_summary)
+
+# Different approach, same thing
+mean(case_summary$n_charges)
+
+```
+
+It seems there's an average of `r mean(case_summary$n_charges) |> round(2)` counts per misdemeanor case in this dataset. Neat!
+
+It's very helpful to always be thinking about what the rows in your data represent. Keeping track of what exactly you're looking at (charges, cases, defendants, etc.) can be one of the most challenging parts of these analyses, especially when our client isn't exactly sure which they want to know about.
+
+## Back to our research question
+
+Okay, now we've got a big dataset of all the charges we care about (`charge_data`) and another big dataset of all the cases we care about (`case_summary`), and we've familiarized ourselves with what they look like and what they mean. Let's revisit our research question now to see what cleaning and wrangling we need to do in order to answer it.
+
+> How many misdemeanor cases involving drugs were filed in Oklahoma and Tulsa county in each month from 2016-2022?
+
+We've got the "misdemeanor cases filed in Oklahoma and Tulsa county from 2016-2022" part down, but we're still missing a few things. Namely,
+
+*   we still need to filter our data to include only cases involving drugs, and
+
+*   we still need to calculate the number of cases filed per month in this timespan.
+
+We'll move on to those steps next.
 
 # Step 3: Wrangling and cleaning the data
 
