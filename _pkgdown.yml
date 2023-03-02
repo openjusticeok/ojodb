@@ -10,6 +10,7 @@ reference:
   - ojo_crim_cases
   - ojo_add_counts
   - ojo_add_minutes
+  - ojo_add_issues
   - ojo_add_party_details
   - ojo_search_minutes
 - title: "Functions to help aid with analysis"
@@ -35,5 +36,4 @@ reference:
   - ojo_tbl
   - ojo_check_ssl
   - ojo_auth
-  - court_ref
 

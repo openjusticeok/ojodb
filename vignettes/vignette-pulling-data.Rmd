@@ -28,8 +28,6 @@ Our court data comes from two sources:
 
 -   The [Oklahoma State Court Network website](https://www.oscn.net/v4/), the official record for the most populous and organized counties in the state, and
 
-<!-- -->
-
 -   The [On Demand Court Records website](https://www1.odcr.com/), an alternate official record used by the less populous states.
 
 We scrape the data posted on these websites each day, and store the contents in our database.
