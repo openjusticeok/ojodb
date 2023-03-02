@@ -2,8 +2,13 @@
 
 # ojodb 2.3.0 (2023-03-02)
 
-- Same as previous version.
+## Analyst Tools
+- Fixed the `ojo_list_vars` function
 
+## Package Maintenance
+- Removed direct class comparisons in favor of `inherits`
+- Added documentation for `ojo_add_issues` function
+- Removed improper data import and resulting hard dependency on `{readr}`
 
 # ojodb 2.2.0 (2022-11-09)
 
