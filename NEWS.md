@@ -1,3 +1,10 @@
+<!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
+
+# ojodb 2.3.0 (2023-03-02)
+
+- Same as previous version.
+
+
 # ojodb 2.2.0 (2022-11-09)
 
 ## Analyst Tools
