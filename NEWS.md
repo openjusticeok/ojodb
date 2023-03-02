@@ -1,5 +1,13 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# ojodb 2.3.1 (2023-03-02)
+
+## Package Maintenance
+- Add SQL file to create database roles
+- Bump `{renv}` version to 0.17.0
+- Add `docs/` folder to `.gitignore`
+- Add `dontrun` to examples
+
 # ojodb 2.3.0 (2023-03-02)
 
 ## Analyst Tools
