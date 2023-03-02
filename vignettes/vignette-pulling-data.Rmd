@@ -62,15 +62,13 @@ ojo_list_schemas()
 
 Each schema, generally speaking, relates to one of our data types / topics / policy areas. Each one contains tables that store data related to that policy area. Among others, we have:
 
-*   a schema for `ocdc` (Oklahoma County Detention Center, i.e. the jail in Oklahoma City), 
+-   a schema for `ocdc` (Oklahoma County Detention Center, i.e. the jail in Oklahoma City),
 
-*   another one for `odoc` (Oklahoma Department of Corrections, i.e. Oklahoma state prisons), 
+-   another one for `odoc` (Oklahoma Department of Corrections, i.e. Oklahoma state prisons),
 
-*   another for `eviction_addresses` (this one contains data related to a specific eviction-related project)
+-   another for `eviction_addresses` (this one contains data related to a specific eviction-related project)
 
-<center>
-![A diagram I found online that shows how our database is structured.](images/object-hierarchy.png)
-</center>
+<center>![A diagram I found online that shows how our database is structured.](images/object-hierarchy.png)</center>
 
 The court data that we're interested in right now is stored in the default schema, `public`. Let's open the "drawer" and see what kind of data is inside.
 
@@ -122,10 +120,10 @@ To be clear, it's not crucial that you become an expert on database systems or a
 
 # Step 2: Pulling our data -- `ojo_crim_cases()`
 
-Now that we understand the basic layout of the database, we can start pulling the data we're interested in! Fortunately, we have helper functions that save us from having to think too much about schemas and tables in our daily work. 
+Now that we understand the basic layout of the database, we can start pulling the data we're interested in! Fortunately, we have helper functions that save us from having to think too much about schemas and tables in our daily work.
 
-Keeping our research question in mind, we'll start by pulling all the **misdemeanor criminal cases** filed in **Oklahoma and Tulsa counties** from **2018-2022**. We'll use one of our helper functions, `ojo_crim_cases()`, to do so. It first queries the `case` table, then combines that table of **cases** with each case's **charges** from the `count` table. 
- 
+Keeping our research question in mind, we'll start by pulling all the **misdemeanor criminal cases** filed in **Oklahoma and Tulsa counties** from **2018-2022**. We'll use one of our helper functions, `ojo_crim_cases()`, to do so. It first queries the `case` table, then combines that table of **cases** with each case's **charges** from the `count` table.
+
 ```{r}
 # This function combines the "case" and "count" tables in our database,
 # and returns a cleaned dataframe where each row is one charge in a case.
@@ -143,9 +141,7 @@ The `collect()` function we're using is from the `{dplyr}` package. Our helper f
 
 Now we've got our data saved as the object `charge_data`, nice! Before we do anything else, let's start by taking a look at our dataframe in RStudio using the `view()` function (or just by clicking on it in your RStudio "Data" panel).
 
-<center>
-![The result of view(charge_data)](images/view-case-data.png)
-</center>
+<center>![The result of view(charge_data)](images/view-case-data.png)</center>
 
 You'll probably notice those array columns like `id` and `counts` are still present; `ojo_crim_cases()` used them behind the scenes to join the charge data onto the case data, but we can more or less ignore those now since we're not using them in our analysis.
 
@@ -196,7 +192,7 @@ nrow(case_summary)
 
 It looks like `charge_data` includes `r nrow(charge_data) |> format(big.mark = ",")` rows. In other words, our data shows that there were `r nrow(charge_data) |> format(big.mark = ",")` total **charges** filed in Oklahoma and Tulsa county misdemeanor cases from 2018-2022.
 
-On the other hand, it looks like there are `r charge_data |> dplyr::mutate(district_case_number = paste(district, case_number)) |> distinct(district_case_number) |> nrow() |> format(big.mark = ",")` unique combinations of `district` and `case_number` (and an equal number of rows in our new summary dataframe, `case_summary`). In other words, our data shows `r charge_data |> dplyr::mutate(district_case_number = paste(district, case_number)) |> distinct(district_case_number) |> nrow() |> format(big.mark = ",")` total misdemeanor **cases** filed in Oklahoma and Tulsa county from 2018-2022. 
+On the other hand, it looks like there are `r charge_data |> dplyr::mutate(district_case_number = paste(district, case_number)) |> distinct(district_case_number) |> nrow() |> format(big.mark = ",")` unique combinations of `district` and `case_number` (and an equal number of rows in our new summary dataframe, `case_summary`). In other words, our data shows `r charge_data |> dplyr::mutate(district_case_number = paste(district, case_number)) |> distinct(district_case_number) |> nrow() |> format(big.mark = ",")` total misdemeanor **cases** filed in Oklahoma and Tulsa county from 2018-2022.
 
 If we wanted to, we could divide those numbers (or use our handy `case_summary` dataframe) to see the average number of charges per case:
 
@@ -215,15 +211,15 @@ It's very helpful to always be thinking about what the rows in your data represe
 
 ## Back to our research question
 
-Okay, now we've got a big dataset of all the charges we care about (`charge_data`) and another big dataset of all the cases we care about (`case_summary`), and we've familiarized ourselves with what they look like and what they mean. Let's revisit our research question now to see what cleaning and wrangling we need to do in order to answer it.
+Okay, now we've got a big dataset of all the charges we care about (`charge_data`) and another big dataset of all the cases we care about (`case_summary`), and we've familiarized ourselves with what they look like and what they mean. Let's revisit our research question now to see what cleaning and wrangling we need to do in order to finish answering it.
 
-> How many misdemeanor cases involving drugs were filed in Oklahoma and Tulsa county in each month from 2016-2022?
+> How many **misdemeanor cases** involving **drugs** were filed in **Oklahoma and Tulsa county** in **each month** from **2016-2022**?
 
 We've got the "misdemeanor cases filed in Oklahoma and Tulsa county from 2016-2022" part down, but we're still missing a few things. Namely,
 
-*   we still need to filter our data to include only cases involving drugs, and
+-   we still need to filter our data to include on[ly cases involving drugs, and
 
-*   we still need to calculate the number of cases filed per month in this timespan.
+-   we still need to calculate the number of cases filed per month in this timespan.
 
 We'll move on to those steps next.
 
