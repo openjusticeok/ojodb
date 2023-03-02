@@ -71,7 +71,7 @@ ojo_crim_cases <- function(districts = "all", vars = NULL, case_types = c("CM", 
 #'   ojo_add_counts()
 #'
 ojo_add_counts <- function(data, vars = NULL, ...) {
-  if (!"tbl_lazy" %in% class(data)) {
+  if (!inherits(data, "tbl_lazy")) {
     stop("Don't use `collect()` before this function")
   }
 
