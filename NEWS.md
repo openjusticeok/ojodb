@@ -1,3 +1,15 @@
+<!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
+
+# ojodb 2.3.0 (2023-03-02)
+
+## Analyst Tools
+- Fixed the `ojo_list_vars` function
+
+## Package Maintenance
+- Removed direct class comparisons in favor of `inherits`
+- Added documentation for `ojo_add_issues` function
+- Removed improper data import and resulting hard dependency on `{readr}`
+
 # ojodb 2.2.0 (2022-11-09)
 
 ## Analyst Tools
