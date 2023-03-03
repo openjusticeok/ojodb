@@ -1,0 +1,20 @@
+---
+title: "Connecting to ojodb"
+resource_files:
+output: rmarkdown::html_vignette
+description: >
+  This guide will walk through the process of connecting to the OJO database.
+vignette: >
+  %\VignetteIndexEntry{Connecting to ojodb}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Howdy there cowpoke! 🤠 I reckon you've moseyed on into a part of the website Andrew hasn't quite got to yet. My apologies, stranger!

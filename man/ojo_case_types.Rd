@@ -14,6 +14,8 @@ Returns a tibble containing all the case types present in the OJO database
 }
 \examples{
 
+\dontrun{
 ojo_case_types()
+}
 
 }
