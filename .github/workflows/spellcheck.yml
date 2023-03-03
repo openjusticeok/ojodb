@@ -1,2 +1,7 @@
-- name: R Spellcheck
-  uses: insightsengineering/r-spellcheck-action@v3.0.1
+name: Checks
+on: [push]
+jobs:
+    spell-check:
+    steps:
+        - uses: insightsengineering/r-spellcheck-action@v3.0.1
+    
