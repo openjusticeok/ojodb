@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">ojodb</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.3.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -78,25 +78,10 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="ojo_crim_cases.html">ojo_crim_cases</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"counts"</span>, <span class="st">"open_counts"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="ojo_crim_cases.html">ojo_crim_cases</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"counts"</span>, <span class="st">"open_counts"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">ojo_add_counts</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   SQL [?? x 10]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: postgres  [abell@localhost:/ojodb]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    id       distr…¹ case_…² case_…³ date_filed date_clo…⁴ counts open_…⁵ count…⁶</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> <span style="color: #949494;">"</span>{\"dis… SEQUOY… TR-201… TR      2019-08-12 <span style="color: #BB0000;">NA</span>         {}     <span style="color: #949494;">"</span>{\"FA… FAIL T…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> <span style="color: #949494;">"</span>{\"dis… SEQUOY… TR-201… TR      2019-11-01 <span style="color: #BB0000;">NA</span>         {}     <span style="color: #949494;">"</span>{\"OP… OPERAT…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> <span style="color: #949494;">"</span>{\"dis… SEQUOY… TR-201… TR      2019-06-05 <span style="color: #BB0000;">NA</span>         {}     <span style="color: #949494;">"</span>{\"CH… CHANGI…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> <span style="color: #949494;">"</span>{\"dis… SEQUOY… TR-201… TR      2019-04-22 <span style="color: #BB0000;">NA</span>         {}     <span style="color: #949494;">"</span>{\"OP… OPERAT…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> <span style="color: #949494;">"</span>{\"dis… SEQUOY… TR-201… TR      2019-01-09 <span style="color: #BB0000;">NA</span>         {}     <span style="color: #949494;">"</span>{SPEE… SPEEDI…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> <span style="color: #949494;">"</span>{\"dis… WOODWA… CF-202… CF      2022-12-14 <span style="color: #BB0000;">NA</span>         {}     <span style="color: #949494;">"</span>{\"DE… DESTRU…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> <span style="color: #949494;">"</span>{\"dis… WOODWA… CF-202… CF      2022-09-13 <span style="color: #BB0000;">NA</span>         {}     <span style="color: #949494;">"</span>{\"DO… DOMEST…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> <span style="color: #949494;">"</span>{\"dis… WOODWA… CM-202… CM      2022-09-14 <span style="color: #BB0000;">NA</span>         {}     <span style="color: #949494;">"</span>{\"LA… LARCEN…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> <span style="color: #949494;">"</span>{\"dis… WOODWA… CM-202… CM      2022-01-07 <span style="color: #BB0000;">NA</span>         {}     <span style="color: #949494;">"</span>{\"AS… ASSAUL…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> <span style="color: #949494;">"</span>{\"dis… WOODWA… CM-202… CM      2022-09-13 <span style="color: #BB0000;">NA</span>         {}     <span style="color: #949494;">"</span>{\"DO… DOMEST…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with more rows, 1 more variable: disposition &lt;chr&gt;, and abbreviated</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   variable names ¹​district, ²​case_number, ³​case_type, ⁴​date_closed,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ⁵​open_counts, ⁶​count_as_filed</span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

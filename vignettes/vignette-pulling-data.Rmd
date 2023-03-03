@@ -92,29 +92,29 @@ ojo_list_vars(schema = "public", table = "case")
 
 We're interested in criminal cases right now, so we'll be pulling data from this table for our example research question.
 
-### One more note:
+<!-- ### One more note: -->
 
-You'll notice that the `case` table includes most of the things you'd expect -- the filing district, year, case type, etc. However, you might be wondering why there are also columns for things like `minutes` and `issues` -- as we just saw, this information is actually stored in a separate table within the `public` schema. The answer is that these columns aren't storing the data in and of themselves; instead, they contain keys that we can use to join the `case` table with the others.
+<!-- You'll notice that the `case` table includes most of the things you'd expect -- the filing district, year, case type, etc. However, you might be wondering why there are also columns for things like `minutes` and `issues` -- as we just saw, this information is actually stored in a separate table within the `public` schema. The answer is that these columns aren't storing the data in and of themselves; instead, they contain keys that we can use to join the `case` table with the others. -->
 
-For example, let's take a look at what these columns look like in the first five rows of the `case` table, using the `ojo_tbl()` function:
+<!-- For example, let's take a look at what these columns look like in the first five rows of the `case` table, using the `ojo_tbl()` function: -->
 
-```{r}
-first_five <- ojo_tbl(schema = "public", table = "case") |>
-  head() |>
-  collect() |>
-  select(id, minutes, counts)
+<!-- ```{r} -->
+<!-- first_five <- ojo_tbl(schema = "public", table = "case") |> -->
+<!--  head() |> -->
+<!--  collect() |> -->
+<!--  select(id, minutes, counts) -->
 
-first_five$id
+<!-- first_five$id -->
 
-first_five$counts
+<!-- first_five$counts -->
 
-first_five$minutes
+<!-- first_five$minutes -->
 
-```
+<!-- ``` -->
 
-As you can see, these columns look a bit different, and don't store any data themselves. Instead, they contain *array* variables that we can use to join the `case` table to the `counts` and `minutes` tables as needed. Joining tables will be discussed more later, and our helper functions mean that we shouldn't have to think about this stuff outside of unusual circumstances.
+<!-- As you can see, these columns look a bit different, and don't store any data themselves. Instead, they contain *array* variables that we can use to join the `case` table to the `counts` and `minutes` tables as needed. Joining tables will be discussed more later, and our helper functions mean that we shouldn't have to think about this stuff outside of unusual circumstances. -->
 
-To be clear, it's not crucial that you become an expert on database systems or anything like that. It is only mentioned here because it can be pretty confusing if you're new to databases.
+<!-- To be clear, it's not crucial that you become an expert on database systems or anything like that. It is only mentioned here because it can be pretty confusing if you're new to databases. -->
 
 # Step 2: Pulling our data -- `ojo_crim_cases()`
 
@@ -137,15 +137,15 @@ The `collect()` function we're using is from the `{dplyr}` package. Our helper f
 
 ## Exploring the data we've pulled
 
-Now we've got our data saved as the object `charge_data`, nice! Before we do anything else, let's start by taking a look at our dataframe in RStudio using the `view()` function (or just by clicking on it in your RStudio "Data" panel).
+Now we've got our data saved as the object `charge_data`, nice! Before we do anything else, let's start by taking a look at our dataframe in RStudio using the `View()` function (or just by clicking on it in your RStudio "Data" panel).
 
-<center>![The result of view(charge_data)](images/view-case-data.png)</center>
+<center>![The result of `View(charge_data)`](images/view-case-data.png)</center>
 
-You'll probably notice those array columns like `id` and `counts` are still present; `ojo_crim_cases()` used them behind the scenes to join the charge data onto the case data, but we can more or less ignore those now since we're not using them in our analysis.
+<!-- You'll probably notice those array columns like `id` and `counts` are still present; `ojo_crim_cases()` used them behind the scenes to join the charge data onto the case data, but we can more or less ignore those now since we're not using them in our analysis. -->
 
 ## Charges vs. Cases?
 
-You'll probably also notice that our dataframe includes data on the individual charges in each case, stored in `count_as_filed` and `disposition`. As discussed above, there's often going to be more than one charge involved in a given case, which means that we should note that our data is in terms of **charges**, not **cases**. Let's start by seeing how many of each we have here:
+You'll probably notice that our dataframe includes data on the individual charges in each case, stored in `count_as_filed` and `disposition`. As discussed above, there's often going to be more than one charge involved in a given case, which means that we should note that our data is in terms of **charges**, not **cases**. Let's start by seeing how many of each we have here:
 
 ```{r, message=FALSE}
 # How many total charges? ------------------------------------------------------
@@ -179,7 +179,7 @@ case_summary <- charge_data |>
     # For example, maybe you want to know how many charges in each case led to
     # a conviction. You could do something like this:
     # n_convictions = sum(disposition == "CONVICTION", na.rm = T)
-    )
+)
 
 nrow(case_summary)
 
@@ -207,20 +207,53 @@ It seems there's an average of `r mean(case_summary$n_charges) |> round(2)` coun
 
 It's very helpful to always be thinking about what the rows in your data represent. Keeping track of what exactly you're looking at (charges, cases, defendants, etc.) can be one of the most challenging parts of these analyses, especially when our client isn't exactly sure which they want to know about.
 
+## Did we get everything we asked for?
+
+Though we have data coverage and quality checks already as part of our scrapers and database, court data is always extremely messy, which can lead to unforeseen issues. Knowing this, it's usually a good idea to double check your data after you've pulled it in order to ensure `ojo_crim_cases()` returned all the data you requested.
+
+We should at least check the data **geographically** and **temporally**; in other words, we should make sure there aren't any weird, unexpected differences between counties or between filing years / months. How exactly you do this due diligence is up to you, but one potential approach is to make a quick visualization or two. For example:
+
+```{r, message=FALSE}
+library(lubridate)
+library(ggplot2)
+
+# We're going to look at charges, not cases here
+charge_data |>
+mutate(
+# Our end goal is to see monthly filings, so we'll use that same timeframe
+month_filed = floor_date(date_filed, "months")
+) |>
+  count(district, month_filed) |> # Our two most important checks, geography and time
+  ggplot(aes(x = month_filed,
+             y = n)) +
+  # I'm choosing geom_col() over geom_line() because I want to see any gaps clearly
+  geom_col() + 
+  facet_wrap(~district) +
+  scale_y_continuous(limits = c(0, NA)) +
+  labs(title = "Total charges filed per month in CM cases")
+
+```
+
+This graph looks pretty much as we'd expect it to -- there's not a huge difference between Oklahoma and Tulsa counties (which makes sense, given that they're similar in size), and there aren't any conspicuously missing months, suspiciously massive and sudden spikes / drops, etc. And while there is a lot of variation (particularly in Oklahoma county), there's nothing that looks suspicious enough for me to suspect a data issue. 
+
+It would be great if there was an absolute source of truth that we could use to double check this stuff more reliably. An internal data quality monitoring dashboard that serves this purpose is on our list of goals, and hopefully that will serve as an easy reference point in the future. But for now, this part of the process is all about looking at the data from different angles and thinking critically about where you might run into potential issues, and how those issues might show up in your testing. Referencing past OKPI work is also another good option, and so is asking another analyst who is more familiar with the data in that area.
+
 ## Back to our research question
 
-Okay, now we've got a big dataset of all the charges we care about (`charge_data`) and another big dataset of all the cases we care about (`case_summary`), and we've familiarized ourselves with what they look like and what they mean. Let's revisit our research question now to see what cleaning and wrangling we need to do in order to finish answering it.
+Now we've got a big dataset of all the charges we care about (`charge_data`) and another big dataset of all the cases we care about (`case_summary`), we've familiarized ourselves with what they look like and what they mean, and we've double checked that the data are all there. Let's revisit our research question now to see what cleaning and wrangling we need to do in order to finish answering it.
 
 > How many **misdemeanor cases** involving **drugs** were filed in **Oklahoma and Tulsa county** in **each month** from **2016-2022**?
 
 We've got the "misdemeanor cases filed in Oklahoma and Tulsa county from 2016-2022" part down, but we're still missing a few things. Namely,
 
--   we still need to filter our data to include on[ly cases involving drugs, and
+-   we still need to filter our data to include only cases involving drugs, and
 
 -   we still need to calculate the number of cases filed per month in this timespan.
 
 We'll move on to those steps next.
 
 # Step 3: Wrangling and cleaning the data
+
+
 
 # Step 4: Analyzing and graphing the data

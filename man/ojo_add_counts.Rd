@@ -20,7 +20,9 @@ A tibble with counts for each case
 Add counts to a tibble of cases
 }
 \examples{
+\dontrun{
 ojo_crim_cases(vars = c("counts", "open_counts")) |>
   ojo_add_counts()
+}
 
 }

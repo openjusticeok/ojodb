@@ -67,8 +67,10 @@ ojo_crim_cases <- function(districts = "all", vars = NULL, case_types = c("CM", 
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' ojo_crim_cases(vars = c("counts", "open_counts")) |>
 #'   ojo_add_counts()
+#'}
 #'
 ojo_add_counts <- function(data, vars = NULL, ...) {
   if (!inherits(data, "tbl_lazy")) {

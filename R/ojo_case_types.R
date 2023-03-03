@@ -6,7 +6,9 @@
 #' @return Tibble of case types
 #' @examples
 #'
+#' \dontrun{
 #' ojo_case_types()
+#'}
 #'
 ojo_case_types <- function() {
   ojo_tbl("case") |>
