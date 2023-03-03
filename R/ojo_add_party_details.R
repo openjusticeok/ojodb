@@ -14,7 +14,7 @@
 #' }
 #'
 ojo_add_party_details <- function(data, vars = NULL, ...) {
-  if (!"tbl_lazy" %in% class(data)) {
+  if (!inherits(data, "tbl_lazy")) {
     stop("Don't use `collect()` before this function")
   }
 
@@ -22,7 +22,7 @@ ojo_add_party_details <- function(data, vars = NULL, ...) {
 
   if (!"party" %in% columns) {
     if ("parties" %in% columns) {
-      if (class(data$parties) == "pq__text") {
+      if (inherits(data$parties, "pq__text")) {
         stop("You must first unnest the `parties` column")
       } else {
         stop("Make sure you unnested the `parties` column into a column named `party`")

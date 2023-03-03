@@ -10,6 +10,7 @@
 #'
 #' @export ojo_civ_cases ojo_add_issues
 #' @return data, a lazy tibble containing the resulting civil cases
+#'
 #' @examples
 #' \dontrun{
 #' ojo_civ_cases()
@@ -56,8 +57,25 @@ ojo_civ_cases <- function(districts = "all", vars = NULL, case_types = c("CS", "
   }
 }
 
+#' @title Add issues to civil cases
+#'
+#' @description Add issues to civil cases
+#'
+#' @param data A lazy tibble of civil cases
+#' @param vars A character vector of variables to return
+#' @param ... Placeholder for additional arguments
+#'
+#' @export ojo_add_issues
+#' @return data, a lazy tibble containing the resulting civil cases
+
+#' @examples
+#' \dontrun{
+#' ojo_civ_cases() |>
+#'  ojo_add_issues()
+#' }
+#'
 ojo_add_issues <- function(data, vars = NULL, ...) {
-  if (!"tbl_lazy" %in% class(data)) {
+  if (!inherits(data, "tbl_lazy")) {
     stop("Don't use `collect()` before this function")
   }
 

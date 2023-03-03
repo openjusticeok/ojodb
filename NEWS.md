@@ -1,3 +1,23 @@
+<!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
+
+# ojodb 2.3.1 (2023-03-02)
+
+## Package Maintenance
+- Add SQL file to create database roles
+- Bump `{renv}` version to 0.17.0
+- Add `docs/` folder to `.gitignore`
+- Add `dontrun` to examples
+
+# ojodb 2.3.0 (2023-03-02)
+
+## Analyst Tools
+- Fixed the `ojo_list_vars` function
+
+## Package Maintenance
+- Removed direct class comparisons in favor of `inherits`
+- Added documentation for `ojo_add_issues` function
+- Removed improper data import and resulting hard dependency on `{readr}`
+
 # ojodb 2.2.0 (2022-11-09)
 
 ## Analyst Tools
