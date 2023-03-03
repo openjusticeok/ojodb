@@ -254,6 +254,8 @@ We'll move on to those steps next.
 
 # Step 3: Wrangling and cleaning the data
 
+```{r}
 
+```
 
 # Step 4: Analyzing and graphing the data
