@@ -27,6 +27,8 @@ ojo_list_vars <- function(table, schema = "public", ...) {
     .con = ojodb
   )
 
+  on.exit(pool::poolReturn(ojodb))
+
   ojodb |>
     pool::dbGetQuery(query) |>
     tibble::as_tibble()

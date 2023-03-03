@@ -26,6 +26,8 @@ ojo_list_tables <- function(schema = "public", ...) {
       schema = x
     )
 
+    on.exit(pool::poolReturn(ojodb))
+
     pool::dbGetQuery(ojodb, query) |>
       dplyr::as_tibble() |>
       dplyr::select(table = table_name)
