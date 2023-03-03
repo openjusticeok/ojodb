@@ -1,5 +1,6 @@
 jobs:
   check-package:
+    on: [push]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
