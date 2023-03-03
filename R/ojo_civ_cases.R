@@ -23,13 +23,13 @@ ojo_civ_cases <- function(districts = "all", vars = NULL, case_types = c("CS", "
                           file_years = lubridate::year(Sys.Date()), ...) {
   data <- ojo_tbl("case") |>
     dplyr::filter(
-      case_type %in% case_types,
+      case_type %in% toupper(case_types),
       year %in% file_years
     )
 
   if (all(districts != "all")) {
     data <- data |>
-      dplyr::filter(district %in% districts)
+      dplyr::filter(district %in% toupper(districts))
   }
 
   selection <- c("id", "district", "case_type", "date_filed", "date_closed")
