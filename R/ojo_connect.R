@@ -12,7 +12,7 @@
 #' @param password The password to use to connect to the database
 #' @param .admin A logical value indicating whether to connect to the database as an administrator
 #' @param .overwrite A logical value indicating whether to overwrite the existing .Renviron file
-#' @param .install A logical value indicating whether to install the database connection or use it only for the current session
+#' @param .install A logical value indicating whether to install the database connection or use it only for the current session  
 #'
 #' @export
 #' @returns A database connection object created with `pool::dbPool` and `odbc::odbc`

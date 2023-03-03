@@ -4,10 +4,10 @@
 #'
 #' @param data A lazy tibble containing the cases to query
 #' @param ... Placeholder for additional arguments
-#'
+#' 
 #' @export ojo_add_minutes
 #' @returns A lazy tibble containing the resulting cases with minutes
-#'
+#' 
 #' @examples
 #' \dontrun{
 #' ojo_add_minutes()

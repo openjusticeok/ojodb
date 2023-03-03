@@ -3,7 +3,7 @@
 #' Summarizes and manipulates the PEP series to return Oklahoma's population by county for desired years. Useful for calculating per capita rates of county-level data.
 #'
 #' @param years A numeric vector of years for which to get population data
-#'
+#' 
 #' @export ojo_county_population
 #' @return A table of Oklahoma's population by county in each year specified
 #' @examples
