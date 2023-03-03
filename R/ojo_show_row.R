@@ -4,10 +4,10 @@
 #'
 #' @param df A local dataframe with columns named `court` and `casenum`
 #' @param row_number The number of the row of the case to be shown
-#'
+#' 
 #' @export ojo_show_row
 #' @returns Nothing
-#'
+#' 
 #' @section Side effects:
 #' Opens a browser window to the OSCN court record
 #'

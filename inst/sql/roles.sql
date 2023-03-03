@@ -160,7 +160,7 @@ SELECT DISTINCT 'ALTER DEFAULT PRIVILEGES IN SCHEMA ' || table_schema || ' GRANT
 -------------------------------------------------
 
 CREATE ROLE ojo_table_owner WITH
-  SUPERUSER -- different from all_table_admin
+  -- SUPERUSER -- different from all_table_admin
   CREATEDB
   CREATEROLE
   NOLOGIN
@@ -468,4 +468,3 @@ TO integration_restore_hope_eviction
 -- ALTER DEFAULT PRIVILEGES
 --   IN SCHEMA {...}
 --   GRANT SELECT ON TABLES TO all_table_reader
-
