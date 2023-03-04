@@ -37,4 +37,5 @@ reference:
   - ojo_tbl
   - ojo_check_ssl
   - ojo_auth
+  - ojo_connect
 

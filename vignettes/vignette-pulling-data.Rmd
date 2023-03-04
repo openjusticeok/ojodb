@@ -16,6 +16,14 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+
+# Vignette written by Andrew Bell
+
+```
+
+```{r, echo=FALSE}
+# This needs to be here until we fix ojo_connect() to work in a non-interactive environment 
+ojodb::ojo_connect(.global = TRUE)
 ```
 
 [![A screenshot of the OSCN homepage](images/oscn-screenshot.png)](https://www.oscn.net/v4/)
@@ -28,11 +36,11 @@ Our court data comes from two sources:
 
 -   The [Oklahoma State Court Network website](https://www.oscn.net/v4/), the official record for the most populous and organized counties in the state, and
 
--   The [On Demand Court Records website](https://www1.odcr.com/), an alternate official record used by the less populous states.
+-   The [On Demand Court Records website](https://www1.odcr.com/), an alternate official record used by the less populous counties.
 
 We scrape the data posted on these websites each day, and store the contents in our database.
 
-Having the data scraped and wrangled like this lets us answer questions that are harder to get a handle on otherwise. For example, legislators and stakeholders will often want to know things like "How many felonies were filed from 2018-2022?", or "How did eviction filings change during COVID, or as a result of X policy change?" It can be shockingly hard to answer even basic questions like that, even for government officials, and that's where our database comes in!
+Having the data scraped and wrangled like this lets us answer questions that are harder to get a handle on otherwise. For example, legislators and stakeholders will often want to know things like "How many felonies were filed from 2016-2022?", or "How did eviction filings change during COVID, or as a result of X policy change?" It can be shockingly hard to answer even basic questions like that, even for government officials, and that's where our database comes in!
 
 To get an idea of how to use the database to answer these kinds of questions, this vignette will walk through all the steps for a hypothetical research question.
 
@@ -42,7 +50,9 @@ To get an idea of how to use the database to answer these kinds of questions, th
 
 ## Before you proceed:
 
-This vignette assumes that A) you've already installed `{ojodb}`, and B) your credentials and access to the database are properly configured -- most of the `{ojodb}` functions won't work if not. For more information on how to get everything set up, see `vignette("vignette-connecting-to-ojo")`. It can be a bit tricky to get working, so please ask for help if you have any issues!
+This vignette assumes that A) you've already installed `{ojodb}`, and B) your credentials and access to the database are properly configured -- most of the `{ojodb}` functions won't work if not. It can be a bit tricky to get working, so please ask for help if you have any issues!
+
+<!-- For more information on how to get everything set up, see `vignette("vignette-connecting-to-ojo")`. -->
 
 # Step 1: Getting the lay of the land
 
@@ -98,9 +108,13 @@ We're interested in criminal cases right now, so we'll be pulling data from this
 <!-- For example, let's take a look at what these columns look like in the first five rows of the `case` table, using the `ojo_tbl()` function: -->
 
 <!-- ```{r} -->
+
 <!-- first_five <- ojo_tbl(schema = "public", table = "case") |> -->
+
 <!--  head() |> -->
+
 <!--  collect() |> -->
+
 <!--  select(id, minutes, counts) -->
 
 <!-- first_five$id -->
@@ -119,14 +133,14 @@ We're interested in criminal cases right now, so we'll be pulling data from this
 
 Now that we understand the basic layout of the database, we can start pulling the data we're interested in! Fortunately, we have helper functions that save us from having to think too much about schemas and tables in our daily work.
 
-Keeping our research question in mind, we'll start by pulling all the **misdemeanor criminal cases** filed in **Oklahoma and Tulsa counties** from **2018-2022**. We'll use one of our helper functions, `ojo_crim_cases()`, to do so. It first queries the `case` table, then combines that table of **cases** with each case's **charges** from the `count` table.
+Keeping our research question in mind, we'll start by pulling all the **misdemeanor criminal cases** filed in **Oklahoma and Tulsa counties** from **2016-2022**. We'll use one of our helper functions, `ojo_crim_cases()`, to do so. It first queries the `case` table, then combines that table of **cases** with each case's **charges** from the `count` table.
 
 ```{r}
 # This function combines the "case" and "count" tables in our database,
 # and returns a cleaned dataframe where each row is one charge in a case.
 charge_data <- ojo_crim_cases(districts = c("OKLAHOMA", "TULSA"),
                               case_types = "CM", # "CM" is short for "criminal misdemeanor"
-                              file_years = 2018:2022) |>
+                              file_years = 2016:2022) |>
   # you can add things like filter(), select(), etc. here
   collect()
 
@@ -138,7 +152,7 @@ The `collect()` function we're using is from the `{dplyr}` package. Our helper f
 
 Now we've got our data saved as the object `charge_data`, nice! Before we do anything else, let's start by taking a look at our dataframe in RStudio using the `View()` function (or just by clicking on it in your RStudio "Data" panel).
 
-<center>![The result of `View(charge_data)`](images/view-case-data.png)</center>
+<center>![The result of View(charge_data)](images/view-case-data.png)</center>
 
 <!-- You'll probably notice those array columns like `id` and `counts` are still present; `ojo_crim_cases()` used them behind the scenes to join the charge data onto the case data, but we can more or less ignore those now since we're not using them in our analysis. -->
 
@@ -178,7 +192,7 @@ case_summary <- charge_data |>
     # For example, maybe you want to know how many charges in each case led to
     # a conviction. You could do something like this:
     # n_convictions = sum(disposition == "CONVICTION", na.rm = T)
-)
+  )
 
 nrow(case_summary)
 
@@ -187,9 +201,9 @@ nrow(case_summary)
 
 ```
 
-It looks like `charge_data` includes `r nrow(charge_data) |> format(big.mark = ",")` rows. In other words, our data shows that there were `r nrow(charge_data) |> format(big.mark = ",")` total **charges** filed in Oklahoma and Tulsa county misdemeanor cases from 2018-2022.
+It looks like `charge_data` includes `r nrow(charge_data) |> format(big.mark = ",")` rows. In other words, our data shows that there were `r nrow(charge_data) |> format(big.mark = ",")` total **charges** filed in Oklahoma and Tulsa county misdemeanor cases from 2016-2022.
 
-On the other hand, it looks like there are `r charge_data |> dplyr::mutate(district_case_number = paste(district, case_number)) |> distinct(district_case_number) |> nrow() |> format(big.mark = ",")` unique combinations of `district` and `case_number` (and an equal number of rows in our new summary dataframe, `case_summary`). In other words, our data shows `r charge_data |> dplyr::mutate(district_case_number = paste(district, case_number)) |> distinct(district_case_number) |> nrow() |> format(big.mark = ",")` total misdemeanor **cases** filed in Oklahoma and Tulsa county from 2018-2022.
+On the other hand, it looks like there are `r charge_data |> dplyr::mutate(district_case_number = paste(district, case_number)) |> distinct(district_case_number) |> nrow() |> format(big.mark = ",")` unique combinations of `district` and `case_number` (and an equal number of rows in our new summary dataframe, `case_summary`). In other words, our data shows `r charge_data |> dplyr::mutate(district_case_number = paste(district, case_number)) |> distinct(district_case_number) |> nrow() |> format(big.mark = ",")` total misdemeanor **cases** filed in Oklahoma and Tulsa county from 2016-2022.
 
 If we wanted to, we could divide those numbers (or use our handy `case_summary` dataframe) to see the average number of charges per case:
 
@@ -218,10 +232,10 @@ library(ggplot2)
 
 # We're going to look at charges, not cases here
 charge_data |>
-mutate(
-# Our end goal is to see monthly filings, so we'll use that same timeframe
-month_filed = floor_date(date_filed, "months")
-) |>
+  mutate(
+    # Our end goal is to see monthly filings, so we'll use that same timeframe
+    month_filed = floor_date(date_filed, "months")
+  ) |>
   count(district, month_filed) |> # Our two most important checks, geography and time
   ggplot(aes(x = month_filed,
              y = n)) +
@@ -233,7 +247,7 @@ month_filed = floor_date(date_filed, "months")
 
 ```
 
-This graph looks pretty much as we'd expect it to -- there's not a huge difference between Oklahoma and Tulsa counties (which makes sense, given that they're similar in size), and there aren't any conspicuously missing months, suspiciously massive and sudden spikes / drops, etc. And while there is a lot of variation (particularly in Oklahoma county), there's nothing that looks suspicious enough for me to suspect a data issue. 
+This graph looks pretty much as we'd expect it to -- there's not a huge difference between Oklahoma and Tulsa counties (which makes sense, given that they're similar in size), and there aren't any conspicuously missing months, suspiciously massive and sudden spikes / drops, etc. And while there is a lot of variation (particularly in Oklahoma county), there's nothing that looks suspicious enough for me to suspect a data issue.
 
 It would be great if there was an absolute source of truth that we could use to double check this stuff more reliably. An internal data quality monitoring dashboard that serves this purpose is on our list of goals, and hopefully that will serve as an easy reference point in the future. But for now, this part of the process is all about looking at the data from different angles and thinking critically about where you might run into potential issues, and how those issues might show up in your testing. Referencing past OKPI work is also another good option, and so is asking another analyst who is more familiar with the data in that area.
 
@@ -251,8 +265,164 @@ We've got the "misdemeanor cases filed in Oklahoma and Tulsa county from 2016-20
 
 We'll move on to those steps next.
 
-# Step 3: Wrangling and cleaning the data
+# Step 3: Wrangling, cleaning, and analyzing the data
 
+## Searching for drug-related charges
 
+First, we'll need to limit our dataset to cases involving drugs. But what exactly does that mean? Do we want any kind of case at all where at least one of the charges was drug-related, or only cases where *all* the charges were drug related? What exactly do we count as "drug-related" charges, anyway? Frequently, our partners will make vague asks like this and leave it to us to answer those questions.
 
-# Step 4: Analyzing and graphing the data
+You'll also notice that the data in the `count_as_filed` column is very messy, and we won't be able to do something as simple as `filter(count_as_filed == "Drug Possession")`. So we'll need to find a way of parsing that text in order to find the charges we need.
+
+The answers to these methodology questions will depend on the exact task at hand, but our goal is to make our research methodology as standardized and replicable as possible. That also means we don't want to re-invent the wheel -- Open Justice Oklahoma has done lots of work on drug laws in the past, and so we have a fairly well established way of searching the statutes for relevant charges. Here are some of the places you can go to see how OJO has handled methodology / data issues in the past:
+
+-   The [**Oklahoma Policy Institute Stack Overflow site**](https://stackoverflowteams.com/c/oklahoma-policy-institute/questions) has a Q/A format like the Stack Overflow we all know and love. If you run into a new issue we don't have documented here, feel free to add your own questions / answers as needed!
+-   Searching the [**Open Justice Oklahoma Github repos**](https://github.com/openjusticeok) for keywords can sometimes turn up past work, especially when you're dealing with a more technical coding issue.
+-   The [**Oklahoma Policy Institute blog page**](https://okpolicy.org/category/ok-policy-blog/) has finished products we've helped put out in the past, with work on evictions, drug laws, felony reclassification, fines and fees, etc.
+-   And, of course, please don't hesitate to ask on **Slack**! It's easy for things to get lost in the shuffle and not make it into documentation anywhere, and despite our efforts, there are still a lot of things that only live inside someone's brain.
+
+In this case, we're going to use a regex string that OJO's founder Ryan Gentzler originally wrote to find any kind of drug-related charge, including things like paraphernalia, trafficking, etc. Here's the string:
+
+```{r}
+drugs <- "CDS|C\\.D\\.S|DRUG|OXY|HUFF|AMPHET|ZOLOL|ZOLAM|HYDROC|CODEIN|PRECURS|
+|XANAX|MORPH|METERDI|ZEPAM|LORAZ|VALIU|EPHED|SUB|COCA|PSEUDO| CD|CD |PRESCRIP|
+|NARC|METH|C\\.D\\.|HEROIN|ANHYD|AMMONIA|OPIUM|LORTAB|MARIJUANA|CANNABIS|MJ"
+
+```
+
+While I was writing this vignette, I found it by searching "drugs" and "marijuana" on our Github. It should really be a lot easier and more streamlined than that, though, so in the future this will hopefully be integrated as part of the `{ojodb}` package.
+
+We'll start by adding a new variable that simply classifies each charge as drug-related or not.
+
+```{r}
+# We'll save it as a new dataframe, charge_data_cleaned
+charge_data_cleaned <- charge_data |>
+  select(-c(id, counts, open_counts)) |> # We don't need every column, so let's drop the extras
+  mutate(
+    drug_charge = grepl(pattern = drugs, # Do any of our "drug" strings...
+                        x = count_as_filed, # ...show up in count_as_filed?
+                        ignore.case = TRUE) # ignore.case is important!
+  )
+
+```
+
+Note the inclusion of `ignore.case = TRUE`! Although most of the data in the `count_as_filed` column is in uppercase, you shouldn't assume **anything** in this court data will be uniform. Much of it is hand-entered by the county clerks, and there are frequent typos, differences in phrasing between districts, random lowercase entries, etc. It is *very* messy, which means we have to be vigilant when it comes to double-checking our work and not making too many assumptions about the data.
+
+Again, let's stop and check to make sure the result looks as we expect it to.
+
+```{r}
+charge_data_cleaned |>
+  select(district, case_number, count_as_filed, drug_charge) |>
+  group_by(drug_charge) |>
+  slice_sample(n = 10) # We'll just look at a random sample of 10 in each category
+
+```
+
+It looks like our regex search was pretty successful! Although it may raise some new questions: does driving under the influence count? Is alcohol technically a "drug" in those cases, or is that different? What about a count description that says "Carrying a firearm while under the influence o drugs or alcohol"?
+
+There are always going to be more questions like this, and you'll find them when you start digging in and double-checking your data. In the end, we want to prioritize standardization and giving our client whatever they actually want / need (even if we have to help them figure out exactly what that is). For now, we'll just accept the result as-is, but at this point you might need to stop, re-assess some things, ask other analysts / policy team their thoughts, follow up with a client, etc.
+
+## Summarizing drug charges within cases
+
+We have one more wrangling task we need to figure out -- we know what counts as a drug *charge*, but what about a drug *case*? For our purposes, we'll say that a drug case means any case involving at least one drug charge. Therefore, we're going to make another version of our `case_summary` dataframe, this time with a new variable `drug_charges_present`:
+
+```{r}
+case_summary_cleaned <- charge_data_cleaned |>
+  group_by(district, case_number) |>
+  # We want to keep the date_filed, so we'll use transmute() this time instead of summarize()
+  transmute( 
+    date_filed = date_filed,
+    # It will be helpful to have all the values of count_as_filed verbatim for double-checking
+    list_all_charges = paste(count_as_filed, collapse = "; "),
+    n_total_charges = n(),
+    # Count the number of rows where drug_charge == TRUE
+    n_drug_charges = sum(drug_charge, na.rm = TRUE),
+    drug_charges_present = if_else(n_drug_charges > 0, TRUE, FALSE)
+  ) |>
+  ungroup() |>
+  distinct() # transmute() leaves duplicate rows, so we'll drop those
+
+# Alternative approach:
+# case_summary_cleaned <- charge_data_cleaned |>
+#   group_by(district, case_number) |>
+#   summarize( 
+#     date_filed = unique(date_filed),
+#     list_all_charges = paste(count_as_filed, collapse = "; "),
+#     n_total_charges = n(),
+#     n_drug_charges = sum(drug_charge, na.rm = TRUE),
+#     drug_charges_present = if_else(n_drug_charges > 0, TRUE, FALSE)
+#   ) |>
+#   ungroup()
+
+```
+
+We'll also save a new dataframe that only includes the drug cases. We can double check the result just like before, and see how many drug cases we have total:
+
+```{r}
+case_summary_cleaned_drugs <- case_summary_cleaned |>
+  filter(drug_charges_present)
+
+case_summary_cleaned |>
+  group_by(drug_charges_present) |>
+  slice_sample(n = 10)
+
+# view(case_summary_cleaned)
+
+# What proportion of these CM cases feature a drug charge?
+nrow(case_summary_cleaned_drugs) / nrow(case_summary_cleaned)
+
+```
+
+Nice! Now we have some nice, clean datasets to visualize. This stage of analysis is tough sometimes; it involves a lot of subjective decision-making, a lot of making the most of messy data, and a lot of double-checking of work. But even though we're aiming for standardized methods, it's also one of the areas where we get to exercise a little bit of creativity and come up with our own solutions to things, so feel free to blaze your own path a little bit too!
+
+# Step 4: Visualizing and exporting the data
+
+To finish things off, we're going to make ourselves a nice, pretty graph showing how many of our drug cases were filed each month throughout the timespan of our data. We'll be using the `ojo_theme()` and `ojo_colors()` functions from `{ojodb}` to take care of most of the styling.
+
+```{r}
+case_summary_cleaned_drugs |>
+  mutate(
+    month_filed = floor_date(date_filed, "months")
+  ) |>
+  count(month_filed, district) |>
+  ggplot(aes(x = month_filed,
+             y = n,
+             color = district)) +
+  geom_line() +
+  scale_y_continuous(limits = c(0, NA)) + # Usually we want to show the y-axis down to zero
+  ojo_theme() +
+  ojo_color() +
+  labs(
+    title = "CM cases involving at least one drug charge,",
+    subtitle = "Oklahoma and Tulsa county district courts, 2016-2022",
+    x = "Month of case filing",
+    y = "Total drug cases filed",
+    caption = "Source: Open Justice Oklahoma analysis
+    of Oklahoma State Court Network (OSCN.net) data.",
+    color = "District"
+  )
+
+```
+
+Looking good! If you're curious about the increase seen around July of 2017, you can read about why that happened [here](https://okpolicy.org/sq-780-already-reshaping-oklahomas-justice-system/).
+
+We also frequently need to send out data in spreadsheet form. You'll typically want to export datasets using the `{readr}` package in whatever format your client needs. A good default option is our old friend the Comma Separated Values format, `.csv`. Here, we'd do that with `write_csv(case_summary_cleaned_drugs, "export-data.csv")`. Exporting to the Microsoft Excel spreadsheet format `.xlsx` will require the `{readxl}` package.
+
+# Step 5: Review and deliver
+
+The last step in the process is to submit your work for a review. Ideally, we should try to make sure everything we do has at least two people (an analyst and a reviewer) look over it before we send it out to a client or publish it. The review process should check every step in the process, and include any needed discussions about the methodological questions we talked about earlier.
+
+We're aiming to start doing reviews via Github. The process will essentially be:
+
+1)  Open a pull request with all your code.
+2)  Request a reviewer on the pull request, and let them know you're ready for them to look it over via Slack, etc.
+3)  They should pull your code from GitHub and run it locally on their machine, checking each step of the process along the way. Any notes, changes, etc. should be included in their review on GitHub, so you can see everything in one convenient place.
+4)  Once all edits have been addressed, we can merge the pull request and we'll have a nice finished product on our `main` branch!
+
+From there, all you'll have to do is write up an email (or whatever delivery method is relevant) and send your data / visualizations out to whoever needs them. 
+
+---
+
+If I wrote all of this correctly and you managed to follow along, then congratulations to both of us! You've successfully learned how to pull court data from the OJO database and use it to answer a research question about our legal system. You'll probably run into a lot of things that aren't covered in this vignette as you tackle new questions and use new parts of our data, but hopefully this will be a useful resource as you're starting out. 
+
+Just remember -- the data is very quirky, and there's always going to be stuff you don't know and problems you aren't sure how to solve. Whether it's a methodology issue, a coding issue, a "dealing with a client" kind of issue, whenever you find yourself spinning your wheels, please don't hesitate to just ask! There's a good chance OJO has been there before, and if not, we'll figure it out together. Thanks for reading!
+

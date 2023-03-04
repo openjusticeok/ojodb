@@ -54,6 +54,7 @@ Suggests:
   lintr,
   readr,
   roxygen2,
+  rmarkdown,
   rvest,
   styler,
   testthat (>= 3.0.0),
