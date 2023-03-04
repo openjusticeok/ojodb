@@ -64,8 +64,9 @@ Our database is divided into a few "schemas" -- if our database is a big filing 
 library(ojodb)
 library(dplyr)
 
-ojo_list_schemas()
+ojo_connect()
 
+ojo_list_schemas()
 ```
 
 Each schema, generally speaking, relates to one of our data types / topics / policy areas. Each one contains tables that store data related to that policy area. Among others, we have:
@@ -82,7 +83,6 @@ The court data that we're interested in right now is stored in the default schem
 
 ```{r}
 ojo_list_tables(schema = "public")
-
 ```
 
 If a schema is a drawer in our filing cabinet, then tables are the folders inside. The `public` schema contains several different tables, all of which relate back to our court data. Here are the most important ones to know:
@@ -97,7 +97,6 @@ We can see exactly which variables are included in each table using the `ojo_lis
 
 ```{r}
 ojo_list_vars(schema = "public", table = "case")
-
 ```
 
 We're interested in criminal cases right now, so we'll be pulling data from this table for our example research question.
