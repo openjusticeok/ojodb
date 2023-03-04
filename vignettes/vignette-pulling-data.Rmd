@@ -64,8 +64,6 @@ Our database is divided into a few "schemas" -- if our database is a big filing 
 library(ojodb)
 library(dplyr)
 
-ojo_connect()
-
 ojo_list_schemas()
 ```
 
