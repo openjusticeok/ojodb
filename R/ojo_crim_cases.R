@@ -22,13 +22,13 @@ ojo_crim_cases <- function(districts = "all", vars = NULL, case_types = c("CM", 
                            file_years = 2000:lubridate::year(Sys.Date()), ...) {
   data <- ojo_tbl("case") |>
     dplyr::filter(
-      .data$case_type %in% case_types,
+      .data$case_type %in% toupper(case_types),
       .data$year %in% file_years
     )
 
   if (all(districts != "all")) {
     data <- data |>
-      dplyr::filter(.data$district %in% districts)
+      dplyr::filter(.data$district %in% toupper(districts))
   }
 
   selection <- c("id", "district", "case_number", "case_type", "date_filed", "date_closed", "counts", "open_counts")

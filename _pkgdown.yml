@@ -33,7 +33,9 @@ reference:
 - title: "'Behind the scenes' functions"
   desc: "These are the most basic / fundamental functions in the package. Generally, we shouldn't need to use them directly."
   contents:
+  - ojo_connect
   - ojo_tbl
   - ojo_check_ssl
   - ojo_auth
+  - ojo_connect
 
