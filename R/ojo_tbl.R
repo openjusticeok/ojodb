@@ -21,11 +21,7 @@
 #' }
 #' @seealso ojo_list_tables(), ojo_list_vars(), ojo_list_schemas()
 #'
-ojo_tbl <- function(table, schema = "public", .con = ojodb) {
-  if (is.null(.con) && !exists("ojodb", where = .GlobalEnv)) {
-    .con <- ojo_connect()
-  }
-
+ojo_tbl <- function(table, schema = "public", ..., .con = ojo_connect()) {
   .con |>
     dplyr::tbl(dbplyr::in_schema(schema, table))
 }

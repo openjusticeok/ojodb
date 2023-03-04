@@ -28,6 +28,15 @@
 #'
 ojo_connect <- function(..., .admin = FALSE, .global = rlang::is_interactive()) {
 
+  # If object ojodb is already in the global environment, make sure its a valid pool object and return it
+  if (.global && exists("ojodb", envir = .GlobalEnv)) {
+    if (inherits(ojodb, "Pool") && pool::dbIsValid(ojodb)) {
+      invisible(ojodb)
+    } else {
+      rlang::abort("The object `ojodb` already exists in the global environment, but it is not a valid database connection.")
+    }
+  }
+
   user_type <- if (.admin) "ADMIN" else "DEFAULT"
 
   if (Sys.getenv("OJO_HOST") == "") {
@@ -51,6 +60,11 @@ ojo_connect <- function(..., .admin = FALSE, .global = rlang::is_interactive()) 
 
   if (.global) {
     assign("ojodb", conn, envir = .GlobalEnv)
+    # Defer pool::poolClose() until the end of the session
+    withr::defer(
+      pool::poolClose(ojodb),
+      envir = .GlobalEnv
+    )
   }
 
   invisible(conn)

@@ -9,12 +9,8 @@
 #' ojo_list_schemas()
 #' }
 #'
-ojo_list_schemas <- function() {
-  if (!exists("ojodb", where = .GlobalEnv)) {
-    ojo_connect()
-  }
-
-  ojodb |>
+ojo_list_schemas <- function(..., .con = ojo_connect()) {
+  .con |>
     pool::dbGetQuery(dbplyr::sql("SELECT schema_name FROM information_schema.schemata")) |>
     dplyr::as_tibble() |>
     dplyr::rename(schema = schema_name) |>

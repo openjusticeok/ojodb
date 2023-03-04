@@ -1,3 +1,8 @@
-# test_that("multiplication works", {
-#   expect_equal(2 * 2, 4)
-# })
+test_that("ojo_connect works in interactive environment", {
+  local(
+    rlang::with_interactive(
+      ojo_connect()
+      expect_true(exists("ojodb"))
+    )
+  )
+})
