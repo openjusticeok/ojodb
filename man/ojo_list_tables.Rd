@@ -4,7 +4,7 @@
 \alias{ojo_list_tables}
 \title{List all tableson the ojodb database}
 \usage{
-ojo_list_tables(schema = "public", ...)
+ojo_list_tables(schema = "public", ..., .con = ojo_connect())
 }
 \arguments{
 \item{schema}{The name of the schema to query}

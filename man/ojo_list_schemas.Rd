@@ -4,7 +4,7 @@
 \alias{ojo_list_schemas}
 \title{List all schemas on the ojodb database}
 \usage{
-ojo_list_schemas()
+ojo_list_schemas(..., .con = ojo_connect())
 }
 \value{
 data, a tibble containing the names of all schemas

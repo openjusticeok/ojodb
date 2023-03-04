@@ -26,10 +26,10 @@
 #'
 #' @seealso ojo_auth()
 #'
-ojo_connect <- function(..., .admin = FALSE, .global = rlang::is_interactive()) {
+ojo_connect <- function(..., .admin = FALSE, .global = rlang::is_interactive(), .env = .GlobalEnv) {
 
   # If object ojodb is already in the global environment, make sure its a valid pool object and return it
-  if (.global && exists("ojodb", envir = .GlobalEnv)) {
+  if (.global && exists("ojodb", envir = .env)) {
     if (inherits(ojodb, "Pool") && pool::dbIsValid(ojodb)) {
       invisible(ojodb)
     } else {
@@ -59,11 +59,16 @@ ojo_connect <- function(..., .admin = FALSE, .global = rlang::is_interactive()) 
   )
 
   if (.global) {
-    assign("ojodb", conn, envir = .GlobalEnv)
+    assign("ojodb", conn, envir = .env)
     # Defer pool::poolClose() until the end of the session
     withr::defer(
-      pool::poolClose(ojodb),
-      envir = .GlobalEnv
+      expr = {
+        print(ojodb)
+        pool::poolClose(ojodb)
+        print(ojodb)
+      },
+      envir = .env,
+      priority = "first"
     )
   }
 
