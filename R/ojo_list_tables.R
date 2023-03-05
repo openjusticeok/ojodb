@@ -14,7 +14,11 @@
 #' ojo_list_tables("iic")
 #' }
 #'
-ojo_list_tables <- function(schema = "public", ..., .con = ojo_connect()) {
+ojo_list_tables <- function(schema = "public", ..., .con = NULL) {
+
+  if (is.null(.con)) {
+    .con <- ojo_connect()
+  }
 
   query <- glue::glue_sql(
     "SELECT table_name FROM information_schema.tables",
@@ -25,10 +29,9 @@ ojo_list_tables <- function(schema = "public", ..., .con = ojo_connect()) {
   )
 
   list_tables <- function(x) {
-    query <- DBI::sqlInterpolate(
-      .con,
-      "SELECT * FROM information_schema.tables WHERE table_schema = ?schema",
-      schema = x
+    query <- glue::glue_sql(
+      "SELECT * FROM information_schema.tables WHERE table_schema = {x}",
+      .con = .con
     )
 
     pool::dbGetQuery(.con, query) |>

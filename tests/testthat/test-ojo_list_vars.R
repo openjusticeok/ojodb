@@ -1,26 +1,17 @@
-test_that("isn't interactive", {
-  expect_false(
-    rlang::is_interactive()
+test_that("ojo_list_vars hasn't changed", {
+  expect_snapshot_value(
+    ojo_list_vars("case"),
+    style = "deparse"
   )
 })
 
-test_that("is interactive", {
-  rlang::with_interactive({
-    expect_true(
-      rlang::is_interactive()
-    )
-  })
-})
+test_that("ojo_list_vars works in non-interactive mode", {
+  db <- ojo_connect()
 
-test_that("list vars fails in non-interactive", {
-  withr::with_environment(
-    env = rlang::new_environment(),
-    code = expect_error(ojo_list_vars("case"))
+  expect_snapshot_value(
+    ojo_list_vars("case", .con = db),
+    style = "deparse"
   )
-})
 
-test_that("list vars works in interactive", {
-  rlang::with_interactive(
-    expect_silent(ojo_list_vars("case"))
-  )
+  pool::poolClose(db)
 })

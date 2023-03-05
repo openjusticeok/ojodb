@@ -10,7 +10,6 @@
 #' }
 #'
 ojo_list_schemas <- function(..., .con = NULL) {
-
   if (is.null(.con)) {
     .con <- ojo_connect()
   }
