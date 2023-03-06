@@ -4,7 +4,7 @@
 \alias{ojo_query}
 \title{OJO Query}
 \usage{
-ojo_query(..., .con = NULL)
+ojo_query(query, ..., .con = NULL)
 }
 \arguments{
 \item{...}{Arguments to pass to glue::glue_sql}
