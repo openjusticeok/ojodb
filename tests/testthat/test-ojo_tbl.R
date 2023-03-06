@@ -21,7 +21,7 @@ test_that("ojo_tbl succeeds correctly in interactive mode", {
   rlang::with_interactive({
     ojo_connect()
 
-    expect_true(pool::dbIsValid(ojo_pool)
+    expect_true(pool::dbIsValid(ojo_pool))
 
     expect_snapshot_value(
       ojo_tbl("case"),
