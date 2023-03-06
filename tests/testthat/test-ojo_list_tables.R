@@ -4,4 +4,3 @@ test_that("ojo_list_tables hasn't changed", {
     style = "deparse"
   )
 })
-

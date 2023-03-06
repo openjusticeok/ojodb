@@ -22,16 +22,23 @@
 #' ojo_connect()
 #' }
 #' @section Side Effects:
-#' If either the `.global` argument or `rlang::is_interactive` are `TRUE`, an object named `ojodb` is created in the global environment.
+#' If either the `.global` argument or `rlang::is_interactive` are `TRUE`, an object named `ojo_pool` is created in the global environment.
 #'
 #' @seealso ojo_auth()
 #'
-ojo_connect <- function(..., .admin = FALSE, .env = NULL) {
+ojo_connect <- function(..., .admin = FALSE, .global = rlang::is_interactive(), .env = parent.frame()) {
 
   user_type <- if (.admin) "ADMIN" else "DEFAULT"
 
   if (Sys.getenv("OJO_HOST") == "") {
     rlang::abort("No {tolower(user_type)} configuration for the OJO database was found. Please create one now using `ojo_auth`, or manually, by adding the necessary environment variables with `usethis::edit_r_environ`.")
+  }
+
+  # Check if pool with correct user already exists and is valid
+  if (.global && exists("ojo_pool", envir = .env, inherits = TRUE)) {
+    if (pool::dbIsValid(ojo_pool)) {
+      return(ojo_pool)
+    }
   }
 
   conn <- pool::dbPool(
@@ -48,6 +55,18 @@ ojo_connect <- function(..., .admin = FALSE, .env = NULL) {
     bigint = "integer",
     ...
   )
+
+  if (.global) {
+    assign("ojo_pool", conn, envir = .env, inherits = TRUE)
+    withr::defer(
+      {
+        if(exists("ojo_pool", envir = .env, inherits = TRUE)) {
+          pool::poolClose(ojo_pool)
+        }
+      },
+      envir = .env
+    )
+  }
 
   invisible(conn)
 }

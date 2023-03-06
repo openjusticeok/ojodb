@@ -4,7 +4,12 @@
 \alias{ojo_connect}
 \title{OJO Connect}
 \usage{
-ojo_connect(..., .admin = FALSE, .global = rlang::is_interactive())
+ojo_connect(
+  ...,
+  .admin = FALSE,
+  .global = rlang::is_interactive(),
+  .env = parent.frame()
+)
 }
 \arguments{
 \item{.admin}{A logical value indicating whether to connect to the database as an administrator}
@@ -33,7 +38,7 @@ If no credentials exist, prompts for user, password, and host name and provides 
 }
 \section{Side Effects}{
 
-If either the `.global` argument or `rlang::is_interactive` are `TRUE`, an object named `ojodb` is created in the global environment.
+If either the `.global` argument or `rlang::is_interactive` are `TRUE`, an object named `ojo_pool` is created in the global environment.
 }
 
 \examples{

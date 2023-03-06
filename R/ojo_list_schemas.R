@@ -14,11 +14,11 @@ ojo_list_schemas <- function(..., .con = NULL) {
     .con <- ojo_connect()
   }
 
-  t <- .con |>
-    pool::dbGetQuery(dbplyr::sql("SELECT schema_name FROM information_schema.schemata")) |>
+  ojo_query(
+    "SELECT schema_name FROM information_schema.schemata",
+    .con = .con
+  ) |>
     dplyr::as_tibble() |>
     dplyr::rename(schema = schema_name) |>
     dplyr::filter(!schema %in% c("pg_catalog", "information_schema"))
-
-  return(t)
 }

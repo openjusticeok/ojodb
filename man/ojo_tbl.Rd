@@ -4,7 +4,7 @@
 \alias{ojo_tbl}
 \title{Identify a table from the OJO database}
 \usage{
-ojo_tbl(table, schema = "public", ..., .con = ojo_connect())
+ojo_tbl(table, schema = "public", ..., .con = NULL)
 }
 \arguments{
 \item{table}{The name of a table in the OJO database. To get a list of tables, run \code{ojo_list_tables()}}

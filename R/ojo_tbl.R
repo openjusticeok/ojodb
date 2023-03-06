@@ -21,7 +21,18 @@
 #' }
 #' @seealso ojo_list_tables(), ojo_list_vars(), ojo_list_schemas()
 #'
-ojo_tbl <- function(table, schema = "public", ..., .con = ojo_connect()) {
-  .con |>
+ojo_tbl <- function(table, schema = "public", ..., .con = NULL) {
+
+  if(!is.null(.con)) {
+    ojo_pool <- .con
+  } else {
+    ojo_connect(..., .env = parent.frame())
+  }
+
+  if (!exists("ojo_pool")) {
+    stop("No connection to OJO database. Please provide a database connection created with `ojo_connect` to the `.con` argument.")
+  }
+
+  ojo_pool |>
     dplyr::tbl(dbplyr::in_schema(schema, table))
 }

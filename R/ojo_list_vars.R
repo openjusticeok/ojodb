@@ -17,20 +17,14 @@
 #' }
 #'
 ojo_list_vars <- function(table, schema = "public", ..., .con = NULL) {
-
-  if (is.null(.con)) {
-    .con <- ojo_connect()
-  }
-
-  query <- glue::glue_sql(
+  q <- glue::glue_sql(
     "SELECT column_name FROM information_schema.columns WHERE table_schema = {schema} AND table_name = {table}",
     .con = .con
   )
 
-  pool::dbGetQuery(
-    conn = .con,
-    query
-  ) |>
-    tibble::as_tibble()
-
+  ojo_query(
+    query = q,
+    ...,
+    .con = .con
+  )
 }
