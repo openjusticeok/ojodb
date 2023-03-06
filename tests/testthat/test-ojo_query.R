@@ -5,8 +5,6 @@ test_that("ojo_query succeeds correctly in non-interactive mode", {
 
   pool::poolClose(db)
   expect_false(pool::dbIsValid(db))
-
-  rm(db)
 })
 
 test_that("ojo_query fails correctly in non-interactive mode", {
@@ -30,7 +28,7 @@ test_that("ojo_query fails correctly in interactive mode", {
   rlang::with_interactive({
     expect_error(
       ojo_query("SELECT 'a' as test;", .global = FALSE),
-      "No connection"
+      "pool has been closed"
     )
   })
 })

@@ -10,29 +10,26 @@ knitr::opts_chunk$set(echo = TRUE)
 devtools::load_all()
 ```
 
-```{r connect}
-print(ojo_connect)
-print(parent.frame())
-ojo_connect(.global = TRUE, .env = parent.frame())
+```{r}
+ojo_connect(.global = TRUE)
 ```
 
-```{r withr}
-withr::deferred_run()
+```{r}
+ojo_tbl("case")
 ```
 
-```{r exists1}
-exists("ojodb")
+```{r}
+rm(ojo_pool)
+exists(ojo_pool)
 ```
 
-```{r list-vars}
-print(ojo_list_vars)
-ojo_list_vars(table = "case")
+```{r}
+ojo_connect()
+exists(ojo_pool)
 ```
 
-```{r exists2}
-exists("ojodb")
+```{r}
+ojo_connect(.global = TRUE)
+exists(ojo_pool)
 ```
 
-```{r search}
-search()
-```

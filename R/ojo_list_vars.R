@@ -17,14 +17,14 @@
 #' }
 #'
 ojo_list_vars <- function(table, schema = "public", ..., .con = NULL) {
-  q <- glue::glue_sql(
-    "SELECT column_name FROM information_schema.columns WHERE table_schema = {schema} AND table_name = {table}",
+  ojo_tbl(
+    table = "columns",
+    schema = "information_schema",
     .con = .con
-  )
-
-  ojo_query(
-    query = q,
-    ...,
-    .con = .con
-  )
+  ) |>
+    dplyr::filter(
+      table_schema == schema,
+      table_name == table
+    ) |>
+    dplyr::select(column_name)
 }

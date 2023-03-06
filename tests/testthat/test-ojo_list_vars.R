@@ -1,10 +1,9 @@
 test_that("ojo_list_vars succeeds correctly in non-interactive mode", {
   db <- ojo_connect()
 
-  expect_snapshot_value(
-    ojo_list_vars("case", .con = db),
-    style = "deparse"
-  )
+  d <- ojo_list_vars("case", .con = db)
+
+  expect_true(inherits(d, "tbl_Pool"))
 
   pool::poolClose(db)
 
@@ -12,12 +11,12 @@ test_that("ojo_list_vars succeeds correctly in non-interactive mode", {
 })
 
 test_that("ojo_list_vars succeeds correctly in interactive mode", {
+  
   rlang::with_interactive({
-    expect_snapshot_value(
-      ojo_list_vars("case"),
-      style = "deparse"
-    )
-  })
+    ojo_list_vars("case") |>
+      dplyr::collect() |>
+      capture_output()
 
-  expect_true(pool::dbIsValid(ojo_pool))
+    expect_true(pool::dbIsValid(ojo_pool))
+  })
 })

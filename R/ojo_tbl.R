@@ -26,7 +26,7 @@ ojo_tbl <- function(table, schema = "public", ..., .con = NULL) {
   if(!is.null(.con)) {
     ojo_pool <- .con
   } else {
-    ojo_connect(..., .env = parent.frame())
+    ojo_connect(...)
   }
 
   if (!exists("ojo_pool")) {

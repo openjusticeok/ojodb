@@ -11,7 +11,7 @@
 
 <meta name="author" content="Brancen" />
 
-<meta name="date" content="2023-03-04" />
+<meta name="date" content="2023-03-05" />
 
 <title>Test ojo_connect</title>
 
@@ -352,27 +352,25 @@ display: none;
 
 <h1 class="title toc-ignore">Test ojo_connect</h1>
 <h4 class="author">Brancen</h4>
-<h4 class="date">2023-03-04</h4>
+<h4 class="date">2023-03-05</h4>
 
 </div>
 
 
 <pre class="r"><code>print(ojo_connect)</code></pre>
-<pre><code>## function(..., .admin = FALSE, .global = rlang::is_interactive()) {
-## 
-##   # If object ojodb is already in the global environment, make sure its a valid pool object and return it
-##   if (.global &amp;&amp; exists(&quot;ojodb&quot;, envir = .GlobalEnv)) {
-##     if (inherits(ojodb, &quot;Pool&quot;) &amp;&amp; pool::dbIsValid(ojodb)) {
-##       invisible(ojodb)
-##     } else {
-##       rlang::abort(&quot;The object `ojodb` already exists in the global environment, but it is not a valid database connection.&quot;)
-##     }
-##   }
+<pre><code>## function(..., .admin = FALSE, .global = rlang::is_interactive(), .env = parent.frame()) {
 ## 
 ##   user_type &lt;- if (.admin) &quot;ADMIN&quot; else &quot;DEFAULT&quot;
 ## 
 ##   if (Sys.getenv(&quot;OJO_HOST&quot;) == &quot;&quot;) {
 ##     rlang::abort(&quot;No {tolower(user_type)} configuration for the OJO database was found. Please create one now using `ojo_auth`, or manually, by adding the necessary environment variables with `usethis::edit_r_environ`.&quot;)
+##   }
+## 
+##   # Check if pool with correct user already exists and is valid
+##   if (.global &amp;&amp; exists(&quot;ojo_pool&quot;, envir = .env, inherits = TRUE)) {
+##     if (pool::dbIsValid(ojo_pool)) {
+##       return(ojo_pool)
+##     }
 ##   }
 ## 
 ##   conn &lt;- pool::dbPool(
@@ -391,40 +389,43 @@ display: none;
 ##   )
 ## 
 ##   if (.global) {
-##     assign(&quot;ojodb&quot;, conn, envir = .GlobalEnv)
-##     # Defer pool::poolClose() until the end of the session
+##     assign(&quot;ojo_pool&quot;, conn, envir = .env, inherits = TRUE)
 ##     withr::defer(
-##       pool::poolClose(ojodb),
-##       envir = .GlobalEnv,
-##       priority = &quot;first&quot;
+##       {
+##         if(exists(&quot;ojo_pool&quot;, envir = .env, inherits = TRUE)) {
+##           pool::poolClose(ojo_pool)
+##         }
+##       },
+##       envir = .env
 ##     )
 ##   }
 ## 
 ##   invisible(conn)
 ## }
 ## &lt;environment: namespace:ojodb&gt;</code></pre>
+<pre class="r"><code>print(parent.frame())</code></pre>
+<pre><code>## &lt;environment: 0x7fe08def8bf8&gt;</code></pre>
 <pre class="r"><code>ojo_connect(.global = TRUE)</code></pre>
 <pre class="r"><code>withr::deferred_run()</code></pre>
-<pre class="r"><code>exists(&quot;ojodb&quot;)</code></pre>
+<pre class="r"><code>exists(&quot;ojo_pool&quot;)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code>print(ojo_list_vars)</code></pre>
-<pre><code>## function(table, schema = &quot;public&quot;, ..., .con = ojo_connect()) {
-## 
-##   query &lt;- glue::glue_sql(
-##     &quot;SELECT column_name FROM information_schema.columns WHERE table_schema = {schema} AND table_name = {table}&quot;,
+<pre><code>## function(table, schema = &quot;public&quot;, ..., .con = NULL) {
+##   ojo_tbl(
+##     table = &quot;columns&quot;,
+##     schema = &quot;information_schema&quot;,
 ##     .con = .con
-##   )
-## 
-##   pool::dbGetQuery(
-##     conn = .con,
-##     query
 ##   ) |&gt;
-##     tibble::as_tibble()
-## 
+##     dplyr::filter(
+##       table_schema == schema,
+##       table_name == table
+##     ) |&gt;
+##     dplyr::select(column_name)
 ## }
 ## &lt;environment: namespace:ojodb&gt;</code></pre>
 <pre class="r"><code>ojo_list_vars(table = &quot;case&quot;)</code></pre>
-<pre><code>## # A tibble: 21 × 1
+<pre><code>## # Source:   SQL [?? x 1]
+## # Database: postgres  [bgregory@34.122.10.67:5432/ojodb]
 ##    column_name
 ##    &lt;chr&gt;      
 ##  1 id         
@@ -437,8 +438,8 @@ display: none;
 ##  8 date_closed
 ##  9 status     
 ## 10 judge      
-## # … with 11 more rows</code></pre>
-<pre class="r"><code>exists(&quot;ojodb&quot;)</code></pre>
+## # … with more rows</code></pre>
+<pre class="r"><code>exists(&quot;ojo_pool&quot;)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code>search()</code></pre>
 <pre><code>##  [1] &quot;.GlobalEnv&quot;        &quot;devtools_shims&quot;    &quot;package:ojodb&quot;    
