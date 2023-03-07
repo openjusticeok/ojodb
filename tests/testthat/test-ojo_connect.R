@@ -13,11 +13,12 @@ test_that("ojo_connect works in interactive mode", {
   rlang::with_interactive({
     ojo_connect()
 
-    expect_true(inherits(ojo_pool, "Pool"))
-    expect_true(pool::dbIsValid(ojo_pool))
+    db <- get("ojo_pool", envir = ojo_env(), inherits = FALSE)
+    expect_true(inherits(db, "Pool"))
+    expect_true(pool::dbIsValid(db))
 
-    withr::deferred_run()
+    withr::deferred_run(envir = ojo_env())
 
-    expect_false(pool::dbIsValid(ojo_pool))
+    expect_false(pool::dbIsValid(db))
   })
 })

@@ -26,7 +26,7 @@
 #'
 #' @seealso ojo_auth()
 #'
-ojo_connect <- function(..., .admin = FALSE, .global = rlang::is_interactive(), .env = parent.frame()) {
+ojo_connect <- function(..., .admin = FALSE, .global = NULL, .env = ojo_env()) {
 
   user_type <- if (.admin) "ADMIN" else "DEFAULT"
 
@@ -35,9 +35,10 @@ ojo_connect <- function(..., .admin = FALSE, .global = rlang::is_interactive(), 
   }
 
   # Check if pool with correct user already exists and is valid
-  if (.global && exists("ojo_pool", envir = .env, inherits = TRUE)) {
-    if (pool::dbIsValid(ojo_pool)) {
-      return(ojo_pool)
+  if (.global && exists("ojo_pool", envir = .env)) {
+    db <- get("ojo_pool", envir = .env, inherits = FALSE)
+    if (pool::dbIsValid(db)) {
+      return(db)
     }
   }
 
@@ -57,15 +58,17 @@ ojo_connect <- function(..., .admin = FALSE, .global = rlang::is_interactive(), 
   )
 
   if (.global) {
-    assign("ojo_pool", conn, envir = .env, inherits = TRUE)
+    assign("ojo_pool", conn, envir = .env)
     withr::defer(
       {
-        if(exists("ojo_pool", envir = .env, inherits = TRUE)) {
-          pool::poolClose(ojo_pool)
+        if(exists("ojo_pool", envir = .env)) {
+          pool::poolClose(.env$ojo_pool)
+          rm("ojo_pool", envir = .env)
         }
       },
       envir = .env
     )
+    invisible()
   }
 
   invisible(conn)
