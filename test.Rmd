@@ -1,0 +1,35 @@
+---
+title: "Test ojo_connect"
+author: "Brancen"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+devtools::load_all()
+```
+
+```{r}
+ojo_connect(.global = TRUE)
+```
+
+```{r}
+ojo_tbl("case")
+```
+
+```{r}
+rm(ojo_pool)
+exists(ojo_pool)
+```
+
+```{r}
+ojo_connect()
+exists(ojo_pool)
+```
+
+```{r}
+ojo_connect(.global = TRUE)
+exists(ojo_pool)
+```
+

@@ -16,21 +16,15 @@
 #' ojo_list_vars("inmate", "iic")
 #' }
 #'
-ojo_list_vars <- function(table, schema = "public", ...) {
-
-  if (!exists("ojodb", where = .GlobalEnv)) {
-    ojo_connect()
-  }
-
-  query <- glue::glue_sql(
-    "SELECT column_name FROM information_schema.columns WHERE table_schema = {schema} AND table_name = {table}",
-    .con = ojodb
-  )
-
-  on.exit(pool::poolReturn(ojodb))
-
-  ojodb |>
-    pool::dbGetQuery(query) |>
-    tibble::as_tibble()
-
+ojo_list_vars <- function(table, schema = "public", ..., .con = NULL) {
+  ojo_tbl(
+    table = "columns",
+    schema = "information_schema",
+    .con = .con
+  ) |>
+    dplyr::filter(
+      table_schema == schema,
+      table_name == table
+    ) |>
+    dplyr::select(column_name)
 }

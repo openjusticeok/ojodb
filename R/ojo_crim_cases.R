@@ -22,13 +22,15 @@ ojo_crim_cases <- function(districts = "all", vars = NULL, case_types = c("CM", 
                            file_years = 2000:lubridate::year(Sys.Date()), ...) {
   data <- ojo_tbl("case") |>
     dplyr::filter(
-      .data$case_type %in% toupper(case_types),
+      # `upper()` is evaluated in SQL; debug and use `show_query()` to verify
+      .data$case_type %in% case_types,
       .data$year %in% file_years
     )
 
   if (all(districts != "all")) {
     data <- data |>
-      dplyr::filter(.data$district %in% toupper(districts))
+      # `upper()` is evaluated in SQL; debug and use `show_query()` to verify
+      dplyr::filter(.data$district %in% districts)
   }
 
   selection <- c("id", "district", "case_number", "case_type", "date_filed", "date_closed", "counts", "open_counts")
@@ -103,7 +105,7 @@ ojo_add_counts <- function(data, vars = NULL, ...) {
 
   if (is.null(vars)) {
     data <- data |>
-      dplyr::select(dplyr::all_of(columns), .data$count_as_filed, .data$disposition)
+      dplyr::select(dplyr::all_of(columns), "count_as_filed", "disposition")
   } else {
     if (vars != "all") {
       selection <- c(dplyr::all_of(columns), dplyr::all_of(vars))

@@ -4,7 +4,7 @@
 \alias{ojo_list_vars}
 \title{List all variables in a table on the ojodb database}
 \usage{
-ojo_list_vars(table, schema = "public", ...)
+ojo_list_vars(table, schema = "public", ..., .con = NULL)
 }
 \arguments{
 \item{table}{The name of the table to query}

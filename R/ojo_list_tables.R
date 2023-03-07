@@ -1,7 +1,7 @@
 #' List all tableson the ojodb database
 #'
 #' Query the Open Justice Oklahoma database for the names of all tables
-#' 
+#'
 #' @param schema The name of the schema to query
 #' @param ... Placeholder for additional arguments
 #'
@@ -14,21 +14,27 @@
 #' ojo_list_tables("iic")
 #' }
 #'
-ojo_list_tables <- function(schema = "public", ...) {
-  if (!exists("ojodb", where = .GlobalEnv)) {
-    ojo_connect()
+ojo_list_tables <- function(schema = "public", ..., .con = NULL) {
+
+  if (is.null(.con)) {
+    .con <- ojo_connect()
   }
 
+  query <- glue::glue_sql(
+    "SELECT table_name FROM information_schema.tables",
+    if (!schema == "all") {
+      "WHERE table_schema = {schema}"
+    },
+    .con = .con
+  )
+
   list_tables <- function(x) {
-    query <- DBI::sqlInterpolate(
-      ojodb,
-      "SELECT * FROM information_schema.tables WHERE table_schema = ?schema",
-      schema = x
+    query <- glue::glue_sql(
+      "SELECT * FROM information_schema.tables WHERE table_schema = {x}",
+      .con = .con
     )
 
-    on.exit(pool::poolReturn(ojodb))
-
-    pool::dbGetQuery(ojodb, query) |>
+    pool::dbGetQuery(.con, query) |>
       dplyr::as_tibble() |>
       dplyr::select(table = table_name)
   }

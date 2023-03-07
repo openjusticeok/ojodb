@@ -9,6 +9,7 @@
 #' @param port The port number of the database server
 #' @param username The username to use to connect to the database
 #' @param password The password to use to connect to the database
+#' @param ... Placeholder for additional arguments
 #' @param .admin A logical value indicating whether to connect to the database as an administrator
 #' @param .overwrite A logical value indicating whether to overwrite the existing .Renviron file
 #' @param .install A logical value indicating whether to install the database connection or use it only for the current session
@@ -26,7 +27,7 @@
 #' If the .Renviron file already exists, it will be backed up and the new credentials will be appended to the end of the file.
 #' If the .Renviron file does not exist, it will be created and the credentials will be stored there.
 #'
-ojo_auth <- function(host, port, username, password, .admin = F, .overwrite = T, .install = T) {
+ojo_auth <- function(host, port, username, password, ..., .admin = F, .overwrite = T, .install = T) {
   home <- Sys.getenv("HOME")
   renv <- file.path(home, ".Renviron")
   rootcert <- file.path(home, ".postgresql/ojodb/server-ca.pem")
@@ -81,7 +82,6 @@ ojo_auth <- function(host, port, username, password, .admin = F, .overwrite = T,
       userconcat <- paste0("OJO_DEFAULT_USER='", username, "'")
       passconcat <- paste0("OJO_DEFAULT_PASS='", password, "'")
     }
-    driverconcat <- paste0("OJO_DRIVER='PostgreSQL Driver'")
     sslmodeconcat <- paste0("OJO_SSL_MODE='verify-ca'")
     rootcertconcat <- paste0("OJO_SSL_ROOT_CERT='", rootcert, "'")
     clientcertconcat <- paste0("OJO_SSL_CERT='", clientcert, "'")
@@ -107,7 +107,6 @@ ojo_auth <- function(host, port, username, password, .admin = F, .overwrite = T,
       Sys.setenv(OJO_DEFAULT_USER = username)
       Sys.setenv(OJO_DEFAULT_PASS = password)
     }
-    Sys.setenv(OJO_DRIVER = "PostgreSQL Driver")
     Sys.setenv(OJO_SSL_MODE = "verify-ca")
     Sys.setenv(OJO_SSL_ROOT_CERT = rootcert)
     Sys.setenv(OJO_SSL_CERT = clientcert)
