@@ -81,7 +81,6 @@ ojo_auth <- function(host, port, username, password, .admin = F, .overwrite = T,
       userconcat <- paste0("OJO_DEFAULT_USER='", username, "'")
       passconcat <- paste0("OJO_DEFAULT_PASS='", password, "'")
     }
-    driverconcat <- paste0("OJO_DRIVER='PostgreSQL Driver'")
     sslmodeconcat <- paste0("OJO_SSL_MODE='verify-ca'")
     rootcertconcat <- paste0("OJO_SSL_ROOT_CERT='", rootcert, "'")
     clientcertconcat <- paste0("OJO_SSL_CERT='", clientcert, "'")
@@ -107,7 +106,6 @@ ojo_auth <- function(host, port, username, password, .admin = F, .overwrite = T,
       Sys.setenv(OJO_DEFAULT_USER = username)
       Sys.setenv(OJO_DEFAULT_PASS = password)
     }
-    Sys.setenv(OJO_DRIVER = "PostgreSQL Driver")
     Sys.setenv(OJO_SSL_MODE = "verify-ca")
     Sys.setenv(OJO_SSL_ROOT_CERT = rootcert)
     Sys.setenv(OJO_SSL_CERT = clientcert)
