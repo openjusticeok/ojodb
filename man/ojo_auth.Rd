@@ -9,6 +9,7 @@ ojo_auth(
   port,
   username,
   password,
+  ...,
   .admin = F,
   .overwrite = T,
   .install = T
@@ -22,6 +23,8 @@ ojo_auth(
 \item{username}{The username to use to connect to the database}
 
 \item{password}{The password to use to connect to the database}
+
+\item{...}{Placeholder for additional arguments}
 
 \item{.admin}{A logical value indicating whether to connect to the database as an administrator}
 
