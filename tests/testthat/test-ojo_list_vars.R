@@ -17,6 +17,7 @@ test_that("ojo_list_vars succeeds correctly in interactive mode", {
       dplyr::collect() |>
       capture_output()
 
-    expect_true(pool::dbIsValid(ojo_pool))
+    db <- get("ojo_pool", envir = ojo_env(), inherits = FALSE)
+    expect_true(pool::dbIsValid(db))
   })
 })

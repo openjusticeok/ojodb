@@ -22,8 +22,10 @@ knitr::opts_chunk$set(
 ```
 
 ```{r, echo=FALSE}
+library(ojodb)
 # This needs to be here until we fix ojo_connect() to work in a non-interactive environment 
-ojodb::ojo_connect(.global = TRUE)
+rlang::local_interactive()
+ojo_connect()
 ```
 
 [![A screenshot of the OSCN homepage](images/oscn-screenshot.png)](https://www.oscn.net/v4/)
@@ -284,7 +286,6 @@ In this case, we're going to use a regex string that OJO's founder Ryan Gentzler
 drugs <- "CDS|C\\.D\\.S|DRUG|OXY|HUFF|AMPHET|ZOLOL|ZOLAM|HYDROC|CODEIN|PRECURS|
 |XANAX|MORPH|METERDI|ZEPAM|LORAZ|VALIU|EPHED|SUB|COCA|PSEUDO| CD|CD |PRESCRIP|
 |NARC|METH|C\\.D\\.|HEROIN|ANHYD|AMMONIA|OPIUM|LORTAB|MARIJUANA|CANNABIS|MJ"
-
 ```
 
 While I was writing this vignette, I found it by searching "drugs" and "marijuana" on our Github. It should really be a lot easier and more streamlined than that, though, so in the future this will hopefully be integrated as part of the `{ojodb}` package.

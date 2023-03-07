@@ -9,21 +9,16 @@
 #' @returns data, a tibble containing the results of the query
 #' @examples
 #' \dontrun{
-#' ojo_query("SELECT * FROM "case" LIMIT 10")
+#' ojo_query("SELECT * FROM \"case\" LIMIT 10")
 #' ojo_query("SELECT * FROM iic.inmate LIMIT 10")
 #' }
 #'
 ojo_query <- function(query, ..., .con = NULL) {
-  if (!is.null(.con)) {
-    ojo_pool <- .con
-  } else {
-    ojo_connect(..., .env = parent.frame())
+  if (is.null(.con)) {
+    .con <- ojo_connect(...)
   }
 
-  if (!exists("ojo_pool")) {
-    stop("No connection to OJO database. Please provide a database connection created with `ojo_connect` to the `.con` argument.")
-  }
-
-  pool::dbGetQuery(ojo_pool, query) |>
+  .con |>
+    pool::dbGetQuery(query) |>
     dplyr::as_tibble()
 }

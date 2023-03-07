@@ -26,7 +26,7 @@
 #'
 #' @seealso ojo_auth()
 #'
-ojo_connect <- function(..., .admin = FALSE, .global = NULL, .env = ojo_env()) {
+ojo_connect <- function(..., .admin = FALSE, .global = rlang::is_interactive(), .env = ojo_env()) {
 
   user_type <- if (.admin) "ADMIN" else "DEFAULT"
 

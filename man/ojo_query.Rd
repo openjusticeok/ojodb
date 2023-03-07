@@ -19,7 +19,7 @@ Query the Open Justice Oklahoma database
 }
 \examples{
 \dontrun{
-ojo_query("SELECT * FROM "case" LIMIT 10")
+ojo_query("SELECT * FROM \"case\" LIMIT 10")
 ojo_query("SELECT * FROM iic.inmate LIMIT 10")
 }
 

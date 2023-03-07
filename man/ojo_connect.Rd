@@ -8,7 +8,7 @@ ojo_connect(
   ...,
   .admin = FALSE,
   .global = rlang::is_interactive(),
-  .env = parent.frame()
+  .env = ojo_env()
 )
 }
 \arguments{
