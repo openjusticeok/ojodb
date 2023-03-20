@@ -1,5 +1,5 @@
 {
     "name": "${localWorkspaceFolderBasename}",
-    "image": "ghcr.io/rocker-org/devcontainer/tidyverse:4",
+    "image": "ghcr.io/rocker-org/devcontainer/tidyverse",
     "postAttachCommand": "sudo rstudio-server start"
 }
