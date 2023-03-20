@@ -52,7 +52,12 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ojo_connect</span><span class="op">(</span><span class="va">...</span>, .admin <span class="op">=</span> <span class="cn">FALSE</span>, .global <span class="op">=</span> <span class="cn">NULL</span>, .env <span class="op">=</span> <span class="fu">ojo_env</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ojo_connect</span><span class="op">(</span></span>
+<span>  <span class="va">...</span>,</span>
+<span>  .admin <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  .global <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/is_interactive.html" class="external-link">is_interactive</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  .env <span class="op">=</span> <span class="fu">ojo_env</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
