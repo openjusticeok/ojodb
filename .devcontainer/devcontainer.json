@@ -1,5 +1,12 @@
 {
     "name": "${localWorkspaceFolderBasename}",
-    "image": "ghcr.io/rocker-org/devcontainer/tidyverse:4",
-    "postAttachCommand": "sudo rstudio-server start"
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "forwardPorts": [8787, 13659],
+    "portsAttributes": {
+        "8787": {"label": "RStudio Server"},
+        "13659": {"label": "{httpgd}"}
+    },
+    "postStartCommand": "sudo rstudio-server start"
 }
