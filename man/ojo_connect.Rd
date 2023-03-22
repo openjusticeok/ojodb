@@ -27,7 +27,7 @@ ojo_connect(
 \item{.install}{A logical value indicating whether to install the database connection or use it only for the current session}
 }
 \value{
-A database connection object created with `pool::dbPool` and `odbc::odbc`
+A database connection object created with `pool::dbPool` and `RPostgres::Postgres()`
 }
 \description{
 Connect to the Open Justice Oklahoma database
@@ -38,7 +38,7 @@ If no credentials exist, prompts for user, password, and host name and provides 
 }
 \section{Side Effects}{
 
-If either the `.global` argument or `rlang::is_interactive` are `TRUE`, an object named `ojo_pool` is created in the global environment.
+If either the `.global` argument or `rlang::is_interactive` are `TRUE`, an object named `ojo_pool` is created in the package environment.
 }
 
 \examples{

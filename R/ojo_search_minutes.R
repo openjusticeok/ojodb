@@ -26,11 +26,19 @@
 #' ojo_search_minutes("tribal <-> jurisdiction")
 #' }
 #'
-ojo_search_minutes <- function(query) {
+ojo_search_minutes <- function(query, ..., .con = NULL) {
+  if (is.null(.con)) {
+    .con <- ojo_connect()
+  }
   ojo_connect()
-  q <- glue::glue_sql("SELECT * FROM minute WHERE to_tsvector('english', description) @@ to_tsquery('english', {query});",
-    .con = ojodb
+  q <- glue::glue_sql(
+    "SELECT * FROM minute WHERE to_tsvector('english', description) @@ to_tsquery('english', {query});",
+    .con = .con
   )
-  pool::dbGetQuery(ojodb, q) |>
+
+  df <- .con |>
+    pool::dbGetQuery(q) |>
     dplyr::as_tibble()
+
+  return(df)
 }

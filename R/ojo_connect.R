@@ -15,14 +15,14 @@
 #' @param .install A logical value indicating whether to install the database connection or use it only for the current session
 #'
 #' @export
-#' @returns A database connection object created with `pool::dbPool` and `odbc::odbc`
+#' @returns A database connection object created with `pool::dbPool` and `RPostgres::Postgres()`
 #'
 #' @examples
 #' \dontrun{
 #' ojo_connect()
 #' }
 #' @section Side Effects:
-#' If either the `.global` argument or `rlang::is_interactive` are `TRUE`, an object named `ojo_pool` is created in the global environment.
+#' If either the `.global` argument or `rlang::is_interactive` are `TRUE`, an object named `ojo_pool` is created in the package environment.
 #'
 #' @seealso ojo_auth()
 #'

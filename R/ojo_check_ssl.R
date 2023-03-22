@@ -9,12 +9,12 @@
 #' ojo_check_ssl()
 #' }
 #'
-ojo_check_ssl <- function() {
-  if (!exists("ojodb", where = .GlobalEnv)) {
-    ojo_connect()
+ojo_check_ssl <- function(..., .con = NULL) {
+  if (is.null(.con)) {
+    .con <- ojo_connect()
   }
 
-  pool_src <- pool::poolCheckout(ojodb)
+  pool_src <- pool::poolCheckout(.con)
   on.exit(pool::poolReturn(pool_src))
   pool_src |>
     pool::dbGetQuery("select * from pg_stat_ssl where pid = pg_backend_pid();")
