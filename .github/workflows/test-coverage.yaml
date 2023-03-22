@@ -10,6 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      # Configuring ojodb access for github actions
+      OJO_HOST: ${{ secrets.OJO_HOST }}
+      OJO_PORT: ${{ secrets.OJO_PORT }}
+      OJO_DEFAULT_USER: ${{ secrets.DEFAULT_OJO_USER }}
+      OJO_DEFAULT_PASS: ${{ secrets.DEFAULT_OJO_PASS }}
+      OJO_SSL_CERT: ${{ secrets.OJO_SSL_CERT }}
+      OJO_SSL_ROOT_CERT: ${{ secrets.OJO_SSL_ROOT_CERT }}
+      OJO_SSL_KEY: ${{ secrets.OJO_SSL_KEY }}
 
     steps:
       - uses: actions/checkout@v3
