@@ -33,18 +33,19 @@ jobs:
       OJO_SSL_CERT_BASE64: ${{ secrets.OJO_SSL_CERT_BASE64 }}
       OJO_SSL_ROOT_CERT_BASE64: ${{ secrets.OJO_SSL_ROOT_CERT_BASE64 }}
       OJO_SSL_KEY_BASE64: ${{ secrets.OJO_SSL_KEY_BASE64 }}
-      OJO_SSL_CERT: "./client-cert.pem"
-      OJO_SSL_ROOT_CERT: "./server-ca.pem"
-      OJO_SSL_KEY: "./client-key.pk8"
+      OJO_SSL_CERT: "client-cert.pem"
+      OJO_SSL_ROOT_CERT: "server-ca.pem"
+      OJO_SSL_KEY: "client-key.pk8"
       #
       R_KEEP_PKG_SOURCE: yes
 
     steps:
       - name: Decode secrets
+      # Replace with R so it will run on Windows / Mac?
         run: |
-          echo $OJO_SSL_CERT_BASE64 | base64 --decode > ./client-cert.pem
-          echo $OJO_SSL_ROOT_CERT_BASE64 | base64 --decode > ./server-ca.pem
-          echo $OJO_SSL_KEY_BASE64 | base64 --decode > ./client-key.pk8
+          echo $OJO_SSL_CERT_BASE64 | base64 --decode > client-cert.pem
+          echo $OJO_SSL_ROOT_CERT_BASE64 | base64 --decode > server-ca.pem
+          echo $OJO_SSL_KEY_BASE64 | base64 --decode > client-key.pk8
 
       - uses: actions/checkout@v3
 
