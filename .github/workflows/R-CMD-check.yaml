@@ -30,9 +30,9 @@ jobs:
       OJO_DEFAULT_PASS: ${{ secrets.DEFAULT_OJO_PASS }}
       OJO_SSL_MODE: ${{ secrets.OJO_SSL_MODE }}
       # Decoding secrets
-      OJO_SSL_CERT_BASE64: echo "${{ secrets.OJO_SSL_CERT_BASE64 }}"
-      OJO_SSL_ROOT_CERT_BASE64: echo "${{ secrets.OJO_SSL_ROOT_CERT_BASE64 }}"
-      OJO_SSL_KEY_BASE64: echo "${{ secrets.OJO_SSL_KEY_BASE64 }}"
+      OJO_SSL_CERT_BASE64: ${{ secrets.OJO_SSL_CERT_BASE64 }}
+      OJO_SSL_ROOT_CERT_BASE64: ${{ secrets.OJO_SSL_ROOT_CERT_BASE64 }}
+      OJO_SSL_KEY_BASE64: ${{ secrets.OJO_SSL_KEY_BASE64 }}
       OJO_SSL_CERT: "./client-cert.pem"
       OJO_SSL_ROOT_CERT: "./server-ca.pem"
       OJO_SSL_KEY: "./client-key.pk8"
