@@ -49,7 +49,7 @@ jobs:
           mkdir ~/certs
           echo "$CERT" > ~/certs/client-cert.pem
           echo "$ROOT" > ~/certs/server-ca.pem
-          echo "$KEY"" > ~/certs/client-key.pk8
+          echo "$KEY" > ~/certs/client-key.pk8
 
       - uses: actions/checkout@v3
 
