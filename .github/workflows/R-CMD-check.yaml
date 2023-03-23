@@ -43,6 +43,7 @@ jobs:
         #   echo "OJO_SSL_CERT=$(echo "$OJO_SSL_CERT_BASE64" | base64 --decode)" >> $GITHUB_ENV
         #   echo "OJO_SSL_ROOT_CERT=$(echo "$OJO_SSL_ROOT_CERT_BASE64" | base64 --decode)" >> $GITHUB_ENV
         #   echo "OJO_SSL_KEY=$(echo "$OJO_SSL_KEY_BASE64" | base64 --decode)" >> $GITHUB_ENV
+        #   head -n 2 ${{ github.workspace }}/certs/*
 
     steps:
 
@@ -67,8 +68,9 @@ jobs:
           echo "$OJO_SSL_CERT_BASE64" | base64 --decode > ${{ github.workspace }}/certs/client-cert.pem
           echo "$OJO_SSL_ROOT_CERT_BASE64" | base64 --decode > ${{ github.workspace }}/certs/server-ca.pem
           echo "$OJO_SSL_KEY_BASE64" | base64 --decode > ${{ github.workspace }}/certs/client-key.pk8
+          chown postgres ${{ github.workspace }}/certs/client-key.pk8
+          chmod 0640 ${{ github.workspace }}/certs/client-key.pk8
           ls -lS ${{ github.workspace }}/certs
-          head -n 2 ${{ github.workspace }}/certs/*
 
       - uses: r-lib/actions/check-r-package@v2
         with:
