@@ -10,27 +10,32 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      # Configuring ojodb access for github actions
-      OJO_HOST: ${{ secrets.OJO_HOST }}
-      OJO_PORT: ${{ secrets.OJO_PORT }}
-      OJO_DEFAULT_USER: ${{ secrets.DEFAULT_OJO_USER }}
-      OJO_DEFAULT_PASS: ${{ secrets.DEFAULT_OJO_PASS }}
-      OJO_SSL_MODE: ${{ secrets.OJO_SSL_MODE }}
-      # Decoding secrets
-      OJO_SSL_CERT_BASE64: ${{ secrets.OJO_SSL_CERT_BASE64 }}
-      OJO_SSL_ROOT_CERT_BASE64: ${{ secrets.OJO_SSL_ROOT_CERT_BASE64 }}
-      OJO_SSL_KEY_BASE64: ${{ secrets.OJO_SSL_KEY_BASE64 }}
-      OJO_SSL_CERT: "~/certs/client-cert.pem"
-      OJO_SSL_ROOT_CERT: "~/certs/server-ca.pem"
-      OJO_SSL_KEY: "~/certs/client-key.pk8"
+      # # Configuring ojodb access for github actions
+      # OJO_HOST: ${{ secrets.OJO_HOST }}
+      # OJO_PORT: ${{ secrets.OJO_PORT }}
+      # OJO_DEFAULT_USER: ${{ secrets.DEFAULT_OJO_USER }}
+      # OJO_DEFAULT_PASS: ${{ secrets.DEFAULT_OJO_PASS }}
+      # OJO_SSL_MODE: ${{ secrets.OJO_SSL_MODE }}
+      # # Decoding secrets
+      # OJO_SSL_CERT_BASE64: ${{ secrets.OJO_SSL_CERT_BASE64 }}
+      # OJO_SSL_ROOT_CERT_BASE64: ${{ secrets.OJO_SSL_ROOT_CERT_BASE64 }}
+      # OJO_SSL_KEY_BASE64: ${{ secrets.OJO_SSL_KEY_BASE64 }}
+      # OJO_SSL_CERT: "~/certs/client-cert.pem"
+      # OJO_SSL_ROOT_CERT: "~/certs/server-ca.pem"
+      # OJO_SSL_KEY: "~/certs/client-key.pk8"
 
     steps:
-      - name: Decode secrets
+      # - name: Decode secrets
+      #   run: |
+      #     mkdir ~/certs
+          # echo "$OJO_SSL_CERT_BASE64" | base64 --decode > ~/certs/client-cert.pem
+          # echo "$OJO_SSL_ROOT_CERT_BASE64" | base64 --decode > ~/certs/server-ca.pem
+          # echo "$OJO_SSL_KEY_BASE64" | base64 --decode > ~/certs/client-key.pk8
+      - name: Create and populate .Renviron file
         run: |
-          mkdir ~/certs
-          echo "$OJO_SSL_CERT_BASE64" | base64 --decode > ~/certs/client-cert.pem
-          echo "$OJO_SSL_ROOT_CERT_BASE64" | base64 --decode > ~/certs/server-ca.pem
-          echo "$OJO_SSL_KEY_BASE64" | base64 --decode > ~/certs/client-key.pk8
+          echo OJO_SSL_CERT="$OJO_SSL_CERT_BASE64" | base64 --decode >> ~/.Renviron
+          echo OJO_SSL_ROOT_CERT="$OJO_SSL_ROOT_CERT_BASE64" | base64 --decode >> ~/.Renviron
+          echo OJO_SSL_KEY="$OJO_SSL_KEY_BASE64" | base64 --decode >> ~/.Renviron
 
       - uses: actions/checkout@v3
 
