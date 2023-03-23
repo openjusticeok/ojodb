@@ -23,6 +23,7 @@ jobs:
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
       # Configuring ojodb access for github actions
       OJO_HOST: ${{ secrets.OJO_HOST }}
       OJO_PORT: ${{ secrets.OJO_PORT }}
@@ -37,8 +38,6 @@ jobs:
       OJO_SSL_CERT: ${{ github.workspace }}/certs/client-cert.pem
       OJO_SSL_ROOT_CERT: ${{ github.workspace }}/certs/server-ca.pem
       OJO_SSL_KEY: ${{ github.workspace }}/certs/client-key.pk8
-      #
-      R_KEEP_PKG_SOURCE: yes
 
         #   echo "OJO_SSL_CERT=$(echo "$OJO_SSL_CERT_BASE64" | base64 --decode)" >> $GITHUB_ENV
         #   echo "OJO_SSL_ROOT_CERT=$(echo "$OJO_SSL_ROOT_CERT_BASE64" | base64 --decode)" >> $GITHUB_ENV
@@ -69,7 +68,6 @@ jobs:
           echo "$OJO_SSL_ROOT_CERT_BASE64" | base64 --decode > ${{ github.workspace }}/certs/server-ca.pem
           echo "$OJO_SSL_KEY_BASE64" | base64 --decode > ${{ github.workspace }}/certs/client-key.pk8
           chmod 0600 ${{ github.workspace }}/certs/client-key.pk8
-          ls -lS ${{ github.workspace }}/certs
 
       - uses: r-lib/actions/check-r-package@v2
         with:
