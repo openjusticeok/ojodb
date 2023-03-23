@@ -12,19 +12,13 @@ ojo_connect(
 )
 }
 \arguments{
+\item{...}{Placeholder}
+
 \item{.admin}{A logical value indicating whether to connect to the database as an administrator}
 
-\item{host}{The host name of the database server}
+\item{.global}{A logical value indicating whether to establish the connection in the global environment or not.}
 
-\item{port}{The port number of the database server}
-
-\item{username}{The username to use to connect to the database}
-
-\item{password}{The password to use to connect to the database}
-
-\item{.overwrite}{A logical value indicating whether to overwrite the existing .Renviron file}
-
-\item{.install}{A logical value indicating whether to install the database connection or use it only for the current session}
+\item{.env}{The environment in which you want the connection stored}
 }
 \value{
 A database connection object created with `pool::dbPool` and `odbc::odbc`

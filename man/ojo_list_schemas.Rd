@@ -6,6 +6,11 @@
 \usage{
 ojo_list_schemas(..., .con = NULL)
 }
+\arguments{
+\item{...}{Placeholder}
+
+\item{.con}{The ojodb connection to use}
+}
 \value{
 data, a tibble containing the names of all schemas
 }

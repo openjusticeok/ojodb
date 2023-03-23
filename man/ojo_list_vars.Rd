@@ -12,6 +12,8 @@ ojo_list_vars(table, schema = "public", ..., .con = NULL)
 \item{schema}{The name of the schema to query}
 
 \item{...}{Placeholder for additional arguments}
+
+\item{.con}{The ojodb connection to use}
 }
 \value{
 data, a tibble containing the names of all variables in a table
