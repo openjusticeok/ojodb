@@ -13,8 +13,8 @@ jobs:
       # Configuring ojodb access for github actions
       OJO_HOST: ${{ secrets.OJO_HOST }}
       OJO_PORT: ${{ secrets.OJO_PORT }}
-      OJO_DEFAULT_USER: ${{ secrets.DEFAULT_OJO_USER }}
-      OJO_DEFAULT_PASS: ${{ secrets.DEFAULT_OJO_PASS }}
+      OJO_DEFAULT_USER: ${{ secrets.OJO_DEFAULT_USER }}
+      OJO_DEFAULT_PASS: ${{ secrets.OJO_DEFAULT_PASS }}
       OJO_SSL_MODE: ${{ secrets.OJO_SSL_MODE }}
       # Encoded secrets
       OJO_SSL_CERT_BASE64: ${{ secrets.OJO_SSL_CERT_BASE64 }}
