@@ -41,9 +41,9 @@ jobs:
     steps:
       - name: Decode secrets
         run: |
-          echo "CERT=$(base64 --decode OJO_SSL_CERT_BASE64)" >> $GITHUB_ENV
-          echo "ROOT=$(base64 --decode OJO_SSL_ROOT_CERT_BASE64)" >> $GITHUB_ENV
-          echo "KEY=$(base64 --decode OJO_SSL_KEY_BASE64)" >> $GITHUB_ENV
+          echo "CERT=$(base64 --decode $OJO_SSL_CERT_BASE64)" >> $GITHUB_ENV
+          echo "ROOT=$(base64 --decode $OJO_SSL_ROOT_CERT_BASE64)" >> $GITHUB_ENV
+          echo "KEY=$(base64 --decode $OJO_SSL_KEY_BASE64)" >> $GITHUB_ENV
       - name: Save secrets
         run: |
           mkdir ~/certs
