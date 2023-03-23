@@ -39,11 +39,6 @@ jobs:
       OJO_SSL_ROOT_CERT: ${{ github.workspace }}/certs/server-ca.pem
       OJO_SSL_KEY: ${{ github.workspace }}/certs/client-key.pk8
 
-        #   echo "OJO_SSL_CERT=$(echo "$OJO_SSL_CERT_BASE64" | base64 --decode)" >> $GITHUB_ENV
-        #   echo "OJO_SSL_ROOT_CERT=$(echo "$OJO_SSL_ROOT_CERT_BASE64" | base64 --decode)" >> $GITHUB_ENV
-        #   echo "OJO_SSL_KEY=$(echo "$OJO_SSL_KEY_BASE64" | base64 --decode)" >> $GITHUB_ENV
-        #   head -n 2 ${{ github.workspace }}/certs/*
-
     steps:
 
       - uses: actions/checkout@v3
