@@ -21,17 +21,17 @@ jobs:
       OJO_SSL_ROOT_CERT_BASE64: ${{ secrets.OJO_SSL_ROOT_CERT_BASE64 }}
       OJO_SSL_KEY_BASE64: ${{ secrets.OJO_SSL_KEY_BASE64 }}
       #
-      OJO_SSL_CERT: "~/certs/client-cert.pem"
-      OJO_SSL_ROOT_CERT: "~/certs/server-ca.pem"
-      OJO_SSL_KEY: "~/certs/client-key.pk8"
+      OJO_SSL_CERT: ${{ github.workspace }}/certs/client-cert.pem
+      OJO_SSL_ROOT_CERT: ${{ github.workspace }}/certs/server-ca.pem
+      OJO_SSL_KEY: ${{ github.workspace }}/certs/client-key.pk8
 
     steps:
       - name: Decode secrets
         run: |
           mkdir ~/certs
-          echo "$(base64 --decode $OJO_SSL_CERT_BASE64)" > ~/certs/client-cert.pem
-          echo "$(base64 --decode $OJO_SSL_ROOT_CERT_BASE64)" > ~/certs/server-ca.pem
-          echo "$(base64 --decode $OJO_SSL_KEY_BASE64)" > ~/certs/client-key.pk8
+          echo "$(base64 --decode $OJO_SSL_CERT_BASE64)" > ${{ github.workspace }}/client-cert.pem
+          echo "$(base64 --decode $OJO_SSL_ROOT_CERT_BASE64)" > ${{ github.workspace }}/certs/server-ca.pem
+          echo "$(base64 --decode $OJO_SSL_KEY_BASE64)" > ${{ github.workspace }}/certs/client-key.pk8
 
       - uses: actions/checkout@v3
 
