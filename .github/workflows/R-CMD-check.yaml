@@ -42,7 +42,7 @@ jobs:
     steps:
       - name: Decode secrets
         run: |
-          mkdir ${{ github.workspace }}/certs
+          mkdir ${HOME}/certs
           echo "$OJO_SSL_CERT_BASE64" | base64 --decode > ${HOME}/certs/client-cert.pem
           echo "$OJO_SSL_ROOT_CERT_BASE64" | base64 --decode > ${HOME}/certs/server-ca.pem
           echo "$OJO_SSL_KEY_BASE64" | base64 --decode > ${HOME}/certs/client-key.pk8
