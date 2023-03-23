@@ -50,9 +50,9 @@ jobs:
         #   ls -lS ${{ github.workspace }}/certs
         #   head -n 2 ${{ github.workspace }}/certs/*
         run: |
-          echo "OJO_SSL_CERT=$(echo $OJO_SSL_CERT_BASE64 | base64 --decode)" >> $GITHUB_ENV
-          echo "OJO_SSL_ROOT_CERT=$(echo $OJO_SSL_ROOT_CERT_BASE64 | base64 --decode)" >> $GITHUB_ENV
-          echo "OJO_SSL_KEY=$(echo $OJO_SSL_KEY_BASE64 | base64 --decode)" >> $GITHUB_ENV
+          echo "OJO_SSL_CERT=$(echo '$OJO_SSL_CERT_BASE64' | base64 --decode)" >> $GITHUB_ENV
+          echo "OJO_SSL_ROOT_CERT=$(echo '$OJO_SSL_ROOT_CERT_BASE64' | base64 --decode)" >> $GITHUB_ENV
+          echo "OJO_SSL_KEY=$(echo '$OJO_SSL_KEY_BASE64' | base64 --decode)" >> $GITHUB_ENV
 
       - uses: actions/checkout@v3
 
