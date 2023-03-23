@@ -32,6 +32,7 @@ jobs:
           echo "KEY=$(base64 --decode OJO_SSL_KEY_BASE64)" >> $GITHUB_ENV
       - name: Save secrets
         run: |
+          mkdir ~/certs
           echo "$CERT" > ~/certs/client-cert.pem
           echo "$ROOT" > ~/certs/server-ca.pem
           echo "$KEY"" > ~/certs/client-key.pk8
