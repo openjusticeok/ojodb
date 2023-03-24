@@ -16,15 +16,10 @@ jobs:
       matrix:
         config:
           - {os: macos-latest,   r: 'release'}
-            script_name: ./build.sh
           - {os: windows-latest, r: 'release'}
-            script_name: ./build.sh
           - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
-            script_name: ./build.sh
           - {os: ubuntu-latest,   r: 'release'}
-            script_name: ./build.sh
           - {os: ubuntu-latest,   r: 'oldrel-1'}
-            script_name: ./build.sh
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -62,12 +57,12 @@ jobs:
           needs: check
 
       - name: Decode secrets
-        run: ${{ matrix.script_name }}
-          # mkdir ${{ github.workspace }}/certs
-          # echo "$OJO_SSL_CERT_BASE64" | base64 --decode > ${{ github.workspace }}/certs/client-cert.pem
-          # echo "$OJO_SSL_ROOT_CERT_BASE64" | base64 --decode > ${{ github.workspace }}/certs/server-ca.pem
-          # echo "$OJO_SSL_KEY_BASE64" | base64 --decode > ${{ github.workspace }}/certs/client-key.pk8
-          # chmod 0600 ${{ github.workspace }}/certs/client-key.pk8
+        run: |
+          mkdir ${{ github.workspace }}/certs
+          echo "$OJO_SSL_CERT_BASE64" | base64 --decode > ${{ github.workspace }}/certs/client-cert.pem
+          echo "$OJO_SSL_ROOT_CERT_BASE64" | base64 --decode > ${{ github.workspace }}/certs/server-ca.pem
+          echo "$OJO_SSL_KEY_BASE64" | base64 --decode > ${{ github.workspace }}/certs/client-key.pk8
+          chmod 0600 ${{ github.workspace }}/certs/client-key.pk8
 
       - uses: r-lib/actions/check-r-package@v2
         with:
