@@ -57,6 +57,7 @@ jobs:
           needs: check
 
       - name: Decode secrets
+        shell: bash
         run: |
           mkdir ${{ github.workspace }}/certs
           echo "$OJO_SSL_CERT_BASE64" | base64 --decode > ${{ github.workspace }}/certs/client-cert.pem
