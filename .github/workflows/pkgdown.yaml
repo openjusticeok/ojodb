@@ -19,6 +19,21 @@ jobs:
       group: pkgdown-${{ github.event_name != 'pull_request' || github.run_id }}
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+      # Configuring ojodb access for github actions
+      OJO_HOST: ${{ secrets.OJO_HOST }}
+      OJO_PORT: ${{ secrets.OJO_PORT }}
+      OJO_DEFAULT_USER: ${{ secrets.OJO_DEFAULT_USER }}
+      OJO_DEFAULT_PASS: ${{ secrets.OJO_DEFAULT_PASS }}
+      OJO_SSL_MODE: ${{ secrets.OJO_SSL_MODE }}
+      # Encoded secrets
+      OJO_SSL_CERT_BASE64: ${{ secrets.OJO_SSL_CERT_BASE64 }}
+      OJO_SSL_ROOT_CERT_BASE64: ${{ secrets.OJO_SSL_ROOT_CERT_BASE64 }}
+      OJO_SSL_KEY_BASE64: ${{ secrets.OJO_SSL_KEY_BASE64 }}
+      #
+      OJO_SSL_CERT: ${{ github.workspace }}/certs/client-cert.pem
+      OJO_SSL_ROOT_CERT: ${{ github.workspace }}/certs/server-ca.pem
+      OJO_SSL_KEY: ${{ github.workspace }}/certs/client-key.pk8
     steps:
       - uses: actions/checkout@v3
 
@@ -32,6 +47,15 @@ jobs:
         with:
           extra-packages: any::pkgdown, local::.
           needs: website
+
+      - name: Decode secrets
+        shell: bash
+        run: |
+          mkdir certs
+          echo "$OJO_SSL_CERT_BASE64" | base64 --decode > certs/client-cert.pem
+          echo "$OJO_SSL_ROOT_CERT_BASE64" | base64 --decode > certs/server-ca.pem
+          echo "$OJO_SSL_KEY_BASE64" | base64 --decode > certs/client-key.pk8
+          chmod 0600 certs/client-key.pk8
 
       - name: Build site
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
