@@ -5,6 +5,7 @@
 #' @param table The name of the table to query
 #' @param schema The name of the schema to query
 #' @param ... Placeholder for additional arguments
+#' @param .con The ojodb connection to use
 #'
 #' @export ojo_list_vars
 #'

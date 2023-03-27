@@ -3,7 +3,8 @@
 #' @description Query the Open Justice Oklahoma database
 #'
 #' @param ... Arguments to pass to glue::glue_sql
-#' @param .con
+#' @param .con The ojodb connection to use
+#' @param query The query to send to ojodb
 #'
 #' @export ojo_query
 #' @returns data, a tibble containing the results of the query

@@ -10,8 +10,23 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      # Configuring ojodb access for github actions
+      OJO_HOST: ${{ secrets.OJO_HOST }}
+      OJO_PORT: ${{ secrets.OJO_PORT }}
+      OJO_DEFAULT_USER: ${{ secrets.OJO_DEFAULT_USER }}
+      OJO_DEFAULT_PASS: ${{ secrets.OJO_DEFAULT_PASS }}
+      OJO_SSL_MODE: ${{ secrets.OJO_SSL_MODE }}
+      # Encoded secrets
+      OJO_SSL_CERT_BASE64: ${{ secrets.OJO_SSL_CERT_BASE64 }}
+      OJO_SSL_ROOT_CERT_BASE64: ${{ secrets.OJO_SSL_ROOT_CERT_BASE64 }}
+      OJO_SSL_KEY_BASE64: ${{ secrets.OJO_SSL_KEY_BASE64 }}
+      #
+      OJO_SSL_CERT: ${{ github.workspace }}/certs/client-cert.pem
+      OJO_SSL_ROOT_CERT: ${{ github.workspace }}/certs/server-ca.pem
+      OJO_SSL_KEY: ${{ github.workspace }}/certs/client-key.pk8
 
     steps:
+
       - uses: actions/checkout@v3
 
       - uses: r-lib/actions/setup-r@v2
@@ -22,6 +37,14 @@ jobs:
         with:
           extra-packages: any::covr
           needs: coverage
+
+      - name: Decode secrets
+        run: |
+          mkdir ${{ github.workspace }}/certs
+          echo "$OJO_SSL_CERT_BASE64" | base64 --decode > ${{ github.workspace }}/certs/client-cert.pem
+          echo "$OJO_SSL_ROOT_CERT_BASE64" | base64 --decode > ${{ github.workspace }}/certs/server-ca.pem
+          echo "$OJO_SSL_KEY_BASE64" | base64 --decode > ${{ github.workspace }}/certs/client-key.pk8
+          chmod 0600 ${{ github.workspace }}/certs/client-key.pk8
 
       - name: Test coverage
         run: |

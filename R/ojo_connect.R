@@ -6,13 +6,10 @@
 #' Opens a connection to the Open Justice Oklahoma database using credentials stored in the .Renviron file.
 #' If no credentials exist, prompts for user, password, and host name and provides instructions to store them for future sessions.
 #'
-#' @param host The host name of the database server
-#' @param port The port number of the database server
-#' @param username The username to use to connect to the database
-#' @param password The password to use to connect to the database
 #' @param .admin A logical value indicating whether to connect to the database as an administrator
-#' @param .overwrite A logical value indicating whether to overwrite the existing .Renviron file
-#' @param .install A logical value indicating whether to install the database connection or use it only for the current session
+#' @param ... Placeholder
+#' @param .global A logical value indicating whether to establish the connection in the global environment or not.
+#' @param .env The environment in which you want the connection stored
 #'
 #' @export
 #' @returns A database connection object created with `pool::dbPool` and `RPostgres::Postgres()`

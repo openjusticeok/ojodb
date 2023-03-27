@@ -7,9 +7,11 @@
 ojo_query(query, ..., .con = NULL)
 }
 \arguments{
+\item{query}{The query to send to ojodb}
+
 \item{...}{Arguments to pass to glue::glue_sql}
 
-\item{.con}{}
+\item{.con}{The ojodb connection to use}
 }
 \value{
 data, a tibble containing the results of the query
