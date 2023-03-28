@@ -28,8 +28,11 @@ ojo_civ_cases <- function(districts = "all", vars = NULL, case_types = c("CS", "
     )
 
   if (all(districts != "all")) {
+
+    districts_upper <- toupper(districts)
+
     data <- data |>
-      dplyr::filter(district %in% districts)
+      dplyr::filter(district %in% districts_upper)
   }
 
   selection <- c("id", "district", "case_type", "date_filed", "date_closed")
