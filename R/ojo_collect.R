@@ -10,7 +10,7 @@
 #' @return data, a local tibble containing the resulting criminal cases
 #' @examples
 #' \dontrun{
-#' data <- ojo_crim_cases() |> ojo_collect()
+#' ojo_crim_cases() |> ojo_collect()
 #' }
 #'
 ojo_collect <- function(query_tibble, .silent = FALSE, ...) {
@@ -22,12 +22,20 @@ ojo_collect <- function(query_tibble, .silent = FALSE, ...) {
 
     cli::cli_progress_step("Searching ojodb for matching results...")
 
+    t_1 <- Sys.time() # Timer start
+
     n_results <- query_tibble |>
       dplyr::tally() |>
       dplyr::pull(var = n) |>
       format(big.mark = ",")
 
+    t_2 <- Sys.time() # Timer end
+
     cli::cli_progress_step(paste0("Found ", n_results, " matching results! Retrieving data now..."))
+
+    if(difftime(t_2, t_1, units = "secs")) {
+      cli::cli_alert_warning("If this step takes too long for your query, you can skip by setting `.silent = TRUE`")
+    }
 
   }
 

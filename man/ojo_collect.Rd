@@ -21,7 +21,7 @@ Pull a lazy tibble into your local environment from the OJO database, using `ojo
 }
 \examples{
 \dontrun{
-data <- ojo_crim_cases() |> ojo_collect()
+ojo_crim_cases() |> ojo_collect()
 }
 
 }
