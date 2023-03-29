@@ -47,8 +47,23 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.3.2" id="ojodb-232-2023-03-28">ojodb 2.3.2 (2023-03-28)<a class="anchor" aria-label="anchor" href="#ojodb-232-2023-03-28"></a></h2>
-<ul><li>Same as previous version.</li>
+<div class="section level3">
+<h3 id="analyst-tools-2-3-2">Analyst Tools<a class="anchor" aria-label="anchor" href="#analyst-tools-2-3-2"></a></h3>
+<ul><li>Allows lowercase inputs to the <code>district</code> argument of <code>ojo_civ_cases</code> and <code>ojo_crim_cases</code>
+</li>
+<li>You no longer need to import <a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a> manually!</li>
+<li>Database connections are handled for you by default. You won’t even know it’s there.</li>
 </ul></div>
+<div class="section level3">
+<h3 id="package-maintenance-2-3-2">Package Maintenance<a class="anchor" aria-label="anchor" href="#package-maintenance-2-3-2"></a></h3>
+<ul><li>Added Github Actions for automated package checks</li>
+<li>Added <a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a> to <code>Depends</code> field of the package <code>Description</code>
+</li>
+<li>Overhauled database connection management using package-level environment scoping. See <code>ojo_connect</code>, <code>ojo_tbl</code>, and <code>ojo_query</code> for more information.</li>
+<li>Replaced <a href="https://r-dbi.github.io/odbc/" class="external-link">odbc</a> dependency with <a href="https://rpostgres.r-dbi.org" class="external-link">RPostgres</a>
+</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.3.1" id="ojodb-231-2023-03-02">ojodb 2.3.1 (2023-03-02)<a class="anchor" aria-label="anchor" href="#ojodb-231-2023-03-02"></a></h2>
 <div class="section level3">
