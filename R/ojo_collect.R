@@ -17,24 +17,22 @@ ojo_collect <- function(query_tibble, .silent = FALSE, ...) {
 
   if(!.silent) {
 
-    cli::cli_rule(left = "OJO Database Connection",
+    cli::cli_rule(left = paste("OJO Database Connection"), # I want dbplyr::db_connection_describe(get("ojo_pool", ojo_env()))
                   right = "{.emph ojodb {utils::packageVersion('ojodb')}}")
 
     cli::cli_progress_step("Searching ojodb for matching results...")
 
     t_1 <- Sys.time() # Timer start
-
     n_results <- query_tibble |>
       dplyr::tally() |>
       dplyr::pull(var = n) |>
       format(big.mark = ",")
-
     t_2 <- Sys.time() # Timer end
 
     cli::cli_progress_step(paste0("Found ", n_results, " matching results! Retrieving data now..."))
 
-    if(difftime(t_2, t_1, units = "secs")) {
-      cli::cli_alert_warning("If this step takes too long for your query, you can skip by setting `.silent = TRUE`")
+    if(difftime(t_2, t_1, units = "secs") > 20) {
+      cli::cli_alert_warning("If the previous step took too long for your query, you can skip it by setting `.silent = TRUE`")
     }
 
   }
@@ -47,3 +45,4 @@ ojo_collect <- function(query_tibble, .silent = FALSE, ...) {
   return(result)
 
 }
+
