@@ -26,7 +26,6 @@ Authors@R: c(
   ))
 Description: {ojodb} provides convenient functions to query court data from the Open Justice Oklahoma database.
 Imports:
-  dplyr,
   dbplyr,
   ggplot2,
   glue,
