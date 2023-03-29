@@ -28,9 +28,11 @@ ojo_crim_cases <- function(districts = "all", vars = NULL, case_types = c("CM", 
     )
 
   if (all(districts != "all")) {
+
+    districts_upper <- toupper(districts)
+
     data <- data |>
-      # `upper()` is evaluated in SQL; debug and use `show_query()` to verify
-      dplyr::filter(.data$district %in% districts)
+      dplyr::filter(.data$district %in% districts_upper)
   }
 
   selection <- c("id", "district", "case_number", "case_type", "date_filed", "date_closed", "counts", "open_counts")
