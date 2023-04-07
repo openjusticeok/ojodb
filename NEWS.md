@@ -1,5 +1,18 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# ojodb 2.3.2 (2023-03-28)
+
+## Analyst Tools
+- Allows lowercase inputs to the `district` argument of `ojo_civ_cases` and `ojo_crim_cases`
+- You no longer need to import `{dplyr}` manually!
+- Database connections are handled for you by default. You won't even know it's there.
+
+## Package Maintenance
+- Added Github Actions for automated package checks
+- Added `{dplyr}` to `Depends` field of the package `Description`
+- Overhauled database connection management using package-level environment scoping. See `ojo_connect`, `ojo_tbl`, and `ojo_query` for more information.
+- Replaced `{odbc}` dependency with `{RPostgres}`
+
 # ojodb 2.3.1 (2023-03-02)
 
 ## Package Maintenance
