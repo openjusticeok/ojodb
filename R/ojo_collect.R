@@ -15,9 +15,26 @@
 #'
 ojo_collect <- function(query_tibble, .silent = FALSE, ...) {
 
+  # Check if pool with correct user already exists and is valid
+  if (exists("ojo_pool", envir = .ojo_env)) {
+    .con <- get("ojo_pool", envir = .ojo_env, inherits = FALSE)
+  } else {
+    .con <- ojo_connect()
+  }
+
+
   if(!.silent) {
 
-    cli::cli_rule(left = paste("OJO Database Connection"), # I want dbplyr::db_connection_describe(get("ojo_pool", ojo_env()))
+    con_desc <- dbplyr::db_connection_describe(.con) |>
+      gsub(pattern = "postgres", replacement = "") |>
+      trimws()
+
+    div_cli <- cli::cli_div(theme = list(rule = list(
+      color = "br_yellow",
+      "line-type" = "single"
+    )))
+
+    cli::cli_rule(left = paste("Connection:", con_desc),
                   right = "{.emph ojodb {utils::packageVersion('ojodb')}}")
 
     cli::cli_progress_step("Searching ojodb for matching results...")
@@ -29,11 +46,15 @@ ojo_collect <- function(query_tibble, .silent = FALSE, ...) {
       format(big.mark = ",")
     t_2 <- Sys.time() # Timer end
 
+    # res_query <- DBI::dbSendQuery(.con, query_tibble)
+
     cli::cli_progress_step(paste0("Found ", n_results, " matching results! Retrieving data now..."))
 
     if(difftime(t_2, t_1, units = "secs") > 20) {
       cli::cli_alert_warning("If the previous step took too long for your query, you can skip it by setting `.silent = TRUE`")
     }
+
+    cli::cli_end(div_cli)
 
   }
 
@@ -43,6 +64,7 @@ ojo_collect <- function(query_tibble, .silent = FALSE, ...) {
   if(!.silent) { cli::cli_progress_step("Data retrieved!") }
 
   return(result)
+
 
 }
 
