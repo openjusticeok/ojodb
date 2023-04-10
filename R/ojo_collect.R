@@ -51,21 +51,23 @@ ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
 
   # First UI chunk
   if(!.silent) {
-
     con_desc <- dbplyr::db_connection_describe(.con) |>
       gsub(pattern = "postgres", replacement = "") |>
       trimws()
 
-    cli::cli_div(theme = list(rule = list(
-      color = "br_yellow",
-      "line-type" = "single"
-    )))
+    cli::cli_div(
+      theme = list(
+        rule = list(
+          color = "br_yellow",
+          "line-type" = "single"
+        )
+      )
+    )
 
     cli::cli_rule(left = paste("Connection:", con_desc),
                   right = "{.emph ojodb {utils::packageVersion('ojodb')}}")
 
     cli::cli_progress_step("Searching OJO database for matching results...")
-
   }
 
   ## TODO: Use proper sql render method from collect method on tbl_sql
