@@ -1,5 +1,5 @@
 #' @title OJO Collect
-#' 
+#'
 #' @description
 #' A wrapper for dplyr::collect() that includes an ojodb progress spinner
 #' Pull a lazy tibble into your local environment from the OJO database, using `ojo_crim_cases()`, `ojo_civ_cases()`, etc.
@@ -85,9 +85,6 @@ ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
   n_results <- .data |>
     dplyr::tally() |>
     dplyr::pull(var = .data$n)
-
-  # Can't get this to work for some reason, should be faster than the above
-  # DBI::dbGetRowCount(request)
 
   t_1 <- Sys.time() # Timer end
 
