@@ -82,7 +82,10 @@ ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
 
   # Get n rows in request results
   t_0 <- Sys.time() # Timer start
+
+  ## TODO: This needs work; what happens if the .data is grouped? Has a column named `n`?
   n_results <- .data |>
+    dplyr::ungroup() |>
     dplyr::tally() |>
     dplyr::pull(var = .data$n)
 
