@@ -126,9 +126,8 @@ ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
     cli::cli_progress_update(set = nrow(res))
   }
 
-  # Old method
-  # res <- .data |>
-  #   dplyr::collect()
+  # Clear the result set after final dbFetch call
+  DBI::dbClearResult(request)
 
   if (!.silent) {
     cli::cli_progress_step("Data retrieved!")
