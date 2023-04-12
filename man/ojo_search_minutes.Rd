@@ -8,6 +8,10 @@ ojo_search_minutes(query, ..., .con = NULL)
 }
 \arguments{
 \item{query}{A term or phrase to search for using the PostgreSQL full text search syntax}
+
+\item{...}{Placeholder}
+
+\item{.con}{The ojodb connection to use}
 }
 \value{
 data, a lazy tibble containing the resulting minutes

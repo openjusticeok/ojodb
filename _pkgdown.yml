@@ -13,6 +13,7 @@ reference:
   - ojo_add_issues
   - ojo_add_party_details
   - ojo_search_minutes
+  - ojo_collect
 - title: "Functions to help aid with analysis"
   desc: "These include some other helpful functions you might use in your analysis."
   contents:
@@ -39,4 +40,7 @@ reference:
   - ojo_check_ssl
   - ojo_auth
   - ojo_connect
+  - ojo_env,
+  - ojo_version,
+  - skip_if_no_db
 

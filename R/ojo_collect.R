@@ -139,10 +139,5 @@ ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
   # Clear the result set after final dbFetch call
   DBI::dbClearResult(request)
 
-  # if (!.silent) {
-  #   cli::cli_progress_step(msg = paste0("Data retrieved!"),
-  #                          msg_failed = "Something went wrong downloading your data from the database!")
-  # }
-
   return(res)
 }

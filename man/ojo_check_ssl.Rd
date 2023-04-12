@@ -6,6 +6,11 @@
 \usage{
 ojo_check_ssl(..., .con = NULL)
 }
+\arguments{
+\item{...}{Placeholder}
+
+\item{.con}{The ojodb connection to use}
+}
 \value{
 A logical indicator of whether the db connection is properly using SSL
 }
