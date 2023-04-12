@@ -55,12 +55,12 @@ ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
       gsub(pattern = "postgres", replacement = "") |>
       trimws()
 
+    # cli styling rules
     cli::cli_div(
       theme = list(
-        rule = list(
-          color = "br_yellow",
-          "line-type" = "single"
-        )
+        rule = list(color = "br_yellow",
+                    "line-type" = "single"),
+        "span.grayed" = list(color = "grey")
       )
     )
 
@@ -106,9 +106,12 @@ ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
   chunk_size <- 1000
 
   cli::cli_progress_bar(
-    "Downloading data...",
+    name = "dl_pb",
+    format = "\u001b[34m{cli::symbol$info}\u001b[0m Downloading data... {cli::pb_bar} {cli::pb_percent} | {cli::pb_eta}",
+    format_done = "\u001b[32m{cli::symbol$tick}\u001b[0m Data retrieved. {cli::pb_bar} {cli::pb_percent} | {.grayed [{cli::pb_elapsed}]}",
     type = "iterator",
-    total = n_results
+    total = n_results,
+    clear = FALSE
   )
 
   while (!DBI::dbHasCompleted(request)) {
@@ -126,11 +129,14 @@ ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
     cli::cli_progress_update(set = nrow(res))
   }
 
+  # Terminate pb
+  cli::cli_progress_done()
+
   # Clear the result set after final dbFetch call
   DBI::dbClearResult(request)
 
   if (!.silent) {
-    cli::cli_progress_step("Data retrieved!")
+    cli::cli_progress_step(paste0("Data retrieved!"))
   }
 
   return(res)
