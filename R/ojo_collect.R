@@ -67,7 +67,8 @@ ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
     cli::cli_rule(left = paste("Connection:", con_desc),
                   right = "{.emph ojodb {utils::packageVersion('ojodb')}}")
 
-    cli::cli_progress_step("Searching OJO database for matching results...")
+    cli::cli_progress_step(msg = "Searching OJO database for matching results...",
+                           msg_failed = "Something went wrong sending your query to the database! Please check your connection.")
   }
 
   ## TODO: Use proper sql render method from collect method on tbl_sql
@@ -93,7 +94,8 @@ ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
 
   # Second UI chunk
   if(!.silent) {
-    cli::cli_progress_step(paste0("Found ", format(n_results, big.mark = ","), " matching results! Retrieving data now..."))
+    cli::cli_progress_step(msg = paste0("Found ", format(n_results, big.mark = ","), " matching results!"),
+                           msg_failed = "Something went wrong downloading your data from the database!")
 
     # Warning if it took more than 20 seconds
     if(difftime(t_1, t_0, units = "secs") > 20) {
@@ -103,11 +105,13 @@ ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
 
   # Downloading from request
   res <- NULL
-  chunk_size <- 1000
+
+  chunk_size <- round(n_results / 100, 0) # This way we're downloading in chunks of 1% of the total or 1000, whichever is bigger;
+  if(chunk_size < 1000) { chunk_size <- 1000 } # might help with large queries
 
   cli::cli_progress_bar(
     name = "dl_pb",
-    format = "\u001b[34m{cli::symbol$info}\u001b[0m Downloading data... {cli::pb_bar} {cli::pb_percent} | {cli::pb_eta}",
+    format = "\u001b[34m{cli::symbol$info}\u001b[0m Downloading data... {cli::pb_bar} {cli::pb_percent} | ~{cli::pb_eta} remaining...",
     format_done = "\u001b[32m{cli::symbol$tick}\u001b[0m Downloading data... {cli::pb_bar} {cli::pb_percent} | {.grayed [{cli::pb_elapsed}]}",
     type = "iterator",
     total = n_results,
@@ -136,7 +140,8 @@ ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
   DBI::dbClearResult(request)
 
   if (!.silent) {
-    cli::cli_progress_step(paste0("Data retrieved!"))
+    cli::cli_progress_step(msg = paste0("Data retrieved!"),
+                           msg_failed = "Something went wrong downloading your data from the database!")
   }
 
   return(res)
