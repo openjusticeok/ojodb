@@ -36,7 +36,7 @@ ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
   }
 
   # Extract the connection from the lazy tibble
-  .con <- .data$src$con
+  .con <- dbplyr::remote_con(.data)
 
   # If the user is using `pool`, we need to check out a connection from the pool locally
   # `pool::localCheckout()` will return the connection to the pool when the function exits
