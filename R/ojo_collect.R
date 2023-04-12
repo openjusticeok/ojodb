@@ -112,7 +112,7 @@ ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
   cli::cli_progress_bar(
     name = "dl_pb",
     format = "\u001b[34m{cli::symbol$info}\u001b[0m Downloading data... {cli::pb_bar} {cli::pb_percent} | ~{cli::pb_eta} remaining...",
-    format_done = "\u001b[32m{cli::symbol$tick}\u001b[0m Downloading data... {cli::pb_bar} {cli::pb_percent} | {.grayed [{cli::pb_elapsed}]}",
+    format_done = "\u001b[32m{cli::symbol$tick}\u001b[0m Data retrieved successfully! {cli::pb_bar} {cli::pb_percent} | {.grayed [{cli::pb_elapsed}]}",
     type = "iterator",
     total = n_results,
     clear = FALSE
@@ -139,10 +139,10 @@ ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
   # Clear the result set after final dbFetch call
   DBI::dbClearResult(request)
 
-  if (!.silent) {
-    cli::cli_progress_step(msg = paste0("Data retrieved!"),
-                           msg_failed = "Something went wrong downloading your data from the database!")
-  }
+  # if (!.silent) {
+  #   cli::cli_progress_step(msg = paste0("Data retrieved!"),
+  #                          msg_failed = "Something went wrong downloading your data from the database!")
+  # }
 
   return(res)
 }
