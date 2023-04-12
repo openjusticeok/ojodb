@@ -108,7 +108,7 @@ ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
   cli::cli_progress_bar(
     name = "dl_pb",
     format = "\u001b[34m{cli::symbol$info}\u001b[0m Downloading data... {cli::pb_bar} {cli::pb_percent} | {cli::pb_eta}",
-    format_done = "\u001b[32m{cli::symbol$tick}\u001b[0m Data retrieved. {cli::pb_bar} {cli::pb_percent} | {.grayed [{cli::pb_elapsed}]}",
+    format_done = "\u001b[32m{cli::symbol$tick}\u001b[0m Downloading data... {cli::pb_bar} {cli::pb_percent} | {.grayed [{cli::pb_elapsed}]}",
     type = "iterator",
     total = n_results,
     clear = FALSE
