@@ -1,5 +1,10 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# ojodb 2.3.3 (2023-04-12)
+
+## Package Maintenance
+- Implemented schema scoping for `ojo_tbl` using `DBI::Id()` instead of `dbplyr::in_schema()` to match common practice.
+
 # ojodb 2.3.2 (2023-03-28)
 
 ## Analyst Tools
