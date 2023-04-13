@@ -10,17 +10,17 @@
 #' @param ... Placeholder
 #' @param .global A logical value indicating whether to establish the connection in the global environment or not.
 #' @param .env The environment in which you want the connection stored
-#' @param .pool A logical value indicating whether to use a connection pool or not.
+#' @param .pool A logical value indicating whether to use a connection pool from the `{pool}` package, or not. If `.global = TRUE` and a connection object already exists, this argument is ignored regardless of the connection type.
 #'
 #' @export
-#' @returns A database connection object created with `pool::dbPool` and `RPostgres::Postgres()`
+#' @returns A database connection object created with `RPostgres::Postgres()` and either `pool::dbPool` or `DBI::dbConnect` 
 #'
 #' @examples
 #' \dontrun{
 #' ojo_connect()
 #' }
 #' @section Side Effects:
-#' If either the `.global` argument or `rlang::is_interactive` are `TRUE`, an object named `ojo_pool` is created in the package environment.
+#' If either the `.global` argument or `rlang::is_interactive` are `TRUE`, a connection object (named `ojo_con` or `ojo_pool` depending on the `.pool` argument) is created in the package environment.
 #'
 #' @seealso ojo_auth()
 #'
@@ -35,22 +35,19 @@ ojo_connect <- function(..., .admin = FALSE, .global = rlang::is_interactive(), 
     )
   }
 
-  connection_type <- if (.pool) "ojo_pool" else "ojo_con"
-
   # Check if object with correct connection type and user already exists and is valid
-  if (.global && exists(connection_type, envir = .env)) {
-    db <- get(connection_type, envir = .env, inherits = FALSE)
-
-    db_is_valid <- switch(
-      connection_type,
-      ojo_pool = pool::dbIsValid(db),
-      ojo_con = DBI::dbIsValid(db)
+  if (.global) {
+    global_conn <- try(
+      get_connection_object(env = .env),
+      silent = TRUE
     )
 
-    if (db_is_valid) {
-      return(db)
+    if (!inherits(global_conn, "try-error") && !is.null(global_conn)) {
+      return(global_conn)
     }
   }
+
+  connection_type <- if (.pool) "ojo_pool" else "ojo_con"
 
   conn_args <- list(
     drv = RPostgres::Postgres(),
@@ -80,10 +77,14 @@ ojo_connect <- function(..., .admin = FALSE, .global = rlang::is_interactive(), 
     assign(connection_type, conn, envir = .env)
     withr::defer(
       {
-        if(exists(connection_type, envir = .env)) {
-          pool::poolClose(
-            get(connection_type, envir = .env, inherits = FALSE)
-          )
+        if (exists(connection_type, envir = .env)) {
+          connection_object <- get(connection_type, envir = .env, inherits = FALSE)
+          if (.pool) {
+            pool::poolClose(connection_object)
+          } else {
+            DBI::dbDisconnect(connection_object)
+          }
+
           rm(list = connection_type, envir = .env)
         }
       },
