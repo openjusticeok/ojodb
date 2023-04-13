@@ -29,5 +29,5 @@ ojo_tbl <- function(table, schema = "public", ..., .con = NULL) {
   }
 
   .con |>
-    dplyr::tbl(dbplyr::in_schema(schema, table))
+    dplyr::tbl(DBI::Id(schema = schema, table = table))
 }

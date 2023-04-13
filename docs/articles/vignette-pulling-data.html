@@ -162,9 +162,9 @@ Corrections, i.e. Oklahoma state prisons),</p></li>
 data related to a specific eviction-related project)</p></li>
 </ul>
 <center>
-<div class="figure">
-<img src="images/object-hierarchy.png" alt=""><p class="caption">A diagram I found online that shows how our database
-is structured.</p>
+<div class="float">
+<img src="images/object-hierarchy.png" alt="A diagram I found online that shows how our database is structured."><div class="figcaption">A diagram I found online that shows how our
+database is structured.</div>
 </div>
 </center>
 <p>The court data that we’re interested in right now is stored in the
@@ -219,7 +219,7 @@ closer look at the main <code>case</code> table:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ojo_list_vars.html">ojo_list_vars</a></span><span class="op">(</span>schema <span class="op">=</span> <span class="st">"public"</span>, table <span class="op">=</span> <span class="st">"case"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Source:   SQL [?? x 1]</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># Database: postgres  [abell@34.122.10.67:5432/ojodb]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Database: postgres  [bgregory@34.122.10.67:5432/ojodb]</span></span></span>
 <span><span class="co">#&gt;    column_name</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> id         </span></span>
@@ -290,8 +290,8 @@ nice! Before we do anything else, let’s start by taking a look at our
 dataframe in RStudio using the <code><a href="https://rdrr.io/r/utils/View.html" class="external-link">View()</a></code> function (or just by
 clicking on it in your RStudio “Data” panel).</p>
 <center>
-<div class="figure">
-<img src="images/view-case-data.png" alt=""><p class="caption">The result of View(charge_data)</p>
+<div class="float">
+<img src="images/view-case-data.png" alt="The result of View(charge_data)"><div class="figcaption">The result of View(charge_data)</div>
 </div>
 </center>
 <!-- You'll probably notice those array columns like `id` and `counts` are still present; `ojo_crim_cases()` used them behind the scenes to join the charge data onto the case data, but we can more or less ignore those now since we're not using them in our analysis. -->
