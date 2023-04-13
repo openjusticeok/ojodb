@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">ojodb</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.3.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.4.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,6 +45,14 @@
       
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="2.4.0" id="ojodb-240-2023-04-13">ojodb 2.4.0 (2023-04-13)<a class="anchor" aria-label="anchor" href="#ojodb-240-2023-04-13"></a></h2>
+<div class="section level3">
+<h3 id="package-maintenance-2-4-0">Package Maintenance<a class="anchor" aria-label="anchor" href="#package-maintenance-2-4-0"></a></h3>
+<ul><li>Exposed the <code>ojo_env</code> function to easily access the package-level environment where database connections are stored.</li>
+<li>Changed the default behavior of <code>ojo_connect</code> to use <code><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">DBI::dbConnect()</a></code> instead of <code><a href="http://rstudio.github.io/pool/reference/dbPool.html" class="external-link">pool::dbPool()</a></code>. Connection pools are still available by passing <code>pool = TRUE</code> to <code>ojo_connect</code>.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.3.4" id="ojodb-234-2023-04-13">ojodb 2.3.4 (2023-04-13)<a class="anchor" aria-label="anchor" href="#ojodb-234-2023-04-13"></a></h2>
 <div class="section level3">
