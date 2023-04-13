@@ -1,5 +1,10 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# ojodb 2.3.4 (2023-04-13)
+
+## Analyst Tools
+- You can now cancel queries immediately with `Ctrl + c` or `Cmd + c` in the console.
+
 # ojodb 2.3.3 (2023-04-12)
 
 ## Package Maintenance
