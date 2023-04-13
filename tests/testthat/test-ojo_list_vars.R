@@ -1,5 +1,5 @@
 test_that("ojo_list_vars succeeds correctly in non-interactive mode", {
-  db <- ojo_connect()
+  db <- ojo_connect(.pool = TRUE)
 
   d <- ojo_list_vars("case", .con = db)
 
@@ -17,7 +17,7 @@ test_that("ojo_list_vars succeeds correctly in interactive mode", {
       dplyr::collect() |>
       capture_output()
 
-    db <- get("ojo_pool", envir = ojo_env(), inherits = FALSE)
-    expect_true(pool::dbIsValid(db))
+    db <- get("ojo_con", envir = ojo_env(), inherits = FALSE)
+    expect_true(DBI::dbIsValid(db))
   })
 })
