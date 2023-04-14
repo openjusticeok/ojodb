@@ -1,5 +1,5 @@
 test_that("ojo_query succeeds correctly in non-interactive mode", {
-  db <- ojo_connect()
+  db <- ojo_connect(.pool = TRUE)
   expect_snapshot(ojo_query("SELECT 'a' as test;", .con = db))
   expect_true(pool::dbIsValid(db))
 

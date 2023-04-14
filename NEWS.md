@@ -1,5 +1,11 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# ojodb 2.4.0 (2023-04-13)
+
+## Package Maintenance
+- Exposed the `ojo_env` function to easily access the package-level environment where database connections are stored.
+- Changed the default behavior of `ojo_connect` to use `DBI::dbConnect()` instead of `pool::dbPool()`. Connection pools are still available by passing `pool = TRUE` to `ojo_connect`.
+
 # ojodb 2.3.4 (2023-04-13)
 
 ## Analyst Tools

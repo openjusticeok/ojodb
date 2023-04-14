@@ -1,5 +1,5 @@
 test_that("ojo_tbl succeeds correctly in non-interactive mode", {
-  db <- ojo_connect()
+  db <- ojo_connect(.pool = TRUE)
   expect_snapshot_value(
     ojo_tbl("case", .con = db),
     style = "serialize"
@@ -25,7 +25,7 @@ test_that("ojo_tbl succeeds correctly in non-interactive mode", {
 
 test_that("ojo_tbl succeeds correctly in interactive mode", {
   rlang::with_interactive({
-    ojo_connect()
+    ojo_connect(.pool = TRUE)
 
     db <- get("ojo_pool", envir = ojo_env(), inherits = FALSE)
 

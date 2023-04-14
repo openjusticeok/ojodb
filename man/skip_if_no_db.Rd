@@ -9,3 +9,4 @@ skip_if_no_db()
 \description{
 Skips a test if the `ojodb` package is not installed or if the user is not connected to the OJO database.
 }
+\keyword{internal}

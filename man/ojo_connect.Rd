@@ -8,7 +8,8 @@ ojo_connect(
   ...,
   .admin = FALSE,
   .global = rlang::is_interactive(),
-  .env = ojo_env()
+  .env = ojo_env(),
+  .pool = FALSE
 )
 }
 \arguments{
@@ -19,9 +20,11 @@ ojo_connect(
 \item{.global}{A logical value indicating whether to establish the connection in the global environment or not.}
 
 \item{.env}{The environment in which you want the connection stored}
+
+\item{.pool}{A logical value indicating whether to use a connection pool from the `{pool}` package, or not. If `.global = TRUE` and a connection object already exists, this argument is ignored regardless of the connection type.}
 }
 \value{
-A database connection object created with `pool::dbPool` and `RPostgres::Postgres()`
+A database connection object created with `RPostgres::Postgres()` and either `pool::dbPool` or `DBI::dbConnect`
 }
 \description{
 Connect to the Open Justice Oklahoma database
@@ -32,7 +35,7 @@ If no credentials exist, prompts for user, password, and host name and provides 
 }
 \section{Side Effects}{
 
-If either the `.global` argument or `rlang::is_interactive` are `TRUE`, an object named `ojo_pool` is created in the package environment.
+If either the `.global` argument or `rlang::is_interactive` are `TRUE`, a connection object (named `ojo_con` or `ojo_pool` depending on the `.pool` argument) is created in the package environment.
 }
 
 \examples{
