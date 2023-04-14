@@ -74,7 +74,13 @@ ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
   # Get n rows in request results
   t_0 <- Sys.time() # Timer start
 
-  ## TODO: This needs work; what happens if the .data is grouped? Has a column named `n`?
+  if("n" %in% names(.data)) {
+    rlang::warn(
+      "The tbl you are requesting has a variable named `n`. This can cause issues with progress bar rendering and status updates. This message won't be shown again this session.",
+      .frequency = "once"
+    )
+  }
+
   n_results <- .data |>
     dplyr::ungroup() |>
     dplyr::tally() |>
