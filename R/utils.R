@@ -35,6 +35,15 @@ skip_if_no_db <- function() {
   testthat::skip("No database connection available")
 }
 
+#' @title Get Connection Object
+#' 
+#' @description
+#' Gets the connection object from the environment specified by the `.env` argument.
+#' 
+#' @param env The environment to search for the connection object.
+#' 
+#' @keywords internal
+#' 
 get_connection_object <- function(env) {
   pool_object_exists <- exists("ojo_pool", envir = env, inherits = FALSE)
   con_object_exists <- exists("ojo_con", envir = env, inherits = FALSE)

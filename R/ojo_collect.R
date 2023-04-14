@@ -71,16 +71,6 @@ ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
                            msg_failed = "Something went wrong sending your query to the database! Please check your connection.")
   }
 
-  ## TODO: Use proper sql render method from collect method on tbl_sql
-  # Translate query back to SQL
-  query <- dplyr::show_query(.data) |>
-    capture.output() |>
-    paste(collapse = "\n") |>
-    gsub(pattern = "^<SQL>\n", replacement = "")
-
-  # Make initial db request
-  request <- DBI::dbSendQuery(.con, query)
-
   # Get n rows in request results
   t_0 <- Sys.time() # Timer start
 
@@ -103,6 +93,17 @@ ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
     }
   }
 
+  ## TODO: Use proper sql render method from collect method on tbl_sql
+  # Translate query back to SQL
+  query <- dplyr::show_query(.data) |>
+    capture.output() |>
+    paste(collapse = "\n") |>
+    gsub(pattern = "^<SQL>\n", replacement = "")
+
+  # Make initial db request
+  req <- DBI::dbSendQuery(.con, query)
+  withr::defer(DBI::dbClearResult(req))
+
   # Downloading from request
   res <- NULL
 
@@ -118,26 +119,24 @@ ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
     clear = FALSE
   )
 
-  while (!DBI::dbHasCompleted(request)) {
+  while (TRUE) {
     # Fetch the next chunk of data
-    chunk <- DBI::dbFetch(request, n = chunk_size)
-    if (nrow(chunk) == 0) {
-      # No more data to fetch
-      break
-    }
+    chunk <- DBI::dbFetch(req, n = chunk_size)
 
     # Combine the data with previous chunks
     res <- rbind(res, tibble::as_tibble(chunk))
 
     # update pb
     cli::cli_progress_update(set = nrow(res))
+
+    # Break if we've reached the end of the results
+    if (DBI::dbHasCompleted(req)) {
+      break
+    }
   }
 
   # Terminate pb
   cli::cli_progress_done()
-
-  # Clear the result set after final dbFetch call
-  DBI::dbClearResult(request)
 
   return(res)
 }
