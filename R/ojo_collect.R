@@ -25,11 +25,6 @@ ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
     stop("`.data` must be a lazy tibble. Have you already collected the data?")
   }
 
-  # Unlike in other functions, we don't need to check for a connection here, because
-  # the connection is checked in the ojo_*() functions that return a lazy tibble.
-  # That means that `.data` should always have a connection attached to it.
-  # If it doesn't, then the user is doing something wrong, and we should let them know.
-
   # First check that `.data` is a lazy tibble created with `ojo_connect()`, `pool::dbPool()`, or `DBI::dbConnect()`
   if(!inherits(.data, "tbl_Pool") && !inherits(.data, "tbl_dbi")) {
     stop("`.data` must be a lazy tibble created with `ojo_connect`, `pool::dbPool`, `DBI::dbConnect`. Have you already collected the data?")
@@ -99,12 +94,8 @@ ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
     }
   }
 
-  ## TODO: Use proper sql render method from collect method on tbl_sql
   # Translate query back to SQL
-  query <- dplyr::show_query(.data) |>
-    capture.output() |>
-    paste(collapse = "\n") |>
-    gsub(pattern = "^<SQL>\n", replacement = "")
+  query <- dbplyr::sql_render(.data)
 
   # Make initial db request
   req <- DBI::dbSendQuery(.con, query)
