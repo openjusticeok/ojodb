@@ -6,7 +6,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# `{ojodb}`
+# ojodb <img src="man/figures/logo.png" align="right" height="139" />
 
 `{ojodb}` is a package that assists
 <a href="https://openjustice.okpolicy.org/" target="_blank">Open Justice
