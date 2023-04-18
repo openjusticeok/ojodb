@@ -1,8 +1,10 @@
 #' Query minutes for a given search term
 #'
 #' Query the Open Justice Oklahoma database for minutes matching a search term
-#' 
+#'
 #' @param query A term or phrase to search for using the PostgreSQL full text search syntax
+#' @param ... Placeholder
+#' @param .con The ojodb connection to use
 #'
 #' @export ojo_search_minutes
 #' @return data, a lazy tibble containing the resulting minutes
