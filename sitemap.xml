@@ -25,6 +25,9 @@
     <loc>/news/index.html</loc>
   </url>
   <url>
+    <loc>/reference/get_connection_object.html</loc>
+  </url>
+  <url>
     <loc>/reference/index.html</loc>
   </url>
   <url>
@@ -50,6 +53,9 @@
   </url>
   <url>
     <loc>/reference/ojo_civ_cases.html</loc>
+  </url>
+  <url>
+    <loc>/reference/ojo_collect.html</loc>
   </url>
   <url>
     <loc>/reference/ojo_color.html</loc>
@@ -98,5 +104,11 @@
   </url>
   <url>
     <loc>/reference/ojo_theme.html</loc>
+  </url>
+  <url>
+    <loc>/reference/ojo_version.html</loc>
+  </url>
+  <url>
+    <loc>/reference/skip_if_no_db.html</loc>
   </url>
 </urlset>
