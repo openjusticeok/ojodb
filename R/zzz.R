@@ -16,7 +16,9 @@
  ╚══    ══╝     |__/
                           version }"
 
-  ojo_art_full <- paste0(ojo_art, as.character(ojo_version()))
+  emoji_list <- c("😀", "😃", "😄", "😁", "😆", "😊", "😎", "😜", "😝", "😛", "🤠", "🙂", "🤔")
+  random_emoji <- sample(emoji_list, 1)
+  ojo_art_full <- paste0(ojo_art, as.character(ojo_version()), " ", random_emoji)
   message(cat(ojo_art_full, sep = "\n"))
 
 }
