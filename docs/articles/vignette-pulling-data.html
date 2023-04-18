@@ -28,7 +28,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">ojodb</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.5.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -162,9 +162,9 @@ Corrections, i.e. Oklahoma state prisons),</p></li>
 data related to a specific eviction-related project)</p></li>
 </ul>
 <center>
-<div class="figure">
-<img src="images/object-hierarchy.png" alt=""><p class="caption">A diagram I found online that shows how our database
-is structured.</p>
+<div class="float">
+<img src="images/object-hierarchy.png" alt="A diagram I found online that shows how our database is structured."><div class="figcaption">A diagram I found online that shows how our
+database is structured.</div>
 </div>
 </center>
 <p>The court data that we’re interested in right now is stored in the
@@ -219,7 +219,7 @@ closer look at the main <code>case</code> table:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ojo_list_vars.html">ojo_list_vars</a></span><span class="op">(</span>schema <span class="op">=</span> <span class="st">"public"</span>, table <span class="op">=</span> <span class="st">"case"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Source:   SQL [?? x 1]</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># Database: postgres  [abell@34.122.10.67:5432/ojodb]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Database: postgres  [bgregory@34.122.10.67:5432/ojodb]</span></span></span>
 <span><span class="co">#&gt;    column_name</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> id         </span></span>
@@ -290,8 +290,8 @@ nice! Before we do anything else, let’s start by taking a look at our
 dataframe in RStudio using the <code><a href="https://rdrr.io/r/utils/View.html" class="external-link">View()</a></code> function (or just by
 clicking on it in your RStudio “Data” panel).</p>
 <center>
-<div class="figure">
-<img src="images/view-case-data.png" alt=""><p class="caption">The result of View(charge_data)</p>
+<div class="float">
+<img src="images/view-case-data.png" alt="The result of View(charge_data)"><div class="figcaption">The result of View(charge_data)</div>
 </div>
 </center>
 <!-- You'll probably notice those array columns like `id` and `counts` are still present; `ojo_crim_cases()` used them behind the scenes to join the charge data onto the case data, but we can more or less ignore those now since we're not using them in our analysis. -->
@@ -541,26 +541,26 @@ expect it to.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># Groups:   drug_charge [2]</span></span></span>
 <span><span class="co">#&gt;    district case_number  count_as_filed                                  drug_…¹</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                           <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> OKLAHOMA CM-2020-527  DI1M, DRIVING UNDER THE INFLUENCE OF ALCOHOL    FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> TULSA    CM-2019-5741 LMFR, LARCENY OF MERCHANDISE FROM RETAILER      FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> TULSA    CM-2018-1958 DI1M, DUI ALCOHOL (MUNICIPAL ARREST)            FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> OKLAHOMA CM-2019-1888 VPO, VIOLATION OF PROTECTIVE ORDER              FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> OKLAHOMA CM-2018-2495 DI5, TRANSPORTING AN OPEN CONTAINER OF INTOXIC… FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> TULSA    CM-2019-701  RW1, FAILURE TO YIELD FOR EMERGENCY VEHICLE     FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> TULSA    CM-2018-3165 TLRU1, TRESPASSING AFTER BEING FORBIDDEN        FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> TULSA    CM-2017-2705 MS6, OBSTRUCTING DRIVERS VIEW OR CONTROL BY PA… FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> TULSA    CM-2022-1030 VPO, VIOLATION OF PROTECTIVE ORDER              FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> TULSA    CM-2021-1849 BH, THREATEN AN ACT OF VIOLENCE                 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> TULSA    CM-2017-3972 DI2D, DUI DRUGS                                 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> TULSA    CM-2021-69   OWPN, CARRYING A FIREARM WHILE UNDER THE INFLU… TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> OKLAHOMA CM-2017-1835 DR3, POSSESSION OF DRUG PARAPHERNALIA           TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> TULSA    CM-2018-3412 DR3MV, POSSESSION OF DRUG PARAPHERNALIA         TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> OKLAHOMA CM-2019-3474 DI1M, DRIVING WHILE UNDER THE INFLUENCE/ DRUG   TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> OKLAHOMA CM-2021-3706 DI1M, DRIVING UNDER THE INFLUENCE OF DRUGS      TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> OKLAHOMA CM-2021-2916 DR3, UNLAWFUL POSSESSIN OF DRUG PARAPHERNALIA   TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> TULSA    CM-2021-2486 OWPN, CARRYING A FIREARM WHILE UNDER THE INFLU… TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> TULSA    CM-2019-1454 DU9, POSSESSION OF CONTROLLED DRUG METHAMPHETA… TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> OKLAHOMA CM-2022-2800 ODO, POSSESSION OF CONTROLLED DRUG W/O PRESCRI… TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> OKLAHOMA CM-2021-2514 OBS, OBSTRUCTING AN OFFICER                     FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> OKLAHOMA CM-2016-2037 DR1, BEING INTOXICATED IN A PUBLIC PLACE        FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> TULSA    CM-2022-2478 RES, RESISTING AN OFFICER                       FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> OKLAHOMA CM-2017-1981 ABDOM, DOMESTIC ABUSE ( ASSAULT &amp; BATTERY)      FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> TULSA    CM-2021-3589 S11, SPEEDING - POSTED ZONE                     FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> OKLAHOMA CM-2019-3781 BH, THREATENING TO PERFORM AN ACT OF VIOLENCE   FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> TULSA    CM-2020-4220 RCSP, RECEIVE, POSSESS OR CONCEAL STOLEN PROPE… FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> TULSA    CM-2016-836  DL2, DRIVING UNDER SUSPENSION / DUS             FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> TULSA    CM-2022-1743 ABDOM, DOMESTIC ASSAULT AND BATTERY             FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> OKLAHOMA CM-2021-2486 DI1AG, AGGRAVATED DRIVING UNDER THE INFLUENCE … FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> TULSA    CM-2018-2200 DU4, POSSESSION OF CONTROLLED DRUG              TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> TULSA    CM-2019-3308 DI2D, DUI DRUGS                                 TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> OKLAHOMA CM-2021-1954 WE5, CARRYING A FIREARM WHILE UNDER THE INFLUE… TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> OKLAHOMA CM-2016-2238 DU9, POSSESSION OF CDS - MARIJUANA              TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> OKLAHOMA CM-2021-1684 DU9II, UNLAWFUL POSSESSION OF CONTROLLED DRUG-… TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> TULSA    CM-2020-2985 DR3, UNLAWFUL POSSESSION OF DRUG PARAPHERNALIA  TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> OKLAHOMA CM-2016-1492 DU9IV, POSSESSION OF A CONTROLLED DANGEROUS SU… TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> OKLAHOMA CM-2020-3411 DU9II, UNLAWFUL POSSESSION OF CDS- METHAMPHETA… TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> OKLAHOMA CM-2018-2177 DU9II, POSSESSION OF A CDS- METHAMPHETAMINE     TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> OKLAHOMA CM-2020-530  DU9, UNLAWFUL POSSESSION OF CONTROLLED DRUG/MA… TRUE   </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># … with abbreviated variable name ¹​drug_charge</span></span></span></code></pre></div>
 <p>It looks like our regex search was pretty successful! Although it may
 raise some new questions: does driving under the influence count? Is
@@ -626,26 +626,26 @@ cases we have total:</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># Groups:   drug_charges_present [2]</span></span></span>
 <span><span class="co">#&gt;    district case_number  date_filed list_all_charges     n_tot…¹ n_dru…² drug_…³</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> TULSA    CM-2022-1962 2022-06-10 DI5, TRANSPORTING O…       3       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> OKLAHOMA CM-2016-3248 2016-12-22 DL2, DRIVING WHILE …       6       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> OKLAHOMA CM-2018-1045 2018-03-20 DL2, DRIVING WHILE …       1       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> TULSA    CM-2016-1350 2016-03-16 ES6, ELUDING A POLI…       2       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> OKLAHOMA CM-2019-3727 2019-12-12 ABDOM, DOMESTIC ASS…       1       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> TULSA    CM-2021-313  2021-01-28 OBS, OBSTRUCTING AN…       1       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> OKLAHOMA CM-2019-1548 2019-05-07 DI1AG, AGGRAVATED D…       1       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> TULSA    CM-2017-2519 2017-06-05 EDUC, VIOLATION OF …       1       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> TULSA    CM-2020-78   2020-01-06 VPO, VIOLATION OF P…       1       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> TULSA    CM-2016-3242 2016-06-24 ABDOM, ASSAULT AND …       2       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> TULSA    CM-2017-303  2017-01-19 DR3, POSSESSION OF …       2       1 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> OKLAHOMA CM-2019-3466 2019-10-23 DI1, DRIVING WHILE …       1       1 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> OKLAHOMA CM-2016-2098 2016-07-28 OBS, OBSTRUCTING AN…       3       1 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> OKLAHOMA CM-2017-2517 2017-07-26 DU9II, POSSESSION O…       2       2 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> OKLAHOMA CM-2017-4278 2017-11-30 CCV, UNLAWFUL USE O…       6       2 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> TULSA    CM-2017-5175 2017-11-09 DI7, ACTUAL PHYSICA…       4       2 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> OKLAHOMA CM-2016-2939 2016-11-07 FR5, FAILURE TO CAR…       3       1 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> TULSA    CM-2016-3091 2016-06-17 DI2DM, DRIVING UNDE…       5       2 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> OKLAHOMA CM-2016-62   2016-01-11 DU9I, POSSESSION OF…       4       4 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> OKLAHOMA CM-2018-3609 2018-09-17 DU9, POSSESSION OF …       1       1 TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> TULSA    CM-2022-898  2022-03-21 BC, BOGUS CHECK UND…       1       0 FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> TULSA    CM-2017-77   2017-01-06 OBS, OBSTRUCTING AN…       2       0 FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> OKLAHOMA CM-2020-2149 2020-07-22 DI1M, DRIVING UNDER…       1       0 FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> TULSA    CM-2016-4957 2016-09-28 ABDOM, ASSAULT AND …       1       0 FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> OKLAHOMA CM-2020-3383 2020-11-05 OBS, OBSTRUCTING AN…       1       0 FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> TULSA    CM-2022-1212 2022-04-13 DI1, DRIVING UNDER …       2       0 FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> OKLAHOMA CM-2021-320  2021-02-01 DI1, DRIVING UNDER …       1       0 FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> TULSA    CM-2020-3872 2020-11-04 DE0, OPERATE VEHICL…       3       0 FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> TULSA    CM-2020-459  2020-01-30 ABDOM, ASSAULT AND …       1       0 FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> TULSA    CM-2018-4607 2018-10-02 FORG, UTTERING FORG…       1       0 FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> TULSA    CM-2020-1770 2020-05-22 DR3, POSSESSION OF …       6       4 TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> TULSA    CM-2016-5539 2016-11-03 OBS, OBSTRUCTING AN…       5       2 TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> OKLAHOMA CM-2021-1728 2021-06-29 DU9II, UNLAWFUL POS…       1       1 TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> TULSA    CM-2022-3479 2022-10-13 DU9I, UNLAWFUL POSS…       2       1 TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> TULSA    CM-2019-3575 2019-08-08 DR3, POSSESSION OF …       2       2 TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> TULSA    CM-2019-1186 2019-03-13 LP1, FAILURE TO PAY…       6       1 TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> TULSA    CM-2016-628  2016-02-04 TU0, REQUIRED POSIT…       4       1 TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> OKLAHOMA CM-2016-1610 2016-06-15 DU9, POSSESSION OF …       2       1 TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> TULSA    CM-2022-2475 2022-07-22 DU8II, POSSESSION O…       1       1 TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> OKLAHOMA CM-2020-1607 2020-06-15 DU9, UNLAWFUL POSSE…       2       2 TRUE   </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># … with abbreviated variable names ¹​n_total_charges, ²​n_drug_charges,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ³​drug_charges_present</span></span></span>
 <span></span>
