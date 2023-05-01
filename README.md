@@ -17,7 +17,7 @@ The pkgdown website for the ojodb package can be found
 <a href="https://openjusticeok.github.io/ojodb/"
 target="_blank">here</a>.
 
-## Installation
+## Installation 
 
 Install the devtools package if you don’t have it yet, then install the
 ojodb package from GitHub with:
