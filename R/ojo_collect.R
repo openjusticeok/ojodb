@@ -72,7 +72,8 @@ ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
   if("n" %in% names(.data)) {
     rlang::warn(
       "The tbl you are requesting has a variable named `n`. This can cause issues with progress bar rendering and status updates. This message won't be shown again this session.",
-      .frequency = "once"
+      .frequency = "once",
+      .frequency_id = "ojo_collect_n_warning"
     )
   }
 
