@@ -21,12 +21,12 @@
 ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
 
   # Check class of `.data`
-  if(!inherits(.data, "tbl_lazy")) {
+  if (!inherits(.data, "tbl_lazy")) {
     stop("`.data` must be a lazy tibble. Have you already collected the data?")
   }
 
   # First check that `.data` is a lazy tibble created with `ojo_connect()`, `pool::dbPool()`, or `DBI::dbConnect()`
-  if(!inherits(.data, "tbl_Pool") && !inherits(.data, "tbl_dbi")) {
+  if (!inherits(.data, "tbl_Pool") && !inherits(.data, "tbl_dbi")) {
     stop("`.data` must be a lazy tibble created with `ojo_connect`, `pool::dbPool`, `DBI::dbConnect`. Have you already collected the data?")
   }
 
@@ -35,17 +35,17 @@ ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
 
   # If the user is using `pool`, we need to check out a connection from the pool locally
   # `pool::localCheckout()` will return the connection to the pool when the function exits
-  if(inherits(.data, "tbl_Pool")) {
+  if (inherits(.data, "tbl_Pool")) {
     .con <- .con |> pool::localCheckout()
   }
 
   # Check connection validity
-  if(!DBI::dbIsValid(.con)) {
+  if (!DBI::dbIsValid(.con)) {
     stop("The connection to the OJO database is no longer valid. Please reconnect to the database using `ojo_connect()`.")
   }
 
   # First UI chunk
-  if(!.silent) {
+  if (!.silent) {
     con_desc <- dbplyr::db_connection_describe(.con) |>
       gsub(pattern = "postgres", replacement = "") |>
       trimws()
@@ -69,7 +69,7 @@ ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
   # Get n rows in request results
   t_0 <- Sys.time() # Timer start
 
-  if("n" %in% names(.data)) {
+  if ("n" %in% names(.data)) {
     rlang::warn(
       "The tbl you are requesting has a variable named `n`. This can cause issues with progress bar rendering and status updates. This message won't be shown again this session.",
       .frequency = "once"
@@ -84,12 +84,12 @@ ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
   t_1 <- Sys.time() # Timer end
 
   # Second UI chunk
-  if(!.silent) {
+  if (!.silent) {
     cli::cli_progress_step(msg = paste0("Found ", format(n_results, big.mark = ","), " matching results!"),
                            msg_failed = "Something went wrong downloading your data from the database!")
 
     # Warning if it took more than 20 seconds
-    if(difftime(t_1, t_0, units = "secs") > 20) {
+    if (difftime(t_1, t_0, units = "secs") > 20) {
       cli::cli_alert_warning("If the previous step took too long for your query, you can skip these progress updates by setting `.silent = TRUE`")
     }
   }
@@ -105,7 +105,7 @@ ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
   res <- NULL
 
   chunk_size <- round(n_results / 100, 0) # This way we're downloading in chunks of 1% of the total or 1000, whichever is bigger;
-  if(chunk_size < 1000) { chunk_size <- 1000 } # might help with large queries
+  if (chunk_size < 1000) { chunk_size <- 1000 } # might help with large queries
 
   cli::cli_progress_bar(
     name = "dl_pb",
