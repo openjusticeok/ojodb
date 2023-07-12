@@ -37,7 +37,7 @@ ojo_list_tables <- function(schema = "public", ..., .con = NULL) {
 
     pool::dbGetQuery(.con, query) |>
       dplyr::as_tibble() |>
-      dplyr::select(table = table_name)
+      dplyr::select(table = .data$table_name)
   }
 
   if (schema == "all") {

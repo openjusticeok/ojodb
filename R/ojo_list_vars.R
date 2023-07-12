@@ -24,9 +24,9 @@ ojo_list_vars <- function(table, schema = "public", ..., .con = NULL) {
     .con = .con
   ) |>
     dplyr::filter(
-      table_schema == schema,
-      table_name == table
+      .data$table_schema == schema,
+      .data$table_name == table
     ) |>
-    dplyr::select(column_name) |>
-    dplyr::arrange(column_name)
+    dplyr::select(.data$column_name) |>
+    dplyr::arrange(.data$column_name)
 }
