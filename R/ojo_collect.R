@@ -9,6 +9,9 @@
 #' @param .silent Should the cli elements be shown? Defaults to `TRUE` if the user is in an interactive session, and `FALSE` if they are not.
 #'
 #' @export ojo_collect
+#'
+#' @import dplyr
+#'
 #' @returns A local tibble
 #'
 #' @examples
