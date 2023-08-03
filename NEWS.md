@@ -1,3 +1,5 @@
+# ojodb 2.6.0
+
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
 # ojodb 2.5.0 (2023-04-18)
