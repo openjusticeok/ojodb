@@ -37,19 +37,23 @@ ojo_list_tables <- function(schema = "public", ..., .con = NULL) {
 
     pool::dbGetQuery(.con, query) |>
       dplyr::as_tibble() |>
-      dplyr::select(table = table_name)
+      dplyr::select(table = .data$table_name)
   }
 
   if (schema == "all") {
     schemas <- ojo_list_schemas()
     data <- schemas |>
       dplyr::mutate(table = purrr::map(schema, list_tables)) |>
-      tidyr::unnest(cols = table)
+      tidyr::unnest(cols = table) |>
+      dplyr::arrange(table)
+
     return(data)
   } else {
     data <- list_tables(schema)
     data <- data |>
-      dplyr::mutate(schema = schema, .before = table)
+      dplyr::mutate(schema = schema, .before = table) |>
+      dplyr::arrange(table)
+
     return(data)
   }
 }

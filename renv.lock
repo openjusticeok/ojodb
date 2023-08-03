@@ -1,7 +1,27 @@
 {
   "R": {
-    "Version": "4.2.3",
+    "Version": "4.3.1",
     "Repositories": [
+      {
+        "Name": "BioCsoft",
+        "URL": "https://bioconductor.org/packages/3.17/bioc"
+      },
+      {
+        "Name": "BioCann",
+        "URL": "https://bioconductor.org/packages/3.17/data/annotation"
+      },
+      {
+        "Name": "BioCexp",
+        "URL": "https://bioconductor.org/packages/3.17/data/experiment"
+      },
+      {
+        "Name": "BioCworkflows",
+        "URL": "https://bioconductor.org/packages/3.17/workflows"
+      },
+      {
+        "Name": "BioCbooks",
+        "URL": "https://bioconductor.org/packages/3.17/books"
+      },
       {
         "Name": "CRAN",
         "URL": "https://cran.rstudio.com"
@@ -9,18 +29,18 @@
     ]
   },
   "Bioconductor": {
-    "Version": "3.16"
+    "Version": "3.17"
   },
   "Packages": {
     "BiocManager": {
       "Package": "BiocManager",
-      "Version": "1.30.20",
+      "Version": "1.30.21",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "utils"
       ],
-      "Hash": "a7fca16a50b6ef7771b49d636dd54b57"
+      "Hash": "be203e7eea75514bc1a41c1de39a9bb9"
     },
     "DBI": {
       "Package": "DBI",
@@ -173,6 +193,12 @@
       "Version": "1.0.10",
       "Source": "Repository",
       "Repository": "CRAN",
+      "RemoteType": "standard",
+      "RemotePkgRef": "Rcpp",
+      "RemoteRef": "Rcpp",
+      "RemoteRepos": "https://cran.rstudio.com",
+      "RemotePkgPlatform": "source",
+      "RemoteSha": "1.0.10",
       "Requirements": [
         "methods",
         "utils"
@@ -1567,12 +1593,6 @@
       "Version": "0.17.3",
       "Source": "Repository",
       "Repository": "CRAN",
-      "RemoteType": "standard",
-      "RemotePkgRef": "renv",
-      "RemoteRef": "renv",
-      "RemoteRepos": "https://cloud.r-project.org",
-      "RemotePkgPlatform": "x86_64-apple-darwin17.0",
-      "RemoteSha": "0.17.3",
       "Requirements": [
         "utils"
       ],
@@ -1920,6 +1940,12 @@
       "Version": "1.0.4",
       "Source": "Repository",
       "Repository": "CRAN",
+      "RemoteType": "standard",
+      "RemotePkgRef": "systemfonts",
+      "RemoteRef": "systemfonts",
+      "RemoteRepos": "https://cran.rstudio.com",
+      "RemotePkgPlatform": "source",
+      "RemoteSha": "1.0.4",
       "Requirements": [
         "R",
         "cpp11"

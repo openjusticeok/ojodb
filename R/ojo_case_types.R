@@ -12,6 +12,6 @@
 #'
 ojo_case_types <- function() {
   ojo_tbl("case") |>
-    dplyr::count(case_type, sort = T) |>
+    dplyr::count(.data$case_type, sort = T) |>
     dplyr::collect()
 }

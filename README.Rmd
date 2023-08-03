@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# `{ojodb}`
+# ojodb <img src="man/figures/logo.png" align="right" height="139" />
 
 `{ojodb}` is a package that assists [Open Justice Oklahoma](https://openjustice.okpolicy.org/){target="_blank"} analysts to access and analyze court, jail, prison, and other data collected from various sources.
 
