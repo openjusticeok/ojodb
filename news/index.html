@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">ojodb</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.6.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,6 +45,19 @@
       
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="2.6.0" id="ojodb-260">ojodb 2.6.0<a class="anchor" aria-label="anchor" href="#ojodb-260"></a></h2>
+<div class="section level3">
+<h3 id="aesthetic-changes-2-6-0">Aesthetic changes<a class="anchor" aria-label="anchor" href="#aesthetic-changes-2-6-0"></a></h3>
+<ul><li>A fun loading message will now appear when the package is loaded. This can be disabled by setting <code>OJO_LOAD_MESSAGE=FALSE</code> in your local R environment.</li>
+<li>The <code>{ojodb}</code> package now has its own tidyverse-compliant sticker design.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="package-maintenance-2-6-0">Package Maintenance<a class="anchor" aria-label="anchor" href="#package-maintenance-2-6-0"></a></h3>
+<ul><li>The <code>ojo_list_</code> functions (<code><a href="../reference/ojo_list_schemas.html">ojo_list_schemas()</a></code>, <code><a href="../reference/ojo_list_tables.html">ojo_list_tables()</a></code>, and <code><a href="../reference/ojo_list_vars.html">ojo_list_vars()</a></code>) now return a sorted list instead of an unsorted one.</li>
+<li>Documentation and namespacing errors (e.g. <a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a> functions missing an explicit <code>.data</code> reference, missing namespace prefixes, etc.) were corrected. Consequently, <code><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">devtools::check()</a></code> now passes with minimal warnings / notes.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.5.0" id="ojodb-250-2023-04-18">ojodb 2.5.0 (2023-04-18)<a class="anchor" aria-label="anchor" href="#ojodb-250-2023-04-18"></a></h2>
 <div class="section level3">
