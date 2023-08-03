@@ -1,6 +1,12 @@
 # ojodb 2.6.0
 
-<!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
+## Aesthetic changes
+- A fun loading message will now appear when the package is loaded. This can be disabled by setting `OJO_LOAD_MESSAGE=FALSE` in your local R environment.
+- The `{ojodb}` package now has its own tidyverse-compliant sticker design.
+
+## Package Maintenance
+- The `ojo_list_` functions (`ojo_list_schemas()`, `ojo_list_tables()`, and `ojo_list_vars()`) now return a sorted list instead of an unsorted one.
+- Documentation and namespacing errors (e.g. `{dplyr}` functions missing an explicit `.data` reference, missing namespace prefixes, etc.) were corrected. Consequently, `devtools::check()` now passes with minimal warnings / notes.
 
 # ojodb 2.5.0 (2023-04-18)
 
