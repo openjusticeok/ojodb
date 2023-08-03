@@ -1,5 +1,13 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# ojodb 2.5.0 (2023-04-18)
+
+## Analyst Tools
+- You can now use `ojo_collect` to `collect` but with a progress bar and helpful information.
+
+## Package Maintenance
+- Added `ojo_version` function to return the version of the package. Useful for debugging.
+
 # ojodb 2.4.0 (2023-04-13)
 
 ## Package Maintenance
