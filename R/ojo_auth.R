@@ -1,5 +1,5 @@
 #' @title OJO Auth
-#' 
+#'
 #' @description Configure credentials for the Open Justice Oklahoma database
 #'
 #' @details
@@ -46,14 +46,14 @@ ojo_auth <- function(host, port, username, password, ..., .admin = F, .overwrite
         oldenv <- utils::read.table(renv, stringsAsFactors = FALSE)
         newenv <- oldenv |>
           dplyr::as_tibble() |>
-          dplyr::filter(!stringr::str_detect(V1, "(OJO_HOST)|(OJO_PORT)|(OJO_DRIVER)|(OJO_SSL)"))
+          dplyr::filter(!stringr::str_detect(.data$V1, "(OJO_HOST)|(OJO_PORT)|(OJO_DRIVER)|(OJO_SSL)"))
         if (.admin == T) {
           newenv <- newenv |>
-            dplyr::filter(!stringr::str_detect(V1, "(OJO_ADMIN_USER)|(OJO_ADMIN_PASS)")) |>
+            dplyr::filter(!stringr::str_detect(.data$V1, "(OJO_ADMIN_USER)|(OJO_ADMIN_PASS)")) |>
             as.data.frame()
         } else {
           newenv <- newenv |>
-            dplyr::filter(!stringr::str_detect(V1, "(OJO_DEFAULT_USER)|(OJO_DEFAULT_PASS)")) |>
+            dplyr::filter(!stringr::str_detect(.data$V1, "(OJO_DEFAULT_USER)|(OJO_DEFAULT_PASS)")) |>
             as.data.frame()
         }
         utils::write.table(newenv, renv,

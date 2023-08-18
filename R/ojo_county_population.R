@@ -3,7 +3,7 @@
 #' Summarizes and manipulates the PEP series to return Oklahoma's population by county for desired years. Useful for calculating per capita rates of county-level data.
 #'
 #' @param years A numeric vector of years for which to get population data
-#' 
+#'
 #' @export ojo_county_population
 #' @return A table of Oklahoma's population by county in each year specified
 #' @examples
@@ -23,17 +23,19 @@ ojo_county_population <- function(years) {
       geography = "county",
       state = "OK"
     ) |>
-      dplyr::filter(variable == "POP") |>
+      dplyr::filter(.data$variable == "POP") |>
       dplyr::mutate(year = y) |>
       dplyr::bind_rows(d)
   }
 
   d <- d |>
-    dplyr::mutate(court = NAME |>
-      stringr::str_remove(" County.*") |>
-      stringr::str_to_upper() |>
-      stringr::str_remove_all(" ")) |>
-    dplyr::select(court, year, pop = value)
+    dplyr::mutate(
+      court = .data$NAME |>
+        stringr::str_remove(" County.*") |>
+        stringr::str_to_upper() |>
+        stringr::str_remove_all(" ")
+    ) |>
+    dplyr::select(.data$court, .data$year, pop = .data$value)
 
   return(d)
 }
