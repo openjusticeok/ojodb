@@ -55,7 +55,6 @@ Suggests:
   languageserver,
   lifecycle,
   lintr,
-  pak,
   readr,
   renv,
   roxygen2,
