@@ -1,3 +1,5 @@
+# ojodb 2.6.1
+
 # ojodb 2.6.0
 
 ## Aesthetic changes
