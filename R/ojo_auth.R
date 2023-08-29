@@ -32,7 +32,7 @@ ojo_auth <- function(host, port, username, password, ..., .admin = F, .overwrite
   renv <- file.path(home, ".Renviron")
   rootcert <- file.path(home, ".postgresql/ojodb/server-ca.pem")
   clientcert <- file.path(home, ".postgresql/ojodb/client-cert.pem")
-  clientkey <- file.path(home, ".postgresql/ojodb/client-key.pk8")
+  clientkey <- file.path(home, ".postgresql/ojodb/client-key.pem")
   if (.install) {
     if (file.exists(renv)) {
       # Backup original .Renviron before doing anything else here.
