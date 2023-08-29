@@ -1,6 +1,6 @@
-#' Query criminal cases from ojodb
+#' Query criminal cases from the OJO database
 #'
-#' Query the Open Justice Oklahoma database for criminal cases with a casetype of'CM' (misdemeanor) or 'CF' (felony)
+#' Query the Open Justice Oklahoma database for criminal cases with a case type of 'CM' (misdemeanor) or 'CF' (felony)
 #'
 #' @param districts A character vector of districts to query
 #' @param vars A character vector of variables to return

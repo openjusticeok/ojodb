@@ -1,4 +1,4 @@
-#' @title OJO Auth
+#' @title Create configuration for OJO database connection
 #'
 #' @description Configure credentials for the Open Justice Oklahoma database
 #'

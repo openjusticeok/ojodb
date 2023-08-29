@@ -1,6 +1,6 @@
-#' Query civil cases from ojodb
+#' Query civil cases from the OJO database
 #'
-#' Query the Open Justice Oklahoma database for civil cases with a casetype of'SC' (small claims)
+#' Query the Open Justice Oklahoma database for civil cases with a case type of 'SC' (small claims)
 #'
 #' @param districts A character vector of districts to query
 #' @param vars A character vector of variables to return

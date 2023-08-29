@@ -11,9 +11,9 @@ ojo_search_minutes(query, ..., .con = NULL, .silent = F)
 
 \item{...}{Placeholder}
 
-\item{.con}{The ojodb connection to use}
+\item{.con}{The OJO connection to use}
 
-\item{.silent}{Should the CLI be shown?}
+\item{.silent}{Should the command line interface elements be shown? Defaults to `TRUE` if the user is in an interactive session, and `FALSE` if they are not.}
 }
 \value{
 data, a lazy tibble containing the resulting minutes

@@ -4,8 +4,8 @@
 #'
 #' @param query A term or phrase to search for using the PostgreSQL full text search syntax
 #' @param ... Placeholder
-#' @param .con The ojodb connection to use
-#' @param .silent Should the CLI be shown?
+#' @param .con The OJO connection to use
+#' @param .silent Should the command line interface elements be shown? Defaults to `TRUE` if the user is in an interactive session, and `FALSE` if they are not.
 #'
 #' @export ojo_search_minutes
 #' @return data, a lazy tibble containing the resulting minutes
