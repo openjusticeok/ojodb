@@ -1,4 +1,7 @@
 # ojodb 2.6.1
+
+## Bug fixes
+
 - Fixed a bug related to the `rlang` package
 - Removed `renv` from development environment in favor of package management using the DESCRIPTION file. This will only affect the development of the package going forward, and shouldn't affect analysts' use of the package.
 
