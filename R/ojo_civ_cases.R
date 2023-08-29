@@ -21,9 +21,16 @@
 #'
 ojo_civ_cases <- function(districts = "all", vars = NULL, case_types = c("CS", "SC", "CJ"),
                           file_years = lubridate::year(Sys.Date()), ...) {
+
+  case_types_upper <- toupper(case_types)
+
+  if (!all(case_types_upper %in% c("CS", "SC", "CJ"))) {
+    stop("The 'case_types' argument must only include 'CS', 'SC', or 'CJ' cases.")
+  }
+
   data <- ojo_tbl("case") |>
     dplyr::filter(
-      .data$case_type %in% case_types,
+      .data$case_type %in% case_types_upper,
       .data$year %in% file_years
     )
 
