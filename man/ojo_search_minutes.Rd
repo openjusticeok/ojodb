@@ -4,7 +4,7 @@
 \alias{ojo_search_minutes}
 \title{Query minutes for a given search term}
 \usage{
-ojo_search_minutes(query, ..., .con = NULL)
+ojo_search_minutes(query, ..., .con = NULL, .silent = F)
 }
 \arguments{
 \item{query}{A term or phrase to search for using the PostgreSQL full text search syntax}
@@ -12,6 +12,8 @@ ojo_search_minutes(query, ..., .con = NULL)
 \item{...}{Placeholder}
 
 \item{.con}{The ojodb connection to use}
+
+\item{.silent}{Should the CLI be shown?}
 }
 \value{
 data, a lazy tibble containing the resulting minutes
