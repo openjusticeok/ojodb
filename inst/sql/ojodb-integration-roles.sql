@@ -166,3 +166,20 @@ CREATE ROLE integration_cjars WITH
 
 grant domain_oscn_reader to integration_cjars;
 -- grant cloudsqlsuperuser to integration_cjars;
+
+--------------------------------------------------------------------------------
+-- integration_loft
+
+CREATE ROLE integration_loft WITH 
+	NOSUPERUSER
+	NOCREATEDB
+	NOCREATEROLE
+	INHERIT
+	LOGIN
+	NOREPLICATION
+	NOBYPASSRLS
+	CONNECTION LIMIT -1;
+
+-- this one needs read access to all oscn tables
+
+grant domain_oscn_reader to integration_loft;

@@ -2,7 +2,7 @@
 % Please edit documentation in R/ojo_civ_cases.R
 \name{ojo_civ_cases}
 \alias{ojo_civ_cases}
-\title{Query civil cases from ojodb}
+\title{Query civil cases from the OJO database}
 \usage{
 ojo_civ_cases(
   districts = "all",
@@ -27,7 +27,7 @@ ojo_civ_cases(
 data, a lazy tibble containing the resulting civil cases
 }
 \description{
-Query the Open Justice Oklahoma database for civil cases with a casetype of'SC' (small claims)
+Query the Open Justice Oklahoma database for civil cases with a case type of 'SC' (small claims)
 }
 \examples{
 \dontrun{

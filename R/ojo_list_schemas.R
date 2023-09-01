@@ -1,9 +1,9 @@
-#' List all schemas on the ojodb database
+#' List all schemas on the OJO database
 #'
 #' Query the Open Justice Oklahoma database for the names of all schemas
 #'
 #' @param ... Placeholder
-#' @param .con The ojodb connection to use
+#' @param .con The OJO database connection to use
 #'
 #' @export ojo_list_schemas
 #' @return data, a tibble containing the names of all schemas

@@ -1,12 +1,12 @@
 #' @title OJO Collect
 #'
 #' @description
-#' A wrapper for dplyr::collect() that includes an ojodb progress spinner
+#' A wrapper for dplyr::collect() that includes a progress bar
 #' Pull a lazy tibble into your local environment from the OJO database, using `ojo_crim_cases()`, `ojo_civ_cases()`, etc.
 #'
 #' @param .data The lazy tibble to be pulled
 #' @param ... Placeholder for additional arguments
-#' @param .silent Should the cli elements be shown? Defaults to `TRUE` if the user is in an interactive session, and `FALSE` if they are not.
+#' @param .silent Should the command line interface elements be shown? Defaults to `TRUE` if the user is in an interactive session, and `FALSE` if they are not.
 #'
 #' @export ojo_collect
 #'
