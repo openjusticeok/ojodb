@@ -38,11 +38,13 @@ ojo_auth <- function(host, port, username, password, ..., .admin = F, .overwrite
   if(!fs::file_exists(rootcert) |
      !fs::file_exists(clientcert) |
      !fs::file_exists(clientkey)) {
-    cli::cli_alert_danger(
-      paste0("It looks like your SSL certs are not in the correct location (",
-             fs::path(home, ".postgresql/ojodb/..."),
-             ").\nPlease check that you have all three (server-ca.pem, client-cert.pem, and client-key.pem).")
+    rlang::abort(
+      paste0(
+        "It looks like your SSL certs are not in the correct location (",
+        fs::path(home, ".postgresql/ojodb/..."),
+        ").\nPlease check that you have all three (server-ca.pem, client-cert.pem, and client-key.pem)."
       )
+    )
   }
 
   if (.install) {

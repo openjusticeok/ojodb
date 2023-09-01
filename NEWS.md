@@ -1,12 +1,12 @@
 # ojodb 2.6.1
 
-## Bug fixes
+## Bug Fixes
 - Fixed a bug related to the `rlang` package
 - Removed `renv` from development environment in favor of package management using the DESCRIPTION file. This will only affect the development of the package going forward, and shouldn't affect analysts' use of the package.
 
 # ojodb 2.6.0
 
-## Aesthetic changes
+## Aesthetics
 - A fun loading message will now appear when the package is loaded. This can be disabled by setting `OJO_LOAD_MESSAGE=FALSE` in your local R environment.
 - The `{ojodb}` package now has its own tidyverse-compliant sticker design.
 
