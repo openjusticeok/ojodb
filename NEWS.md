@@ -3,13 +3,13 @@
 ## Bug Fixes
 - Fixed bugs in `ojo_auth()` which prevented it from successfully backing up the `.Renviron` file.
 
-# Package Maintanance
+## Package Maintanance
 - Changed from Base R file paths to the `{fs}` package.
 - Adjusted GitHub Actions workflows to not run on draft PRs.
 - Added spellcheck GitHub Actions.
 - Changed SSL certs to all use `.pem` extensions
 
-# Analyst Tools
+## Analyst Tools
 - `ojo_search_minutes()` now allows for queries that include a space. Postgres operators like `|`, `<->`, and `!!` still work too; queries with spaces are now wrapped in quotes and treated as a single search string.
 - `ojo_crim_cases()` and `ojo_civ_cases()` were changed to make the `case_type` argument no longer case-sensitive. It also throws an error now when you ask for nonexistent values of `case_type`.
 
