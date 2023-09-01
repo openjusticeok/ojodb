@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">ojodb</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.6.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.7.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,12 +46,24 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="2.7.0" id="ojodb-270">ojodb 2.7.0<a class="anchor" aria-label="anchor" href="#ojodb-270"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-2-7-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-7-0"></a></h3>
+<ul><li>Fixed bugs in <code><a href="../reference/ojo_auth.html">ojo_auth()</a></code> which prevented it from successfully backing up the <code>.Renviron</code> file.</li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.6.1" id="ojodb-261">ojodb 2.6.1<a class="anchor" aria-label="anchor" href="#ojodb-261"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-2-6-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-6-1"></a></h3>
+<ul><li>Fixed a bug related to the <code>rlang</code> package.</li>
+<li>Removed <code>renv</code> from development environment in favor of package management using the DESCRIPTION file. This will only affect the development of the package going forward, and shouldn’t affect analysts’ use of the package.</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.6.0" id="ojodb-260">ojodb 2.6.0<a class="anchor" aria-label="anchor" href="#ojodb-260"></a></h2>
 <div class="section level3">
-<h3 id="aesthetic-changes-2-6-0">Aesthetic changes<a class="anchor" aria-label="anchor" href="#aesthetic-changes-2-6-0"></a></h3>
+<h3 id="aesthetics-2-6-0">Aesthetics<a class="anchor" aria-label="anchor" href="#aesthetics-2-6-0"></a></h3>
 <ul><li>A fun loading message will now appear when the package is loaded. This can be disabled by setting <code>OJO_LOAD_MESSAGE=FALSE</code> in your local R environment.</li>
 <li>The <code>{ojodb}</code> package now has its own tidyverse-compliant sticker design.</li>
 </ul></div>
