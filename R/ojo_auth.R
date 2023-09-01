@@ -29,21 +29,44 @@
 #'
 ojo_auth <- function(host, port, username, password, ..., .admin = F, .overwrite = T, .install = T) {
   home <- Sys.getenv("HOME")
-  renv <- file.path(home, ".Renviron")
-  rootcert <- file.path(home, ".postgresql/ojodb/server-ca.pem")
-  clientcert <- file.path(home, ".postgresql/ojodb/client-cert.pem")
-  clientkey <- file.path(home, ".postgresql/ojodb/client-key.pem")
+  renv <- fs::path(home, ".Renviron")
+  rootcert <- fs::path(home, ".postgresql/ojodb/server-ca.pem")
+  clientcert <- fs::path(home, ".postgresql/ojodb/client-cert.pem")
+  clientkey <- fs::path(home, ".postgresql/ojodb/client-key.pem")
+
+  # Check if SSL certs are in correct location; if not, throw error
+  if(!fs::file_exists(rootcert) |
+     !fs::file_exists(clientcert) |
+     !fs::file_exists(clientkey)) {
+    cli::cli_alert_danger(
+      paste0("It looks like your SSL certs are not in the correct location (",
+             fs::path(home, ".postgresql/ojodb/..."),
+             ").\nPlease check that you have all three (server-ca.pem, client-cert.pem, and client-key.pem).")
+      )
+  }
+
   if (.install) {
-    if (file.exists(renv)) {
+
+    # Check if .Renviron exists. If it does, make a backup...
+    if (fs::file_exists(renv)) {
       # Backup original .Renviron before doing anything else here.
-      file.copy(renv, file.path(home, ".Renviron_backup"))
+      fs::file_copy(renv, fs::path(home, ".Renviron_backup"),
+                    overwrite = TRUE)
     }
-    if (!file.exists(renv)) {
-      file.create(renv)
+
+    # ...if not, create a fresh one.
+    if (!fs::file_exists(renv)) {
+      fs::file_create(renv)
+    # Filling out the .Renviron file
     } else {
+
+      # If we want to overwrite the old config:
       if (isTRUE(.overwrite)) {
-        message("Your original .Renviron will be backed up and stored in your R HOME directory if needed.")
+        cli::cli_alert_info("Your original .Renviron will be backed up and stored in your R HOME directory if needed.")
+
+        # Saving the original .Renviron file
         oldenv <- utils::read.table(renv, stringsAsFactors = FALSE)
+        # Creating the new .Renviron file (not filled out yet, all OJO variables removed)
         newenv <- oldenv |>
           dplyr::as_tibble() |>
           dplyr::filter(!stringr::str_detect(.data$V1, "(OJO_HOST)|(OJO_PORT)|(OJO_DRIVER)|(OJO_SSL)"))
@@ -56,10 +79,14 @@ ojo_auth <- function(host, port, username, password, ..., .admin = F, .overwrite
             dplyr::filter(!stringr::str_detect(.data$V1, "(OJO_DEFAULT_USER)|(OJO_DEFAULT_PASS)")) |>
             as.data.frame()
         }
+
+        # Save new .Renviron file with OJO variables removed
         utils::write.table(newenv, renv,
           quote = FALSE, sep = "\n",
           col.names = FALSE, row.names = FALSE
         )
+
+      # If a config already exists, and we don't want to overwrite it:
       } else {
         tv <- readLines(renv)
         if (.admin) {
@@ -73,6 +100,8 @@ ojo_auth <- function(host, port, username, password, ..., .admin = F, .overwrite
         }
       }
     }
+
+    # Fill out .Renviron with new arguments
     hostconcat <- paste0("OJO_HOST='", host, "'")
     portconcat <- paste0("OJO_PORT='", port, "'")
     if (.admin) {
@@ -94,10 +123,15 @@ ojo_auth <- function(host, port, username, password, ..., .admin = F, .overwrite
     write(rootcertconcat, renv, sep = "\n", append = TRUE)
     write(clientcertconcat, renv, sep = "\n", append = TRUE)
     write(clientkeyconcat, renv, sep = "\n", append = TRUE)
-    message('Your configuration has been stored in your .Renviron. \nTo use now, restart R or run `readRenviron("~/.Renviron")`')
+    cli::cli_alert_success('Your configuration has been stored in your .Renviron.
+                           To use now, restart R or run `readRenviron("~/.Renviron")`')
     invisible()
+
+  # If .install = FALSE...
   } else {
-    message("To install your configuration for use in future sessions, run this function with `.install = TRUE`.")
+    cli::cli_alert_info("To install your configuration for use in future sessions, run this function with `.install = TRUE`.")
+
+    # ...set up local environment, but don't save to .Renviron
     Sys.setenv(OJO_HOST = host)
     Sys.setenv(OJO_PORT = port)
     if (.admin == T) {
