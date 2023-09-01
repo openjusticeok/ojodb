@@ -51,6 +51,20 @@
 <h3 id="bug-fixes-2-7-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-7-0"></a></h3>
 <ul><li>Fixed bugs in <code><a href="../reference/ojo_auth.html">ojo_auth()</a></code> which prevented it from successfully backing up the <code>.Renviron</code> file.</li>
 </ul></div>
+<div class="section level3">
+<h3 id="package-maintanance-2-7-0">Package Maintanance<a class="anchor" aria-label="anchor" href="#package-maintanance-2-7-0"></a></h3>
+<ul><li>Changed from Base R file paths to the <a href="https://fs.r-lib.org" class="external-link">fs</a> package.</li>
+<li>Adjusted GitHub Actions workflows to not run on draft PRs.</li>
+<li>Added spellcheck GitHub Actions.</li>
+<li>Changed SSL certs to all use <code>.pem</code> extensions</li>
+</ul></div>
+<div class="section level3">
+<h3 id="analyst-tools-2-7-0">Analyst Tools<a class="anchor" aria-label="anchor" href="#analyst-tools-2-7-0"></a></h3>
+<ul><li>
+<code><a href="../reference/ojo_search_minutes.html">ojo_search_minutes()</a></code> now allows for queries that include a space. Postgres operators like <code>|</code>, <code>&lt;-&gt;</code>, and <code>!!</code> still work too; queries with spaces are now wrapped in quotes and treated as a single search string.</li>
+<li>
+<code><a href="../reference/ojo_crim_cases.html">ojo_crim_cases()</a></code> and <code><a href="../reference/ojo_civ_cases.html">ojo_civ_cases()</a></code> were changed to make the <code>case_type</code> argument no longer case-sensitive. It also throws an error now when you ask for nonexistent values of <code>case_type</code>.</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.6.1" id="ojodb-261">ojodb 2.6.1<a class="anchor" aria-label="anchor" href="#ojodb-261"></a></h2>
