@@ -14,7 +14,7 @@
 list_oscn_counties <- function(case = "upper"){
 
   if(!case %in% c("upper", "lower", "title")){
-    stop("Case must be either 'upper', 'lower', or 'title'.")
+    stop("Argument 'case' must be either 'upper', 'lower', or 'title'.")
   }
 
   list <- c("ADAIR", "CANADIAN", "CLEVELAND", "COMANCHE",
