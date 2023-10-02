@@ -1,3 +1,7 @@
+.onLoad <- function(lib, pkg) {
+  S7::methods_register()
+}
+
 ojodbStartupMessage <- function() {
 
   ojo_art <- "                   _           _ _\n \u2554\u2550\u2550    \u2550\u2550\u2557   ___ (_) ___   __| | |__\n \u2551/      \\\u2551  / _ \\| |/ _ \\ / _` | '_ \\\n            | (_) | | (_) | (_| | |_) |\n \u2551\\      /\u2551  \\___// |\\___/ \\__,_|_.__/\n \u255a\u2550\u2550    \u2550\u2550\u255d     |__/\n                          version "
@@ -15,9 +19,9 @@ ojodbStartupMessage <- function() {
 
 .onAttach <- function(lib, pkg) {
 
-  if(Sys.getenv("OJO_LOAD_MESSAGE") != FALSE){
+  if (Sys.getenv("OJO_LOAD_MESSAGE") != FALSE) {
     msg <- ojodbStartupMessage()
-    if(!interactive())
+    if (!interactive())
       msg[1] <- paste("Package 'ojodb' version", utils::packageVersion("ojodb"))
     packageStartupMessage(msg)
     invisible()

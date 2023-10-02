@@ -3,7 +3,7 @@
 #' @description Get the environment of the OJO package, which holds the database pool object.
 #'
 #' @param ... Placeholder for future arguments
-#' 
+#'
 #' @export
 #'
 ojo_env <- function(...) {
@@ -19,31 +19,31 @@ ojo_env <- function(...) {
 #'
 #' @export
 #' @returns A character vector containing the version number of the `ojodb` package.
-#' 
+#'
 ojo_version <- function(...) {
   utils::packageVersion("ojodb")
 }
 
 #' @title Skip If No Database Connection
-#' 
+#'
 #' @description
 #' Skips a test if the `ojodb` package is not installed or if the user is not connected to the OJO database.
 #'
 #' @keywords internal
-#' 
+#'
 skip_if_no_db <- function() {
   testthat::skip("No database connection available")
 }
 
 #' @title Get Connection Object
-#' 
+#'
 #' @description
 #' Gets the connection object from the environment specified by the `.env` argument.
-#' 
+#'
 #' @param env The environment to search for the connection object.
-#' 
+#'
 #' @keywords internal
-#' 
+#'
 get_connection_object <- function(env) {
   pool_object_exists <- exists("ojo_pool", envir = env, inherits = FALSE)
   con_object_exists <- exists("ojo_con", envir = env, inherits = FALSE)

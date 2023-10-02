@@ -1,5 +1,6 @@
 test_that("ojo_tbl succeeds correctly in non-interactive mode", {
   db <- ojo_connect(.pool = TRUE)
+
   expect_snapshot_value(
     ojo_tbl("case", .con = db),
     style = "serialize"
