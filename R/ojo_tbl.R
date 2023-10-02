@@ -62,12 +62,6 @@ S7::method(get_data, class_ojo_arrow_tbl) <- function(x, schema, table, ...) {
   arrow::open_dataset(bucket)
 }
 
-ojo_tbl <- function(table, schema = "public", source = "postgres", ...) {
-  obj <- new_ojo_tbl(source, ...)
-  get_data(obj, schema, table)
-}
-
-
 #' Identify a table from the OJO database
 #'
 #' Identifies a table in the OJO database from which to query data. Remember to run \code{connect_ojo()} to establish a connection before attempting to query and to close the connection afterwards with \code{disconnect_ojo()}.
@@ -76,8 +70,8 @@ ojo_tbl <- function(table, schema = "public", source = "postgres", ...) {
 #'
 #' @param table The name of a table in the OJO database. To get a list of tables, run \code{ojo_list_tables()}
 #' @param schema The name of a schema in the OJO database. To get a list of schemas, run \code{ojo_list_schemas()}
+#' @param source The source of the data. Defaults to `postgres`. Alternative values include `arrow` for snappier queries on older data
 #' @param ... Placeholder
-#' @param .con The ojodb connection to use
 #'
 #' @export ojo_tbl
 #' @return A pointer to a table that can be passed to dplyr functions and/or pulled into a dataframe using \code{ojo_collect()}
@@ -93,11 +87,7 @@ ojo_tbl <- function(table, schema = "public", source = "postgres", ...) {
 #' }
 #' @seealso ojo_list_tables(), ojo_list_vars(), ojo_list_schemas()
 #'
-# ojo_tbl <- function(table, schema = "public", ..., .con = NULL) {
-#   if (is.null(.con)) {
-#     .con <- ojo_connect(...)
-#   }
-#
-#   .con |>
-#     dplyr::tbl(DBI::Id(schema = schema, table = table))
-# }
+ojo_tbl <- function(table, schema = "public", source = "postgres", ...) {
+  obj <- new_ojo_tbl(source, ...)
+  get_data(obj, schema, table)
+}
