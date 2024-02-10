@@ -23,11 +23,38 @@
 #' }
 #' @seealso ojo_list_tables(), ojo_list_vars(), ojo_list_schemas()
 #'
-ojo_tbl <- function(table, schema = "public", ..., .con = NULL) {
+ojo_tbl <- function(table, schema = "public", ..., .con = NULL, .source = "database") {
   if (is.null(.con)) {
     .con <- ojo_connect(...)
   }
 
-  .con |>
-    dplyr::tbl(DBI::Id(schema = schema, table = table))
+  if (.source == "database") {
+    return(tbl_from_database(.con, table, schema))
+  } else if (.source == "gcs") {
+    if (schema == "public") schema <- "oscn"
+    return(tbl_from_gcs(schema, table))
+  } else {
+    rlang::abort("Invalid source specified. Please choose 'database' or 'gcs'.")
+  }
+}
+
+tbl_from_database <- function(con, table, schema) {
+  data_tbl <- dplyr::tbl(
+    con,
+    DBI::Id(
+      schema = schema,
+      table = table
+    )
+  )
+
+  return(data_tbl)
+}
+
+tbl_from_gcs <- function(schema, table) {
+  full_gcs_path <- stringr::str_glue("gs://anonymous@{schema}/{table}")
+
+  data_tbl <- arrow::open_dataset(full_gcs_path, format = "parquet") |>
+    dplyr::collect()
+
+  return(data_tbl)
 }
