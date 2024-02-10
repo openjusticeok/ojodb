@@ -23,7 +23,14 @@
 #' }
 #' @seealso ojo_list_tables(), ojo_list_vars(), ojo_list_schemas()
 #'
-ojo_tbl <- function(table, schema = "public", ..., .con = NULL, .source = "database") {
+ojo_tbl <- function(
+    table,
+    schema = "public",
+    ...,
+    .con = NULL,
+    .source = "database",
+    .cache = rlang::is_interactive()
+) {
   if (is.null(.con)) {
     .con <- ojo_connect(...)
   }
@@ -31,10 +38,18 @@ ojo_tbl <- function(table, schema = "public", ..., .con = NULL, .source = "datab
   if (.source == "database") {
     return(tbl_from_database(.con, table, schema))
   } else if (.source == "gcs") {
-    if (schema == "public") schema <- "oscn"
-    return(tbl_from_gcs(schema, table))
+    # Temp fix for schema
+    if (schema == "public") {
+      schema <- "oscn"
+    }
+
+    if (.cache) {
+
+    } else {
+      return(tbl_from_gcs(schema, table))
+    }
   } else {
-    rlang::abort("Invalid source specified. Please choose 'database' or 'gcs'.")
+    rlang::abort("Invalid source specified. Please choose one of: 'database' or 'gcs'.")
   }
 }
 
@@ -51,10 +66,12 @@ tbl_from_database <- function(con, table, schema) {
 }
 
 tbl_from_gcs <- function(schema, table) {
-  full_gcs_path <- stringr::str_glue("gs://anonymous@{schema}/{table}")
+  bucket <- arrow::gs_bucket(
+    stringr::str_glue("{schema}/{table}"),
+    anonymous = TRUE
+  )
 
-  data_tbl <- arrow::open_dataset(full_gcs_path, format = "parquet") |>
-    dplyr::collect()
+  data_tbl <- arrow::open_dataset(bucket, format = "parquet")
 
   return(data_tbl)
 }
