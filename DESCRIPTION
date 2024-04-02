@@ -36,7 +36,7 @@ Imports:
   purrr,
   rlang,
   RPostgres,
-  stringr,
+  stringi,
   tibble,
   tidyr,
   utils,
@@ -69,7 +69,7 @@ Depends:
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Config/testthat/parallel: true
