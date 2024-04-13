@@ -2,14 +2,16 @@
 % Please edit documentation in R/ojo_list_tables.R
 \name{ojo_list_tables}
 \alias{ojo_list_tables}
-\title{List all tableson the ojodb database}
+\title{List all tables on the OJO database}
 \usage{
-ojo_list_tables(schema = "public", ...)
+ojo_list_tables(schema = "public", ..., .con = NULL)
 }
 \arguments{
 \item{schema}{The name of the schema to query}
 
 \item{...}{Placeholder for additional arguments}
+
+\item{.con}{The OJO database connection to use}
 }
 \value{
 data, a tibble containing the names of all tables

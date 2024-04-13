@@ -25,7 +25,10 @@
     <loc>/news/index.html</loc>
   </url>
   <url>
-    <loc>/reference/court_ref.html</loc>
+    <loc>/notes.html</loc>
+  </url>
+  <url>
+    <loc>/reference/get_connection_object.html</loc>
   </url>
   <url>
     <loc>/reference/index.html</loc>
@@ -55,13 +58,22 @@
     <loc>/reference/ojo_civ_cases.html</loc>
   </url>
   <url>
+    <loc>/reference/ojo_collect.html</loc>
+  </url>
+  <url>
     <loc>/reference/ojo_color.html</loc>
+  </url>
+  <url>
+    <loc>/reference/ojo_connect.html</loc>
   </url>
   <url>
     <loc>/reference/ojo_county_population.html</loc>
   </url>
   <url>
     <loc>/reference/ojo_crim_cases.html</loc>
+  </url>
+  <url>
+    <loc>/reference/ojo_env.html</loc>
   </url>
   <url>
     <loc>/reference/ojo_fill.html</loc>
@@ -82,6 +94,9 @@
     <loc>/reference/ojo_pal.html</loc>
   </url>
   <url>
+    <loc>/reference/ojo_query.html</loc>
+  </url>
+  <url>
     <loc>/reference/ojo_search_minutes.html</loc>
   </url>
   <url>
@@ -92,5 +107,11 @@
   </url>
   <url>
     <loc>/reference/ojo_theme.html</loc>
+  </url>
+  <url>
+    <loc>/reference/ojo_version.html</loc>
+  </url>
+  <url>
+    <loc>/reference/skip_if_no_db.html</loc>
   </url>
 </urlset>

@@ -6,7 +6,9 @@
 #'
 #' @param table The name of a table in the OJO database. To get a list of tables, run \code{ojo_list_tables()}
 #' @param schema The name of a schema in the OJO database. To get a list of schemas, run \code{ojo_list_schemas()}
-#' 
+#' @param ... Placeholder
+#' @param .con The ojodb connection to use
+#'
 #' @export ojo_tbl
 #' @return A pointer to a table that can be passed to dplyr functions and/or pulled into a dataframe using \code{ojo_collect()}
 #' @examples
@@ -21,13 +23,11 @@
 #' }
 #' @seealso ojo_list_tables(), ojo_list_vars(), ojo_list_schemas()
 #'
-ojo_tbl <- function(table, schema = "public") {
-  if (!exists("ojodb", where = .GlobalEnv)) {
-    ojo_connect()
+ojo_tbl <- function(table, schema = "public", ..., .con = NULL) {
+  if (is.null(.con)) {
+    .con <- ojo_connect(...)
   }
 
-  pool_src <- pool::poolCheckout(ojodb)
-  on.exit(pool::poolReturn(pool_src))
-  pool_src |>
-    dplyr::tbl(dbplyr::in_schema(schema, table))
+  .con |>
+    dplyr::tbl(DBI::Id(schema = schema, table = table))
 }

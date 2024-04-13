@@ -1,6 +1,6 @@
-#' Query criminal cases from ojodb
+#' Query criminal cases from the OJO database
 #'
-#' Query the Open Justice Oklahoma database for criminal cases with a casetype of'CM' (misdemeanor) or 'CF' (felony)
+#' Query the Open Justice Oklahoma database for criminal cases with a case type of 'CM' (misdemeanor) or 'CF' (felony)
 #'
 #' @param districts A character vector of districts to query
 #' @param vars A character vector of variables to return
@@ -20,15 +20,26 @@
 #'
 ojo_crim_cases <- function(districts = "all", vars = NULL, case_types = c("CM", "CF", "TR"),
                            file_years = 2000:lubridate::year(Sys.Date()), ...) {
+
+  case_types_upper <- toupper(case_types)
+
+  if (!all(case_types_upper %in% c("CM", "CF", "TR"))) {
+    stop("The 'case_types' argument must only include 'CM', 'CF', or 'TR' cases.")
+  }
+
   data <- ojo_tbl("case") |>
     dplyr::filter(
-      .data$case_type %in% case_types,
+      # `upper()` is evaluated in SQL; debug and use `show_query()` to verify
+      .data$case_type %in% case_types_upper,
       .data$year %in% file_years
     )
 
   if (all(districts != "all")) {
+
+    districts_upper <- toupper(districts)
+
     data <- data |>
-      dplyr::filter(.data$district %in% districts)
+      dplyr::filter(.data$district %in% districts_upper)
   }
 
   selection <- c("id", "district", "case_number", "case_type", "date_filed", "date_closed", "counts", "open_counts")
@@ -103,7 +114,7 @@ ojo_add_counts <- function(data, vars = NULL, ...) {
 
   if (is.null(vars)) {
     data <- data |>
-      dplyr::select(dplyr::all_of(columns), .data$count_as_filed, .data$disposition)
+      dplyr::select(dplyr::all_of(columns), "count_as_filed", "disposition")
   } else {
     if (vars != "all") {
       selection <- c(dplyr::all_of(columns), dplyr::all_of(vars))

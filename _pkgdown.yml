@@ -13,6 +13,7 @@ reference:
   - ojo_add_issues
   - ojo_add_party_details
   - ojo_search_minutes
+  - ojo_collect
 - title: "Functions to help aid with analysis"
   desc: "These include some other helpful functions you might use in your analysis."
   contents:
@@ -33,7 +34,11 @@ reference:
 - title: "'Behind the scenes' functions"
   desc: "These are the most basic / fundamental functions in the package. Generally, we shouldn't need to use them directly."
   contents:
+  - ojo_connect
   - ojo_tbl
+  - ojo_query
   - ojo_check_ssl
   - ojo_auth
+  - ojo_env
+  - ojo_version
 

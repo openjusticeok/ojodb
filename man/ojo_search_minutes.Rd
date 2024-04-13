@@ -4,10 +4,16 @@
 \alias{ojo_search_minutes}
 \title{Query minutes for a given search term}
 \usage{
-ojo_search_minutes(query)
+ojo_search_minutes(query, ..., .con = NULL, .silent = F)
 }
 \arguments{
 \item{query}{A term or phrase to search for using the PostgreSQL full text search syntax}
+
+\item{...}{Placeholder}
+
+\item{.con}{The OJO connection to use}
+
+\item{.silent}{Should the command line interface elements be shown? Defaults to `TRUE` if the user is in an interactive session, and `FALSE` if they are not.}
 }
 \value{
 data, a lazy tibble containing the resulting minutes
