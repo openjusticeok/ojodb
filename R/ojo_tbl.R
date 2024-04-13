@@ -28,8 +28,7 @@ ojo_tbl <- function(
     schema = "public",
     ...,
     .con = NULL,
-    .source = "database",
-    .cache = rlang::is_interactive()
+    .source = "database"
 ) {
   if (is.null(.con)) {
     .con <- ojo_connect(...)
@@ -42,12 +41,7 @@ ojo_tbl <- function(
     if (schema == "public") {
       schema <- "oscn"
     }
-
-    if (.cache) {
-      data <- tbl_from_cache(schema, table)
-    } else {
-      data <- tbl_from_gcs(schema, table)
-    }
+    data <- tbl_from_gcs(schema, table)
   } else {
     rlang::abort("Invalid source specified. Please choose one of: 'database' or 'gcs'.")
   }
@@ -110,21 +104,4 @@ tbl_from_gcs <- function(schema, table, anonymous = TRUE) {
   bucket_path <- stringr::str_glue("{schema}/{table}")
   bucket <- arrow::gs_bucket(bucket_path, anonymous = anonymous)
   arrow::open_dataset(bucket, format = "parquet")
-}
-
-#' Fetch data from local cache
-#'
-#' @param schema The schema (directory) name in the cache.
-#' @param table The table (file) name in the cache.
-#'
-#' @return A dataset object from the specified cache path.
-tbl_from_cache <- function(schema, table) {
-  cache_path <- fs::path("~/.cache/ojo/", schema, table)
-
-  if (!fs::dir_exists(cache_path)) {
-    fs::dir_create(cache_path)
-    tbl_from_gcs(schema, table, anonymous = TRUE)
-  }
-
-  arrow::open_dataset(cache_path, format = "parquet")
 }
