@@ -6,18 +6,18 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# `{ojodb}`
+# ojodb <img src="man/figures/logo.png" align="right" height="139" />
 
-`{ojodb}` is a package that assists
+`{ojodb}` is a package that helps
 <a href="https://openjustice.okpolicy.org/" target="_blank">Open Justice
-Oklahoma</a> analysts to access and analyze court, jail, prison, and
+Oklahoma</a> analysts access and analyze court, jail, prison, and
 other data collected from various sources.
 
 The pkgdown website for the ojodb package can be found
 <a href="https://openjusticeok.github.io/ojodb/"
 target="_blank">here</a>.
 
-## Installation
+## Installation 
 
 Install the devtools package if you don’t have it yet, then install the
 ojodb package from GitHub with:

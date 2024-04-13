@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, message=FALSE}
 library(ojodb)
 # This needs to be here until we fix ojo_connect() to work in a non-interactive environment 
 rlang::local_interactive()

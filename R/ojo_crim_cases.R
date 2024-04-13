@@ -1,6 +1,6 @@
-#' Query criminal cases from ojodb
+#' Query criminal cases from the OJO database
 #'
-#' Query the Open Justice Oklahoma database for criminal cases with a casetype of'CM' (misdemeanor) or 'CF' (felony)
+#' Query the Open Justice Oklahoma database for criminal cases with a case type of 'CM' (misdemeanor) or 'CF' (felony)
 #'
 #' @param districts A character vector of districts to query
 #' @param vars A character vector of variables to return
@@ -20,10 +20,17 @@
 #'
 ojo_crim_cases <- function(districts = "all", vars = NULL, case_types = c("CM", "CF", "TR"),
                            file_years = 2000:lubridate::year(Sys.Date()), ...) {
+
+  case_types_upper <- toupper(case_types)
+
+  if (!all(case_types_upper %in% c("CM", "CF", "TR"))) {
+    stop("The 'case_types' argument must only include 'CM', 'CF', or 'TR' cases.")
+  }
+
   data <- ojo_tbl("case") |>
     dplyr::filter(
       # `upper()` is evaluated in SQL; debug and use `show_query()` to verify
-      .data$case_type %in% case_types,
+      .data$case_type %in% case_types_upper,
       .data$year %in% file_years
     )
 

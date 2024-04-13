@@ -1,10 +1,10 @@
-#' List all tableson the ojodb database
+#' List all tables on the OJO database
 #'
 #' Query the Open Justice Oklahoma database for the names of all tables
 #'
 #' @param schema The name of the schema to query
 #' @param ... Placeholder for additional arguments
-#' @param .con The ojodb connection to use
+#' @param .con The OJO database connection to use
 #'
 #' @export ojo_list_tables
 #' @return data, a tibble containing the names of all tables
@@ -44,12 +44,16 @@ ojo_list_tables <- function(schema = "public", ..., .con = NULL) {
     schemas <- ojo_list_schemas()
     data <- schemas |>
       dplyr::mutate(table = purrr::map(schema, list_tables)) |>
-      tidyr::unnest(cols = table)
+      tidyr::unnest(cols = table) |>
+      dplyr::arrange(table)
+
     return(data)
   } else {
     data <- list_tables(schema)
     data <- data |>
-      dplyr::mutate(schema = schema, .before = table)
+      dplyr::mutate(schema = schema, .before = table) |>
+      dplyr::arrange(table)
+
     return(data)
   }
 }

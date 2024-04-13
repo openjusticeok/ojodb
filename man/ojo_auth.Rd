@@ -2,7 +2,7 @@
 % Please edit documentation in R/ojo_auth.R
 \name{ojo_auth}
 \alias{ojo_auth}
-\title{OJO Auth}
+\title{Create configuration for OJO database connection}
 \usage{
 ojo_auth(
   host,

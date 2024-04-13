@@ -2,7 +2,7 @@
 % Please edit documentation in R/ojo_crim_cases.R
 \name{ojo_crim_cases}
 \alias{ojo_crim_cases}
-\title{Query criminal cases from ojodb}
+\title{Query criminal cases from the OJO database}
 \usage{
 ojo_crim_cases(
   districts = "all",
@@ -27,7 +27,7 @@ ojo_crim_cases(
 data, a lazy tibble containing the resulting criminal cases
 }
 \description{
-Query the Open Justice Oklahoma database for criminal cases with a casetype of'CM' (misdemeanor) or 'CF' (felony)
+Query the Open Justice Oklahoma database for criminal cases with a case type of 'CM' (misdemeanor) or 'CF' (felony)
 }
 \examples{
 \dontrun{

@@ -2,6 +2,9 @@
 #'
 #' @export ojo_check_ssl
 #'
+#' @param ... Placeholder
+#' @param .con The ojodb connection to use
+#'
 #' @return A logical indicator of whether the db connection is properly using SSL
 #' @examples
 #' \dontrun{

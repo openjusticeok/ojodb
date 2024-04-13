@@ -1,4 +1,41 @@
-<!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
+# ojodb 2.7.0 (2023-09-01)
+
+## Bug Fixes
+- Fixed bugs in `ojo_auth()` which prevented it from successfully backing up the `.Renviron` file.
+
+## Package Maintanance
+- Changed from Base R file paths to the `{fs}` package.
+- Adjusted GitHub Actions workflows to not run on draft PRs.
+- Added spellcheck GitHub Actions.
+- Changed SSL certs to all use `.pem` extensions
+
+## Analyst Tools
+- `ojo_search_minutes()` now allows for queries that include a space. Postgres operators like `|`, `<->`, and `!!` still work too; queries with spaces are now wrapped in quotes and treated as a single search string.
+- `ojo_crim_cases()` and `ojo_civ_cases()` were changed to make the `case_type` argument no longer case-sensitive. It also throws an error now when you ask for nonexistent values of `case_type`.
+
+# ojodb 2.6.1
+
+## Bug Fixes
+- Fixed a bug related to the `rlang` package.
+- Removed `renv` from development environment in favor of package management using the DESCRIPTION file. This will only affect the development of the package going forward, and shouldn't affect analysts' use of the package.
+
+# ojodb 2.6.0
+
+## Aesthetics
+- A fun loading message will now appear when the package is loaded. This can be disabled by setting `OJO_LOAD_MESSAGE=FALSE` in your local R environment.
+- The `{ojodb}` package now has its own tidyverse-compliant sticker design.
+
+## Package Maintenance
+- The `ojo_list_` functions (`ojo_list_schemas()`, `ojo_list_tables()`, and `ojo_list_vars()`) now return a sorted list instead of an unsorted one.
+- Documentation and namespacing errors (e.g. `{dplyr}` functions missing an explicit `.data` reference, missing namespace prefixes, etc.) were corrected. Consequently, `devtools::check()` now passes with minimal warnings / notes.
+
+# ojodb 2.5.0 (2023-04-18)
+
+## Analyst Tools
+- You can now use `ojo_collect` to `collect` but with a progress bar and helpful information.
+
+## Package Maintenance
+- Added `ojo_version` function to return the version of the package. Useful for debugging.
 
 # ojodb 2.4.0 (2023-04-13)
 

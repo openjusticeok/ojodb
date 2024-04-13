@@ -8,6 +8,12 @@
 <meta name="description" content="This guide will walk through the process of pulling and analyzing court data from the OJO databse.
 ">
 <title>Pulling court data with ojodb • ojodb</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
@@ -15,6 +21,7 @@
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Pulling court data with ojodb">
 <meta property="og:description" content="This guide will walk through the process of pulling and analyzing court data from the OJO databse.
 ">
+<meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -28,7 +35,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">ojodb</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.3.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.5.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,7 +74,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="" class="logo" alt=""><h1>Pulling court data with ojodb</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Pulling court data with ojodb</h1>
             
       
       
@@ -76,15 +83,6 @@
 
     
     
-<pre><code><span><span class="co">#&gt; Loading required package: dplyr</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     filter, lag</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span></code></pre>
 <p><a href="https://www.oscn.net/v4/" class="external-link"><img src="images/oscn-screenshot.png" alt="A screenshot of the OSCN homepage"></a></p>
 <div class="section level2">
 <h2 id="intro-the-ojo-database">Intro: The OJO database<a class="anchor" aria-label="anchor" href="#intro-the-ojo-database"></a>
@@ -143,7 +141,7 @@ database and seeing exactly where the court data lives.</p>
 big filing cabinet, we can imagine the schemas as separate drawers. You
 can see all of them using the <code><a href="../reference/ojo_list_schemas.html">ojo_list_schemas()</a></code>
 function.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">ojodb</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
@@ -179,7 +177,7 @@ database is structured.</div>
 <p>The court data that we’re interested in right now is stored in the
 default schema, <code>public</code>. Let’s open the “drawer” and see
 what kind of data is inside.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ojo_list_tables.html">ojo_list_tables</a></span><span class="op">(</span>schema <span class="op">=</span> <span class="st">"public"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 18 × 2</span></span></span>
 <span><span class="co">#&gt;    schema table           </span></span>
@@ -225,7 +223,7 @@ to download. Each row is one <strong>court minute</strong>.</p></li>
 <p>We can see exactly which variables are included in each table using
 the <code><a href="../reference/ojo_list_vars.html">ojo_list_vars()</a></code> function. For example, let’s take a
 closer look at the main <code>case</code> table:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ojo_list_vars.html">ojo_list_vars</a></span><span class="op">(</span>schema <span class="op">=</span> <span class="st">"public"</span>, table <span class="op">=</span> <span class="st">"case"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Source:   SQL [?? x 1]</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Database: postgres  [bgregory@34.122.10.67:5432/ojodb]</span></span></span>
@@ -274,7 +272,7 @@ one of our helper functions, <code><a href="../reference/ojo_crim_cases.html">oj
 first queries the <code>case</code> table, then combines that table of
 <strong>cases</strong> with each case’s <strong>charges</strong> from
 the <code>count</code> table.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># This function combines the "case" and "count" tables in our database,</span></span>
 <span><span class="co"># and returns a cleaned dataframe where each row is one charge in a case.</span></span>
 <span><span class="va">charge_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ojo_crim_cases.html">ojo_crim_cases</a></span><span class="op">(</span>districts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"OKLAHOMA"</span>, <span class="st">"TULSA"</span><span class="op">)</span>,</span>
@@ -315,7 +313,7 @@ be more than one charge involved in a given case, which means that we
 should note that our data is in terms of <strong>charges</strong>, not
 <strong>cases</strong>. Let’s start by seeing how many of each we have
 here:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># How many total charges? ------------------------------------------------------</span></span>
 <span><span class="co"># The data are already in terms of charges (1 charge per row), so we can simply</span></span>
 <span><span class="co"># count the rows.</span></span>
@@ -369,7 +367,7 @@ In other words, our data shows 62,186 total misdemeanor
 <p>If we wanted to, we could divide those numbers (or use our handy
 <code>case_summary</code> dataframe) to see the average number of
 charges per case:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Total charges / total cases = Avg. number of charges per case</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">charge_data</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">case_summary</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 1.788184</span></span>
@@ -399,7 +397,7 @@ aren’t any weird, unexpected differences between counties or between
 filing years / months. How exactly you do this due diligence is up to
 you, but one potential approach is to make a quick visualization or two.
 For example:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org" class="external-link">lubridate</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
@@ -512,7 +510,7 @@ brain.</li>
 Ryan Gentzler originally wrote to find any kind of drug-related charge,
 including things like paraphernalia, trafficking, etc. Here’s the
 string:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">drugs</span> <span class="op">&lt;-</span> <span class="st">"CDS|C\\.D\\.S|DRUG|OXY|HUFF|AMPHET|ZOLOL|ZOLAM|HYDROC|CODEIN|PRECURS|</span></span>
 <span><span class="st">|XANAX|MORPH|METERDI|ZEPAM|LORAZ|VALIU|EPHED|SUB|COCA|PSEUDO| CD|CD |PRESCRIP|</span></span>
 <span><span class="st">|NARC|METH|C\\.D\\.|HEROIN|ANHYD|AMMONIA|OPIUM|LORTAB|MARIJUANA|CANNABIS|MJ"</span></span></code></pre></div>
@@ -522,7 +520,7 @@ streamlined than that, though, so in the future this will hopefully be
 integrated as part of the <code>{ojodb}</code> package.</p>
 <p>We’ll start by adding a new variable that simply classifies each
 charge as drug-related or not.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># We'll save it as a new dataframe, charge_data_cleaned</span></span>
 <span><span class="va">charge_data_cleaned</span> <span class="op">&lt;-</span> <span class="va">charge_data</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">counts</span>, <span class="va">open_counts</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="co"># We don't need every column, so let's drop the extras</span></span>
@@ -541,7 +539,7 @@ to be vigilant when it comes to double-checking our work and not making
 too many assumptions about the data.</p>
 <p>Again, let’s stop and check to make sure the result looks as we
 expect it to.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">charge_data_cleaned</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">district</span>, <span class="va">case_number</span>, <span class="va">count_as_filed</span>, <span class="va">drug_charge</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">drug_charge</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -550,26 +548,26 @@ expect it to.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># Groups:   drug_charge [2]</span></span></span>
 <span><span class="co">#&gt;    district case_number  count_as_filed                                  drug_…¹</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                           <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> TULSA    CM-2019-5378 ABDOM, ASSAULT AND BATTERY - DOMESTIC           FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> TULSA    CM-2017-1555 ABDOM, ASSAULT AND BATTERY - DOMESTIC           FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> OKLAHOMA CM-2018-125  DI1M, DRIVING WHILE UNDER THE INFLUENCE         FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> TULSA    CM-2016-515  AD6, POSSESSION OF ALCOHOL BY PERSON UNDER 21 … FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> TULSA    CM-2018-1155 DI1, DUI ALCOHOL                                FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> OKLAHOMA CM-2020-295  DI1M, DRIVING UNDER THE INFLUENCE OF ACOHOL     FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> TULSA    CM-2016-4079 EDUC, VIOLATION OF COMPULSORY EDUCATION ACT     FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> TULSA    CM-2018-5757 DL5, DRIVING WITHOUT A DRIVER'S LICENSE         FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> OKLAHOMA CM-2020-1087 VPO, VIOLATION OF PROTECTIVE ORDER              FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> TULSA    CM-2021-1754 S11, SPEEDING IN EXCESS OF LAWFUL MAXIMUM LIMIT FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> OKLAHOMA CM-2017-4340 DU9II, POSSESSION OF A CDS- METHAMPHETAMINE     TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> OKLAHOMA CM-2022-1797 DU9IV, UNLAWFUL POSSESSION OF CDS- XANAX ( ALP… TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> TULSA    CM-2018-5636 DU4II, POSSESSION OF CONTROLLED DRUG METHAMPHE… TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> OKLAHOMA CM-2016-2043 DU9IV, POSSESSION OF A CDS - XANAX              TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> TULSA    CM-2021-3515 DR3, UNLAWFUL POSSESSION OF DRUG PARAPHERNALIA  TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> TULSA    CM-2018-4364 TU0, REQUIRED POSITION &amp; METHOD OF TURNING      TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> OKLAHOMA CM-2021-1919 DU9II, UNLAWFUL POSSESSION OF CONTROLLED DRUG-… TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> TULSA    CM-2020-235  DU4II, POSSESSION OF CONTROLLED DRUG MARIJUANA… TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> OKLAHOMA CM-2022-2192 DR3, UNLAWFUL POSSESSION OF DRUG PARAPHERNALIA  TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> OKLAHOMA CM-2017-4189 DU9II, POSSESSION OF A CDS- METHAMPHETAMINE     TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> TULSA    CM-2016-299  ES6, ATTEMPTING TO ELUDE A POLICE OFFICER       FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> TULSA    CM-2022-4275 FFP, FALSE PRETENSE UNDER $1000 OR CON GAME     FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> TULSA    CM-2017-536  OLAR, PETIT LARCENY                             FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> OKLAHOMA CM-2020-1278 FFP, OBTAINING PROPERTY BY TRICK/DECEPTION OR … FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> OKLAHOMA CM-2018-4264 ES6, ELUDING A POLICE OFFICER                   FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> TULSA    CM-2018-754  ST5, IMPROPER STOPPING                          FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> TULSA    CM-2017-1894 OLAR, PETIT LARCENY                             FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> TULSA    CM-2018-77   DL2, DRIVING UNDER SUSPENSION / DUS             FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> TULSA    CM-2021-3685 RCSP, RECEIVE/POSSESS OR CONCEAL STOLEN PROPER… FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> OKLAHOMA CM-2020-1057 RK1, RECKLESS DRIVING                           FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> TULSA    CM-2016-4412 DU4, POSSESSION OF CONTROLLED DRUG              TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> OKLAHOMA CM-2022-2831 DU9II, UNLAWFUL POSSESSION OF CDS- METHAPHETAM… TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> TULSA    CM-2018-2101 DR3, POSSESSION OF DRUG PARAPHERNALIA           TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> TULSA    CM-2018-3113 DI2M, DUI DRUGS &amp; ALCOHOL (MUNICIPAL ARREST)    TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> TULSA    CM-2022-2369 DU9, UNLAWFUL POSSESSION OF CONTROLLED DRUG     TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> TULSA    CM-2016-4125 DI2D, DUI DRUGS                                 TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> OKLAHOMA CM-2020-1461 DU9II, POSSESSION OF CDS- COCAINE               TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> TULSA    CM-2018-4038 DR3, POSSESSION OF DRUG PARAPHERNALIA           TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> TULSA    CM-2016-4754 DR3MV, POSSESSION OF DRUG PARAPHERNALIA         TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> TULSA    CM-2022-1967 DR3, UNLAWFUL POSSESSION OF DRUG PARAPHERNALIA  TRUE   </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># … with abbreviated variable name ¹​drug_charge</span></span></span></code></pre></div>
 <p>It looks like our regex search was pretty successful! Although it may
 raise some new questions: does driving under the influence count? Is
@@ -594,7 +592,7 @@ For our purposes, we’ll say that a drug case means any case involving at
 least one drug charge. Therefore, we’re going to make another version of
 our <code>case_summary</code> dataframe, this time with a new variable
 <code>drug_charges_present</code>:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">case_summary_cleaned</span> <span class="op">&lt;-</span> <span class="va">charge_data_cleaned</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">district</span>, <span class="va">case_number</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="co"># We want to keep the date_filed, so we'll use transmute() this time instead of summarize()</span></span>
@@ -624,7 +622,7 @@ our <code>case_summary</code> dataframe, this time with a new variable
 <p>We’ll also save a new dataframe that only includes the drug cases. We
 can double check the result just like before, and see how many drug
 cases we have total:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">case_summary_cleaned_drugs</span> <span class="op">&lt;-</span> <span class="va">case_summary_cleaned</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">drug_charges_present</span><span class="op">)</span></span>
 <span></span>
@@ -635,26 +633,26 @@ cases we have total:</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># Groups:   drug_charges_present [2]</span></span></span>
 <span><span class="co">#&gt;    district case_number  date_filed list_all_charges     n_tot…¹ n_dru…² drug_…³</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> OKLAHOMA CM-2019-3162 2019-09-24 ABDOM, DOMESTIC ABU…       1       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> TULSA    CM-2016-4079 2016-08-15 EDUC, VIOLATION OF …       1       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> OKLAHOMA CM-2019-3460 2019-10-23 DI1AG, AGGRAVATED D…       2       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> TULSA    CM-2022-988  2022-03-25 ENTB, BREAKING AND …       2       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> OKLAHOMA CM-2019-3556 2019-11-01 ENTB, BREAKING AND …       2       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> OKLAHOMA CM-2017-3223 2017-09-11 PROS, OFFERING TO E…       1       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> TULSA    CM-2019-3558 2019-08-07 ST2, FAIL TO STOP F…       7       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> TULSA    CM-2020-2853 2020-08-20 OLAR, PETIT LARCENY        1       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> OKLAHOMA CM-2020-1380 2020-05-21 ENTB, BREAKING AND …       1       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> OKLAHOMA CM-2020-1469 2020-05-29 ABDOM, DOMESTIC ASS…       1       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> TULSA    CM-2021-3511 2021-10-27 DU9II, UNLAWFUL POS…       1       1 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> OKLAHOMA CM-2019-1453 2019-04-30 DU9II, POSSESSION O…       2       2 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> OKLAHOMA CM-2018-2074 2018-05-18 DU9II, POSSESSION O…       1       1 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> TULSA    CM-2018-140  2018-01-10 FR5, FAILURE TO CAR…      10       4 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> OKLAHOMA CM-2017-1253 2017-04-26 DU8II, POSSESSION O…       4       1 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> OKLAHOMA CM-2021-2782 2021-09-30 DU9, UNAWFUL POSSES…       4       2 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> TULSA    CM-2016-3699 2016-07-22 DI1, DUI ALCOHOL; T…       3       1 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> OKLAHOMA CM-2018-1309 2018-04-05 DU9II, POSSESSIONO …       1       1 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> OKLAHOMA CM-2018-3793 2018-10-02 DU9II, POSSESSION O…       1       1 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> TULSA    CM-2016-873  2016-02-18 DU9, UNLAWFUL POSSE…       1       1 TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> TULSA    CM-2019-1793 2019-04-12 DI1, DUI ALCOHOL; S…       3       0 FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> OKLAHOMA CM-2016-787  2016-03-21 DE0, OPERATING A VE…       2       0 FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> OKLAHOMA CM-2019-566  2019-02-08 ABDOM, DOMESTIC ABU…       3       0 FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> TULSA    CM-2017-1854 2017-04-26 ABDOM, ASSAULT AND …       1       0 FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> OKLAHOMA CM-2018-1046 2018-03-20 DI1M, DRIVING WHILE…       2       0 FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> TULSA    CM-2018-4359 2018-09-21 DI1, DUI ALCOHOL; I…       4       0 FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> TULSA    CM-2018-2104 2018-05-17 CCV, UNAUTHORIZED U…       1       0 FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> TULSA    CM-2020-3693 2020-10-27 DL1, DRIVING WITH L…       1       0 FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> OKLAHOMA CM-2017-2462 2017-07-24 RK1, RECKLESS DRIVI…       3       0 FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> OKLAHOMA CM-2017-1150 2017-04-13 ABDOM, DOMESTIC ABU…       2       0 FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> OKLAHOMA CM-2020-3531 2020-12-01 DI1, DRIVING UNDER …       4       2 TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> OKLAHOMA CM-2021-3015 2021-10-21 DU9II, UNLAWFUL POS…       1       1 TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> OKLAHOMA CM-2019-561  2019-02-08 DL1, DRIVING WHILE …       2       1 TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> OKLAHOMA CM-2017-3299 2017-09-13 DU9II, POSSESSION O…       1       1 TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> OKLAHOMA CM-2019-1844 2019-06-03 DU9II, POSSESSION O…       1       1 TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> OKLAHOMA CM-2022-3941 2022-11-14 DU9II, UNLAWFUL POS…       1       1 TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> TULSA    CM-2022-2331 2022-07-12 DI2M, DRIVING UNDER…       1       1 TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> TULSA    CM-2021-3428 2021-10-20 DU9II, UNLAWFUL POS…       1       1 TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> TULSA    CM-2017-3621 2017-08-09 DR3MV, POSSESSION O…       4       3 TRUE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> OKLAHOMA CM-2018-3492 2018-09-06 DU9IV, POSSESSION O…       2       1 TRUE   </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># … with abbreviated variable names ¹​n_total_charges, ²​n_drug_charges,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ³​drug_charges_present</span></span></span>
 <span></span>
@@ -680,7 +678,7 @@ graph showing how many of our drug cases were filed each month
 throughout the timespan of our data. We’ll be using the
 <code><a href="../reference/ojo_theme.html">ojo_theme()</a></code> and <code>ojo_colors()</code> functions from
 <code>{ojodb}</code> to take care of most of the styling.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">case_summary_cleaned_drugs</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>    month_filed <span class="op">=</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/round_date.html" class="external-link">floor_date</a></span><span class="op">(</span><span class="va">date_filed</span>, <span class="st">"months"</span><span class="op">)</span></span>

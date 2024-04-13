@@ -1,6 +1,6 @@
-#' Query civil cases from ojodb
+#' Query civil cases from the OJO database
 #'
-#' Query the Open Justice Oklahoma database for civil cases with a casetype of'SC' (small claims)
+#' Query the Open Justice Oklahoma database for civil cases with a case type of 'SC' (small claims)
 #'
 #' @param districts A character vector of districts to query
 #' @param vars A character vector of variables to return
@@ -21,10 +21,17 @@
 #'
 ojo_civ_cases <- function(districts = "all", vars = NULL, case_types = c("CS", "SC", "CJ"),
                           file_years = lubridate::year(Sys.Date()), ...) {
+
+  case_types_upper <- toupper(case_types)
+
+  if (!all(case_types_upper %in% c("CS", "SC", "CJ"))) {
+    stop("The 'case_types' argument must only include 'CS', 'SC', or 'CJ' cases.")
+  }
+
   data <- ojo_tbl("case") |>
     dplyr::filter(
-      case_type %in% case_types,
-      year %in% file_years
+      .data$case_type %in% case_types_upper,
+      .data$year %in% file_years
     )
 
   if (all(districts != "all")) {
@@ -32,7 +39,7 @@ ojo_civ_cases <- function(districts = "all", vars = NULL, case_types = c("CS", "
     districts_upper <- toupper(districts)
 
     data <- data |>
-      dplyr::filter(district %in% districts_upper)
+      dplyr::filter(.data$district %in% districts_upper)
   }
 
   selection <- c("id", "district", "case_type", "date_filed", "date_closed")
@@ -89,8 +96,7 @@ ojo_add_issues <- function(data, vars = NULL, ...) {
   if (is.null(vars)) {
     issues <- issues |>
       dplyr::select(
-        case_id, rank, description,
-        disposition, disposition_date
+        case_id, rank, description, disposition, disposition_date
       )
   } else {
     if (vars != "all") {
