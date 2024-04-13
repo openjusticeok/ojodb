@@ -1,4 +1,4 @@
-# ojodb 2.7.0
+# ojodb 2.7.0 (2023-09-01)
 
 ## Bug Fixes
 - Fixed bugs in `ojo_auth()` which prevented it from successfully backing up the `.Renviron` file.
