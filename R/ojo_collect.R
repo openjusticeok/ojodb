@@ -92,7 +92,7 @@ estimate_results <- function(.data, .silent) {
 collect_data <- function(.con, .data, n_results, .silent) {
   query <- dbplyr::sql_render(.data)
   req <- DBI::dbSendQuery(.con, query)
-  withr::defer(DBI::dbClearResult(req), .envir = parent.frame())
+  withr::defer(DBI::dbClearResult(req), envir = parent.frame())
 
   res <- NULL
   chunk_size <- max(round(n_results / 100, 0), 1000) # Download in chunks of 1% or at least 1000
