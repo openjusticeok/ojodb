@@ -19,3 +19,4 @@ A dplyr tbl object connected to the specified table.
 \description{
 Fetch data from a database
 }
+\keyword{internal}

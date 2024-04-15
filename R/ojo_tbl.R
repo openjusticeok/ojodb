@@ -71,6 +71,9 @@ summarize_dataset <- function(dataset) {
 #' @param table The table name to fetch.
 #'
 #' @return A dplyr tbl object connected to the specified table.
+#'
+#' @keywords internal
+#'
 tbl_from_database <- function(con, schema, table) {
   dplyr::tbl(con, DBI::Id(schema = schema, table = table))
 }
@@ -82,6 +85,9 @@ tbl_from_database <- function(con, schema, table) {
 #' @param anonymous Logical, whether to access GCS anonymously (default: TRUE).
 #'
 #' @return A dataset object from the specified GCS path.
+#'
+#' @keywords internal
+#'
 tbl_from_gcs <- function(schema, table, anonymous = TRUE) {
   bucket_path <- stringr::str_glue("{schema}/{table}")
   bucket <- arrow::gs_bucket(bucket_path, anonymous = anonymous)

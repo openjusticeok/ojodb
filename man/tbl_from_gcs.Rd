@@ -19,3 +19,4 @@ A dataset object from the specified GCS path.
 \description{
 Fetch data from Google Cloud Storage
 }
+\keyword{internal}
