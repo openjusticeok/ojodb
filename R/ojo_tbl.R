@@ -23,10 +23,85 @@
 #' }
 #' @seealso ojo_list_tables(), ojo_list_vars(), ojo_list_schemas()
 #'
-ojo_tbl <- function(table, schema = "public", ..., .con = NULL) {
+ojo_tbl <- function(
+  table,
+  schema = "public",
+  ...,
+  .con = NULL,
+  .source = "database"
+) {
   if (is.null(.con)) {
     .con <- ojo_connect(...)
   }
 
-  .con |> dplyr::tbl(DBI::Id(schema = schema, table = table))
+  if (.source == "database") {
+    data <- tbl_from_database(.con, schema, table)
+  } else if (.source == "gcs") {
+    # Temp fix for schema
+    if (schema == "public") {
+      schema <- "oscn"
+    }
+    data <- tbl_from_gcs(schema, table)
+  } else {
+    rlang::abort("Invalid source specified. Please choose one of: 'database' or 'gcs'.")
+  }
+
+  class(data) <- c("ojo_tbl", class(data))
+
+  return(data)
+}
+
+# Placeholder function to summarize dataset
+# This function would extract and format the dataset's structure for printing
+summarize_dataset <- function(dataset) {
+  # For demonstration, return a simple summary
+  # In practice, this might involve generating a summary of column names, types, etc.
+  summary <- tibble::tibble(
+    Column = c("id", "title"),
+    Type = c("integer", "character")
+  )
+
+  return(summary)
+}
+
+# Custom print method for the 'ojo_tbl' class
+print.ojo_tbl <- function(x, ...) {
+  # Fetch summary information from the dataset
+  summary_info <- summarize_dataset(x)
+
+  # Print a custom summary for the dataset
+  cat("OJO Dataset Summary\n")
+  cat("--------------------\n")
+  cat("Source:", attr(x, "source"), "\n") # Assuming the source is stored as an attribute
+  cat("Schema:", attr(x, "schema"), "\n") # Assuming the schema is stored as an attribute
+  cat("Table:", attr(x, "table"), "\n\n") # Assuming the table name is stored as an attribute
+
+  # Print information about dataset structure (columns, types, etc.)
+  print(summary_info)
+
+  invisible(x)
+}
+
+#' Fetch data from a database
+#'
+#' @param con A database connection object.
+#' @param schema The schema name in the database.
+#' @param table The table name to fetch.
+#'
+#' @return A dplyr tbl object connected to the specified table.
+tbl_from_database <- function(con, schema, table) {
+  dplyr::tbl(con, DBI::Id(schema = schema, table = table))
+}
+
+#' Fetch data from Google Cloud Storage
+#'
+#' @param schema The schema (directory) name in Google Cloud Storage.
+#' @param table The table (file) name to fetch.
+#' @param anonymous Logical, whether to access GCS anonymously (default: TRUE).
+#'
+#' @return A dataset object from the specified GCS path.
+tbl_from_gcs <- function(schema, table, anonymous = TRUE) {
+  bucket_path <- stringr::str_glue("{schema}/{table}")
+  bucket <- arrow::gs_bucket(bucket_path, anonymous = anonymous)
+  arrow::open_dataset(bucket, format = "parquet")
 }
