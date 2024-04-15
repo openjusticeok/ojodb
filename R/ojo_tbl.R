@@ -30,11 +30,10 @@ ojo_tbl <- function(
   .con = NULL,
   .source = "database"
 ) {
-  if (is.null(.con)) {
-    .con <- ojo_connect(...)
-  }
-
   if (.source == "database") {
+    if (is.null(.con)) {
+      .con <- ojo_connect(...)
+    }
     data <- tbl_from_database(.con, schema, table)
   } else if (.source == "gcs") {
     # Temp fix for schema
