@@ -35,7 +35,7 @@ ojo_auth <- function(host, port, username, password, ..., .admin = F, .overwrite
   clientkey <- fs::path(home, ".postgresql/ojodb/client-key.pem")
 
   # Check if SSL certs are in correct location; if not, throw error
-  if(!fs::file_exists(rootcert) |
+  if (!fs::file_exists(rootcert) |
      !fs::file_exists(clientcert) |
      !fs::file_exists(clientkey)) {
     rlang::abort(

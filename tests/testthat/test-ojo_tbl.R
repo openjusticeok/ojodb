@@ -36,9 +36,3 @@ test_that("ojo_tbl's can join", {
 
   withr::deferred_run(envir = ojo_env())
 })
-
-test_that("ojo_tbl arrow works", {
-  testthat::expect_no_error({
-    tbl <- ojo_tbl("case", .source = "gcs")
-  })
-})

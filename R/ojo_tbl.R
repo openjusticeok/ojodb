@@ -64,24 +64,6 @@ summarize_dataset <- function(dataset) {
   return(summary)
 }
 
-#' @export
-print.ojo_tbl <- function(x, ...) {
-  # Fetch summary information from the dataset
-  summary_info <- summarize_dataset(x)
-
-  # Print a custom summary for the dataset
-  cat("OJO Dataset Summary\n")
-  cat("--------------------\n")
-  cat("Source:", attr(x, "source"), "\n") # Assuming the source is stored as an attribute
-  cat("Schema:", attr(x, "schema"), "\n") # Assuming the schema is stored as an attribute
-  cat("Table:", attr(x, "table"), "\n\n") # Assuming the table name is stored as an attribute
-
-  # Print information about dataset structure (columns, types, etc.)
-  print(summary_info)
-
-  invisible(x)
-}
-
 #' Fetch data from a database
 #'
 #' @param con A database connection object.
