@@ -50,7 +50,7 @@ get_connection_object <- function(env) {
 
   if (pool_object_exists && con_object_exists) {
     rlang::abort(
-      "Both a connection pool and a connection object exist in the environment specified by the `.env` argument. Please remove one of them, set `.global = FALSE`, or restart your R session before continuing.",
+      "Both a connection pool and a connection object exist in the environment specified by the `.env` argument. Please remove one of them or restart your R session before continuing.",
       use_cli_format = TRUE
     )
   } else if (!pool_object_exists && !con_object_exists) {

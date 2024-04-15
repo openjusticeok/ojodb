@@ -7,21 +7,21 @@
 ojo_connect(
   ...,
   .admin = FALSE,
-  .global = rlang::is_interactive(),
+  .global = lifecycle::deprecated(),
   .env = ojo_env(),
   .pool = FALSE
 )
 }
 \arguments{
-\item{...}{Placeholder}
+\item{...}{Placeholder.}
 
-\item{.admin}{A logical value indicating whether to connect to the database as an administrator}
+\item{.admin}{A logical value indicating whether to connect to the database as an administrator.}
 
-\item{.global}{A logical value indicating whether to establish the connection in the global environment or not.}
+\item{.global}{Deprecated. A connection will always be created in the specified environment, or in the package environment by default.}
 
-\item{.env}{The environment in which you want the connection stored}
+\item{.env}{The environment in which you want the connection stored.}
 
-\item{.pool}{A logical value indicating whether to use a connection pool from the `{pool}` package, or not. If `.global = TRUE` and a connection object already exists, this argument is ignored regardless of the connection type.}
+\item{.pool}{A logical value indicating whether to use a connection pool from the `{pool}` package, or not.}
 }
 \value{
 A database connection object created with `RPostgres::Postgres()` and either `pool::dbPool` or `DBI::dbConnect`
@@ -35,7 +35,7 @@ If no credentials exist, prompts for user, password, and host name and provides 
 }
 \section{Side Effects}{
 
-If either the `.global` argument or `rlang::is_interactive` are `TRUE`, a connection object (named `ojo_con` or `ojo_pool` depending on the `.pool` argument) is created in the package environment.
+A connection object (named `ojo_con` or `ojo_pool` depending on the `.pool` argument) is created in the package environment.
 }
 
 \examples{
