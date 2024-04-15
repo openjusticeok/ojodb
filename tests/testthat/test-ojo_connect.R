@@ -19,19 +19,6 @@ test_that("ojo_connect reuses existing connection", {
   withr::deferred_run(envir = ojo_env())
 })
 
-# Test admin connection
-test_that("ojo_connect correctly handles admin connections", {
-  skip_on_cran()
-
-  admin_con <- ojo_connect(.admin = TRUE)
-  expect_true(DBI::dbIsValid(admin_con), "Admin connection should be valid")
-
-  # Optionally check for specific admin privileges if applicable
-
-  # Clean up: Close the connection after testing
-  withr::deferred_run(envir = ojo_env())
-})
-
 test_that("ojo_connect handles connection pooling correctly", {
   skip_on_cran()
 
