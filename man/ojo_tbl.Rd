@@ -4,7 +4,7 @@
 \alias{ojo_tbl}
 \title{Identify a table from the OJO database}
 \usage{
-ojo_tbl(table, schema = "public", ..., .con = NULL)
+ojo_tbl(table, schema = "public", ..., .con = NULL, .source = "database")
 }
 \arguments{
 \item{table}{The name of a table in the OJO database. To get a list of tables, run \code{ojo_list_tables()}}
@@ -14,6 +14,8 @@ ojo_tbl(table, schema = "public", ..., .con = NULL)
 \item{...}{Placeholder}
 
 \item{.con}{The ojodb connection to use}
+
+\item{.source}{The source of the table. Options are 'database' and 'gcs'. Default is 'database'.}
 }
 \value{
 A pointer to a table that can be passed to dplyr functions and/or pulled into a dataframe using \code{ojo_collect()}

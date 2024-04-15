@@ -8,6 +8,7 @@
 #' @param schema The name of a schema in the OJO database. To get a list of schemas, run \code{ojo_list_schemas()}
 #' @param ... Placeholder
 #' @param .con The ojodb connection to use
+#' @param .source The source of the table. Options are 'database' and 'gcs'. Default is 'database'.
 #'
 #' @export ojo_tbl
 #' @return A pointer to a table that can be passed to dplyr functions and/or pulled into a dataframe using \code{ojo_collect()}
@@ -63,7 +64,7 @@ summarize_dataset <- function(dataset) {
   return(summary)
 }
 
-# Custom print method for the 'ojo_tbl' class
+#' @export
 print.ojo_tbl <- function(x, ...) {
   # Fetch summary information from the dataset
   summary_info <- summarize_dataset(x)
