@@ -38,7 +38,7 @@ Imports:
   purrr,
   rlang,
   RPostgres,
-  stringr,
+  stringi,
   tibble,
   tidyr,
   utils,
