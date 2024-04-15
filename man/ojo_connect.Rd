@@ -21,10 +21,10 @@ ojo_connect(
 
 \item{.env}{The environment in which you want the connection stored.}
 
-\item{.pool}{A logical value indicating whether to use a connection pool from the `{pool}` package, or not.}
+\item{.pool}{A logical value indicating whether to use a connection pool from the \code{{pool}} package, or not.}
 }
 \value{
-A database connection object created with `RPostgres::Postgres()` and either `pool::dbPool` or `DBI::dbConnect`
+A database connection object created with \code{RPostgres::Postgres()} and either \code{pool::dbPool} or \code{DBI::dbConnect}
 }
 \description{
 Connect to the Open Justice Oklahoma database
@@ -35,7 +35,7 @@ If no credentials exist, prompts for user, password, and host name and provides 
 }
 \section{Side Effects}{
 
-A connection object (named `ojo_con` or `ojo_pool` depending on the `.pool` argument) is created in the package environment.
+A connection object (named \code{ojo_con} or \code{ojo_pool} depending on the \code{.pool} argument) is created in the package environment.
 }
 
 \examples{

@@ -7,7 +7,7 @@
 ojo_show_row(df, row_number)
 }
 \arguments{
-\item{df}{A local dataframe with columns named `court` and `casenum`}
+\item{df}{A local dataframe with columns named \code{court} and \code{casenum}}
 
 \item{row_number}{The number of the row of the case to be shown}
 }
@@ -15,7 +15,7 @@ ojo_show_row(df, row_number)
 Nothing
 }
 \description{
-Displays the OSCN court record for a given row in a dataframe with columns named `court` and `casenum`
+Displays the OSCN court record for a given row in a dataframe with columns named \code{court} and \code{casenum}
 }
 \section{Side effects}{
 

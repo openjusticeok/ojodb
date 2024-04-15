@@ -77,3 +77,4 @@ Config/testthat/edition: 3
 Config/testthat/parallel: true
 URL: https://github.com/openjusticeok/ojodb
 BugReports: https://github.com/openjusticeok/ojodb/issues
+Roxygen: list(markdown = TRUE)

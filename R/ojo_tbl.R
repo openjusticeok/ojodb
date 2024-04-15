@@ -1,17 +1,17 @@
 #' Identify a table from the OJO database
 #'
-#' Identifies a table in the OJO database from which to query data. Remember to run \code{connect_ojo()} to establish a connection before attempting to query and to close the connection afterwards with \code{disconnect_ojo()}.
+#' Identifies a table in the OJO database from which to query data. Remember to run `connect_ojo()` to establish a connection before attempting to query and to close the connection afterwards with `disconnect_ojo()`.
 #'
 #' @aliases ojo_tbl
 #'
-#' @param table The name of a table in the OJO database. To get a list of tables, run \code{ojo_list_tables()}
-#' @param schema The name of a schema in the OJO database. To get a list of schemas, run \code{ojo_list_schemas()}
+#' @param table The name of a table in the OJO database. To get a list of tables, run `ojo_list_tables()`
+#' @param schema The name of a schema in the OJO database. To get a list of schemas, run `ojo_list_schemas()`
 #' @param ... Placeholder
 #' @param .con The ojodb connection to use
-#' @param .source The source of the table. Options are 'database' and 'gcs'. Default is 'database'.
+#' @param .source `r lifecycle::badge("experimental")` The source of the table. Options are 'database' and 'gcs'. Default is 'database'.
 #'
 #' @export ojo_tbl
-#' @return A pointer to a table that can be passed to dplyr functions and/or pulled into a dataframe using \code{ojo_collect()}
+#' @return A pointer to a table that can be passed to dplyr functions and/or pulled into a dataframe using `ojo_collect()`
 #' @examples
 #' \dontrun{
 #' # Identifies the table

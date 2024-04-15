@@ -7,9 +7,9 @@
 ojo_add_counts(data, vars = NULL, ...)
 }
 \arguments{
-\item{data}{A tibble returned by an `ojo_` prefixed function}
+\item{data}{A tibble returned by an \code{ojo_} prefixed function}
 
-\item{vars}{Variable names from the `count` table to include}
+\item{vars}{Variable names from the \code{count} table to include}
 
 \item{...}{Placeholder for future arguments}
 }
