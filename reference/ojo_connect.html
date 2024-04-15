@@ -55,7 +55,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ojo_connect</span><span class="op">(</span></span>
 <span>  <span class="va">...</span>,</span>
 <span>  .admin <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  .global <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/is_interactive.html" class="external-link">is_interactive</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  .global <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  .env <span class="op">=</span> <span class="fu"><a href="ojo_env.html">ojo_env</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  .pool <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -64,23 +64,23 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>...</dt>
-<dd><p>Placeholder</p></dd>
+<dd><p>Placeholder.</p></dd>
 
 
 <dt>.admin</dt>
-<dd><p>A logical value indicating whether to connect to the database as an administrator</p></dd>
+<dd><p>A logical value indicating whether to connect to the database as an administrator.</p></dd>
 
 
 <dt>.global</dt>
-<dd><p>A logical value indicating whether to establish the connection in the global environment or not.</p></dd>
+<dd><p>Deprecated. A connection will always be created in the specified environment, or in the package environment by default.</p></dd>
 
 
 <dt>.env</dt>
-<dd><p>The environment in which you want the connection stored</p></dd>
+<dd><p>The environment in which you want the connection stored.</p></dd>
 
 
 <dt>.pool</dt>
-<dd><p>A logical value indicating whether to use a connection pool from the `pool` package, or not. If `.global = TRUE` and a connection object already exists, this argument is ignored regardless of the connection type.</p></dd>
+<dd><p>A logical value indicating whether to use a connection pool from the `pool` package, or not.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -98,7 +98,7 @@ If no credentials exist, prompts for user, password, and host name and provides 
     <h2 id="side-effects">Side Effects<a class="anchor" aria-label="anchor" href="#side-effects"></a></h2>
     
 
-<p>If either the `.global` argument or `rlang::is_interactive` are `TRUE`, a connection object (named `ojo_con` or `ojo_pool` depending on the `.pool` argument) is created in the package environment.</p>
+<p>A connection object (named `ojo_con` or `ojo_pool` depending on the `.pool` argument) is created in the package environment.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
