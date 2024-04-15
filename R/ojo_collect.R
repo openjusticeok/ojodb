@@ -110,13 +110,14 @@ collect_data <- function(.con, .data, n_results, .silent) {
     }
   }
 
-  if (!.silent) {
-    cli::cli_progress_done()
-  }
-
   return(res)
 }
 
 init_progress_bar <- function(n_results) {
-  cli::cli_progress_bar(name = "dl_pb", total = n_results, clear = FALSE)
+  cli::cli_progress_bar(
+    type = "iterator",
+    total = n_results,
+    clear = FALSE,
+    .envir = rlang::caller_env()
+  )
 }
