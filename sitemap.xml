@@ -111,4 +111,10 @@
   <url>
     <loc>/reference/skip_if_no_db.html</loc>
   </url>
+  <url>
+    <loc>/reference/tbl_from_database.html</loc>
+  </url>
+  <url>
+    <loc>/reference/tbl_from_gcs.html</loc>
+  </url>
 </urlset>
