@@ -6,25 +6,32 @@
 #' Opens a connection to the Open Justice Oklahoma database using credentials stored in the .Renviron file.
 #' If no credentials exist, prompts for user, password, and host name and provides instructions to store them for future sessions.
 #'
-#' @param .admin A logical value indicating whether to connect to the database as an administrator
-#' @param ... Placeholder
-#' @param .global A logical value indicating whether to establish the connection in the global environment or not.
-#' @param .env The environment in which you want the connection stored
-#' @param .pool A logical value indicating whether to use a connection pool from the `{pool}` package, or not. If `.global = TRUE` and a connection object already exists, this argument is ignored regardless of the connection type.
+#' @param .admin A logical value indicating whether to connect to the database as an administrator.
+#' @param ... Placeholder.
+#' @param .global Deprecated. A connection will always be created in the specified environment, or in the package environment by default.
+#' @param .env The environment in which you want the connection stored.
+#' @param .pool A logical value indicating whether to use a connection pool from the `{pool}` package, or not.
 #'
 #' @export
-#' @returns A database connection object created with `RPostgres::Postgres()` and either `pool::dbPool` or `DBI::dbConnect` 
+#' @returns A database connection object created with `RPostgres::Postgres()` and either `pool::dbPool` or `DBI::dbConnect`
 #'
 #' @examples
 #' \dontrun{
 #' ojo_connect()
 #' }
 #' @section Side Effects:
-#' If either the `.global` argument or `rlang::is_interactive` are `TRUE`, a connection object (named `ojo_con` or `ojo_pool` depending on the `.pool` argument) is created in the package environment.
+#' A connection object (named `ojo_con` or `ojo_pool` depending on the `.pool` argument) is created in the package environment.
 #'
 #' @seealso ojo_auth()
 #'
-ojo_connect <- function(..., .admin = FALSE, .global = rlang::is_interactive(), .env = ojo_env(), .pool = FALSE) {
+ojo_connect <- function(..., .admin = FALSE, .global = lifecycle::deprecated(), .env = ojo_env(), .pool = FALSE) {
+
+  if (lifecycle::is_present(.global)) {
+    lifecycle::deprecate_warn(
+      when = "2.8.0",
+      what = "ojo_connect(.global)"
+    )
+  }
 
   user_type <- if (.admin) "ADMIN" else "DEFAULT"
 
@@ -35,19 +42,13 @@ ojo_connect <- function(..., .admin = FALSE, .global = rlang::is_interactive(), 
     )
   }
 
-  # Check if object with correct connection type and user already exists and is valid
-  if (.global) {
-    global_conn <- try(
-      get_connection_object(env = .env),
-      silent = TRUE
-    )
-
-    if (!inherits(global_conn, "try-error") && !is.null(global_conn)) {
-      return(global_conn)
-    }
-  }
-
   connection_type <- if (.pool) "ojo_pool" else "ojo_con"
+
+  # Check if a valid connection object already exists in the environment
+  existing_conn <- get_connection_object(.env)
+  if (!is.null(existing_conn) && DBI::dbIsValid(existing_conn)) {
+    return(existing_conn)
+  }
 
   conn_args <- list(
     drv = RPostgres::Postgres(),
@@ -71,27 +72,20 @@ ojo_connect <- function(..., .admin = FALSE, .global = rlang::is_interactive(), 
     ojo_con = DBI::dbConnect
   )
 
-  conn <- rlang::exec(conn_fn, !!!conn_args)
+  new_conn <- rlang::exec(conn_fn, !!!conn_args)
+  assign(connection_type, new_conn, envir = .env)
 
-  if (.global) {
-    assign(connection_type, conn, envir = .env)
-    withr::defer(
-      {
-        if (exists(connection_type, envir = .env)) {
-          connection_object <- get(connection_type, envir = .env, inherits = FALSE)
-          if (.pool) {
-            pool::poolClose(connection_object)
-          } else {
-            DBI::dbDisconnect(connection_object)
-          }
+  withr::defer({
+    if (exists(connection_type, envir = .env)) {
+      connection_object <- get(connection_type, envir = .env, inherits = FALSE)
+      if (.pool) {
+        pool::poolClose(connection_object)
+      } else {
+        DBI::dbDisconnect(connection_object)
+      }
+      rm(list = connection_type, envir = .env)
+    }
+  }, envir = .env)
 
-          rm(list = connection_type, envir = .env)
-        }
-      },
-      envir = .env
-    )
-    invisible()
-  }
-
-  invisible(conn)
+  return(new_conn)
 }

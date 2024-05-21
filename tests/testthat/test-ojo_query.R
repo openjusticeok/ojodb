@@ -1,32 +1,28 @@
-test_that("ojo_query succeeds correctly in non-interactive mode", {
-  db <- ojo_connect(.pool = TRUE)
-  expect_snapshot(ojo_query("SELECT 'a' as test;", .con = db))
-  expect_true(pool::dbIsValid(db))
+test_that("ojo_query executes SQL and returns a tibble", {
+  # A simple, safe query that assumes the existence of a 'case' table
+  query <- 'SELECT * FROM "case" LIMIT 10'
 
-  pool::poolClose(db)
-  expect_false(pool::dbIsValid(db))
+  result <- ojo_query(query)
+
+  # Check that it returns a tibble
+  expect_s3_class(result, "tbl")
+
+  # Check the result is not empty and has expected number of rows
+  expect_equal(nrow(result), 10)
+
+  withr::deferred_run(envir = ojo_env())
 })
 
-# test_that("ojo_query fails correctly in non-interactive mode", {
-#   expect_error(
-#     ojo_query("SELECT 'a' as test;")
-#   )
-# })
+# Test error handling for malformed queries
+test_that("ojo_query handles SQL errors", {
+  # Intentionally malformed SQL query
+  bad_query <- "SELEC * FROM nonexistent_table"
 
-test_that("ojo_query succeeds with global flag in non-interactive mode", {
-  expect_snapshot(ojo_query("SELECT 'a' as test;", .global = TRUE))
+  expect_error(
+    ojo_query(bad_query),
+    "syntax error at or near \"SELEC\"",
+    fixed = TRUE
+  )
+
+  withr::deferred_run(envir = ojo_env())
 })
-
-test_that("ojo_query succeeds correctly in interactive mode", {
-  rlang::with_interactive({
-    expect_snapshot(ojo_query("SELECT 'a' as test;"))
-  })
-})
-
-# test_that("ojo_query fails correctly in interactive mode", {
-#   rlang::with_interactive({
-#     expect_error(
-#       ojo_query("SELECT 'a' as test;", .global = FALSE)
-#     )
-#   })
-# })

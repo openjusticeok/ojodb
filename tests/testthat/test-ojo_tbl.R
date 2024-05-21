@@ -1,53 +1,38 @@
-test_that("ojo_tbl succeeds correctly in non-interactive mode", {
-  db <- ojo_connect(.pool = TRUE)
-  expect_snapshot_value(
-    ojo_tbl("case", .con = db),
-    style = "serialize"
-  )
-  expect_true(pool::dbIsValid(db))
+test_that("ojo_tbl retrieves a table correctly", {
+  tbl <- ojo_tbl("case")
 
-  pool::poolClose(db)
-  expect_false(pool::dbIsValid(db))
+  # Check that it returns a tibble
+  expect_s3_class(tbl, "tbl")
 
-  expect_no_error(ojo_tbl("case", .global = TRUE))
   withr::deferred_run(envir = ojo_env())
 })
 
-# test_that("ojo_tbl fails correctly in non-interactive mode", {
-#   expect_error({
-#     ojo_tbl("case")
-#   })
-#   expect_error({
-#     ojo_tbl("case")
-#     pool::dbIsValid(ojo_pool)
-#   })
-# })
+# Test error handling for non-existent table
+test_that("ojo_tbl handles non-existent tables correctly", {
+  non_existent_table <- "should_not_exist"
+  expect_error(
+    ojo_tbl(non_existent_table),
+    'relation "public.should_not_exist" does not exist',
+    fixed = TRUE
+  )
 
-test_that("ojo_tbl succeeds correctly in interactive mode", {
-  rlang::with_interactive({
-    ojo_connect(.pool = TRUE)
-
-    db <- get("ojo_pool", envir = ojo_env(), inherits = FALSE)
-
-    expect_true(pool::dbIsValid(db))
-
-    expect_snapshot_value(
-      ojo_tbl("case"),
-      style = "serialize"
-    )
-
-    expect_true(pool::dbIsValid(db))
-
-    withr::deferred_run(envir = ojo_env())
-
-    expect_false(exists("ojo_pool", envir = ojo_env(), inherits = FALSE))
-  })
+  withr::deferred_run(envir = ojo_env())
 })
 
-# test_that("ojo_tbl fails correctly in interactive mode", {
-#   rlang::with_interactive({
-#     expect_false(exists("ojo_pool", envir = ojo_env(), inherits = FALSE))
-#     expect_error(ojo_tbl("case", .global = FALSE))
-#     expect_false(exists("ojo_pool", envir = ojo_env(), inherits = FALSE))
-#   })
-# })
+test_that("ojo_tbl's can join", {
+  tbl <- ojo_tbl("case")
+  tbl2 <- ojo_tbl("minute")
+
+  # Check that it returns a tibble
+  expect_s3_class(tbl, "tbl")
+
+  # Check that it returns a tibble
+  expect_s3_class(tbl2, "tbl")
+
+  # Check that it can join
+  expect_s3_class(tbl |>
+    dplyr::left_join(tbl2, by = c("id" = "case_id")),
+    "tbl")
+
+  withr::deferred_run(envir = ojo_env())
+})

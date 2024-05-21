@@ -11,14 +11,14 @@ ojo_collect(.data, ..., .silent = !rlang::is_interactive())
 
 \item{...}{Placeholder for additional arguments}
 
-\item{.silent}{Should the command line interface elements be shown? Defaults to `TRUE` if the user is in an interactive session, and `FALSE` if they are not.}
+\item{.silent}{Should the command line interface elements be shown? Defaults to \code{TRUE} if the user is in an interactive session, and \code{FALSE} if they are not.}
 }
 \value{
 A local tibble
 }
 \description{
 A wrapper for dplyr::collect() that includes a progress bar
-Pull a lazy tibble into your local environment from the OJO database, using `ojo_crim_cases()`, `ojo_civ_cases()`, etc.
+Pull a lazy tibble into your local environment from the OJO database, using \code{ojo_crim_cases()}, \code{ojo_civ_cases()}, etc.
 }
 \examples{
 \dontrun{

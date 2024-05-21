@@ -10,6 +10,6 @@ get_connection_object(env)
 \item{env}{The environment to search for the connection object.}
 }
 \description{
-Gets the connection object from the environment specified by the `.env` argument.
+Gets the connection object from the environment specified by the \code{.env} argument.
 }
 \keyword{internal}

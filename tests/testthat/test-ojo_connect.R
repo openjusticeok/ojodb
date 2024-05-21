@@ -1,50 +1,32 @@
-test_that("ojo_connect works in non-interactive mode, with pool", {
+test_that("ojo_connect creates a new connection", {
+  con <- ojo_connect()
+  expect_true(DBI::dbIsValid(con), "Connection should be valid")
 
-  db <- ojo_connect(.pool = TRUE)
-
-  expect_true(inherits(db, "Pool"))
-  expect_true(pool::dbIsValid(db))
-
-  pool::poolClose(db)
-
-  expect_false(pool::dbIsValid(db))
+  # Clean up: Close the connection after testing
+  withr::deferred_run(envir = ojo_env())
 })
 
-# test_that("ojo_connect works in interactive mode, with pool", {
-#   # rlang::with_interactive({
-#
-#     ojo_connect(.pool = TRUE, .global = TRUE)
-#
-#     db <- get("ojo_pool", envir = ojo_env(), inherits = FALSE)
-#
-#     expect_true(inherits(db, "Pool"))
-#     expect_true(pool::dbIsValid(db))
-#
-#     withr::deferred_run(envir = ojo_env())
-#
-#     expect_false(pool::dbIsValid(db))
-#
-#   # })
-# })
+test_that("ojo_connect reuses existing connection", {
+  skip_on_cran()
 
-test_that("ojo_connect works in non-interactive mode, without pool", {
+  con1 <- ojo_connect()
+  con2 <- ojo_connect()
 
-  db <- ojo_connect(.pool = FALSE)
+  # Check if both connection objects point to the same connection
+  expect_identical(con1, con2, "Should reuse the same connection object")
 
-  expect_true(DBI::dbIsValid(db))
-
+  # Clean up: Close the connection after testing
+  withr::deferred_run(envir = ojo_env())
 })
 
-test_that("ojo_connect works in interactive mode, without pool", {
-  rlang::with_interactive({
+test_that("ojo_connect handles connection pooling correctly", {
+  skip_on_cran()
 
-    db <- ojo_connect(.pool = FALSE)
+  pool_con <- ojo_connect(.pool = TRUE)
+  expect_true(DBI::dbIsValid(pool_con), "Pooled connection should be valid")
 
-    expect_true(DBI::dbIsValid(db))
+  # Further checks can be added to validate the pooling behavior
 
-    withr::deferred_run(envir = ojo_env())
-
-    expect_false(DBI::dbIsValid(db))
-
-  })
+  # Clean up: Close the pool after testing
+  withr::deferred_run(envir = ojo_env())
 })

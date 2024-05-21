@@ -35,7 +35,7 @@ ojo_auth <- function(host, port, username, password, ..., .admin = F, .overwrite
   clientkey <- fs::path(home, ".postgresql/ojodb/client-key.pem")
 
   # Check if SSL certs are in correct location; if not, throw error
-  if(!fs::file_exists(rootcert) |
+  if (!fs::file_exists(rootcert) |
      !fs::file_exists(clientcert) |
      !fs::file_exists(clientkey)) {
     rlang::abort(
@@ -71,14 +71,14 @@ ojo_auth <- function(host, port, username, password, ..., .admin = F, .overwrite
         # Creating the new .Renviron file (not filled out yet, all OJO variables removed)
         newenv <- oldenv |>
           dplyr::as_tibble() |>
-          dplyr::filter(!stringr::str_detect(.data$V1, "(OJO_HOST)|(OJO_PORT)|(OJO_DRIVER)|(OJO_SSL)"))
+          dplyr::filter(!stringi::stri_detect_regex(.data$V1, "(OJO_HOST)|(OJO_PORT)|(OJO_DRIVER)|(OJO_SSL)"))
         if (.admin == T) {
           newenv <- newenv |>
-            dplyr::filter(!stringr::str_detect(.data$V1, "(OJO_ADMIN_USER)|(OJO_ADMIN_PASS)")) |>
+            dplyr::filter(!stringi::stri_detect_regex(.data$V1, "(OJO_ADMIN_USER)|(OJO_ADMIN_PASS)")) |>
             as.data.frame()
         } else {
           newenv <- newenv |>
-            dplyr::filter(!stringr::str_detect(.data$V1, "(OJO_DEFAULT_USER)|(OJO_DEFAULT_PASS)")) |>
+            dplyr::filter(!stringi::stri_detect_regex(.data$V1, "(OJO_DEFAULT_USER)|(OJO_DEFAULT_PASS)")) |>
             as.data.frame()
         }
 

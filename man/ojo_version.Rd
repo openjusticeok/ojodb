@@ -10,8 +10,8 @@ ojo_version(...)
 \item{...}{Placeholder for future arguments}
 }
 \value{
-A character vector containing the version number of the `ojodb` package.
+A character vector containing the version number of the \code{ojodb} package.
 }
 \description{
-Returns the version of the `ojodb` package.
+Returns the version of the \code{ojodb} package.
 }

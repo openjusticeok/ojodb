@@ -31,9 +31,9 @@ ojo_county_population <- function(years) {
   d <- d |>
     dplyr::mutate(
       court = .data$NAME |>
-        stringr::str_remove(" County.*") |>
-        stringr::str_to_upper() |>
-        stringr::str_remove_all(" ")
+        stringi::stri_replace_all_regex(" County.*", "") |>
+        stringi::stri_trans_toupper() |>
+        stringi::stri_replace_all_regex(" ", "")
     ) |>
     dplyr::select(.data$court, .data$year, pop = .data$value)
 
