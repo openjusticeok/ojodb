@@ -1,3 +1,11 @@
+# ojodb 2.8.0 (2024-05-20)
+
+## New Features
+- Adds initial support for Arrow.
+
+## Package Maintanance
+- Uses `{lifecycle}` for function development status.
+
 # ojodb 2.7.0 (2023-09-01)
 
 ## Bug Fixes
