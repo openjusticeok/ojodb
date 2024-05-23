@@ -8,7 +8,7 @@
 ## New Features
 - Adds initial support for Arrow.
 
-## Package Maintanance
+## Package Maintenance
 - Uses `{lifecycle}` for function development status.
 
 # ojodb 2.7.0 (2023-09-01)
