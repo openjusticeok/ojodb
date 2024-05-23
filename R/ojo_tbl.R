@@ -37,6 +37,17 @@ ojo_tbl <- function(
     }
     data <- tbl_from_database(.con, schema, table)
   } else if (.source == "gcs") {
+
+    # Abort if {arrow} isn't available
+    if (!rlang::is_installed("arrow")) {
+      rlang::abort(".source == \"gcs\" requires {arrow} with GCS support.")
+    }
+
+    gcs_available <- arrow::arrow_with_gcs()
+    if (!gcs_available) {
+      rlang::abort(stringr::str_glue("Arrow wasn't compiled with GCS support."))
+    }
+
     # Temp fix for schema
     if (schema == "public") {
       schema <- "oscn"
