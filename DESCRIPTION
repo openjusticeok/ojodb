@@ -1,6 +1,6 @@
 Package: ojodb
 Title: Analyze Data from the Open Justice Oklahoma Database
-Version: 2.8.0
+Version: 2.8.1
 Authors@R: c(
   person(
     given = "Brancen",
@@ -26,7 +26,6 @@ Authors@R: c(
   ))
 Description: {ojodb} provides convenient functions to query court data from the Open Justice Oklahoma database.
 Imports:
-  arrow,
   cli,
   dbplyr,
   DBI,
@@ -45,6 +44,7 @@ Imports:
   utils,
   withr
 Suggests:
+  arrow,
   attachment,
   badger,
   covr,

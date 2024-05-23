@@ -1,9 +1,14 @@
+# ojodb 2.8.1 (2024-05-23)
+
+## Dependency Fix
+- Makes `{arrow}` and optional dependency and checks whether it is available when `source = "gcs"` is used in `ojo_tbl`.
+
 # ojodb 2.8.0 (2024-05-20)
 
 ## New Features
 - Adds initial support for Arrow.
 
-## Package Maintanance
+## Package Maintenance
 - Uses `{lifecycle}` for function development status.
 
 # ojodb 2.7.0 (2023-09-01)
