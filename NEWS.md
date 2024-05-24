@@ -16,7 +16,7 @@
 ## Bug Fixes
 - Fixed bugs in `ojo_auth()` which prevented it from successfully backing up the `.Renviron` file.
 
-## Package Maintanance
+## Package Maintenance
 - Changed from Base R file paths to the `{fs}` package.
 - Adjusted GitHub Actions workflows to not run on draft PRs.
 - Added spellcheck GitHub Actions.

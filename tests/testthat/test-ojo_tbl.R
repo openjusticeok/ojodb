@@ -20,6 +20,8 @@ test_that("ojo_tbl handles non-existent tables correctly", {
 })
 
 test_that("ojo_tbl's can join", {
+  skip_on_runiverse()
+
   tbl <- ojo_tbl("case")
   tbl2 <- ojo_tbl("minute")
 

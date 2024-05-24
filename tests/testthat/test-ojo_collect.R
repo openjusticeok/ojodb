@@ -1,4 +1,6 @@
 test_that("ojo_collect works in interactive mode", {
+  skip_on_runiverse()
+
   expect_no_error({
     ojo_tbl("case") |>
       head(1) |>
