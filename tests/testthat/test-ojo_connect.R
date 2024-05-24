@@ -1,4 +1,6 @@
 test_that("ojo_connect creates a new connection", {
+  testthat::skip_on_cran()
+
   con <- ojo_connect()
   expect_true(DBI::dbIsValid(con), "Connection should be valid")
 

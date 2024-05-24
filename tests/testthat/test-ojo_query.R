@@ -1,4 +1,6 @@
 test_that("ojo_query executes SQL and returns a tibble", {
+  testthat::skip_on_cran()
+
   # A simple, safe query that assumes the existence of a 'case' table
   query <- 'SELECT * FROM "case" LIMIT 10'
 
@@ -15,6 +17,8 @@ test_that("ojo_query executes SQL and returns a tibble", {
 
 # Test error handling for malformed queries
 test_that("ojo_query handles SQL errors", {
+  testthat::skip_on_cran()
+
   # Intentionally malformed SQL query
   bad_query <- "SELEC * FROM nonexistent_table"
 
