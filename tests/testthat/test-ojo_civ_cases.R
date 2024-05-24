@@ -1,5 +1,5 @@
 test_that("ojo_civ_cases works", {
-  testthat::skip_on_cran()
+  skip_on_runiverse()
 
   testthat::expect_no_error({
     ojo_civ_cases()

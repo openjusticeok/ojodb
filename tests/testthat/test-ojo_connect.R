@@ -1,5 +1,5 @@
 test_that("ojo_connect creates a new connection", {
-  testthat::skip_on_cran()
+  skip_on_runiverse()
 
   con <- ojo_connect()
   expect_true(DBI::dbIsValid(con), "Connection should be valid")
@@ -9,7 +9,7 @@ test_that("ojo_connect creates a new connection", {
 })
 
 test_that("ojo_connect reuses existing connection", {
-  skip_on_cran()
+  skip_on_runiverse()
 
   con1 <- ojo_connect()
   con2 <- ojo_connect()
@@ -22,7 +22,7 @@ test_that("ojo_connect reuses existing connection", {
 })
 
 test_that("ojo_connect handles connection pooling correctly", {
-  skip_on_cran()
+  skip_on_runiverse()
 
   pool_con <- ojo_connect(.pool = TRUE)
   expect_true(DBI::dbIsValid(pool_con), "Pooled connection should be valid")

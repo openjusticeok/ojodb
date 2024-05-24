@@ -1,5 +1,5 @@
 test_that("ojo_list_tables hasn't changed", {
-  testthat::skip_on_cran()
+  skip_on_runiverse()
 
   expect_snapshot_value(
     ojo_list_tables("public"),

@@ -1,5 +1,5 @@
 test_that("ojo_collect works in interactive mode", {
-  testthat::skip_on_cran()
+  skip_on_runiverse()
 
   expect_no_error({
     ojo_tbl("case") |>
