@@ -53,6 +53,19 @@ ojo_tbl <- function(
       schema <- "oscn"
     }
     data <- tbl_from_gcs(schema, table)
+  } else if (.source == "gcs_duckdb") {
+
+    # Abort if {duckdb} isn't available
+    if (!rlang::is_installed("duckdb")) {
+      rlang::abort(".source == \"gcs_duckdb\" requires {duckdb}.")
+    }
+
+    # Temp fix for schema
+    if (schema == "public") {
+      schema <- "oscn"
+    }
+
+    data <- tbl_from_gcs_duckdb(schema, table)
   } else {
     rlang::abort("Invalid source specified. Please choose one of: 'database' or 'gcs'.")
   }
@@ -103,4 +116,21 @@ tbl_from_gcs <- function(schema, table, anonymous = TRUE) {
   bucket_path <- stringr::str_glue("{schema}/{table}")
   bucket <- arrow::gs_bucket(bucket_path, anonymous = anonymous)
   arrow::open_dataset(bucket, format = "parquet")
+}
+
+#' Fetch data from Google Cloud Storage using {duckdb}
+#'
+#' @param schema The schema (directory) name in Google Cloud Storage.
+#' @param table The table (file) name to fetch.
+#'
+#' @return A lazy {duckdb} result
+#'
+#' @keywords internal
+#'
+tbl_from_gcs_duckdb <- function(schema, table) {
+  bucket_path <- stringr::str_glue("gs://ojo-data-warehouse/raw-data/{schema}/{table}/*.parquet")
+  con <- DBI::dbConnect(duckdb::duckdb())
+  DBI::dbExecute(con, stringr::str_glue("INSTALL httpfs; LOAD httpfs; SET s3_endpoint='storage.googleapis.com';"))
+  DBI::dbExecute(con, stringr::str_glue("CREATE VIEW '{table}' AS SELECT * FROM read_parquet('{bucket_path}')"))
+  tbl(con, table)
 }

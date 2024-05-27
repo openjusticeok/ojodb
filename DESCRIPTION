@@ -49,6 +49,7 @@ Suggests:
   badger,
   covr,
   devtools,
+  duckdb,
   fledge,
   fs,
   httpgd,
