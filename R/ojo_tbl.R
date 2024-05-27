@@ -29,13 +29,19 @@ ojo_tbl <- function(
   schema = "public",
   ...,
   .con = NULL,
-  .source = "database"
+  .source = "postgres"
 ) {
-  if (.source == "database") {
+  if (.source == "postgres") {
     if (is.null(.con)) {
       .con <- ojo_connect(...)
     }
-    data <- tbl_from_database(.con, schema, table)
+    data <- tbl_from_rpostgres(.con, schema, table)
+  } else if (.source == "database") {
+    lifecycle::deprecate_warn("2.9.0", I(".source = 'database' is deprecated. Use '.source = 'postgres' instead."))
+    if (is.null(.con)) {
+      .con <- ojo_connect(...)
+    }
+    data <- tbl_from_rpostgres(.con, schema, table)
   } else if (.source == "gcs") {
 
     # Abort if {arrow} isn't available
@@ -65,7 +71,9 @@ ojo_tbl <- function(
       schema <- "oscn"
     }
 
-    data <- tbl_from_gcs_duckdb(schema, table)
+    con <- ojo_connect(.driver = "duckdb", ...)
+
+    data <- tbl_from_gcs_duckdb(con, schema, table)
   } else {
     rlang::abort("Invalid source specified. Please choose one of: 'database' or 'gcs'.")
   }
@@ -98,7 +106,7 @@ summarize_dataset <- function(dataset) {
 #'
 #' @keywords internal
 #'
-tbl_from_database <- function(con, schema, table) {
+tbl_from_rpostgres <- function(con, schema, table) {
   dplyr::tbl(con, DBI::Id(schema = schema, table = table))
 }
 
@@ -127,10 +135,8 @@ tbl_from_gcs <- function(schema, table, anonymous = TRUE) {
 #'
 #' @keywords internal
 #'
-tbl_from_gcs_duckdb <- function(schema, table) {
+tbl_from_gcs_duckdb <- function(con, schema, table) {
   bucket_path <- stringr::str_glue("gs://ojo-data-warehouse/raw-data/{schema}/{table}/*.parquet")
-  con <- DBI::dbConnect(duckdb::duckdb())
-  DBI::dbExecute(con, stringr::str_glue("INSTALL httpfs; LOAD httpfs; SET s3_endpoint='storage.googleapis.com';"))
-  DBI::dbExecute(con, stringr::str_glue("CREATE VIEW '{table}' AS SELECT * FROM read_parquet('{bucket_path}')"))
+  DBI::dbExecute(con, stringr::str_glue("CREATE OR REPLACE VIEW \'{table}\' AS SELECT * FROM read_parquet('{bucket_path}')"))
   tbl(con, table)
 }
