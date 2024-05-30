@@ -116,7 +116,7 @@ ojo_add_counts <- function(data, vars = NULL, ...) {
     data <- data |>
       dplyr::select(dplyr::all_of(columns), "count_as_filed", "disposition")
   } else {
-    if (vars != "all") {
+    if (all(vars != "all")) {
       selection <- c(dplyr::all_of(columns), dplyr::all_of(vars))
       data <- data |>
         dplyr::select(dplyr::all_of(selection))
