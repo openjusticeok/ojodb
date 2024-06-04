@@ -4,7 +4,7 @@
 \alias{tbl_from_gcs_duckdb}
 \title{Fetch data from Google Cloud Storage using {duckdb}}
 \usage{
-tbl_from_gcs_duckdb(schema, table)
+tbl_from_gcs_duckdb(con, schema, table)
 }
 \arguments{
 \item{schema}{The schema (directory) name in Google Cloud Storage.}

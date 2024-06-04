@@ -4,7 +4,7 @@
 \alias{ojo_tbl}
 \title{Identify a table from the OJO database}
 \usage{
-ojo_tbl(table, schema = "public", ..., .con = NULL, .source = "database")
+ojo_tbl(table, schema = "public", ..., .con = NULL, .source = "postgres")
 }
 \arguments{
 \item{table}{The name of a table in the OJO database. To get a list of tables, run \code{ojo_list_tables()}}
@@ -15,7 +15,7 @@ ojo_tbl(table, schema = "public", ..., .con = NULL, .source = "database")
 
 \item{.con}{The ojodb connection to use}
 
-\item{.source}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} The source of the table. Options are 'database' and 'gcs'. Default is 'database'.}
+\item{.source}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} The source of the table. Options are 'postgres', 'gcs_duckdb', and 'gcs_parquet'. Default is 'postgres'.}
 }
 \value{
 A pointer to a table that can be passed to dplyr functions and/or pulled into a dataframe using \code{ojo_collect()}

@@ -7,6 +7,7 @@
 ojo_connect(
   ...,
   .admin = FALSE,
+  .driver = "RPostgres",
   .global = lifecycle::deprecated(),
   .env = ojo_env(),
   .pool = FALSE
@@ -16,6 +17,8 @@ ojo_connect(
 \item{...}{Placeholder.}
 
 \item{.admin}{A logical value indicating whether to connect to the database as an administrator.}
+
+\item{.driver}{The driver to use for the connection. Default is "RPostgres". "duckdb" is also supported.}
 
 \item{.global}{Deprecated. A connection will always be created in the specified environment, or in the package environment by default.}
 

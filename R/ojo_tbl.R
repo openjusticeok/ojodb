@@ -8,7 +8,7 @@
 #' @param schema The name of a schema in the OJO database. To get a list of schemas, run `ojo_list_schemas()`
 #' @param ... Placeholder
 #' @param .con The ojodb connection to use
-#' @param .source `r lifecycle::badge("experimental")` The source of the table. Options are 'database' and 'gcs'. Default is 'database'.
+#' @param .source `r lifecycle::badge("experimental")` The source of the table. Options are 'postgres', 'gcs_duckdb', and 'gcs_parquet'. Default is 'postgres'.
 #'
 #' @export ojo_tbl
 #' @return A pointer to a table that can be passed to dplyr functions and/or pulled into a dataframe using `ojo_collect()`
@@ -42,11 +42,11 @@ ojo_tbl <- function(
       .con <- ojo_connect(...)
     }
     data <- tbl_from_rpostgres(.con, schema, table)
-  } else if (.source == "gcs") {
+  } else if (.source == "gcs_parquet") {
 
     # Abort if {arrow} isn't available
     if (!rlang::is_installed("arrow")) {
-      rlang::abort(".source == \"gcs\" requires {arrow} with GCS support.")
+      rlang::abort(".source == \"gcs_parquet\" requires {arrow} with GCS support.")
     }
 
     gcs_available <- arrow::arrow_with_gcs()
@@ -75,7 +75,7 @@ ojo_tbl <- function(
 
     data <- tbl_from_gcs_duckdb(con, schema, table)
   } else {
-    rlang::abort("Invalid source specified. Please choose one of: 'database' or 'gcs'.")
+    rlang::abort("Invalid source specified. Please choose one of: 'postgres', 'gcs_duckdb', or 'gcs_parquet'.")
   }
 
   class(data) <- c("ojo_tbl", class(data))
