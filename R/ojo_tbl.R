@@ -8,7 +8,7 @@
 #' @param schema The name of a schema in the OJO database. To get a list of schemas, run `ojo_list_schemas()`
 #' @param ... Placeholder
 #' @param .con The ojodb connection to use
-#' @param .source `r lifecycle::badge("experimental")` The source of the table. Options are 'postgres', 'gcs_duckdb', and 'gcs_parquet'. Default is 'postgres'.
+#' @param .source `r lifecycle::badge("experimental")` The source of the table. Options are 'postgres', 'gcs_duckdb', and 'gcs_arrow'. Default is 'postgres'.
 #'
 #' @export ojo_tbl
 #' @return A pointer to a table that can be passed to dplyr functions and/or pulled into a dataframe using `ojo_collect()`
@@ -31,69 +31,53 @@ ojo_tbl <- function(
   .con = NULL,
   .source = "postgres"
 ) {
-  if (.source == "postgres") {
-    if (is.null(.con)) {
-      .con <- ojo_connect(...)
-    }
-    data <- tbl_from_rpostgres(.con, schema, table)
-  } else if (.source == "database") {
+  if (.source == "database") {
     lifecycle::deprecate_warn("2.9.0", I(".source = 'database' is deprecated. Use '.source = 'postgres' instead."))
-    if (is.null(.con)) {
-      .con <- ojo_connect(...)
-    }
-    data <- tbl_from_rpostgres(.con, schema, table)
-  } else if (.source == "gcs_parquet") {
-
-    # Abort if {arrow} isn't available
-    if (!rlang::is_installed("arrow")) {
-      rlang::abort(".source == \"gcs_parquet\" requires {arrow} with GCS support.")
-    }
-
-    gcs_available <- arrow::arrow_with_gcs()
-    if (!gcs_available) {
-      rlang::abort(stringr::str_glue("Arrow wasn't compiled with GCS support."))
-    }
-
-    # Temp fix for schema
-    if (schema == "public") {
-      schema <- "oscn"
-    }
-    data <- tbl_from_gcs(schema, table)
-  } else if (.source == "gcs_duckdb") {
-
-    # Abort if {duckdb} isn't available
-    if (!rlang::is_installed("duckdb")) {
-      rlang::abort(".source == \"gcs_duckdb\" requires {duckdb}.")
-    }
-
-    # Temp fix for schema
-    if (schema == "public") {
-      schema <- "oscn"
-    }
-
-    con <- ojo_connect(.driver = "duckdb", ...)
-
-    data <- tbl_from_gcs_duckdb(con, schema, table)
-  } else {
-    rlang::abort("Invalid source specified. Please choose one of: 'postgres', 'gcs_duckdb', or 'gcs_parquet'.")
+    .source <- "postgres"
   }
+
+  data <- switch(
+    .source,
+    "postgres" = {
+      if (is.null(.con)) {
+        .con <- ojo_connect(
+          ...,
+          .driver = "RPostgres"
+        )
+      }
+      tbl_from_rpostgres(.con, schema, table)
+    },
+    "gcs_duckdb" = {
+      if (!rlang::is_installed("duckdb")) {
+        rlang::abort(".source == \"gcs_duckdb\" requires {duckdb}.")
+      }
+      if (is.null(.con)) {
+        .con <- ojo_connect(..., .driver = "duckdb", .source = .source)
+      }
+      if (schema == "public") {
+        schema <- "oscn"
+      }
+      tbl_from_gcs_duckdb(.con, schema, table)
+    },
+    "gcs_arrow" = {
+      if (!rlang::is_installed("arrow")) {
+        rlang::abort(".source == \"gcs_arrow\" requires {arrow} with GCS support.")
+      }
+      gcs_available <- arrow::arrow_with_gcs()
+      if (!gcs_available) {
+        rlang::abort("Arrow wasn't compiled with GCS support.")
+      }
+      if (schema == "public") {
+        schema <- "oscn"
+      }
+      tbl_from_gcs_arrow(schema, table)
+    },
+    rlang::abort("Invalid source specified. Please choose one of: 'postgres', 'gcs_duckdb', or 'gcs_arrow'.")
+  )
 
   class(data) <- c("ojo_tbl", class(data))
 
   return(data)
-}
-
-# Placeholder function to summarize dataset
-# This function would extract and format the dataset's structure for printing
-summarize_dataset <- function(dataset) {
-  # For demonstration, return a simple summary
-  # In practice, this might involve generating a summary of column names, types, etc.
-  summary <- tibble::tibble(
-    Column = c("id", "title"),
-    Type = c("integer", "character")
-  )
-
-  return(summary)
 }
 
 #' Fetch data from a database
@@ -120,7 +104,7 @@ tbl_from_rpostgres <- function(con, schema, table) {
 #'
 #' @keywords internal
 #'
-tbl_from_gcs <- function(schema, table, anonymous = TRUE) {
+tbl_from_gcs_arrow <- function(schema, table, anonymous = TRUE) {
   bucket_path <- stringr::str_glue("{schema}/{table}")
   bucket <- arrow::gs_bucket(bucket_path, anonymous = anonymous)
   arrow::open_dataset(bucket, format = "parquet")

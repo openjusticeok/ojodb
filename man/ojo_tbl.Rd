@@ -15,7 +15,7 @@ ojo_tbl(table, schema = "public", ..., .con = NULL, .source = "postgres")
 
 \item{.con}{The ojodb connection to use}
 
-\item{.source}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} The source of the table. Options are 'postgres', 'gcs_duckdb', and 'gcs_parquet'. Default is 'postgres'.}
+\item{.source}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} The source of the table. Options are 'postgres', 'gcs_duckdb', and 'gcs_arrow'. Default is 'postgres'.}
 }
 \value{
 A pointer to a table that can be passed to dplyr functions and/or pulled into a dataframe using \code{ojo_collect()}

@@ -44,9 +44,10 @@ ojo_connect <- function(..., .admin = FALSE, .driver = "RPostgres", .global = li
   }
 
   connection_type <- if (.pool) "ojo_pool" else "ojo_con"
+  connection_key <- paste0(connection_type, "_", .driver)
 
   # Check if a valid connection object already exists in the environment
-  existing_conn <- get_connection_object(.env)
+  existing_conn <- get_connection_object(.env, connection_key)
   if (!is.null(existing_conn) && DBI::dbIsValid(existing_conn)) {
     return(existing_conn)
   }
@@ -83,24 +84,56 @@ ojo_connect <- function(..., .admin = FALSE, .driver = "RPostgres", .global = li
   )
 
   new_conn <- rlang::exec(conn_fn, !!!conn_args)
-  assign(connection_type, new_conn, envir = .env)
+  assign(connection_key, new_conn, envir = .env)
 
   # Make sure duckdb instance has needed features
   if (.driver == "duckdb") {
-    DBI::dbExecute(new_conn, stringr::str_glue("INSTALL httpfs; LOAD httpfs; SET s3_endpoint='storage.googleapis.com';"))
+    DBI::dbExecute(
+      new_conn,
+      stringr::str_glue("INSTALL httpfs; LOAD httpfs; SET s3_endpoint='storage.googleapis.com';")
+    )
   }
 
   withr::defer({
-    if (exists(connection_type, envir = .env)) {
-      connection_object <- get(connection_type, envir = .env, inherits = FALSE)
+    if (exists(connection_key, envir = .env)) {
+      connection_object <- get(connection_key, envir = .env, inherits = FALSE)
       if (.pool) {
         pool::poolClose(connection_object)
       } else {
         DBI::dbDisconnect(connection_object)
       }
-      rm(list = connection_type, envir = .env)
+      rm(list = connection_key, envir = .env)
     }
   }, envir = .env)
 
   return(new_conn)
+}
+
+#' @title Get Connection Object
+#'
+#' @description
+#' Gets the connection object from the environment specified by the `.env` argument.
+#'
+#' @param env The environment to search for the connection object.
+#'
+#' @keywords internal
+#'
+get_connection_object <- function(env, key) {
+  connection_object_exists <- exists(
+    key,
+    envir = env,
+    inherits = FALSE
+  )
+
+  if (!connection_object_exists) {
+    return(NULL)
+  }
+
+  connection_object <- get(
+    key,
+    envir = env,
+    inherits = FALSE
+  )
+
+  return(connection_object)
 }
