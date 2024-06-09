@@ -29,6 +29,7 @@ namespacing
 ojo
 pkgdown
 png
+postgres
 replicable
 repos
 rlang
