@@ -24,6 +24,25 @@
 ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
 
   # Check class of `.data`
+  # First, check if it's an arrow connection; this won't work with the rest of ojo_collect()
+  if (inherits(.data, "ArrowTabular")) {
+
+    # Display CLI
+    cli::cli_div(
+      theme = list(
+        rule = list(color = "br_yellow",
+                    "line-type" = "single"),
+        "span.grayed" = list(color = "grey")
+      )
+    )
+
+    cli::cli_rule(left = paste("Connection: OJO GCS Arrow Tables"),
+                  right = "{.emph ojodb {utils::packageVersion('ojodb')}}")
+
+    return(dplyr::collect(.data))
+
+  }
+  # Otherwise, make sure it's a postgres / duckdb connection
   if (!inherits(.data, c("tbl_lazy", "tbl_Pool", "tbl_dbi"))) {
     rlang::abort("`.data` must be a lazy tibble created with `ojo_connect()`, `pool::dbPool()`, or `DBI::dbConnect()`.")
   }
