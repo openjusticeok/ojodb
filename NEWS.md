@@ -1,3 +1,8 @@
+# ojodb 2.9.0 (2024-06-10)
+
+## New Features
+- Adds initial support for DuckDB
+
 # ojodb 2.8.1 (2024-05-23)
 
 ## Dependency Fix
