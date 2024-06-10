@@ -112,9 +112,12 @@
     <loc>/reference/skip_if_no_db.html</loc>
   </url>
   <url>
-    <loc>/reference/tbl_from_database.html</loc>
+    <loc>/reference/tbl_from_gcs_arrow.html</loc>
   </url>
   <url>
-    <loc>/reference/tbl_from_gcs.html</loc>
+    <loc>/reference/tbl_from_gcs_duckdb.html</loc>
+  </url>
+  <url>
+    <loc>/reference/tbl_from_rpostgres.html</loc>
   </url>
 </urlset>
