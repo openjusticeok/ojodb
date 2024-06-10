@@ -22,12 +22,14 @@ dbConnect
 dbPool
 devtools
 dplyr
+duckdb
 env
 ggplot
 namespacing
 ojo
 pkgdown
 png
+postgres
 replicable
 repos
 rlang
