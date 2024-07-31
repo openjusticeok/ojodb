@@ -2,7 +2,7 @@
 #'
 #' @description
 #' Collects Oklahoma eviction data for the specified districts (or all of Oklahoma)
-#' for the user specified timeframe. If date_end is not specified, the
+#' for the user specified time frame. If date_end is not specified, the
 #' most up-to-date data will be collected.
 #'
 #' Function uses the latest methodology we use for identifying eviction cases
