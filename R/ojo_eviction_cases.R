@@ -23,8 +23,8 @@
 #' ojo_eviction_cases(
 #'   districts = c("TULSA", "ADAIR"),
 #'   date_start = "2020-01-01",
-#'   date_end = "2020-12-31",
-#'   more_issue_variables = "disposition_date",
+#'   date_end = "2020-01-31",
+#'   more_case_variables = disposition_date
 #' )
 #' ojo_eviction_cases(
 #'   districts = c("TULSA", "ADAIR"),
@@ -39,15 +39,15 @@ ojo_eviction_cases <- function(district = "all",
                                date_end = NA,
                                more_case_variables = NULL,
                                more_issue_variables = NULL,
-                               get_judgments = FALSE) {
+                               get_judgments = TRUE) {
   #### Variable Handling
   .district <- toupper(district)
 
   ##### Data Wrangling / Cleaning
   ## Construct Data
-  data <- ojo_tbl("case")
+  data <- ojodb::ojo_tbl("case")
 
-  if (.district != "all") {
+  if (.district != "ALL") {
     data <- data |>
       dplyr::filter(district %in% .district)
   }
@@ -64,30 +64,22 @@ ojo_eviction_cases <- function(district = "all",
     dplyr::filter(case_type == "SC") |>
     dplyr::select(id, district, date_filed, date_closed, status, more_case_variables) |>
     dplyr::left_join(
-      ojo_tbl("issue") |>
+      ojodb::ojo_tbl("issue") |>
         dplyr::select(id, case_id, description, disposition, more_issue_variables),
       by = c("id" = "case_id"),
       suffix = c(".case", ".issue")
     )
 
   ## Keep Only Eviction Cases
-  #   This our standard "strict" definition since it is a more research oriented application.
+  # This our standard "strict" definition for research and analysis applications.
+  # For applications where we may want to allow for more errors such as for
+  # non-profit service providers, we may want to consider a more lenient definition.
   data <- data |>
     dplyr::filter(
       stringr::str_detect(
         description,
         "RENT|FORCI|EVICT|DETAIN"
       )
-    )
-
-  ## Collect Data from Query
-  data <- data |> ojo_collect()
-
-  ## Create Year and Month Filed Variables
-  data <- data |>
-    dplyr::mutate(
-      year_filed = lubridate::floor_date(date_filed, "year") |> lubridate::as_date(),
-      month_filed = lubridate::floor_date(date_filed, "month") |> lubridate::as_date()
     )
 
   if (get_judgments == TRUE) {
@@ -106,7 +98,8 @@ ojo_eviction_cases <- function(district = "all",
 
     data <- data |>
       dplyr::mutate(judgment = dplyr::case_when(
-        clean_disposition %in% c("DEFAULT JUDGMENT", "JUDGMENT FOR PLAINTIFF") ~ "Eviction Granted",
+        clean_disposition %in%
+          c("DEFAULT JUDGMENT", "JUDGMENT FOR PLAINTIFF") ~ "Eviction Granted",
         clean_disposition == "JUDGMENT FOR DEFENDANT" ~ "Eviction Denied",
         clean_disposition == "JUDGMENT ENTERED" ~ "Case Decided, Outcome Unknown",
         clean_disposition == "DISMISSED" ~ "Case Dismissed (Settled Outside Court)",
@@ -117,3 +110,4 @@ ojo_eviction_cases <- function(district = "all",
 
   return(data)
 }
+
