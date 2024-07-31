@@ -8,6 +8,7 @@ reference:
   contents:
   - ojo_civ_cases
   - ojo_crim_cases
+  - ojo_eviction_cases
   - ojo_add_counts
   - ojo_add_minutes
   - ojo_add_issues

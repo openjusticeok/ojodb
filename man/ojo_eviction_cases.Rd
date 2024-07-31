@@ -17,17 +17,29 @@ ojo_eviction_cases(
 \arguments{
 \item{district}{District code for which to collect data (default is NA, which collects data for all districts)}
 
+\item{...}{Placeholder for additional arguments}
+
 \item{date_start}{Start date for the data collection period}
 
 \item{date_end}{End date for the data collection period (default is NULL, which collects the most up-to-date data)}
+
+\item{more_case_variables}{Additional variables from case table to include in the output}
+
+\item{more_issue_variables}{Additional variables from issue table to include in the output}
+
+\item{get_judgments}{Logical value indicating whether to include eviction judgment information in the output}
 }
 \value{
 A dataframe containing eviction data
 }
 \description{
-Collects Oklahoma Eviction data for the specified districts (or all of OK)
-for the user specified timeframe. If date_end is not specified, the
+Collects Oklahoma eviction data for the specified districts (or all of Oklahoma)
+for the user specified time frame. If date_end is not specified, the
 most up-to-date data will be collected.
+
+Function uses the latest methodology we use for identifying eviction cases
+and outcomes in Oklahoma. As that methodology is updated, this function will
+be updated to reflect those changes.
 }
 \examples{
 \dontrun{

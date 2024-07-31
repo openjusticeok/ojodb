@@ -10,8 +10,12 @@
 #' be updated to reflect those changes.
 #'
 #' @param district District code for which to collect data (default is NA, which collects data for all districts)
+#' @param ... Placeholder for additional arguments
 #' @param date_start Start date for the data collection period
 #' @param date_end End date for the data collection period (default is NULL, which collects the most up-to-date data)
+#' @param more_case_variables Additional variables from case table to include in the output
+#' @param more_issue_variables Additional variables from issue table to include in the output
+#' @param get_judgments Logical value indicating whether to include eviction judgment information in the output
 #'
 #' @importFrom dplyr filter select left_join mutate case_when
 #' @importFrom stringr str_detect
