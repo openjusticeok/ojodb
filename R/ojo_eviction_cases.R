@@ -1,9 +1,13 @@
 #' @title OJO Eviction Cases
 #'
 #' @description
-#' Collects Oklahoma Eviction data for the specified districts (or all of OK)
+#' Collects Oklahoma eviction data for the specified districts (or all of Oklahoma)
 #' for the user specified timeframe. If date_end is not specified, the
 #' most up-to-date data will be collected.
+#'
+#' Function uses the latest methodology we use for identifying eviction cases
+#' and outcomes in Oklahoma. As that methodology is updated, this function will
+#' be updated to reflect those changes.
 #'
 #' @param district District code for which to collect data (default is NA, which collects data for all districts)
 #' @param date_start Start date for the data collection period
