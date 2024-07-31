@@ -9,7 +9,7 @@
 #' and outcomes in Oklahoma. As that methodology is updated, this function will
 #' be updated to reflect those changes.
 #'
-#' @param district District code for which to collect data (default is NA, which collects data for all districts)
+#' @param district District code for which to collect data (default is "all", which collects data for all districts)
 #' @param ... Placeholder for additional arguments
 #' @param date_start Start date for the data collection period
 #' @param date_end End date for the data collection period (default is NULL, which collects the most up-to-date data)
@@ -41,39 +41,55 @@
 #' }
 #'
 
-ojo_eviction_cases <- function(district = "all",
+ojo_eviction_cases <- function(districts = "all",
                                ...,
-                               date_start = NA,
-                               date_end = NA,
+                               date_start = NULL,
+                               date_end = NULL,
                                more_case_variables = NULL,
                                more_issue_variables = NULL,
                                get_judgments = TRUE) {
   #### Variable Handling
-  .district <- toupper(district)
+  .district <- toupper(districts)
 
   ##### Data Wrangling / Cleaning
   ## Construct Data
   data <- ojodb::ojo_tbl("case")
 
-  if (.district != "ALL") {
+  if (!any(.district == "ALL")) {
     data <- data |>
       dplyr::filter(district %in% .district)
   }
-  if (!is.na(date_end)) {
+
+  if (!is.null(date_end)) {
     data <- data |>
       dplyr::filter(date_filed <= date_end)
   }
-  if (!is.na(date_start)) {
+
+  if (!is.null(date_start)) {
     data <- data |>
       dplyr::filter(date_filed >= date_start)
   }
 
+  case_vars <- unique(
+    c(
+      "id", "district", "date_filed", "date_closed", "status",
+      more_case_variables
+    )
+  )
+
+  issue_vars <- unique(
+    c(
+      "id", "case_id", "description", "disposition",
+      more_issue_variables
+    )
+  )
+
   data <- data |>
     dplyr::filter(case_type == "SC") |>
-    dplyr::select(id, district, date_filed, date_closed, status, more_case_variables) |>
+    dplyr::select(dplyr::all_of(case_vars)) |>
     dplyr::left_join(
       ojodb::ojo_tbl("issue") |>
-        dplyr::select(id, case_id, description, disposition, more_issue_variables),
+        dplyr::select(dplyr::all_of(issue_vars)),
       by = c("id" = "case_id"),
       suffix = c(".case", ".issue")
     )
@@ -105,17 +121,18 @@ ojo_eviction_cases <- function(district = "all",
       ))
 
     data <- data |>
-      dplyr::mutate(judgment = dplyr::case_when(
-        clean_disposition %in%
-          c("DEFAULT JUDGMENT", "JUDGMENT FOR PLAINTIFF") ~ "Eviction Granted",
-        clean_disposition == "JUDGMENT FOR DEFENDANT" ~ "Eviction Denied",
-        clean_disposition == "JUDGMENT ENTERED" ~ "Case Decided, Outcome Unknown",
-        clean_disposition == "DISMISSED" ~ "Case Dismissed (Settled Outside Court)",
-        clean_disposition == "UNDER ADVISEMENT" ~ "Case Under Advisement",
-        .default = "Case Undecided"
-      ))
+      dplyr::mutate(
+        judgment = dplyr::case_when(
+          clean_disposition %in%
+            c("DEFAULT JUDGMENT", "JUDGMENT FOR PLAINTIFF") ~ "Eviction Granted",
+          clean_disposition == "JUDGMENT FOR DEFENDANT" ~ "Eviction Denied",
+          clean_disposition == "JUDGMENT ENTERED" ~ "Case Decided, Outcome Unknown",
+          clean_disposition == "DISMISSED" ~ "Case Dismissed (Settled Outside Court)",
+          clean_disposition == "UNDER ADVISEMENT" ~ "Case Under Advisement",
+          .default = "Case Undecided"
+        )
+      )
   }
 
   return(data)
 }
-
