@@ -49,7 +49,7 @@ ojo_eviction_cases(
   districts = c("TULSA", "ADAIR"),
   date_start = "2020-01-01",
   date_end = "2020-01-31",
-  more_case_variables = disposition_date
+  more_issue_variables = disposition_date
 )
 ojo_eviction_cases(
   districts = c("TULSA", "ADAIR"),
