@@ -15,6 +15,8 @@ ojo_eviction_cases(
 )
 }
 \arguments{
+\item{districts}{District codes for which to collect data (default is "all", which collects data for all districts)}
+
 \item{...}{Placeholder for additional arguments}
 
 \item{date_start}{Start date for the data collection period}
@@ -26,8 +28,6 @@ ojo_eviction_cases(
 \item{more_issue_variables}{Additional variables from issue table to include in the output}
 
 \item{get_judgments}{Logical value indicating whether to include eviction judgment information in the output}
-
-\item{district}{District code for which to collect data (default is "all", which collects data for all districts)}
 }
 \value{
 A dataframe containing eviction data

@@ -1,3 +1,8 @@
+# ojodb 2.10.0 (2024-08-01)
+
+## New Features
+- Adds `ojo_eviction_cases` as a nice helper for users, and to version control our eviction identification methodology.
+
 # ojodb 2.9.0 (2024-06-10)
 
 ## New Features

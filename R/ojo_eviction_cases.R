@@ -9,7 +9,7 @@
 #' and outcomes in Oklahoma. As that methodology is updated, this function will
 #' be updated to reflect those changes.
 #'
-#' @param district District code for which to collect data (default is "all", which collects data for all districts)
+#' @param districts District codes for which to collect data (default is "all", which collects data for all districts)
 #' @param ... Placeholder for additional arguments
 #' @param date_start Start date for the data collection period
 #' @param date_end End date for the data collection period (default is NULL, which collects the most up-to-date data)
