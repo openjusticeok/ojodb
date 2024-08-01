@@ -1,6 +1,6 @@
 Package: ojodb
 Title: Analyze Data from the Open Justice Oklahoma Database
-Version: 2.9.0
+Version: 2.10.0
 Authors@R: c(
   person(
     given = "Brancen",
@@ -17,6 +17,13 @@ Authors@R: c(
   person(
     given = "Andrew",
     family = "Bell",
+    email = "abell@okpolicy.org",
+    role = "aut"
+  ),
+  person(
+    given = "Anthony",
+    family = "Flores",
+    email = "aflores@okpolicy.org",
     role = "aut"
   ),
   person(
