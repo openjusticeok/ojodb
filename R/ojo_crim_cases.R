@@ -94,14 +94,30 @@ ojo_add_counts <- function(data, vars = NULL, ...) {
     stop("`data` must have the columns `counts` and `open_counts`")
   }
 
-  data <- data |>
-    dplyr::mutate(
-      # The `unnest`s are evaluated in SQL; debug and use `show_query()` to verify
-      count = unnest(.data$counts),
-      open_count = unnest(.data$open_counts)
-    ) |>
-    dplyr::left_join(ojo_tbl("count"),
-      by = c("count" = "id"),
+  new_data <- ojo_query(
+    r"(select c.*, u.open_count
+    from public.case c
+    left join lateral unnest(c.open_counts) as u(open_count) on true)"
+  )
+
+  new_columns <- colnames(new_data)
+
+  join_columns <- subset(columns, columns %in% new_columns)
+
+  new_data <- new_data |>
+    select(
+      join_columns,
+      open_count
+    )
+
+  data <- left_join(
+    data,
+    new_data,
+    by = join_columns
+  ) |>
+    dplyr::left_join(
+      ojo_tbl("count"),
+      by = c("id" = "case_id"),
       suffix = c("", ".count")
     ) |>
     dplyr::mutate(
