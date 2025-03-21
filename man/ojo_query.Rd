@@ -14,7 +14,7 @@ ojo_query(query, ..., .con = NULL)
 \item{.con}{The ojodb connection to use}
 }
 \value{
-data, a tibble containing the results of the query
+data, a lazy tibble containing the results of the query
 }
 \description{
 Query the Open Justice Oklahoma database

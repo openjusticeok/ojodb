@@ -106,7 +106,7 @@ ojo_add_counts <- function(data, vars = NULL, ...) {
 
   new_data <- new_data |>
     select(
-      join_columns,
+      dplyr::all_of(join_columns),
       open_count
     )
 
