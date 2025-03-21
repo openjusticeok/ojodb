@@ -11,9 +11,19 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
 
+# Vignette written by Andrew Bell
 
+```
 
+```{r, echo=FALSE, message=FALSE}
+library(ojodb)
+```
 
 [![A screenshot of the OSCN homepage](images/oscn-screenshot.png)](https://www.oscn.net/v4/)
 
@@ -49,27 +59,11 @@ Just for educational purposes, we'll start by taking a look around database and 
 
 Our database is divided into a few "schemas" -- if our database is a big filing cabinet, we can imagine the schemas as separate drawers. You can see all of them using the `ojo_list_schemas()` function.
 
-
-``` r
+```{r, message=FALSE}
 # Load the library if you haven't already:
 # library(ojodb)
 
 ojo_list_schemas()
-#> # A tibble: 12 × 1
-#>    schema            
-#>    <chr>             
-#>  1 archive           
-#>  2 doc_tracker       
-#>  3 eviction_addresses
-#>  4 eviction_dashboard
-#>  5 iic               
-#>  6 ocdc              
-#>  7 ocdc_new          
-#>  8 odoc              
-#>  9 oscn              
-#> 10 oscn_test         
-#> 11 ppb               
-#> 12 public
 ```
 
 Each schema, generally speaking, relates to one of our data types / topics / policy areas. Each one contains tables that store data related to that policy area. Among others, we have:
@@ -84,32 +78,8 @@ Each schema, generally speaking, relates to one of our data types / topics / pol
 
 The court data that we're interested in right now is stored in the default schema, `public`. Let's open the "drawer" and see what kind of data is inside.
 
-
-``` r
+```{r}
 ojo_list_tables(schema = "public")
-#> # A tibble: 20 × 2
-#>    schema table           
-#>    <chr>  <chr>           
-#>  1 public _sqlx_migrations
-#>  2 public address         
-#>  3 public appellate_count 
-#>  4 public attorney        
-#>  5 public attorney_address
-#>  6 public case            
-#>  7 public case_type       
-#>  8 public citation        
-#>  9 public count           
-#> 10 public document        
-#> 11 public event           
-#> 12 public exception_log   
-#> 13 public issue           
-#> 14 public marital_status  
-#> 15 public migrations      
-#> 16 public minute          
-#> 17 public party           
-#> 18 public person_record   
-#> 19 public process_log     
-#> 20 public representation
 ```
 
 If a schema is a drawer in our filing cabinet, then tables are the folders inside. The `public` schema contains several different tables, all of which relate back to our court data. Here are the most important ones to know:
@@ -122,23 +92,8 @@ If a schema is a drawer in our filing cabinet, then tables are the folders insid
 
 We can see exactly which variables are included in each table using the `ojo_list_vars()` function. For example, let's take a closer look at the main `case` table:
 
-
-``` r
+```{r}
 ojo_list_vars(schema = "public", table = "case")
-#> # A tibble: 21 × 1
-#>    column_name         
-#>    <chr>               
-#>  1 appealed_from       
-#>  2 attorneys           
-#>  3 case_number         
-#>  4 case_type           
-#>  5 citation_information
-#>  6 counts              
-#>  7 created_at          
-#>  8 date_closed         
-#>  9 date_filed          
-#> 10 district            
-#> # ℹ 11 more rows
 ```
 
 We're interested in criminal cases right now, so we'll be pulling data from this table for our example research question.
@@ -177,8 +132,7 @@ Now that we understand the basic layout of the database, we can start pulling th
 
 Keeping our research question in mind, we'll start by pulling all the **misdemeanor criminal cases** filed in **Oklahoma and Tulsa counties** from **2016-2022**. We'll use one of our helper functions, `ojo_crim_cases()`, to do so. It first queries the `case` table, then combines that table of **cases** with each case's **charges** from the `count` table.
 
-
-``` r
+```{r}
 # This function combines the "case" and "count" tables in our database,
 # and returns a cleaned dataframe where each row is one charge in a case.
 charge_data <- ojo_crim_cases(districts = c("OKLAHOMA", "TULSA"),
@@ -203,14 +157,12 @@ Now we've got our data saved as the object `charge_data`, nice! Before we do any
 
 You'll probably notice that our dataframe includes data on the individual charges in each case, stored in `count_as_filed` and `disposition`. As discussed above, there's often going to be more than one charge involved in a given case, which means that we should note that our data is in terms of **charges**, not **cases**. Let's start by seeing how many of each we have here:
 
-
-``` r
+```{r, message=FALSE}
 # How many total charges? ------------------------------------------------------
 # The data are already in terms of charges (1 charge per row), so we can simply
 # count the rows.
 charge_data |>
   nrow()
-#> [1] 169063
 
 # How many total cases? --------------------------------------------------------
 # There's more than one charge per case sometimes, so we need to see how many
@@ -224,7 +176,6 @@ charge_data |>
   mutate(case_number_with_district = paste(district, case_number)) |>
   distinct(case_number_with_district) |>
   nrow()
-#> [1] 62205
 
 # This approach returns the number of unique case_number / district combinations,
 # but not much else.
@@ -241,31 +192,28 @@ case_summary <- charge_data |>
   )
 
 nrow(case_summary)
-#> [1] 62205
 
 # This tells us the number, and also leaves us with a helpful new case_summary
 # dataset that we can use later on, if we want to know more.
 
 ```
 
-It looks like `charge_data` includes 169,063 rows. In other words, our data shows that there were 169,063 total **charges** filed in Oklahoma and Tulsa county misdemeanor cases from 2016-2022.
+It looks like `charge_data` includes `r nrow(charge_data) |> format(big.mark = ",")` rows. In other words, our data shows that there were `r nrow(charge_data) |> format(big.mark = ",")` total **charges** filed in Oklahoma and Tulsa county misdemeanor cases from 2016-2022.
 
-On the other hand, it looks like there are 62,205 unique combinations of `district` and `case_number` (and an equal number of rows in our new summary dataframe, `case_summary`). In other words, our data shows 62,205 total misdemeanor **cases** filed in Oklahoma and Tulsa county from 2016-2022.
+On the other hand, it looks like there are `r charge_data |> dplyr::mutate(district_case_number = paste(district, case_number)) |> distinct(district_case_number) |> nrow() |> format(big.mark = ",")` unique combinations of `district` and `case_number` (and an equal number of rows in our new summary dataframe, `case_summary`). In other words, our data shows `r charge_data |> dplyr::mutate(district_case_number = paste(district, case_number)) |> distinct(district_case_number) |> nrow() |> format(big.mark = ",")` total misdemeanor **cases** filed in Oklahoma and Tulsa county from 2016-2022.
 
 If we wanted to, we could divide those numbers (or use our handy `case_summary` dataframe) to see the average number of charges per case:
 
-
-``` r
+```{r}
 # Total charges / total cases = Avg. number of charges per case
 nrow(charge_data) / nrow(case_summary)
-#> [1] 2.717836
 
 # Different approach, same thing
 mean(case_summary$n_charges)
-#> [1] 2.717836
+
 ```
 
-It seems there's an average of 2.72 counts per misdemeanor case in this dataset. Neat!
+It seems there's an average of `r mean(case_summary$n_charges) |> round(2)` counts per misdemeanor case in this dataset. Neat!
 
 It's very helpful to always be thinking about what the rows in your data represent. Keeping track of what exactly you're looking at (charges, cases, defendants, etc.) can be one of the most challenging parts of these analyses, especially when our client isn't exactly sure which they want to know about.
 
@@ -275,8 +223,7 @@ Though we have data coverage and quality checks already as part of our scrapers 
 
 We should at least check the data **geographically** and **temporally**; in other words, we should make sure there aren't any weird, unexpected differences between counties or between filing years / months. How exactly you do this due diligence is up to you, but one potential approach is to make a quick visualization or two. For example:
 
-
-``` r
+```{r, message=FALSE}
 library(lubridate)
 library(ggplot2)
 
@@ -294,9 +241,8 @@ charge_data |>
   facet_wrap(~district) +
   scale_y_continuous(limits = c(0, NA)) +
   labs(title = "Total charges filed per month in CM cases")
-```
 
-![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png)
+```
 
 This graph looks pretty much as we'd expect it to -- there's not a huge difference between Oklahoma and Tulsa counties (which makes sense, given that they're similar in size), and there aren't any conspicuously missing months, suspiciously massive and sudden spikes / drops, etc. And while there is a lot of variation (particularly in Oklahoma county), there's nothing that looks suspicious enough for me to suspect a data issue.
 
@@ -333,8 +279,7 @@ The answers to these methodology questions will depend on the exact task at hand
 
 In this case, we're going to use a regex string that OJO's founder Ryan Gentzler originally wrote to find any kind of drug-related charge, including things like paraphernalia, trafficking, etc. Here's the string:
 
-
-``` r
+```{r}
 drugs <- "CDS|C\\.D\\.S|DRUG|OXY|HUFF|AMPHET|ZOLOL|ZOLAM|HYDROC|CODEIN|PRECURS|
 |XANAX|MORPH|METERDI|ZEPAM|LORAZ|VALIU|EPHED|SUB|COCA|PSEUDO| CD|CD |PRESCRIP|
 |NARC|METH|C\\.D\\.|HEROIN|ANHYD|AMMONIA|OPIUM|LORTAB|MARIJUANA|CANNABIS|MJ"
@@ -344,8 +289,7 @@ While I was writing this vignette, I found it by searching "drugs" and "marijuan
 
 We'll start by adding a new variable that simply classifies each charge as drug-related or not.
 
-
-``` r
+```{r}
 # We'll save it as a new dataframe, charge_data_cleaned
 charge_data_cleaned <- charge_data |>
   select(-c(id, counts, open_counts)) |> # We don't need every column, so let's drop the extras
@@ -361,36 +305,12 @@ Note the inclusion of `ignore.case = TRUE`! Although most of the data in the `co
 
 Again, let's stop and check to make sure the result looks as we expect it to.
 
-
-``` r
+```{r}
 charge_data_cleaned |>
   select(district, case_number, count_as_filed, drug_charge) |>
   group_by(drug_charge) |>
   slice_sample(n = 10) # We'll just look at a random sample of 10 in each category
-#> # A tibble: 20 × 4
-#> # Groups:   drug_charge [2]
-#>    district case_number  count_as_filed          drug_charge
-#>    <chr>    <chr>        <chr>                   <lgl>      
-#>  1 OKLAHOMA CM-2019-3729 ABDOM, DOMESTIC ASSAUL… FALSE      
-#>  2 OKLAHOMA CM-2016-174  FFP, OBTAINING MONEY O… FALSE      
-#>  3 TULSA    CM-2018-2120 DI5, TRANSPORTING OPEN… FALSE      
-#>  4 TULSA    CM-2016-2639 WE6, TRANSPORTING LOAD… FALSE      
-#>  5 TULSA    CM-2018-5596 OBS, OBSTRUCTING AN OF… FALSE      
-#>  6 TULSA    CM-2022-3716 LMFR, LARCENY OF MERCH… FALSE      
-#>  7 OKLAHOMA CM-2021-3261 OBS, OBSTRUCTING AN OF… FALSE      
-#>  8 OKLAHOMA CM-2018-2871 OWN, MAKING A FALSE DE… FALSE      
-#>  9 OKLAHOMA CM-2022-3214 DI5, TRANSPORTING AN O… FALSE      
-#> 10 OKLAHOMA CM-2017-396  FR5, FAILURE TO CARRY … FALSE      
-#> 11 OKLAHOMA CM-2019-2013 DU9, POSSESSION OF A C… TRUE       
-#> 12 TULSA    CM-2016-5534 DI2DM, DUI DRUGS (MUNI… TRUE       
-#> 13 OKLAHOMA CM-2022-1459 DR3, UNLAWFUL POSSESSI… TRUE       
-#> 14 OKLAHOMA CM-2019-1679 DU9II, POSSESSION OF A… TRUE       
-#> 15 OKLAHOMA CM-2021-1077 DR3, UNLAWFUL POSSESSI… TRUE       
-#> 16 OKLAHOMA CM-2019-1648 DU9, POSSESSION OF A C… TRUE       
-#> 17 TULSA    CM-2018-95   DR3, POSSESSION OF DRU… TRUE       
-#> 18 TULSA    CM-2018-2695 DR3, POSSESSION OF DRU… TRUE       
-#> 19 OKLAHOMA CM-2022-2759 DR3, UNLAWFUL POSSESSI… TRUE       
-#> 20 TULSA    CM-2018-2544 DR3MV, POSSESSION OF D… TRUE
+
 ```
 
 It looks like our regex search was pretty successful! Although it may raise some new questions: does driving under the influence count? Is alcohol technically a "drug" in those cases, or is that different? What about a count description that says "Carrying a firearm while under the influence o drugs or alcohol"?
@@ -401,8 +321,7 @@ There are always going to be more questions like this, and you'll find them when
 
 We have one more wrangling task we need to figure out -- we know what counts as a drug *charge*, but what about a drug *case*? For our purposes, we'll say that a drug case means any case involving at least one drug charge. Therefore, we're going to make another version of our `case_summary` dataframe, this time with a new variable `drug_charges_present`:
 
-
-``` r
+```{r}
 case_summary_cleaned <- charge_data_cleaned |>
   group_by(district, case_number) |>
   # We want to keep the date_filed, so we'll use transmute() this time instead of summarize()
@@ -434,46 +353,19 @@ case_summary_cleaned <- charge_data_cleaned |>
 
 We'll also save a new dataframe that only includes the drug cases. We can double check the result just like before, and see how many drug cases we have total:
 
-
-``` r
+```{r}
 case_summary_cleaned_drugs <- case_summary_cleaned |>
   filter(drug_charges_present)
 
 case_summary_cleaned |>
   group_by(drug_charges_present) |>
   slice_sample(n = 10)
-#> # A tibble: 20 × 7
-#> # Groups:   drug_charges_present [2]
-#>    district case_number  date_filed list_all_charges        
-#>    <chr>    <chr>        <date>     <chr>                   
-#>  1 TULSA    CM-2016-3206 2016-06-23 OBS, OBSTRUCTING AN OFF…
-#>  2 OKLAHOMA CM-2020-1346 2020-05-19 OBS, OBSTRUCTING AN OFF…
-#>  3 TULSA    CM-2021-1960 2021-06-02 TLCIFM, TRESPASS ON RAI…
-#>  4 TULSA    CM-2016-3210 2016-06-23 OBS, OBSTRUCTING AN OFF…
-#>  5 OKLAHOMA CM-2019-2666 2019-08-13 FR5, FAILURE TO CARRY V…
-#>  6 OKLAHOMA CM-2021-3799 2021-12-28 LMFR, LARCENY OF MERCHA…
-#>  7 OKLAHOMA CM-2018-709  2018-02-23 DR1, BEING INTOXICATED …
-#>  8 OKLAHOMA CM-2017-2036 2017-06-15 DISDEC, DISTRUBING THE …
-#>  9 TULSA    CM-2022-1368 2022-04-25 FFP, FALSE PRETENSE UND…
-#> 10 OKLAHOMA CM-2022-1462 2022-05-12 ALC211, SELLING, FURNIS…
-#> 11 OKLAHOMA CM-2019-795  2019-03-06 DI1, DRIVING WHILE UNDE…
-#> 12 OKLAHOMA CM-2021-2385 2021-08-24 RCSP, RECEIVE, POSSESS …
-#> 13 TULSA    CM-2018-1467 2018-04-04 DI2D, DUI DRUGS; DU4II,…
-#> 14 OKLAHOMA CM-2020-454  2020-02-27 DU9II, UNLAWFUL POSSESS…
-#> 15 OKLAHOMA CM-2022-1249 2022-04-19 DU9, UNLAWFUL POSSESSIO…
-#> 16 TULSA    CM-2017-3743 2017-08-17 DU9, POSSESSION OF CONT…
-#> 17 OKLAHOMA CM-2019-275  2019-01-22 DU9IV, POSSESSION OF A …
-#> 18 TULSA    CM-2019-3339 2019-07-24 DU9II, POSSESSION OF CO…
-#> 19 OKLAHOMA CM-2021-616  2021-03-10 DI1, DRIVING UNDER THE …
-#> 20 TULSA    CM-2017-421  2017-01-27 DU4, POSSESSION OF CONT…
-#> # ℹ 3 more variables: n_total_charges <int>,
-#> #   n_drug_charges <int>, drug_charges_present <lgl>
 
 # view(case_summary_cleaned)
 
 # What proportion of these CM cases feature a drug charge?
 nrow(case_summary_cleaned_drugs) / nrow(case_summary_cleaned)
-#> [1] 0.260381
+
 ```
 
 Nice! Now we have some nice, clean datasets to visualize. This stage of analysis is tough sometimes; it involves a lot of subjective decision-making, a lot of making the most of messy data, and a lot of double-checking of work. But even though we're aiming for standardized methods, it's also one of the areas where we get to exercise a little bit of creativity and come up with our own solutions to things, so feel free to blaze your own path a little bit too!
@@ -482,8 +374,7 @@ Nice! Now we have some nice, clean datasets to visualize. This stage of analysis
 
 To finish things off, we're going to make ourselves a nice, pretty graph showing how many of our drug cases were filed each month throughout the timespan of our data. We'll be using the `ojo_theme()` and `ojo_colors()` functions from `{ojodb}` to take care of most of the styling.
 
-
-``` r
+```{r}
 case_summary_cleaned_drugs |>
   mutate(
     month_filed = floor_date(date_filed, "months")
@@ -505,9 +396,8 @@ case_summary_cleaned_drugs |>
     of Oklahoma State Court Network (OSCN.net) data.",
     color = "District"
   )
-```
 
-![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15-1.png)
+```
 
 Looking good! If you're curious about the increase seen around July of 2017, you can read about why that happened [here](https://okpolicy.org/sq-780-already-reshaping-oklahomas-justice-system/).
 
