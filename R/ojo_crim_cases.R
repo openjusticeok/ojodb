@@ -74,7 +74,7 @@ ojo_crim_cases <- function(districts = "all", vars = NULL, case_types = c("CM", 
 #' @param vars Variable names from the `count` table to include
 #' @param ... Placeholder for future arguments
 #'
-#' @return A tibble with counts for each case
+#' @return A lazy tibble with counts for each case
 #' @export
 #'
 #' @examples
@@ -94,50 +94,31 @@ ojo_add_counts <- function(data, vars = NULL, ...) {
     stop("`data` must have the columns `counts` and `open_counts`")
   }
 
-  new_data <- ojo_query(
-    r"(select c.*, u.open_count
-    from public.case c
-    left join lateral unnest(c.open_counts) as u(open_count) on true)"
-  )
-
-  new_columns <- colnames(new_data)
-
-  join_columns <- subset(columns, columns %in% new_columns)
-
-  new_data <- new_data |>
-    select(
-      dplyr::all_of(join_columns),
-      open_count
-    )
-
-  data <- left_join(
-    data,
-    new_data,
-    by = join_columns
-  ) |>
+  counts_data <- data |>
     dplyr::left_join(
       ojo_tbl("count"),
       by = c("id" = "case_id"),
       suffix = c("", ".count")
-    ) |>
-    dplyr::mutate(
-      count_as_filed = dplyr::if_else(
-        is.na(.data$open_count),
-        .data$count_as_filed,
-        .data$open_count
-      )
     )
 
+  open_counts_data <- data |>
+    dplyr::mutate(
+      count_as_filed = dplyr::sql("unnest(open_counts)"),
+      disposition = NULL
+    )
+
+  final_data <- dplyr::union_all(counts_data, open_counts_data)
+
   if (is.null(vars)) {
-    data <- data |>
+    final_data <- final_data |>
       dplyr::select(dplyr::all_of(columns), "count_as_filed", "disposition")
   } else {
     if (all(vars != "all")) {
       selection <- c(dplyr::all_of(columns), dplyr::all_of(vars))
-      data <- data |>
+      final_data <- final_data |>
         dplyr::select(dplyr::all_of(selection))
     }
   }
 
-  return(data)
+  return(final_data)
 }
