@@ -1,4 +1,6 @@
 test_that("ojo_tbl retrieves a table correctly", {
+  skip_on_runiverse()
+
   tbl <- ojo_tbl("case")
 
   # Check that it returns a tibble
@@ -9,6 +11,8 @@ test_that("ojo_tbl retrieves a table correctly", {
 
 # Test error handling for non-existent table
 test_that("ojo_tbl handles non-existent tables correctly", {
+  skip_on_runiverse()
+
   non_existent_table <- "should_not_exist"
   expect_error(
     ojo_tbl(non_existent_table),
