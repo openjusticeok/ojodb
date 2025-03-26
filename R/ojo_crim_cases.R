@@ -79,7 +79,12 @@ ojo_crim_cases <- function(districts = "all", vars = NULL, case_types = c("CM", 
 #'
 #' @examples
 #' \dontrun{
-#' ojo_crim_cases(vars = c("counts", "open_counts")) |>
+#' ojo_tbl("case") |>
+#'   filter(
+#'     year == 2024,
+#'     district == "CLEVELAND",
+#'     case_type == "CF"
+#'   ) |>
 #'   ojo_add_counts()
 #'}
 #'
