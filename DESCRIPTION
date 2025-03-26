@@ -1,6 +1,6 @@
 Package: ojodb
 Title: Analyze Data from the Open Justice Oklahoma Database
-Version: 2.10.0
+Version: 2.11.0
 Authors@R: c(
   person(
     given = "Brancen",
