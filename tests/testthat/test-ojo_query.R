@@ -6,11 +6,16 @@ test_that("ojo_query executes SQL and returns a tibble", {
 
   result <- ojo_query(query)
 
-  # Check that it returns a tibble
-  expect_s3_class(result, "tbl")
+  # Check that it returns a lazy tibble
+  expect_s3_class(result, "tbl_lazy")
 
   # Check the result is not empty and has expected number of rows
-  expect_equal(nrow(result), 10)
+  expect_equal(
+    result |>
+      collect() |>
+      nrow(),
+    10L
+  )
 
   withr::deferred_run(envir = ojo_env())
 })
@@ -24,7 +29,7 @@ test_that("ojo_query handles SQL errors", {
 
   expect_error(
     ojo_query(bad_query),
-    "syntax error at or near \"SELEC\"",
+    "Can't query fields",
     fixed = TRUE
   )
 

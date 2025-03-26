@@ -14,14 +14,19 @@ ojo_add_counts(data, vars = NULL, ...)
 \item{...}{Placeholder for future arguments}
 }
 \value{
-A tibble with counts for each case
+A lazy tibble with counts for each case
 }
 \description{
 Add counts to a tibble of cases
 }
 \examples{
 \dontrun{
-ojo_crim_cases(vars = c("counts", "open_counts")) |>
+ojo_tbl("case") |>
+  filter(
+    year == 2024,
+    district == "CLEVELAND",
+    case_type == "CF"
+  ) |>
   ojo_add_counts()
 }
 

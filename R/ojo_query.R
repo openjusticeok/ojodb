@@ -7,7 +7,7 @@
 #' @param query The query to send to ojodb
 #'
 #' @export ojo_query
-#' @returns data, a tibble containing the results of the query
+#' @returns data, a lazy tibble containing the results of the query
 #' @examples
 #' \dontrun{
 #' ojo_query("SELECT * FROM \"case\" LIMIT 10")
@@ -19,7 +19,9 @@ ojo_query <- function(query, ..., .con = NULL) {
     .con <- ojo_connect(...)
   }
 
-  .con |>
-    pool::dbGetQuery(query) |>
-    dplyr::as_tibble()
+  if (!inherits(.con, "PqConnection")) {
+    rlang::abort("Direct SQL querying is currently only supported for Postgres backends. Make sure your connection is using `ojo_connect(.driver = 'RPostgres')`")
+  }
+
+  dplyr::tbl(.con, sql(query))
 }
