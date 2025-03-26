@@ -1,7 +1,7 @@
 pandoc: 3.1.11
-pkgdown: 2.1.0
+pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   vignette-connecting-to-ojo: vignette-connecting-to-ojo.html
   vignette-pulling-data: vignette-pulling-data.html
-last_built: 2024-08-01T22:59Z
+last_built: 2025-03-26T02:01Z
