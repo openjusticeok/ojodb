@@ -1,4 +1,10 @@
-# ojodb (development version)
+# ojodb 2.11.0 (2025-03-25)
+
+## New Features
+- `ojo_query` now returns a lazy tibble!
+
+## Bug Fixes
+- `ojo_add_counts` (internally used in `ojo_crim_cases`) now uses the `count` table to get counts for OCIS districts.
 
 # ojodb 2.10.0 (2024-08-01)
 
