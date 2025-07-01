@@ -1,6 +1,6 @@
 Package: ojodb
 Title: Analyze Data from the Open Justice Oklahoma Database
-Version: 2.11.0
+Version: 2.11.1
 Authors@R: c(
   person(
     given = "Brancen",
@@ -76,6 +76,8 @@ Suggests:
   xml2
 Depends:
   dplyr
+Remotes:
+  nx10/httpgd
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true

@@ -2,6 +2,7 @@ CMD
 COVID
 DuckDB
 Github
+OCIS
 ODCR
 OJO
 OJO's
@@ -32,6 +33,7 @@ pkgdown
 png
 postgres
 replicable
+repo
 repos
 rlang
 schemas
@@ -44,3 +46,4 @@ gcs
 GCS
 PRs
 tbl
+yeeted
