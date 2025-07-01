@@ -34,7 +34,10 @@ ojo_search_minutes <- function(query, ..., .con = NULL, .silent = F) {
   if (is.null(.con)) {
     .con <- ojo_connect()
   }
-  ojo_connect()
+
+  if (!inherits(.con, "PqConnection")) {
+    rlang::abort("Direct SQL querying is currently only supported for Postgres backends. Make sure your connection is using `ojo_connect(.driver = 'RPostgres')`")
+  }
 
   if(!.silent){
     # CLI
@@ -65,22 +68,12 @@ ojo_search_minutes <- function(query, ..., .con = NULL, .silent = F) {
     .con = .con
   )
 
-  df <- .con |>
-    pool::dbGetQuery(q) |>
-    dplyr::as_tibble()
-
-  n_results <- nrow(df)
+  # Return lazy tibble using dplyr::tbl instead of eager execution
+  result <- dplyr::tbl(.con, dbplyr::sql(q))
 
   if(!.silent){
-    if (n_results > 0) {
-      cli::cli_alert_success(paste0("Success! ",
-                                    format(n_results, big.mark = ","),
-                                    " matching results found."))
-      return(df)
-    } else {
-      cli::cli_alert_warning("No matching results found.")
-    }
-  } else {
-    return(df)
+    cli::cli_alert_success("Query prepared successfully. Use collect() to execute and retrieve results.")
   }
+
+  return(result)
 }
