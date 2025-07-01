@@ -1,3 +1,8 @@
+# ojodb 2.11.1 (2025-07-01)
+
+## Bug Fixes
+- Remote repo added to DESCRIPTION for `{httpgd}` due to it being yeeted from CRAN
+
 # ojodb 2.11.0 (2025-03-25)
 
 ## New Features
