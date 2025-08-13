@@ -10,7 +10,7 @@ test_that("read_config_from_sources works correctly", {
     ssl_mode = "require"
   )
   
-  config <- read_config_from_sources(func_args)
+  config <- read_config_from_sources(func_args, .admin = FALSE)
   
   expect_equal(config$host, "test_host")
   expect_equal(config$port, "5432")
@@ -77,6 +77,69 @@ test_that("validate_ssl_certs returns correct values", {
   
   # Should return FALSE when files don't exist
   expect_false(validate_ssl_certs(ssl_paths, strict = FALSE))
+})
+
+test_that("read_config_from_sources handles admin vs default users correctly", {
+  skip_on_runiverse()
+  
+  # Set up environment variables for testing
+  Sys.setenv(OJO_DEFAULT_USER = "default_user")
+  Sys.setenv(OJO_DEFAULT_PASS = "default_pass")
+  Sys.setenv(OJO_ADMIN_USER = "admin_user")
+  Sys.setenv(OJO_ADMIN_PASS = "admin_pass")
+  
+  # Test default user
+  func_args <- list()
+  config_default <- read_config_from_sources(func_args, .admin = FALSE)
+  expect_equal(config_default$username, "default_user")
+  expect_equal(config_default$password, "default_pass")
+  
+  # Test admin user
+  config_admin <- read_config_from_sources(func_args, .admin = TRUE)
+  expect_equal(config_admin$username, "admin_user")
+  expect_equal(config_admin$password, "admin_pass")
+  
+  # Clean up
+  Sys.unsetenv(c("OJO_DEFAULT_USER", "OJO_DEFAULT_PASS", "OJO_ADMIN_USER", "OJO_ADMIN_PASS"))
+})
+
+test_that("ojo_auth works with admin flag", {
+  skip_on_runiverse()
+  
+  # Create temporary SSL cert files for testing
+  temp_dir <- tempdir()
+  ssl_files <- c("server-ca.pem", "client-cert.pem", "client-key.pem")
+  ssl_paths <- file.path(temp_dir, ssl_files)
+  
+  for (path in ssl_paths) {
+    file.create(path)
+  }
+  
+  # Test with .admin = TRUE and .install = FALSE
+  expect_silent(
+    ojo_auth(
+      host = "localhost",
+      port = "5432", 
+      username = "adminuser",
+      password = "adminpass",
+      ssl_root_cert = ssl_paths[1],
+      ssl_cert = ssl_paths[2],
+      ssl_key = ssl_paths[3],
+      .admin = TRUE,
+      .install = FALSE
+    )
+  )
+  
+  # Verify admin environment variables were set
+  expect_equal(Sys.getenv("OJO_HOST"), "localhost")
+  expect_equal(Sys.getenv("OJO_PORT"), "5432")
+  expect_equal(Sys.getenv("OJO_ADMIN_USER"), "adminuser")
+  expect_equal(Sys.getenv("OJO_ADMIN_PASS"), "adminpass")
+  
+  # Clean up
+  unlink(ssl_paths)
+  Sys.unsetenv(c("OJO_HOST", "OJO_PORT", "OJO_ADMIN_USER", "OJO_ADMIN_PASS", 
+                 "OJO_SSL_ROOT_CERT", "OJO_SSL_CERT", "OJO_SSL_KEY", "OJO_SSL_MODE"))
 })
 
 test_that("ojo_auth handles missing required parameters correctly", {

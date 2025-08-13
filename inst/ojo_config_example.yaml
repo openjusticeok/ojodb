@@ -1,0 +1,22 @@
+# Example configuration file for ojo_auth
+# Save this as ~/.ojo_config.yaml or any location and reference it with config_file parameter
+
+# Database connection settings
+host: "your-host.example.com" 
+port: "5432"
+username: "your_username"
+password: "your_password"
+
+# SSL settings (optional - will use defaults if not specified)
+ssl_mode: "verify-ca"
+ssl_root_cert: "/path/to/server-ca.pem"
+ssl_cert: "/path/to/client-cert.pem" 
+ssl_key: "/path/to/client-key.pem"
+
+# Alternative nested format is also supported:
+# ojo:
+#   host: "your-host.example.com"
+#   port: "5432"
+#   username: "your_username"
+#   password: "your_password"
+#   ssl_mode: "verify-ca"

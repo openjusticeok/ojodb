@@ -5,10 +5,11 @@
 #' @param args Named list of function arguments
 #' @param config_file Path to YAML configuration file
 #' @param config Direct configuration list
+#' @param .admin Logical indicating if admin credentials should be preferred
 #'
 #' @return Named list with resolved configuration values
 #' @keywords internal
-read_config_from_sources <- function(args, config_file = NULL, config = NULL) {
+read_config_from_sources <- function(args, config_file = NULL, config = NULL, .admin = FALSE) {
   # Initialize with default values
   result <- list(
     host = NULL,
@@ -24,10 +25,16 @@ read_config_from_sources <- function(args, config_file = NULL, config = NULL) {
   # 1. Start with system environment variables (lowest precedence)
   if (Sys.getenv("OJO_HOST") != "") result$host <- Sys.getenv("OJO_HOST")
   if (Sys.getenv("OJO_PORT") != "") result$port <- Sys.getenv("OJO_PORT")
-  if (Sys.getenv("OJO_DEFAULT_USER") != "") result$username <- Sys.getenv("OJO_DEFAULT_USER")
-  if (Sys.getenv("OJO_DEFAULT_PASS") != "") result$password <- Sys.getenv("OJO_DEFAULT_PASS")
-  if (Sys.getenv("OJO_ADMIN_USER") != "") result$username <- Sys.getenv("OJO_ADMIN_USER")
-  if (Sys.getenv("OJO_ADMIN_PASS") != "") result$password <- Sys.getenv("OJO_ADMIN_PASS")
+  
+  # Use admin or default user based on .admin flag
+  if (.admin) {
+    if (Sys.getenv("OJO_ADMIN_USER") != "") result$username <- Sys.getenv("OJO_ADMIN_USER")
+    if (Sys.getenv("OJO_ADMIN_PASS") != "") result$password <- Sys.getenv("OJO_ADMIN_PASS")
+  } else {
+    if (Sys.getenv("OJO_DEFAULT_USER") != "") result$username <- Sys.getenv("OJO_DEFAULT_USER")
+    if (Sys.getenv("OJO_DEFAULT_PASS") != "") result$password <- Sys.getenv("OJO_DEFAULT_PASS")
+  }
+  
   if (Sys.getenv("OJO_SSL_ROOT_CERT") != "") result$ssl_root_cert <- Sys.getenv("OJO_SSL_ROOT_CERT")
   if (Sys.getenv("OJO_SSL_CERT") != "") result$ssl_cert <- Sys.getenv("OJO_SSL_CERT")
   if (Sys.getenv("OJO_SSL_KEY") != "") result$ssl_key <- Sys.getenv("OJO_SSL_KEY")
@@ -213,7 +220,7 @@ ojo_auth <- function(host = NULL, port = NULL, username = NULL, password = NULL,
   )
   
   # Read configuration from multiple sources
-  config_values <- read_config_from_sources(func_args, config_file, config)
+  config_values <- read_config_from_sources(func_args, config_file, config, .admin)
   
   # Resolve SSL certificate paths
   home <- Sys.getenv("HOME")

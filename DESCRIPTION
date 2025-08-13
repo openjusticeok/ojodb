@@ -73,7 +73,8 @@ Suggests:
   testthat (>= 3.0.0),
   tidycensus,
   usethis,
-  xml2
+  xml2,
+  yaml
 Depends:
   dplyr
 Remotes:
