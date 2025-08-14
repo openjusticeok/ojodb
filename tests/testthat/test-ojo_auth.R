@@ -1,192 +1,208 @@
-test_that("read_config_from_sources works correctly", {
+test_that("db_config creates basic configuration correctly", {
   skip_on_runiverse()
   
-  # Test with function arguments only
-  func_args <- list(
-    host = "test_host",
+  config <- db_config(
+    host = "localhost",
     port = "5432", 
-    username = "test_user",
-    password = "test_pass",
-    ssl_mode = "require"
+    username = "testuser",
+    password = "testpass"
   )
   
-  config <- read_config_from_sources(func_args, .admin = FALSE)
-  
-  expect_equal(config$host, "test_host")
+  expect_s3_class(config, "db_config")
+  expect_equal(config$host, "localhost")
   expect_equal(config$port, "5432")
-  expect_equal(config$username, "test_user")
-  expect_equal(config$password, "test_pass")
-  expect_equal(config$ssl_mode, "require")
+  expect_equal(config$username, "testuser")
+  expect_equal(config$password, "testpass")
+  expect_equal(config$ssl_mode, "verify-ca")
 })
 
-test_that("resolve_ssl_paths works with defaults", {
+test_that("db_config reads from environment variables", {
   skip_on_runiverse()
   
-  # Mock home directory
-  home_dir <- "/tmp/test_home"
+  # Set up test environment variables
+  Sys.setenv(OJO_HOST = "env_host")
+  Sys.setenv(OJO_PORT = "env_port")
+  Sys.setenv(OJO_DEFAULT_USER = "env_user")
+  Sys.setenv(OJO_DEFAULT_PASS = "env_pass")
   
-  ssl_paths <- resolve_ssl_paths(home = home_dir)
+  config <- db_config()
   
-  expect_equal(ssl_paths$ssl_root_cert, file.path(home_dir, ".postgresql", "ojodb", "server-ca.pem"))
-  expect_equal(ssl_paths$ssl_cert, file.path(home_dir, ".postgresql", "ojodb", "client-cert.pem"))
-  expect_equal(ssl_paths$ssl_key, file.path(home_dir, ".postgresql", "ojodb", "client-key.pem"))
-})
-
-test_that("resolve_ssl_paths works with custom paths", {
-  skip_on_runiverse()
-  
-  custom_root <- "/custom/path/root.pem"
-  custom_cert <- "/custom/path/cert.pem"  
-  custom_key <- "/custom/path/key.pem"
-  
-  ssl_paths <- resolve_ssl_paths(
-    ssl_root_cert = custom_root,
-    ssl_cert = custom_cert,
-    ssl_key = custom_key
-  )
-  
-  expect_equal(ssl_paths$ssl_root_cert, custom_root)
-  expect_equal(ssl_paths$ssl_cert, custom_cert)
-  expect_equal(ssl_paths$ssl_key, custom_key)
-})
-
-test_that("validate_ssl_certs returns correct values", {
-  skip_on_runiverse()
-  
-  # Create temporary test files
-  temp_dir <- tempdir()
-  test_files <- c("root.pem", "cert.pem", "key.pem")
-  test_paths <- file.path(temp_dir, test_files)
-  
-  # Create the test files
-  for (path in test_paths) {
-    file.create(path)
-  }
-  
-  ssl_paths <- list(
-    ssl_root_cert = test_paths[1],
-    ssl_cert = test_paths[2], 
-    ssl_key = test_paths[3]
-  )
-  
-  # Should return TRUE when all files exist
-  expect_true(validate_ssl_certs(ssl_paths, strict = FALSE))
+  expect_equal(config$host, "env_host")
+  expect_equal(config$port, "env_port") 
+  expect_equal(config$username, "env_user")
+  expect_equal(config$password, "env_pass")
   
   # Clean up
-  unlink(test_paths)
-  
-  # Should return FALSE when files don't exist
-  expect_false(validate_ssl_certs(ssl_paths, strict = FALSE))
+  Sys.unsetenv(c("OJO_HOST", "OJO_PORT", "OJO_DEFAULT_USER", "OJO_DEFAULT_PASS"))
 })
 
-test_that("read_config_from_sources handles admin vs default users correctly", {
+test_that("db_config handles admin credentials correctly", {
   skip_on_runiverse()
   
-  # Set up environment variables for testing
-  Sys.setenv(OJO_DEFAULT_USER = "default_user")
-  Sys.setenv(OJO_DEFAULT_PASS = "default_pass")
+  # Set up test environment variables
   Sys.setenv(OJO_ADMIN_USER = "admin_user")
   Sys.setenv(OJO_ADMIN_PASS = "admin_pass")
+  Sys.setenv(OJO_DEFAULT_USER = "default_user")
+  Sys.setenv(OJO_DEFAULT_PASS = "default_pass")
   
-  # Test default user
-  func_args <- list()
-  config_default <- read_config_from_sources(func_args, .admin = FALSE)
-  expect_equal(config_default$username, "default_user")
-  expect_equal(config_default$password, "default_pass")
+  # Test admin mode
+  admin_config <- db_config(.admin = TRUE)
+  expect_equal(admin_config$username, "admin_user")
+  expect_equal(admin_config$password, "admin_pass")
   
-  # Test admin user
-  config_admin <- read_config_from_sources(func_args, .admin = TRUE)
-  expect_equal(config_admin$username, "admin_user")
-  expect_equal(config_admin$password, "admin_pass")
-  
-  # Clean up
-  Sys.unsetenv(c("OJO_DEFAULT_USER", "OJO_DEFAULT_PASS", "OJO_ADMIN_USER", "OJO_ADMIN_PASS"))
-})
-
-test_that("ojo_auth works with admin flag", {
-  skip_on_runiverse()
-  
-  # Create temporary SSL cert files for testing
-  temp_dir <- tempdir()
-  ssl_files <- c("server-ca.pem", "client-cert.pem", "client-key.pem")
-  ssl_paths <- file.path(temp_dir, ssl_files)
-  
-  for (path in ssl_paths) {
-    file.create(path)
-  }
-  
-  # Test with .admin = TRUE and .install = FALSE
-  expect_silent(
-    ojo_auth(
-      host = "localhost",
-      port = "5432", 
-      username = "adminuser",
-      password = "adminpass",
-      ssl_root_cert = ssl_paths[1],
-      ssl_cert = ssl_paths[2],
-      ssl_key = ssl_paths[3],
-      .admin = TRUE,
-      .install = FALSE
-    )
-  )
-  
-  # Verify admin environment variables were set
-  expect_equal(Sys.getenv("OJO_HOST"), "localhost")
-  expect_equal(Sys.getenv("OJO_PORT"), "5432")
-  expect_equal(Sys.getenv("OJO_ADMIN_USER"), "adminuser")
-  expect_equal(Sys.getenv("OJO_ADMIN_PASS"), "adminpass")
+  # Test default mode
+  default_config <- db_config(.admin = FALSE)
+  expect_equal(default_config$username, "default_user") 
+  expect_equal(default_config$password, "default_pass")
   
   # Clean up
-  unlink(ssl_paths)
-  Sys.unsetenv(c("OJO_HOST", "OJO_PORT", "OJO_ADMIN_USER", "OJO_ADMIN_PASS", 
-                 "OJO_SSL_ROOT_CERT", "OJO_SSL_CERT", "OJO_SSL_KEY", "OJO_SSL_MODE"))
+  Sys.unsetenv(c("OJO_ADMIN_USER", "OJO_ADMIN_PASS", "OJO_DEFAULT_USER", "OJO_DEFAULT_PASS"))
 })
 
-test_that("ojo_auth handles missing required parameters correctly", {
+test_that("db_config function arguments override environment", {
   skip_on_runiverse()
   
-  # Should error when required parameters are missing
-  expect_error(
-    ojo_auth(.install = FALSE),
-    "Missing required configuration parameters"
+  # Set up environment variables
+  Sys.setenv(OJO_HOST = "env_host")
+  Sys.setenv(OJO_PORT = "env_port")
+  
+  # Function arguments should override
+  config <- db_config(
+    host = "arg_host",
+    port = "arg_port", 
+    username = "arg_user",
+    password = "arg_pass"
   )
+  
+  expect_equal(config$host, "arg_host")
+  expect_equal(config$port, "arg_port")
+  expect_equal(config$username, "arg_user")
+  expect_equal(config$password, "arg_pass")
+  
+  # Clean up
+  Sys.unsetenv(c("OJO_HOST", "OJO_PORT"))
 })
 
-test_that("ojo_auth works with all parameters provided", {
+test_that("db_config sets default SSL paths", {
   skip_on_runiverse()
   
-  # Create temporary SSL cert files for testing
-  temp_dir <- tempdir()
-  ssl_files <- c("server-ca.pem", "client-cert.pem", "client-key.pem")
-  ssl_paths <- file.path(temp_dir, ssl_files)
+  config <- db_config(host = "test", port = "5432", username = "user", password = "pass")
   
-  for (path in ssl_paths) {
-    file.create(path)
-  }
+  home <- Sys.getenv("HOME")
+  expected_dir <- file.path(home, ".postgresql", "ojodb")
   
-  # Test with .install = FALSE to avoid modifying .Renviron during tests
-  expect_silent(
-    ojo_auth(
-      host = "localhost",
-      port = "5432", 
-      username = "testuser",
-      password = "testpass",
-      ssl_root_cert = ssl_paths[1],
-      ssl_cert = ssl_paths[2],
-      ssl_key = ssl_paths[3],
-      .install = FALSE
-    )
+  expect_equal(config$ssl_root_cert, file.path(expected_dir, "server-ca.pem"))
+  expect_equal(config$ssl_cert, file.path(expected_dir, "client-cert.pem"))
+  expect_equal(config$ssl_key, file.path(expected_dir, "client-key.pem"))
+})
+
+test_that("ojo_auth validates db_config input", {
+  skip_on_runiverse()
+  
+  # Should error with non-db_config object
+  expect_error(ojo_auth(list(host = "test")), "db_config must be a db_config object")
+  
+  # Should error with missing required fields
+  incomplete_config <- structure(list(host = "test"), class = c("db_config", "list"))
+  expect_error(ojo_auth(incomplete_config), "Missing required configuration")
+})
+
+test_that("ojo_auth works with session-only mode", {
+  skip_on_runiverse()
+  
+  config <- db_config(
+    host = "localhost",
+    port = "5432",
+    username = "testuser", 
+    password = "testpass"
   )
+  
+  # Test with .install = FALSE
+  expect_silent(ojo_auth(config, .install = FALSE))
   
   # Verify environment variables were set
   expect_equal(Sys.getenv("OJO_HOST"), "localhost")
   expect_equal(Sys.getenv("OJO_PORT"), "5432")
   expect_equal(Sys.getenv("OJO_DEFAULT_USER"), "testuser")
   expect_equal(Sys.getenv("OJO_DEFAULT_PASS"), "testpass")
-  expect_equal(Sys.getenv("OJO_SSL_ROOT_CERT"), ssl_paths[1])
   
   # Clean up
-  unlink(ssl_paths)
   Sys.unsetenv(c("OJO_HOST", "OJO_PORT", "OJO_DEFAULT_USER", "OJO_DEFAULT_PASS", 
                  "OJO_SSL_ROOT_CERT", "OJO_SSL_CERT", "OJO_SSL_KEY", "OJO_SSL_MODE"))
+})
+
+test_that("ojo_auth detects admin users correctly", {
+  skip_on_runiverse()
+  
+  admin_config <- db_config(
+    host = "localhost",
+    port = "5432", 
+    username = "adminuser",
+    password = "adminpass"
+  )
+  
+  expect_silent(ojo_auth(admin_config, .install = FALSE))
+  
+  # Should set admin environment variables
+  expect_equal(Sys.getenv("OJO_ADMIN_USER"), "adminuser")
+  expect_equal(Sys.getenv("OJO_ADMIN_PASS"), "adminpass")
+  expect_equal(Sys.getenv("OJO_DEFAULT_USER"), "")
+  expect_equal(Sys.getenv("OJO_DEFAULT_PASS"), "")
+  
+  # Clean up
+  Sys.unsetenv(c("OJO_HOST", "OJO_PORT", "OJO_ADMIN_USER", "OJO_ADMIN_PASS", 
+                 "OJO_SSL_ROOT_CERT", "OJO_SSL_CERT", "OJO_SSL_KEY", "OJO_SSL_MODE"))
+})
+
+test_that("db_config reads from YAML file", {
+  skip_on_runiverse()
+  skip_if_not_installed("yaml")
+  
+  # Create temporary YAML file
+  temp_yaml <- tempfile(fileext = ".yaml")
+  yaml_content <- "
+host: yaml_host
+port: yaml_port
+username: yaml_user
+password: yaml_pass
+ssl_mode: require
+"
+  writeLines(yaml_content, temp_yaml)
+  
+  config <- db_config(config_file = temp_yaml)
+  
+  expect_equal(config$host, "yaml_host")
+  expect_equal(config$port, "yaml_port")
+  expect_equal(config$username, "yaml_user")
+  expect_equal(config$password, "yaml_pass")
+  expect_equal(config$ssl_mode, "require")
+  
+  # Clean up
+  unlink(temp_yaml)
+})
+
+test_that("db_config handles nested YAML format", {
+  skip_on_runiverse()
+  skip_if_not_installed("yaml")
+  
+  # Create temporary YAML file with nested structure
+  temp_yaml <- tempfile(fileext = ".yaml")
+  yaml_content <- "
+ojo:
+  host: nested_host
+  port: nested_port
+  username: nested_user
+  password: nested_pass
+"
+  writeLines(yaml_content, temp_yaml)
+  
+  config <- db_config(config_file = temp_yaml)
+  
+  expect_equal(config$host, "nested_host")
+  expect_equal(config$port, "nested_port")
+  expect_equal(config$username, "nested_user")
+  expect_equal(config$password, "nested_pass")
+  
+  # Clean up
+  unlink(temp_yaml)
 })

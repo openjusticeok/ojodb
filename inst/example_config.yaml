@@ -1,0 +1,20 @@
+# Example OJO database configuration file
+# Save as ~/.ojo_config.yaml or any path and use with db_config(config_file = "path")
+
+host: "your-database-host.com"
+port: "5432"
+username: "your_username"
+password: "your_password"
+
+# SSL configuration (optional - defaults will be used if not specified)
+ssl_mode: "verify-ca"
+ssl_root_cert: "/path/to/server-ca.pem"
+ssl_cert: "/path/to/client-cert.pem"
+ssl_key: "/path/to/client-key.pem"
+
+# Alternative nested format also supported:
+# ojo:
+#   host: "your-database-host.com"
+#   port: "5432"
+#   username: "your_username"
+#   password: "your_password"
