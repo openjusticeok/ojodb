@@ -16,9 +16,11 @@ Renviron
 SSL
 Stackoverflow
 Tibble
+YAML
 auth
 casenum
 civ
+config
 crim
 dbConnect
 dbPool
