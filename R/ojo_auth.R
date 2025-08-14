@@ -1,152 +1,340 @@
-#' @title Create configuration for OJO database connection
+#' @title Create database configuration object
 #'
-#' @description Configure credentials for the Open Justice Oklahoma database
+#' @description Creates a configuration object for OJO database connections with flexible configuration sources.
+#'
+#' @param host Database host name
+#' @param port Database port number
+#' @param username Database username
+#' @param password Database password
+#' @param ssl_mode SSL connection mode
+#' @param ssl_root_cert Path to SSL root certificate file
+#' @param ssl_cert Path to SSL client certificate file
+#' @param ssl_key Path to SSL private key file
+#' @param config_file Path to YAML configuration file
 #'
 #' @details
-#' Assists the user in populating a .Renviron file with the necessary environment variables to connect to the Open Justice Oklahoma database.
+#' This function creates a database configuration object by reading from multiple sources
+#' with the following precedence (highest to lowest):
+#' 1. Function arguments
+#' 2. YAML configuration file
+#' 3. Environment variables (.Renviron and system)
 #'
-#' @param host The host name of the database server
-#' @param port The port number of the database server
-#' @param username The username to use to connect to the database
-#' @param password The password to use to connect to the database
-#' @param ... Placeholder for additional arguments
-#' @param .admin A logical value indicating whether to connect to the database as an administrator
-#' @param .overwrite A logical value indicating whether to overwrite the existing .Renviron file
-#' @param .install A logical value indicating whether to install the database connection or use it only for the current session
-#'
+#' @return A db_config object (list) containing database connection parameters
 #' @export
-#' @returns Nothing
 #'
 #' @examples
 #' \dontrun{
-#' ojo_auth()
-#' }
-#' @section Side Effects:
-#' The first time this function is run, it will prompt the user for a username, password, and host name.
-#' It will then store these credentials in the user's .Renviron file.
-#' If the .Renviron file already exists, it will be backed up and the new credentials will be appended to the end of the file.
-#' If the .Renviron file does not exist, it will be created and the credentials will be stored there.
+#' # Create config with explicit parameters
+#' config <- db_config(
+#'   host = "localhost",
+#'   port = "5432",
+#'   username = "user",
+#'   password = "pass",
+#'   ssl_mode = "require"
+#' )
 #'
-ojo_auth <- function(host, port, username, password, ..., .admin = F, .overwrite = T, .install = T) {
-  home <- Sys.getenv("HOME")
-  renv <- fs::path(home, ".Renviron")
-  rootcert <- fs::path(home, ".postgresql/ojodb/server-ca.pem")
-  clientcert <- fs::path(home, ".postgresql/ojodb/client-cert.pem")
-  clientkey <- fs::path(home, ".postgresql/ojodb/client-key.pem")
+#' # For local testing where SSL is not configured
+#' local_config <- db_config(
+#'   host = "localhost",
+#'   port = "5432",
+#'   username = "postgres",
+#'   password = "password",
+#'   ssl_mode = "disable"
+#' )
+#'
+#' # Create config from YAML file
+#' config <- db_config(config_file = "~/.ojo_config.yaml")
+#'
+#' }
+db_config <- function(
+  host = NULL,
+  port = NULL,
+  username = NULL,
+  password = NULL,
+  ssl_mode = NULL,
+  ssl_root_cert = NULL,
+  ssl_cert = NULL,
+  ssl_key = NULL,
+  config_file = NULL
+) {
+  # Initialize default configuration
+  config <- list(
+    host = NULL,
+    port = NULL,
+    username = NULL,
+    password = NULL,
+    ssl_mode = NULL,
+    ssl_root_cert = NULL,
+    ssl_cert = NULL,
+    ssl_key = NULL
+  )
 
-  # Check if SSL certs are in correct location; if not, throw error
-  if (!fs::file_exists(rootcert) |
-     !fs::file_exists(clientcert) |
-     !fs::file_exists(clientkey)) {
-    rlang::abort(
-      paste0(
-        "It looks like your SSL certs are not in the correct location (",
-        fs::path(home, ".postgresql/ojodb/..."),
-        ").\nPlease check that you have all three (server-ca.pem, client-cert.pem, and client-key.pem)."
-      )
+  # Read from environment variables first
+  if (Sys.getenv("OJO_HOST") != "") {
+    config$host <- Sys.getenv("OJO_HOST")
+  }
+
+  if (Sys.getenv("OJO_PORT") != "") {
+    config$port <- Sys.getenv("OJO_PORT")
+  }
+
+  if (Sys.getenv("OJO_USER") != "") {
+    config$username <- Sys.getenv("OJO_USER")
+  }
+
+  if (Sys.getenv("OJO_PASS") != "") {
+    config$password <- Sys.getenv("OJO_PASS")
+  }
+
+  if (Sys.getenv("OJO_SSL_MODE") != "") {
+    config$ssl_mode <- Sys.getenv("OJO_SSL_MODE")
+  }
+
+  if (Sys.getenv("OJO_SSL_ROOT_CERT") != "") {
+    config$ssl_root_cert <- Sys.getenv("OJO_SSL_ROOT_CERT")
+  }
+
+  if (Sys.getenv("OJO_SSL_CERT") != "") {
+    config$ssl_cert <- Sys.getenv("OJO_SSL_CERT")
+  }
+
+  if (Sys.getenv("OJO_SSL_KEY") != "") {
+    config$ssl_key <- Sys.getenv("OJO_SSL_KEY")
+  }
+
+  # Override with config file if provided
+  if (!is.null(config_file) && file.exists(config_file)) {
+    file_config <- yaml::read_yaml(config_file)
+    # Support both flat and nested config structures
+    if (!is.null(file_config$ojodb)) {
+      file_config <- file_config$ojodb
+    }
+
+    for (name in names(config)) {
+      if (!is.null(file_config[[name]])) {
+        config[[name]] <- file_config[[name]]
+      }
+    }
+  }
+
+  # Override with function arguments (highest precedence)
+  if (!is.null(host)) {
+    config$host <- host
+  }
+
+  if (!is.null(port)) {
+    config$port <- port
+  }
+
+  if (!is.null(username)) {
+    config$username <- username
+  }
+
+  if (!is.null(password)) {
+    config$password <- password
+  }
+
+  if (!is.null(ssl_mode)) {
+    config$ssl_mode <- ssl_mode
+  }
+
+  if (!is.null(ssl_root_cert)) {
+    config$ssl_root_cert <- ssl_root_cert
+  }
+
+  if (!is.null(ssl_cert)) {
+    config$ssl_cert <- ssl_cert
+  }
+
+  if (!is.null(ssl_key)) {
+    config$ssl_key <- ssl_key
+  }
+
+  # Add class for method dispatch
+  class(config) <- c("db_config", "list")
+  config
+}
+
+#' @title Configure OJO database authentication
+#'
+#' @description Sets up authentication for the Open Justice Oklahoma database using a db_config object.
+#'
+#' @param ... Placeholder for future arguments
+#' @param db_config A db_config object created by `db_config()`
+#' @param .install Logical indicating whether to save configuration to .Renviron (TRUE) or use for current session only (FALSE)
+#' @param .overwrite Logical indicating whether to overwrite existing .Renviron entries
+#'
+#' @details
+#' This function takes a db_config object and sets up the database authentication.
+#' When .install = FALSE (default), credentials are only set for the current R session.
+#' When .install = TRUE, credentials are saved to .Renviron for persistent use.
+#'
+#' @return Invisible NULL
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # Create config and authenticate for a remote server
+#' config <- db_config(
+#'   host = "remote.db.com",
+#'   port = "5432",
+#'   username = "user",
+#'   password = "pass",
+#'   ssl_mode = "require"
+#' )
+#' ojo_auth(db_config = config)
+#'
+#' # One-liner with explicit parameters
+#' ojo_auth(db_config = db_config(
+#'   host = "remote.db.com",
+#'   port = "5432",
+#'   username = "user",
+#'   password = "pass",
+#'   ssl_mode = "require"
+#' ))
+#'
+#' # From config file
+#' ojo_auth(db_config = db_config(config_file = "~/.ojo_config.yaml"))
+#'
+#' # Permanent configuration
+#' ojo_auth(
+#'   db_config = db_config(
+#'     host = "remote.db.com",
+#'     port = "5432",
+#'     username = "user",
+#'     password = "pass",
+#'     ssl_mode = "require"
+#'   ),
+#'   .install = TRUE
+#' )
+#' }
+#'
+ojo_auth <- function(..., db_config, .install = FALSE, .overwrite = FALSE) {
+  # Validate input
+  if (!inherits(db_config, "db_config")) {
+    stop(
+      "db_config must be a db_config object created by db_config()",
+      call. = FALSE
     )
   }
 
-  if (.install) {
+  # Check required parameters
+  required <- c("host", "port", "username", "password", "ssl_mode")
+  missing <- required[sapply(required, function(x) is.null(db_config[[x]]))]
+  if (length(missing) > 0) {
+    stop(
+      "Missing required configuration: ",
+      paste(missing, collapse = ", "),
+      call. = FALSE
+    )
+  }
 
-    # Check if .Renviron exists. If it does, make a backup...
-    if (fs::file_exists(renv)) {
-      # Backup original .Renviron before doing anything else here.
-      fs::file_copy(renv, fs::path(home, ".Renviron_backup"),
-                    overwrite = TRUE)
-    }
-
-    # ...if not, create a fresh one.
-    if (!fs::file_exists(renv)) {
-      fs::file_create(renv)
-    # Filling out the .Renviron file
-    } else {
-
-      # If we want to overwrite the old config:
-      if (isTRUE(.overwrite)) {
-        cli::cli_alert_info("Your original .Renviron will be backed up and stored in your R HOME directory if needed.")
-
-        # Saving the original .Renviron file
-        oldenv <- utils::read.table(renv, stringsAsFactors = FALSE)
-        # Creating the new .Renviron file (not filled out yet, all OJO variables removed)
-        newenv <- oldenv |>
-          dplyr::as_tibble() |>
-          dplyr::filter(!stringi::stri_detect_regex(.data$V1, "(OJO_HOST)|(OJO_PORT)|(OJO_DRIVER)|(OJO_SSL)"))
-        if (.admin == T) {
-          newenv <- newenv |>
-            dplyr::filter(!stringi::stri_detect_regex(.data$V1, "(OJO_ADMIN_USER)|(OJO_ADMIN_PASS)")) |>
-            as.data.frame()
-        } else {
-          newenv <- newenv |>
-            dplyr::filter(!stringi::stri_detect_regex(.data$V1, "(OJO_DEFAULT_USER)|(OJO_DEFAULT_PASS)")) |>
-            as.data.frame()
-        }
-
-        # Save new .Renviron file with OJO variables removed
-        utils::write.table(newenv, renv,
-          quote = FALSE, sep = "\n",
-          col.names = FALSE, row.names = FALSE
+  # Validate SSL certificates exist if using verify modes
+  if (!is.null(db_config$ssl_mode) && db_config$ssl_mode %in% c("verify-ca", "verify-full")) {
+    missing_certs <- c()
+    ssl_files <- c("ssl_root_cert", "ssl_cert", "ssl_key")
+    for (cert_type in ssl_files) {
+      cert_path <- db_config[[cert_type]]
+      if (!is.null(cert_path) && !file.exists(cert_path)) {
+        missing_certs <- c(
+          missing_certs,
+          paste0(cert_type, " (", cert_path, ")")
         )
-
-      # If a config already exists, and we don't want to overwrite it:
-      } else {
-        tv <- readLines(renv)
-        if (.admin) {
-          if (any(grepl("OJO_ADMIN_USER", tv))) {
-            stop("An OJO_ADMIN_USER already exists. You can overwrite it with the argument `.overwrite = TRUE`", call. = F)
-          }
-        } else {
-          if (any(grepl("OJO_DEFAULT_USER", tv))) {
-            stop("An OJO_DEFAULT_USER already exists. You can overwrite it with the argument `.overwrite = TRUE`", call. = FALSE)
-          }
-        }
       }
     }
 
-    # Fill out .Renviron with new arguments
-    hostconcat <- paste0("OJO_HOST='", host, "'")
-    portconcat <- paste0("OJO_PORT='", port, "'")
-    if (.admin) {
-      userconcat <- paste0("OJO_ADMIN_USER='", username, "'")
-      passconcat <- paste0("OJO_ADMIN_PASS='", password, "'")
-    } else {
-      userconcat <- paste0("OJO_DEFAULT_USER='", username, "'")
-      passconcat <- paste0("OJO_DEFAULT_PASS='", password, "'")
+    if (length(missing_certs) > 0) {
+      warning(
+        "SSL certificate files not found:\n",
+        paste(missing_certs, collapse = "\n"),
+        "\nConnection may fail. Consider using ssl_mode = 'require' to try a secure connection without certs or, more likely, provide valid certificate paths.",
+        call. = FALSE
+      )
     }
-    sslmodeconcat <- paste0("OJO_SSL_MODE='verify-ca'")
-    rootcertconcat <- paste0("OJO_SSL_ROOT_CERT='", rootcert, "'")
-    clientcertconcat <- paste0("OJO_SSL_CERT='", clientcert, "'")
-    clientkeyconcat <- paste0("OJO_SSL_KEY='", clientkey, "'")
-    write(hostconcat, renv, sep = "\n", append = TRUE)
-    write(portconcat, renv, sep = "\n", append = TRUE)
-    write(userconcat, renv, sep = "\n", append = TRUE)
-    write(passconcat, renv, sep = "\n", append = TRUE)
-    write(sslmodeconcat, renv, sep = "\n", append = TRUE)
-    write(rootcertconcat, renv, sep = "\n", append = TRUE)
-    write(clientcertconcat, renv, sep = "\n", append = TRUE)
-    write(clientkeyconcat, renv, sep = "\n", append = TRUE)
-    cli::cli_alert_success('Your configuration has been stored in your .Renviron.
-                           To use now, restart R or run `readRenviron("~/.Renviron")`')
-    invisible()
-
-  # If .install = FALSE...
-  } else {
-    cli::cli_alert_info("To install your configuration for use in future sessions, run this function with `.install = TRUE`.")
-
-    # ...set up local environment, but don't save to .Renviron
-    Sys.setenv(OJO_HOST = host)
-    Sys.setenv(OJO_PORT = port)
-    if (.admin == T) {
-      Sys.setenv(OJO_ADMIN_USER = username)
-      Sys.setenv(OJO_ADMIN_PASS = password)
-    } else {
-      Sys.setenv(OJO_DEFAULT_USER = username)
-      Sys.setenv(OJO_DEFAULT_PASS = password)
-    }
-    Sys.setenv(OJO_SSL_MODE = "verify-ca")
-    Sys.setenv(OJO_SSL_ROOT_CERT = rootcert)
-    Sys.setenv(OJO_SSL_CERT = clientcert)
-    Sys.setenv(OJO_SSL_KEY = clientkey)
   }
+
+  if (.install) {
+    home <- path.expand("~")
+    renv <- file.path(home, ".Renviron")
+
+    # Backup existing .Renviron
+    if (file.exists(renv)) {
+      file.copy(renv, file.path(home, ".Renviron_backup"), overwrite = TRUE)
+    } else {
+      file.create(renv)
+    }
+
+    # Clean existing OJO variables if overwriting
+    if (.overwrite && file.exists(renv)) {
+      lines <- readLines(renv)
+      # Remove all OJO-related lines
+      clean_lines <- lines[!grepl("^OJO_", lines)]
+
+      # Write new configuration
+      new_vars <- c(
+        clean_lines,
+        paste0("OJO_HOST='", db_config$host, "'"),
+        paste0("OJO_PORT='", db_config$port, "'"),
+        paste0("OJO_USER='", db_config$username, "'"),
+        paste0("OJO_PASS='", db_config$password, "'"),
+        paste0("OJO_SSL_MODE='", db_config$ssl_mode, "'"),
+        paste0("OJO_SSL_ROOT_CERT='", db_config$ssl_root_cert, "'"),
+        paste0("OJO_SSL_CERT='", db_config$ssl_cert, "'"),
+        paste0("OJO_SSL_KEY='", db_config$ssl_key, "'")
+      )
+      writeLines(new_vars, renv)
+    } else if (!.overwrite && file.exists(renv)) {
+      # Check for conflicts
+      lines <- readLines(renv)
+      if (any(grepl("OJO_USER", lines))) {
+        stop(
+          "Configuration already exists. Use .overwrite = TRUE to replace it.",
+          call. = FALSE
+        )
+      }
+
+      # Append new configuration
+      new_vars <- c(
+        paste0("OJO_HOST='", db_config$host, "'"),
+        paste0("OJO_PORT='", db_config$port, "'"),
+        paste0("OJO_USER='", db_config$username, "'"),
+        paste0("OJO_PASS='", db_config$password, "'"),
+        paste0("OJO_SSL_MODE='", db_config$ssl_mode, "'"),
+        paste0("OJO_SSL_ROOT_CERT='", db_config$ssl_root_cert, "'"),
+        paste0("OJO_SSL_CERT='", db_config$ssl_cert, "'"),
+        paste0("OJO_SSL_KEY='", db_config$ssl_key, "'")
+      )
+      cat(new_vars, file = renv, sep = "\n", append = TRUE)
+    } else {
+      # New .Renviron file
+      new_vars <- c(
+        paste0("OJO_HOST='", db_config$host, "'"),
+        paste0("OJO_PORT='", db_config$port, "'"),
+        paste0("OJO_USER='", db_config$username, "'"),
+        paste0("OJO_PASS='", db_config$password, "'"),
+        paste0("OJO_SSL_MODE='", db_config$ssl_mode, "'"),
+        paste0("OJO_SSL_ROOT_CERT='", db_config$ssl_root_cert, "'"),
+        paste0("OJO_SSL_CERT='", db_config$ssl_cert, "'"),
+        paste0("OJO_SSL_KEY='", db_config$ssl_key, "'")
+      )
+      writeLines(new_vars, renv)
+    }
+    cat("Configuration saved to .Renviron\n")
+    cat("To use now, restart R or run readRenviron('~/.Renviron')\n")
+  } else {
+    # Set environment variables for current session only
+    Sys.setenv(OJO_HOST = db_config$host)
+    Sys.setenv(OJO_PORT = db_config$port)
+    Sys.setenv(OJO_USER = db_config$username)
+    Sys.setenv(OJO_PASS = db_config$password)
+    Sys.setenv(OJO_SSL_MODE = db_config$ssl_mode)
+    Sys.setenv(OJO_SSL_ROOT_CERT = db_config$ssl_root_cert)
+    Sys.setenv(OJO_SSL_CERT = db_config$ssl_cert)
+    Sys.setenv(OJO_SSL_KEY = db_config$ssl_key)
+
+    cat("Configuration set for current session only\n")
+    cat("To persist configuration, run with .install = TRUE\n")
+  }
+
   invisible()
 }
