@@ -6,10 +6,10 @@
 #' @param port Database port number
 #' @param username Database username
 #' @param password Database password
+#' @param ssl_mode SSL connection mode
 #' @param ssl_root_cert Path to SSL root certificate file
 #' @param ssl_cert Path to SSL client certificate file
 #' @param ssl_key Path to SSL private key file
-#' @param ssl_mode SSL connection mode
 #' @param config_file Path to YAML configuration file
 #'
 #' @details
@@ -51,10 +51,10 @@ db_config <- function(
   port = NULL,
   username = NULL,
   password = NULL,
+  ssl_mode = NULL,
   ssl_root_cert = NULL,
   ssl_cert = NULL,
   ssl_key = NULL,
-  ssl_mode = NULL,
   config_file = NULL
 ) {
   # Initialize default configuration
@@ -63,10 +63,10 @@ db_config <- function(
     port = NULL,
     username = NULL,
     password = NULL,
+    ssl_mode = NULL,
     ssl_root_cert = NULL,
     ssl_cert = NULL,
-    ssl_key = NULL,
-    ssl_mode = NULL
+    ssl_key = NULL
   )
 
   # Read from environment variables first
@@ -86,6 +86,10 @@ db_config <- function(
     config$password <- Sys.getenv("OJO_PASS")
   }
 
+  if (Sys.getenv("OJO_SSL_MODE") != "") {
+    config$ssl_mode <- Sys.getenv("OJO_SSL_MODE")
+  }
+
   if (Sys.getenv("OJO_SSL_ROOT_CERT") != "") {
     config$ssl_root_cert <- Sys.getenv("OJO_SSL_ROOT_CERT")
   }
@@ -96,10 +100,6 @@ db_config <- function(
 
   if (Sys.getenv("OJO_SSL_KEY") != "") {
     config$ssl_key <- Sys.getenv("OJO_SSL_KEY")
-  }
-
-  if (Sys.getenv("OJO_SSL_MODE") != "") {
-    config$ssl_mode <- Sys.getenv("OJO_SSL_MODE")
   }
 
   # Override with config file if provided
@@ -134,6 +134,10 @@ db_config <- function(
     config$password <- password
   }
 
+  if (!is.null(ssl_mode)) {
+    config$ssl_mode <- ssl_mode
+  }
+
   if (!is.null(ssl_root_cert)) {
     config$ssl_root_cert <- ssl_root_cert
   }
@@ -144,10 +148,6 @@ db_config <- function(
 
   if (!is.null(ssl_key)) {
     config$ssl_key <- ssl_key
-  }
-
-  if (!is.null(ssl_mode)) {
-    config$ssl_mode <- ssl_mode
   }
 
   # Add class for method dispatch

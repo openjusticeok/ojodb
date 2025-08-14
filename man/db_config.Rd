@@ -9,10 +9,10 @@ db_config(
   port = NULL,
   username = NULL,
   password = NULL,
+  ssl_mode = NULL,
   ssl_root_cert = NULL,
   ssl_cert = NULL,
   ssl_key = NULL,
-  ssl_mode = NULL,
   config_file = NULL
 )
 }
@@ -25,13 +25,13 @@ db_config(
 
 \item{password}{Database password}
 
+\item{ssl_mode}{SSL connection mode}
+
 \item{ssl_root_cert}{Path to SSL root certificate file}
 
 \item{ssl_cert}{Path to SSL client certificate file}
 
 \item{ssl_key}{Path to SSL private key file}
-
-\item{ssl_mode}{SSL connection mode}
 
 \item{config_file}{Path to YAML configuration file}
 }
