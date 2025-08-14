@@ -59,10 +59,17 @@ ojo_connect <- function(config = NULL, ..., .admin = FALSE, .driver = "RPostgres
     if (!inherits(config, "db_config")) {
       rlang::abort("config must be a db_config object created with db_config()")
     }
-    .driver <- config$backend
-    .admin <- config$admin
-    .pool <- config$pool
-    # Merge extra args from config with ... args
+    # Config provides defaults, explicit parameters override
+    if (.driver == "RPostgres" && config$backend != "RPostgres") {
+      .driver <- config$backend
+    }
+    if (!.admin && config$admin) {
+      .admin <- config$admin
+    }
+    if (!.pool && config$pool) {
+      .pool <- config$pool
+    }
+    # Merge extra args from config with ... args (... takes precedence)
     extra_args <- config$extra_args
   } else {
     extra_args <- list()
