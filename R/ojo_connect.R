@@ -1,139 +1,200 @@
-#' @title OJO Connect
+#' @title Connect to an OJO Database Backend
 #'
-#' @description Connect to the Open Justice Oklahoma database
+#' @description Establishes a single connection to a database, such as the Open
+#'   Justice Oklahoma Postgres database or a local DuckDB instance.
 #'
-#' @details
-#' Opens a connection to the Open Justice Oklahoma database using credentials stored in the .Renviron file.
-#' If no credentials exist, prompts for user, password, and host name and provides instructions to store them for future sessions.
+#' @details This function serves as the primary way to create individual database
+#'   connection objects. It is designed to be side-effect-free, returning the
+#'   connection object directly to the user for manual management. For creating
+#'   a managed pool of connections suitable for applications, use `ojo_pool()`.
 #'
-#' @param .admin A logical value indicating whether to connect to the database as an administrator.
-#' @param ... Placeholder.
-#' @param .driver The driver to use for the connection. Default is "RPostgres". "duckdb" is also supported.
-#' @param .global Deprecated. A connection will always be created in the specified environment, or in the package environment by default.
-#' @param .env The environment in which you want the connection stored.
-#' @param .pool A logical value indicating whether to use a connection pool from the `{pool}` package, or not.
+#' @param db_config A `db_config` object created by `db_config()`. If `NULL` (the
+#'   default), a default configuration is created by calling `db_config()` with
+#'   no arguments, which will pull from environment variables.
+#' @param ... Placeholder for future arguments.
+#'
+#' @return A database connection object (e.g., a `PqConnection` or `duckdb_connection`).
 #'
 #' @export
-#' @returns A database connection object created with `RPostgres::Postgres()` and either `pool::dbPool` or `DBI::dbConnect`
 #'
 #' @examples
 #' \dontrun{
-#' ojo_connect()
+#' # --- Manual Connection Management ---
+#'
+#' # 1. Create a configuration
+#' my_config <- db_config(.admin = TRUE)
+#'
+#' # 2. Create a connection object
+#' con <- ojo_connect(db_config = my_config)
+#'
+#' # 3. Use the connection with dplyr or DBI
+#' dplyr::tbl(con, "case")
+#' DBI::dbListTables(con)
+#'
+#' # 4. Close the connection when finished
+#' DBI::dbDisconnect(con)
 #' }
-#' @section Side Effects:
-#' A connection object (named `ojo_con` or `ojo_pool` depending on the `.pool` argument) is created in the package environment.
-#'
-#' @seealso ojo_auth()
-#'
-ojo_connect <- function(..., .admin = FALSE, .driver = "RPostgres", .global = lifecycle::deprecated(), .env = ojo_env(), .pool = FALSE) {
-
-  if (lifecycle::is_present(.global)) {
-    lifecycle::deprecate_warn(
-      when = "2.8.0",
-      what = "ojo_connect(.global)"
-    )
+#' @seealso [db_config()] for creating configuration objects, and [ojo_pool()]
+#'   for creating a connection pool.
+ojo_connect <- function(db_config = NULL, ...) {
+  # If no config is provided, create a default one.
+  if (is.null(db_config)) {
+    db_config <- db_config()
   }
 
-  user_type <- if (.admin) "ADMIN" else "DEFAULT"
+  # Ensure the config object is valid
+  if (!inherits(db_config, "db_config")) {
+    rlang::abort("`db_config` must be a `db_config` object created by `db_config()`.")
+  }
 
-  if (Sys.getenv("OJO_HOST") == "" && .driver == "RPostgres") {
+  if (is.null(db_config$driver) || db_config$driver == "") {
     rlang::abort(
-      "No {tolower(user_type)} configuration for the OJO database was found. Please create one now using `ojo_auth`, or manually, by adding the necessary environment variables with `usethis::edit_r_environ`.",
-      use_cli_format = TRUE
+      c("Database configuration is missing required parameters.",
+        "i" = glue::glue("Missing: {paste(missing_params, collapse = ', ')}"),
+        "*" = "Please set them with `ojo_auth()` or in your `db_config()` call."
+      )
     )
   }
 
-  connection_type <- if (.pool) "ojo_pool" else "ojo_con"
-  connection_key <- paste0(connection_type, "_", .driver)
-
-  # Check if a valid connection object already exists in the environment
-  existing_conn <- get_connection_object(.env, connection_key)
-  if (!is.null(existing_conn) && DBI::dbIsValid(existing_conn)) {
-    return(existing_conn)
-  }
-
-  # Set the driver and connection arguments
-  conn_args <- switch(
-    .driver,
-    "RPostgres" = list(
-      drv = RPostgres::Postgres(),
-      dbname = "ojodb",
-      host = Sys.getenv("OJO_HOST"),
-      port = Sys.getenv("OJO_PORT"),
-      user = Sys.getenv(glue::glue("OJO_{user_type}_USER")),
-      password = Sys.getenv(glue::glue("OJO_{user_type}_PASS")),
-      sslmode = Sys.getenv("OJO_SSL_MODE"),
-      sslrootcert = Sys.getenv("OJO_SSL_ROOT_CERT"),
-      sslcert = Sys.getenv("OJO_SSL_CERT"),
-      sslkey = Sys.getenv("OJO_SSL_KEY"),
-      bigint = "integer",
-      check_interrupts = TRUE,
-      ...
-    ),
-    "duckdb" = list(
-      drv = duckdb::duckdb(),
-      ...
-    ),
-    rlang::abort("Unsupported driver: {.driver}")
+  # Dispatch to the appropriate backend-specific connection function
+  connection_function <- switch(
+    db_config$driver,
+    "RPostgres" = .connect_postgres,
+    "duckdb" = .connect_duckdb,
+    "RSQLite" = .connect_sqlite,
+    rlang::abort(glue::glue("The driver '{db_config$driver}' is not supported."))
   )
 
-  conn_fn <- switch(
-    connection_type,
-    ojo_pool = pool::dbPool,
-    ojo_con = DBI::dbConnect
-  )
-
-  new_conn <- rlang::exec(conn_fn, !!!conn_args)
-  assign(connection_key, new_conn, envir = .env)
-
-  # Make sure duckdb instance has needed features
-  if (.driver == "duckdb") {
-    DBI::dbExecute(
-      new_conn,
-      stringr::str_glue("INSTALL httpfs; LOAD httpfs; SET s3_endpoint='storage.googleapis.com';")
-    )
-  }
-
-  withr::defer({
-    if (exists(connection_key, envir = .env)) {
-      connection_object <- get(connection_key, envir = .env, inherits = FALSE)
-      if (.pool) {
-        pool::poolClose(connection_object)
-      } else {
-        DBI::dbDisconnect(connection_object)
-      }
-      rm(list = connection_key, envir = .env)
-    }
-  }, envir = .env)
-
-  return(new_conn)
+  # Call the selected connection function
+  connection_function(db_config, ...)
 }
 
-#' @title Get Connection Object
-#'
-#' @description
-#' Gets the connection object from the environment specified by the `.env` argument.
-#'
-#' @param env The environment to search for the connection object.
-#'
+#' Internal function to connect to Postgres
 #' @keywords internal
-#'
-get_connection_object <- function(env, key) {
-  connection_object_exists <- exists(
-    key,
-    envir = env,
-    inherits = FALSE
-  )
-
-  if (!connection_object_exists) {
-    return(NULL)
+.connect_postgres <- function(db_config, ...) {
+  # Check for required parameters
+  required <- c("database", "host", "port", "username", "password", "ssl_mode")
+  missing_params <- setdiff(required, names(db_config))
+  if (length(missing_params) > 0) {
+    rlang::abort(
+      c("Postgres connection is missing required configuration parameters.",
+        "i" = glue::glue("Missing: {paste(missing_params, collapse = ', ')}"),
+        "*" = "Please set them with `ojo_auth()` or in your `db_config()` call."
+      )
+    )
   }
 
-  connection_object <- get(
-    key,
-    envir = env,
-    inherits = FALSE
+  # Assemble the arguments for the connection function
+  conn_args <- list(
+    drv = RPostgres::Postgres(),
+    dbname = db_config$database,
+    host = db_config$host,
+    port = as.integer(db_config$port),
+    user = db_config$username,
+    password = db_config$password,
+    sslmode = db_config$ssl_mode,
+    sslrootcert = db_config$ssl_root_cert,
+    sslcert = db_config$ssl_cert,
+    sslkey = db_config$ssl_key,
+    bigint = "integer",
+    check_interrupts = TRUE
   )
 
-  return(connection_object)
+  # Create the connection
+  rlang::exec(DBI::dbConnect, !!!conn_args)
+}
+
+#' Internal function to connect to DuckDB
+#' @keywords internal
+.connect_duckdb <- function(db_config, ...) {
+  # Establish the connection (in-memory by default)
+  con <- DBI::dbConnect(duckdb::duckdb(), dbdir = ":memory:")
+
+  # Install and load necessary extensions for accessing remote data
+  tryCatch({
+    DBI::dbExecute(con, "INSTALL httpfs; LOAD httpfs;")
+    DBI::dbExecute(con, "SET s3_endpoint='storage.googleapis.com';")
+  }, error = function(e) {
+    rlang::warn(c("Failed to install or configure DuckDB extensions.",
+                  "i" = "Accessing remote data (e.g., from GCS) may not work.",
+                  "x" = e$message))
+  })
+
+  con
+}
+
+#' Internal function to connect to SQLite
+#' @keywords internal
+.connect_sqlite <- function(db_config, ...) {
+  # For SQLite, the 'host' is treated as the file path.
+  if (is.null(db_config$host) || db_config$host == "") {
+    rlang::abort(
+      c("SQLite config is missing the database file path.",
+        "i" = "Please provide the path in the `host` argument of `db_config()`.")
+    )
+  }
+
+  DBI::dbConnect(RSQLite::SQLite(), dbname = db_config$host)
+}
+
+#' @title Get or create the default OJO database connection
+#'
+#' @description This internal function manages a single, default connection object
+#'   stored in the package's private environment (`.ojo_env`). It is the
+#'   cornerstone of the interactive user experience, ensuring all default
+#'   database operations for a given backend share the same connection.
+#'
+#' @details
+#' This function accepts arguments (...) that are passed to `ojo_connect()`,
+#' allowing it to manage distinct default connections for different backends.
+#'
+#' The first time this function is called with a unique configuration, it will:
+#' 1. Call `ojo_connect()` with the provided arguments.
+#' 2. Store the connection in the `.ojo_env` environment under a unique key.
+#' 3. Use `withr::defer()` to register a cleanup handler for that connection.
+#'
+#' @param ... Arguments to pass to `ojo_connect()`, primarily a `db_config` object
+#'   to specify the backend (e.g., `db_config = db_config(.driver = "duckdb")`).
+#'
+#' @return A valid database connection object.
+#' @keywords internal
+ojo_default_connection <- function(...) {
+  # Capture the arguments to create a unique fingerprint for the connection type.
+  args <- list(...)
+  connection_key <- paste0("default_con_", digest::digest(args))
+
+  # Check if a valid connection for this specific configuration already exists
+  if (exists(connection_key, envir = .ojo_env)) {
+    con <- get(connection_key, envir = .ojo_env)
+    if (DBI::dbIsValid(con)) {
+      return(con)
+    }
+  }
+
+  # If no valid connection exists, create a new one.
+  cli::cli_inform(c("i" = "Creating a new default connection to the OJO database.",
+                    "*" = "This connection will be closed automatically when your R session ends."))
+
+  new_con <- rlang::exec(ojo_connect, !!!args)
+
+  # Store the new connection in the package environment under its unique key.
+  assign(connection_key, new_con, envir = .ojo_env)
+
+  # Register a deferred event in the global environment to ensure cleanup
+  # happens when the user's session ends.
+  withr::defer(
+    {
+      if (exists(connection_key, envir = .ojo_env)) {
+        con_to_close <- get(connection_key, envir = .ojo_env)
+        if (DBI::dbIsValid(con_to_close)) {
+          # This handles single connections only now
+          DBI::dbDisconnect(con_to_close)
+        }
+        rm(list = connection_key, envir = .ojo_env)
+      }
+    },
+    envir = globalenv()
+  )
+
+  return(new_con)
 }
