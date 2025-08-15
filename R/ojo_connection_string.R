@@ -51,6 +51,7 @@ ojo_connection_string <- function(config = NULL) {
   connection_string_builder(config)
 }
 
+#' @title Create Postgres Connection String
 #' @description Creates a PostgreSQL connection string.
 #' @keywords internal
 .create_postgres_string <- function(config) {
@@ -97,6 +98,7 @@ ojo_connection_string <- function(config = NULL) {
   }
 }
 
+#' @title Create DuckDB Connection String
 #' @description Creates a DuckDB connection string.
 #' @keywords internal
 .create_duckdb_string <- function(config) {
@@ -113,6 +115,7 @@ ojo_connection_string <- function(config = NULL) {
   return(config$host)
 }
 
+#' @title Create SQLite Connection String
 #' @description Creates a SQLite connection string.
 #' @keywords internal
 .create_sqlite_string <- function(config) {
