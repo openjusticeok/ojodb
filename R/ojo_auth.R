@@ -2,6 +2,9 @@
 #'
 #' @description Creates a configuration object for OJO database connections with flexible configuration sources.
 #'
+#' @param ... Placeholder for future args
+#' @param driver Database driver name
+#' @param database Database name
 #' @param host Database host name
 #' @param port Database port number
 #' @param username Database username
@@ -26,6 +29,8 @@
 #' \dontrun{
 #' # Create config with explicit parameters
 #' config <- db_config(
+#'   driver = "RPostgres",
+#'   database = "ojodb",
 #'   host = "localhost",
 #'   port = "5432",
 #'   username = "user",
@@ -35,6 +40,8 @@
 #'
 #' # For local testing where SSL is not configured
 #' local_config <- db_config(
+#'   driver = "RPostgres",
+#'   database = "ojodb",
 #'   host = "localhost",
 #'   port = "5432",
 #'   username = "postgres",
@@ -47,6 +54,9 @@
 #'
 #' }
 db_config <- function(
+  ...,
+  driver = NULL,
+  database = NULL,
   host = NULL,
   port = NULL,
   username = NULL,
@@ -59,6 +69,8 @@ db_config <- function(
 ) {
   # Initialize default configuration
   config <- list(
+    driver = NULL,
+    database = NULL,
     host = NULL,
     port = NULL,
     username = NULL,
@@ -70,6 +82,14 @@ db_config <- function(
   )
 
   # Read from environment variables first
+  if (Sys.getenv("OJO_DRIVER") != "") {
+    config$driver <- Sys.getenv("OJO_DRIVER")
+  }
+
+  if (Sys.getenv("OJO_DATABASE") != "") {
+    config$host <- Sys.getenv("OJO_DATABASE")
+  }
+
   if (Sys.getenv("OJO_HOST") != "") {
     config$host <- Sys.getenv("OJO_HOST")
   }
@@ -118,6 +138,14 @@ db_config <- function(
   }
 
   # Override with function arguments (highest precedence)
+  if (!is.null(driver)) {
+    config$driver <- driver
+  }
+
+  if (!is.null(database)) {
+    config$database <- database
+  }
+
   if (!is.null(host)) {
     config$host <- host
   }
@@ -176,6 +204,8 @@ db_config <- function(
 #' \dontrun{
 #' # Create config and authenticate for a remote server
 #' config <- db_config(
+#'   driver = "RPostgres",
+#'   database = "ojodb",
 #'   host = "remote.db.com",
 #'   port = "5432",
 #'   username = "user",
@@ -186,6 +216,8 @@ db_config <- function(
 #'
 #' # One-liner with explicit parameters
 #' ojo_auth(db_config = db_config(
+#'   driver = "RPostgres",
+#'   database = "ojodb",
 #'   host = "remote.db.com",
 #'   port = "5432",
 #'   username = "user",
@@ -199,6 +231,8 @@ db_config <- function(
 #' # Permanent configuration
 #' ojo_auth(
 #'   db_config = db_config(
+#'     driver = "RPostgres",
+#'     database = "ojodb",
 #'     host = "remote.db.com",
 #'     port = "5432",
 #'     username = "user",
@@ -219,7 +253,7 @@ ojo_auth <- function(..., db_config, .install = FALSE, .overwrite = FALSE) {
   }
 
   # Check required parameters
-  required <- c("host", "port", "username", "password", "ssl_mode")
+  required <- c("driver", "host", "port", "username", "password", "ssl_mode")
   missing <- required[sapply(required, function(x) is.null(db_config[[x]]))]
   if (length(missing) > 0) {
     stop(
@@ -228,6 +262,8 @@ ojo_auth <- function(..., db_config, .install = FALSE, .overwrite = FALSE) {
       call. = FALSE
     )
   }
+
+  # TODO: Make required params depend on value of driver
 
   # Validate SSL certificates exist if using verify modes
   if (!is.null(db_config$ssl_mode) && db_config$ssl_mode %in% c("verify-ca", "verify-full")) {
@@ -273,6 +309,8 @@ ojo_auth <- function(..., db_config, .install = FALSE, .overwrite = FALSE) {
       # Write new configuration
       new_vars <- c(
         clean_lines,
+        paste0("OJO_DRIVER='", db_config$driver, "'"),
+        paste0("OJO_DATABASE='", db_config$database, "'"),
         paste0("OJO_HOST='", db_config$host, "'"),
         paste0("OJO_PORT='", db_config$port, "'"),
         paste0("OJO_USER='", db_config$username, "'"),
@@ -295,6 +333,8 @@ ojo_auth <- function(..., db_config, .install = FALSE, .overwrite = FALSE) {
 
       # Append new configuration
       new_vars <- c(
+        paste0("OJO_DRIVER='", db_config$driver, "'"),
+        paste0("OJO_DATABASE='", db_config$database, "'"),
         paste0("OJO_HOST='", db_config$host, "'"),
         paste0("OJO_PORT='", db_config$port, "'"),
         paste0("OJO_USER='", db_config$username, "'"),
@@ -308,6 +348,8 @@ ojo_auth <- function(..., db_config, .install = FALSE, .overwrite = FALSE) {
     } else {
       # New .Renviron file
       new_vars <- c(
+        paste0("OJO_DRIVER='", db_config$driver, "'"),
+        paste0("OJO_DATABASE='", db_config$database, "'"),
         paste0("OJO_HOST='", db_config$host, "'"),
         paste0("OJO_PORT='", db_config$port, "'"),
         paste0("OJO_USER='", db_config$username, "'"),
@@ -323,6 +365,8 @@ ojo_auth <- function(..., db_config, .install = FALSE, .overwrite = FALSE) {
     cat("To use now, restart R or run readRenviron('~/.Renviron')\n")
   } else {
     # Set environment variables for current session only
+    Sys.setenv(OJO_DRIVER = db_config$driver)
+    Sys.setenv(OJO_DATABASE = db_config$database)
     Sys.setenv(OJO_HOST = db_config$host)
     Sys.setenv(OJO_PORT = db_config$port)
     Sys.setenv(OJO_USER = db_config$username)
