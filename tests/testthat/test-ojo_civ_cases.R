@@ -1,6 +1,6 @@
-testthat::test_that("ojo_civ_cases works", {
-  skip_on_runiverse()
+skip_if_no_db()
 
+testthat::test_that("ojo_civ_cases works", {
   testthat::expect_no_error({
     ojo_civ_cases()
   })

@@ -1,3 +1,5 @@
+skip_if_no_db()
+
 # Helper to ensure a clean slate for each test
 # This is crucial for testing the singleton pattern reliably.
 with_clean_ojo_env <- function(code) {
@@ -17,8 +19,6 @@ with_clean_ojo_env <- function(code) {
 }
 
 test_that("ojo_connect creates a side-effect-free connection", {
-  skip_on_runiverse()
-
   con <- ojo_connect()
   # Defer disconnection to ensure it happens even if tests fail
   withr::defer(DBI::dbDisconnect(con))
@@ -31,8 +31,6 @@ test_that("ojo_connect creates a side-effect-free connection", {
 })
 
 test_that("ojo_default_connection creates and caches a connection", {
-  skip_on_runiverse()
-
   with_clean_ojo_env({
     # 1. First call: creates a new connection
     con1 <- ojo_default_connection()
@@ -56,8 +54,6 @@ test_that("ojo_default_connection creates and caches a connection", {
 })
 
 test_that("ojo_default_connection handles different backends separately", {
-  skip_on_runiverse()
-
   with_clean_ojo_env({
     # Create and cache a default Postgres connection
     pg_con <- ojo_default_connection()
