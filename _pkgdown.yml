@@ -18,10 +18,6 @@ reference:
 - title: "Functions to help aid with analysis"
   desc: "These include some other helpful functions you might use in your analysis."
   contents:
-  - ojo_color
-  - ojo_fill
-  - ojo_pal
-  - ojo_theme
   - ojo_county_population
   - ojo_fiscal_year
 - title: "Database management functions"
@@ -36,6 +32,8 @@ reference:
   desc: "These are the most basic / fundamental functions in the package. Generally, we shouldn't need to use them directly."
   contents:
   - ojo_connect
+  - ojo_pool
+  - ojo_connection_string
   - ojo_tbl
   - ojo_query
   - ojo_check_ssl
