@@ -30,6 +30,8 @@ When .install = TRUE, credentials are saved to .Renviron for persistent use.
 \dontrun{
 # Create config and authenticate for a remote server
 config <- db_config(
+  driver = "RPostgres",
+  database = "ojodb",
   host = "remote.db.com",
   port = "5432",
   username = "user",
@@ -40,6 +42,8 @@ ojo_auth(db_config = config)
 
 # One-liner with explicit parameters
 ojo_auth(db_config = db_config(
+  driver = "RPostgres",
+  database = "ojodb",
   host = "remote.db.com",
   port = "5432",
   username = "user",
@@ -53,6 +57,8 @@ ojo_auth(db_config = db_config(config_file = "~/.ojo_config.yaml"))
 # Permanent configuration
 ojo_auth(
   db_config = db_config(
+    driver = "RPostgres",
+    database = "ojodb",
     host = "remote.db.com",
     port = "5432",
     username = "user",

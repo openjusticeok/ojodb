@@ -5,6 +5,9 @@
 \title{Create database configuration object}
 \usage{
 db_config(
+  ...,
+  driver = NULL,
+  database = NULL,
   host = NULL,
   port = NULL,
   username = NULL,
@@ -17,6 +20,12 @@ db_config(
 )
 }
 \arguments{
+\item{...}{Placeholder for future args}
+
+\item{driver}{Database driver name}
+
+\item{database}{Database name}
+
 \item{host}{Database host name}
 
 \item{port}{Database port number}
@@ -54,6 +63,8 @@ with the following precedence (highest to lowest):
 \dontrun{
 # Create config with explicit parameters
 config <- db_config(
+  driver = "RPostgres",
+  database = "ojodb",
   host = "localhost",
   port = "5432",
   username = "user",
@@ -63,6 +74,8 @@ config <- db_config(
 
 # For local testing where SSL is not configured
 local_config <- db_config(
+  driver = "RPostgres",
+  database = "ojodb",
   host = "localhost",
   port = "5432",
   username = "postgres",

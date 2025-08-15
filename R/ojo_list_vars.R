@@ -21,7 +21,7 @@ ojo_list_vars <- function(table, schema = "public", ..., .con = NULL) {
   ojo_tbl(
     table = "columns",
     schema = "information_schema",
-    .con = .con
+    con = .con
   ) |>
     dplyr::filter(
       .data$table_schema == schema,

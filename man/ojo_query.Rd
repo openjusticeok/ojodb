@@ -2,27 +2,32 @@
 % Please edit documentation in R/ojo_query.R
 \name{ojo_query}
 \alias{ojo_query}
-\title{OJO Query}
+\title{Send a raw SQL query to the database}
 \usage{
-ojo_query(query, ..., .con = NULL)
+ojo_query(query, con = NULL)
 }
 \arguments{
-\item{query}{The query to send to ojodb}
+\item{query}{The SQL query to send to the database. The user is responsible
+for ensuring the syntax is correct for the target database backend.}
 
-\item{...}{Arguments to pass to glue::glue_sql}
-
-\item{.con}{The ojodb connection to use}
+\item{con}{The database connection to use. If \code{NULL}, a default connection
+to the primary Postgres database will be created and used.}
 }
 \value{
-data, a lazy tibble containing the results of the query
+A lazy tibble with the \code{ojo_tbl} class.
 }
 \description{
-Query the Open Justice Oklahoma database
+Executes a raw SQL query against a database connection. This
+function is backend-agnostic and will send the query to any valid DBI
+connection.
 }
 \examples{
 \dontrun{
-ojo_query("SELECT * FROM \"case\" LIMIT 10")
-ojo_query("SELECT * FROM iic.inmate LIMIT 10")
-}
+# Run a query against the default Postgres database
+ojo_query("SELECT * FROM case LIMIT 10")
 
+# Run a query against a manual DuckDB connection
+duck_con <- ojo_connect(db_config = db_config(.driver = "duckdb"))
+ojo_query("SELECT * FROM 'my_duck_db_file.parquet' LIMIT 5", con = duck_con)
+}
 }

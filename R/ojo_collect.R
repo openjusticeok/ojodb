@@ -91,7 +91,7 @@ ojo_collect <- function(.data, ..., .silent = !rlang::is_interactive()) {
 
 
 estimate_results <- function(.data, .silent) {
-  if ("n" %in% names(.data)) {
+  if ("n" %in% colnames(.data)) {
     rlang::warn("The tbl you are requesting has a variable named `n`. This might cause issues with progress bar rendering.",
                 .frequency = "once", .frequency_id = "ojo_collect_n_warning")
   }

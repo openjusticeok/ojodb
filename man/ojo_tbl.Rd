@@ -2,38 +2,39 @@
 % Please edit documentation in R/ojo_tbl.R
 \name{ojo_tbl}
 \alias{ojo_tbl}
-\title{Identify a table from the OJO database}
+\title{Get a table from a database connection}
 \usage{
-ojo_tbl(table, schema = "public", ..., .con = NULL, .source = "postgres")
+ojo_tbl(table, schema = "public", con = NULL)
 }
 \arguments{
-\item{table}{The name of a table in the OJO database. To get a list of tables, run \code{ojo_list_tables()}}
+\item{table}{The name of the table to query.}
 
-\item{schema}{The name of a schema in the OJO database. To get a list of schemas, run \code{ojo_list_schemas()}}
+\item{schema}{The name of the schema where the table resides.}
 
-\item{...}{Placeholder}
-
-\item{.con}{The ojodb connection to use}
-
-\item{.source}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} The source of the table. Options are 'postgres', 'gcs_duckdb', and 'gcs_arrow'. Default is 'postgres'.}
+\item{con}{A database connection object. If \code{NULL} (the default), a managed
+default connection will be created and used automatically.}
 }
 \value{
-A pointer to a table that can be passed to dplyr functions and/or pulled into a dataframe using \code{ojo_collect()}
+A lazy tibble with the \code{ojo_tbl} class.
 }
 \description{
-Identifies a table in the OJO database from which to query data. Remember to run \code{connect_ojo()} to establish a connection before attempting to query and to close the connection afterwards with \code{disconnect_ojo()}.
+Creates a lazy tibble from a table in a database. This is the
+primary way to begin a database query with {ojodb}.
+}
+\details{
+For interactive use, if no connection is provided, this function will
+automatically create and manage a default connection to the primary OJO
+Postgres database. To connect to other backends (like DuckDB or SQLite),
+you must first create a connection object with \code{ojo_connect()} and pass it
+via the \code{con} argument.
 }
 \examples{
 \dontrun{
-# Identifies the table
-ojo_tbl("case")
+# Interactively connect to the 'case' table in the default Postgres DB
+case_tbl <- ojo_tbl("case")
 
-# Pulls down case information data for every Tulsa felony filed in 2020 into a dataframe d
-d <- ojo_tbl("case") \%>\%
-  filter(district == "TULSA", case_type == "CF", year == 2020) \%>\%
-  collect()
+# Connect to a table on a manually created DuckDB connection
+my_duckdb_con <- ojo_connect(db_config = db_config(.driver = "duckdb"))
+my_duckdb_tbl <- ojo_tbl("some_table", con = my_duckdb_con)
 }
-}
-\seealso{
-ojo_list_tables(), ojo_list_vars(), ojo_list_schemas()
 }

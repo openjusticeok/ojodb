@@ -87,7 +87,7 @@ db_config <- function(
   }
 
   if (Sys.getenv("OJO_DATABASE") != "") {
-    config$host <- Sys.getenv("OJO_DATABASE")
+    config$database <- Sys.getenv("OJO_DATABASE")
   }
 
   if (Sys.getenv("OJO_HOST") != "") {

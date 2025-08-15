@@ -2,50 +2,49 @@
 % Please edit documentation in R/ojo_connect.R
 \name{ojo_connect}
 \alias{ojo_connect}
-\title{OJO Connect}
+\title{Connect to an OJO Database Backend}
 \usage{
-ojo_connect(
-  ...,
-  .admin = FALSE,
-  .driver = "RPostgres",
-  .global = lifecycle::deprecated(),
-  .env = ojo_env(),
-  .pool = FALSE
-)
+ojo_connect(db_config = NULL, ...)
 }
 \arguments{
-\item{...}{Placeholder.}
+\item{db_config}{A \code{db_config} object created by \code{db_config()}. If \code{NULL} (the
+default), a default configuration is created by calling \code{db_config()} with
+no arguments, which will pull from environment variables.}
 
-\item{.admin}{A logical value indicating whether to connect to the database as an administrator.}
-
-\item{.driver}{The driver to use for the connection. Default is "RPostgres". "duckdb" is also supported.}
-
-\item{.global}{Deprecated. A connection will always be created in the specified environment, or in the package environment by default.}
-
-\item{.env}{The environment in which you want the connection stored.}
-
-\item{.pool}{A logical value indicating whether to use a connection pool from the \code{{pool}} package, or not.}
+\item{...}{Placeholder for future arguments.}
 }
 \value{
-A database connection object created with \code{RPostgres::Postgres()} and either \code{pool::dbPool} or \code{DBI::dbConnect}
+A database connection object (e.g., a \code{PqConnection} or \code{duckdb_connection}).
 }
 \description{
-Connect to the Open Justice Oklahoma database
+Establishes a single connection to a database, such as the Open
+Justice Oklahoma Postgres database or a local DuckDB instance.
 }
 \details{
-Opens a connection to the Open Justice Oklahoma database using credentials stored in the .Renviron file.
-If no credentials exist, prompts for user, password, and host name and provides instructions to store them for future sessions.
+This function serves as the primary way to create individual database
+connection objects. It is designed to be side-effect-free, returning the
+connection object directly to the user for manual management. For creating
+a managed pool of connections suitable for applications, use \code{ojo_pool()}.
 }
-\section{Side Effects}{
-
-A connection object (named \code{ojo_con} or \code{ojo_pool} depending on the \code{.pool} argument) is created in the package environment.
-}
-
 \examples{
 \dontrun{
-ojo_connect()
+# --- Manual Connection Management ---
+
+# 1. Create a configuration
+my_config <- db_config(.admin = TRUE)
+
+# 2. Create a connection object
+con <- ojo_connect(db_config = my_config)
+
+# 3. Use the connection with dplyr or DBI
+dplyr::tbl(con, "case")
+DBI::dbListTables(con)
+
+# 4. Close the connection when finished
+DBI::dbDisconnect(con)
 }
 }
 \seealso{
-ojo_auth()
+\code{\link[=db_config]{db_config()}} for creating configuration objects, and \code{\link[=ojo_pool]{ojo_pool()}}
+for creating a connection pool.
 }
