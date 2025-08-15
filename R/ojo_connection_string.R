@@ -47,6 +47,7 @@ ojo_connection_string <- function(config = NULL) {
     rlang::abort(glue::glue("Connection string generation is not supported for the driver: '{config$driver}'."))
   )
 
+  # TODO: Return invisibly unless arg switch flipped
   connection_string_builder(config)
 }
 
