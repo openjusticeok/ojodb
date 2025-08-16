@@ -1,6 +1,6 @@
 #' @title Create a Database Connection Pool
 #'
-#' @description Creates a managed pool of database connections using the {pool}
+#' @description Creates a managed pool of database connections using the \{pool\}
 #'   package. This is the recommended way to connect to the database for
 #'   applications with concurrent users, such as Shiny apps.
 #'
@@ -21,7 +21,7 @@
 #'   environment variables.
 #' @title Create a Database Connection Pool
 #'
-#' @description Creates a managed pool of database connections using the {pool}
+#' @description Creates a managed pool of database connections using the \{pool\}
 #'   package. This is the recommended way to connect to the database for
 #'   applications with concurrent users, such as Shiny apps.
 #'

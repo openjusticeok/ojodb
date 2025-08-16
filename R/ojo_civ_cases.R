@@ -96,7 +96,11 @@ ojo_add_issues <- function(data, vars = NULL, ...) {
   if (is.null(vars)) {
     issues <- issues |>
       dplyr::select(
-        case_id, rank, description, disposition, disposition_date
+        .data$case_id,
+				.data$rank,
+				.data$description,
+				.data$disposition,
+				.data$disposition_date
       )
   } else {
     if (vars != "all") {
