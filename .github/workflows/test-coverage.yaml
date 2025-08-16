@@ -12,6 +12,8 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       # Configuring ojodb access for github actions
+      OJO_DRIVER: ${{ secrets.OJO_DRIVER }}
+      OJO_DATABASE: ${{ secrets.OJO_DATABASE }}
       OJO_HOST: ${{ secrets.OJO_HOST }}
       OJO_PORT: ${{ secrets.OJO_PORT }}
       OJO_DEFAULT_USER: ${{ secrets.OJO_DEFAULT_USER }}
