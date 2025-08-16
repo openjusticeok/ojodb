@@ -33,24 +33,23 @@ Authors@R: c(
   ))
 Description: {ojodb} provides convenient functions to query court data from the Open Justice Oklahoma database.
 Imports:
-  cli,
-  dbplyr,
-  DBI,
-  ggplot2,
-  glue,
-  lifecycle,
-  lubridate,
-  pool,
-  purrr,
-  rlang,
-  RPostgres,
-  stringi,
-  stringr,
-  tibble,
-  tidyr,
-  utils,
-  withr,
-  yaml
+	cli,
+	dbplyr,
+	DBI,
+	digest,
+	glue,
+	lubridate,
+	pool,
+	purrr,
+	rlang,
+	RPostgres,
+	stringi,
+	stringr,
+	tibble,
+	tidyr,
+	utils,
+	withr,
+	yaml
 Suggests:
   arrow,
   attachment,
@@ -65,10 +64,12 @@ Suggests:
   janitor,
   knitr,
   languageserver,
+	lifecycle,
   lintr,
   readr,
   roxygen2,
   rmarkdown,
+	RSQLite,
   rvest,
   styler,
   testthat (>= 3.0.0),
@@ -76,6 +77,7 @@ Suggests:
   usethis,
   xml2
 Depends:
+	R (>= 4.1.0),
   dplyr
 Remotes:
   nx10/httpgd
