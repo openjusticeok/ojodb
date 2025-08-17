@@ -23,14 +23,3 @@ ojo_env <- function(...) {
 ojo_version <- function(...) {
   utils::packageVersion("ojodb")
 }
-
-#' @title Skip If No Database Connection
-#'
-#' @description
-#' Skips a test if the `ojodb` package is not installed or if the user is not connected to the OJO database.
-#'
-#' @keywords internal
-#'
-skip_if_no_db <- function() {
-  testthat::skip("No database connection available")
-}

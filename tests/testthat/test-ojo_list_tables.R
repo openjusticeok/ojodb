@@ -1,6 +1,5 @@
 test_that("ojo_list_tables hasn't changed", {
-  skip_on_ci()
-  skip_on_runiverse()
+  skip_if_no_db()
 
   expect_snapshot_value(
     ojo_list_tables("public"),

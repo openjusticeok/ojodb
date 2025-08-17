@@ -17,7 +17,7 @@ with_clean_ojo_env <- function(code) {
 }
 
 test_that("ojo_connect creates a side-effect-free connection", {
-  skip_on_runiverse()
+  skip_if_no_db()
 
   con <- ojo_connect()
   # Defer disconnection to ensure it happens even if tests fail
@@ -31,7 +31,7 @@ test_that("ojo_connect creates a side-effect-free connection", {
 })
 
 test_that("ojo_default_connection creates and caches a connection", {
-  skip_on_runiverse()
+  skip_if_no_db()
 
   with_clean_ojo_env({
     # 1. First call: creates a new connection
@@ -56,7 +56,7 @@ test_that("ojo_default_connection creates and caches a connection", {
 })
 
 test_that("ojo_default_connection handles different backends separately", {
-  skip_on_runiverse()
+  skip_if_no_db()
 
   with_clean_ojo_env({
     # Create and cache a default Postgres connection
@@ -77,8 +77,5 @@ test_that("ojo_default_connection handles different backends separately", {
       duck_con,
       ojo_default_connection(db_config = duckdb_config)
     )
-
-    # Clean up all default connections
-    withr::deferred_run()
   })
 })

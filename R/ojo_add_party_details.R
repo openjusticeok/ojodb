@@ -25,7 +25,9 @@ ojo_add_party_details <- function(data, vars = NULL, ...) {
       if (inherits(data$parties, "pq__text")) {
         stop("You must first unnest the `parties` column")
       } else {
-        stop("Make sure you unnested the `parties` column into a column named `party`")
+        stop(
+          "Make sure you unnested the `parties` column into a column named `party`"
+        )
       }
     }
     stop("Data must contain a column named `party`")

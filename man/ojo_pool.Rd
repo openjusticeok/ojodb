@@ -18,11 +18,11 @@ function, such as \code{minSize}, \code{maxSize}, or \code{idleTimeout}.}
 A \code{Pool} object.
 }
 \description{
-Creates a managed pool of database connections using the {pool}
+Creates a managed pool of database connections using the \{pool\}
 package. This is the recommended way to connect to the database for
 applications with concurrent users, such as Shiny apps.
 
-Creates a managed pool of database connections using the {pool}
+Creates a managed pool of database connections using the \{pool\}
 package. This is the recommended way to connect to the database for
 applications with concurrent users, such as Shiny apps.
 }

@@ -266,7 +266,10 @@ ojo_auth <- function(..., db_config, .install = FALSE, .overwrite = FALSE) {
   # TODO: Make required params depend on value of driver
 
   # Validate SSL certificates exist if using verify modes
-  if (!is.null(db_config$ssl_mode) && db_config$ssl_mode %in% c("verify-ca", "verify-full")) {
+  if (
+    !is.null(db_config$ssl_mode) &&
+      db_config$ssl_mode %in% c("verify-ca", "verify-full")
+  ) {
     missing_certs <- c()
     ssl_files <- c("ssl_root_cert", "ssl_cert", "ssl_key")
     for (cert_type in ssl_files) {
