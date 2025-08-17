@@ -2,8 +2,7 @@
 #'
 #' Query the Open Justice Oklahoma database for the names of all schemas
 #'
-#' @param ... Placeholder
-#' @param .con The OJO database connection to use
+#' @param con The OJO database connection to use
 #'
 #' @export ojo_list_schemas
 #' @return data, a tibble containing the names of all schemas
@@ -12,14 +11,14 @@
 #' ojo_list_schemas()
 #' }
 #'
-ojo_list_schemas <- function(..., .con = NULL) {
-  if (is.null(.con)) {
-    .con <- ojo_connect()
+ojo_list_schemas <- function(con = NULL) {
+  if (is.null(con)) {
+    con <- ojo_default_connection()
   }
 
   ojo_query(
     "SELECT schema_name FROM information_schema.schemata",
-    con = .con
+    con = con
   ) |>
     dplyr::rename(schema = schema_name) |>
     dplyr::filter(!schema %in% c("pg_catalog", "information_schema")) |>

@@ -13,7 +13,6 @@ reference:
   - ojo_add_minutes
   - ojo_add_issues
   - ojo_add_party_details
-  - ojo_search_minutes
   - ojo_collect
 - title: "Functions to help aid with analysis"
   desc: "These include some other helpful functions you might use in your analysis."

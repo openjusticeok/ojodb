@@ -19,24 +19,7 @@
 #' @param config A `db_config` object created by `db_config()`. If `NULL` (the
 #'   default), a default configuration is created, which will pull from
 #'   environment variables.
-#' @title Create a Database Connection Pool
 #'
-#' @description Creates a managed pool of database connections using the \{pool\}
-#'   package. This is the recommended way to connect to the database for
-#'   applications with concurrent users, such as Shiny apps.
-#'
-#' @details A connection pool is more efficient than managing individual
-#'   connections in a concurrent environment. Instead of creating and tearing
-#'   down a new connection for each user or session, the pool maintains a set of
-#'   active connections that are "checked out" as needed and returned to the
-#'   pool when the operation is complete.
-#'
-#'   **Important:** Remember to close the pool with `pool::poolClose(pool)` when
-#'   your application shuts down to release all database connections.
-#'
-#' @param config A `db_config` object created by `db_config()`. If `NULL` (the
-#'   default), a default configuration is created, which will pull from
-#'   environment variables.
 #' @param ... Additional arguments passed on to the underlying `pool::dbPool()`
 #'   function, such as `minSize`, `maxSize`, or `idleTimeout`.
 #'
@@ -49,7 +32,7 @@
 #' pool <- ojo_pool()
 #'
 #' # Use the pool with ojo_tbl or dplyr
-#' ojo_tbl("case", .con = pool)
+#' ojo_tbl("case", con = pool)
 #'
 #' # When your application stops, close the pool
 #' pool::poolClose(pool)
