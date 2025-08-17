@@ -4,12 +4,10 @@
 \alias{ojo_list_schemas}
 \title{List all schemas on the OJO database}
 \usage{
-ojo_list_schemas(..., .con = NULL)
+ojo_list_schemas(con = NULL)
 }
 \arguments{
-\item{...}{Placeholder}
-
-\item{.con}{The OJO database connection to use}
+\item{con}{The OJO database connection to use}
 }
 \value{
 data, a tibble containing the names of all schemas
