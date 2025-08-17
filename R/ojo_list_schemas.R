@@ -21,8 +21,8 @@ ojo_list_schemas <- function(..., .con = NULL) {
     "SELECT schema_name FROM information_schema.schemata",
     con = .con
   ) |>
-    dplyr::rename(schema = .data$schema_name) |>
-    dplyr::filter(!.data$schema %in% c("pg_catalog", "information_schema")) |>
-    dplyr::arrange(.data$schema) |>
+    dplyr::rename(schema = schema_name) |>
+    dplyr::filter(!schema %in% c("pg_catalog", "information_schema")) |>
+    dplyr::arrange(schema) |>
     dplyr::collect()
 }

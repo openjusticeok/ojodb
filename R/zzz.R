@@ -15,12 +15,16 @@ ojodbStartupMessage <- function() {
 
 .onAttach <- function(lib, pkg) {
 
-  if(Sys.getenv("OJO_LOAD_MESSAGE") != FALSE){
+  if ((Sys.getenv("OJO_LOAD_MESSAGE") != FALSE) && rlang::is_interactive()) {
     msg <- ojodbStartupMessage()
-    if(!interactive())
-      msg[1] <- paste("Package 'ojodb' version", utils::packageVersion("ojodb"))
     packageStartupMessage(msg)
     invisible()
   }
 
 }
+
+utils::globalVariables(
+  c("NAME", "case_id", "case_type", "column_name", "court", "date_filed", "description",
+    "disposition", "disposition_date", "district", "schema", "schema_name", "table_name",
+    "table_schema", "value", "variable", "year")
+)

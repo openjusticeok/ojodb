@@ -172,8 +172,12 @@ ojo_default_connection <- function(...) {
   }
 
   # If no valid connection exists, create a new one.
-  cli::cli_inform(c("i" = "Creating a new default connection to the OJO database.",
-                    "*" = "This connection will be closed automatically when your R session ends."))
+  cli::cli_inform(
+    c("i" = "Creating a new default connection to the OJO database.",
+      "*" = "This connection will be closed automatically when your R session ends."),
+    .frequency = "once",
+    .frequency_id = "ojo_connect_inform"
+  )
 
   new_con <- rlang::exec(ojo_connect, !!!args)
 

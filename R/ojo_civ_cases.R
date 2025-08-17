@@ -30,8 +30,8 @@ ojo_civ_cases <- function(districts = "all", vars = NULL, case_types = c("CS", "
 
   data <- ojo_tbl("case") |>
     dplyr::filter(
-      .data$case_type %in% case_types_upper,
-      .data$year %in% file_years
+      case_type %in% case_types_upper,
+      year %in% file_years
     )
 
   if (all(districts != "all")) {
@@ -39,7 +39,7 @@ ojo_civ_cases <- function(districts = "all", vars = NULL, case_types = c("CS", "
     districts_upper <- toupper(districts)
 
     data <- data |>
-      dplyr::filter(.data$district %in% districts_upper)
+      dplyr::filter(district %in% districts_upper)
   }
 
   selection <- c("id", "district", "case_type", "date_filed", "date_closed")
@@ -96,11 +96,11 @@ ojo_add_issues <- function(data, vars = NULL, ...) {
   if (is.null(vars)) {
     issues <- issues |>
       dplyr::select(
-        .data$case_id,
-				.data$rank,
-				.data$description,
-				.data$disposition,
-				.data$disposition_date
+        case_id,
+				rank,
+				description,
+				disposition,
+				disposition_date
       )
   } else {
     if (vars != "all") {

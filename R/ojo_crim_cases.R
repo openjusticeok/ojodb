@@ -30,8 +30,8 @@ ojo_crim_cases <- function(districts = "all", vars = NULL, case_types = c("CM", 
   data <- ojo_tbl("case") |>
     dplyr::filter(
       # `upper()` is evaluated in SQL; debug and use `show_query()` to verify
-      .data$case_type %in% case_types_upper,
-      .data$year %in% file_years
+      case_type %in% case_types_upper,
+      year %in% file_years
     )
 
   if (all(districts != "all")) {
@@ -39,7 +39,7 @@ ojo_crim_cases <- function(districts = "all", vars = NULL, case_types = c("CM", 
     districts_upper <- toupper(districts)
 
     data <- data |>
-      dplyr::filter(.data$district %in% districts_upper)
+      dplyr::filter(district %in% districts_upper)
   }
 
   selection <- c("id", "district", "case_number", "case_type", "date_filed", "date_closed", "counts", "open_counts")

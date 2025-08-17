@@ -1,7 +1,7 @@
-skip_if_no_db()
+test_that("ojo_civ_cases works", {
+  skip_if_no_db()
 
-testthat::test_that("ojo_civ_cases works", {
-  testthat::expect_no_error({
+  expect_no_error({
     ojo_civ_cases()
   })
 })
