@@ -1,15 +1,3 @@
-#' @title OJO Environment
-#'
-#' @description Get the environment of the OJO package, which holds the database pool object.
-#'
-#' @param ... Placeholder for future arguments
-#'
-#' @export
-#'
-ojo_env <- function(...) {
-  .ojo_env
-}
-
 #' @title OJO Version
 #'
 #' @description

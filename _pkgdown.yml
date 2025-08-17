@@ -26,7 +26,6 @@ reference:
   - ojo_list_tables
   - ojo_list_vars
   - ojo_case_types
-  - ojo_show_row
 - title: "'Behind the scenes' functions"
   desc: "These are the most basic / fundamental functions in the package. Generally, we shouldn't need to use them directly."
   contents:
@@ -38,6 +37,5 @@ reference:
   - ojo_check_ssl
   - ojo_auth
   - db_config
-  - ojo_env
   - ojo_version
 
