@@ -43,7 +43,7 @@ ojo_list_tables <- function(schema = "public", con = NULL) {
     data <- schemas |>
       dplyr::mutate(table = purrr::map(schema, list_tables)) |>
       tidyr::unnest(cols = table) |>
-      dplyr::arrange(table)
+      dplyr::arrange(schema, table)
 
     return(data)
   } else {
