@@ -32,7 +32,9 @@ test_that("ojo_tbl's can join", {
   expect_s3_class(tbl2, "tbl")
 
   # Check that it can join
-  expect_s3_class(tbl |>
-    dplyr::left_join(tbl2, by = c("id" = "case_id")),
-    "tbl")
+  expect_s3_class(
+    tbl |>
+      dplyr::left_join(tbl2, by = c("id" = "case_id")),
+    "tbl"
+  )
 })

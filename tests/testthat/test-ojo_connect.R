@@ -77,6 +77,5 @@ test_that("ojo_default_connection handles different backends separately", {
       duck_con,
       ojo_default_connection(db_config = duckdb_config)
     )
-
   })
 })

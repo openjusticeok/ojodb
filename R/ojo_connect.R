@@ -44,12 +44,15 @@ ojo_connect <- function(db_config = NULL, ...) {
 
   # Ensure the config object is valid
   if (!inherits(db_config, "db_config")) {
-    rlang::abort("`db_config` must be a `db_config` object created by `db_config()`.")
+    rlang::abort(
+      "`db_config` must be a `db_config` object created by `db_config()`."
+    )
   }
 
   if (is.null(db_config$driver) || db_config$driver == "") {
     rlang::abort(
-      c("Database configuration is missing required parameters.",
+      c(
+        "Database configuration is missing required parameters.",
         "i" = glue::glue("Missing: {paste(missing_params, collapse = ', ')}"),
         "*" = "Please set them with `ojo_auth()` or in your `db_config()` call."
       )
@@ -62,7 +65,9 @@ ojo_connect <- function(db_config = NULL, ...) {
     "RPostgres" = .connect_postgres,
     "duckdb" = .connect_duckdb,
     "RSQLite" = .connect_sqlite,
-    rlang::abort(glue::glue("The driver '{db_config$driver}' is not supported."))
+    rlang::abort(glue::glue(
+      "The driver '{db_config$driver}' is not supported."
+    ))
   )
 
   # Call the selected connection function
@@ -77,7 +82,8 @@ ojo_connect <- function(db_config = NULL, ...) {
   missing_params <- setdiff(required, names(db_config))
   if (length(missing_params) > 0) {
     rlang::abort(
-      c("Postgres connection is missing required configuration parameters.",
+      c(
+        "Postgres connection is missing required configuration parameters.",
         "i" = glue::glue("Missing: {paste(missing_params, collapse = ', ')}"),
         "*" = "Please set them with `ojo_auth()` or in your `db_config()` call."
       )
@@ -111,14 +117,19 @@ ojo_connect <- function(db_config = NULL, ...) {
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = ":memory:")
 
   # Install and load necessary extensions for accessing remote data
-  tryCatch({
-    DBI::dbExecute(con, "INSTALL httpfs; LOAD httpfs;")
-    DBI::dbExecute(con, "SET s3_endpoint='storage.googleapis.com';")
-  }, error = function(e) {
-    rlang::warn(c("Failed to install or configure DuckDB extensions.",
-                  "i" = "Accessing remote data (e.g., from GCS) may not work.",
-                  "x" = e$message))
-  })
+  tryCatch(
+    {
+      DBI::dbExecute(con, "INSTALL httpfs; LOAD httpfs;")
+      DBI::dbExecute(con, "SET s3_endpoint='storage.googleapis.com';")
+    },
+    error = function(e) {
+      rlang::warn(c(
+        "Failed to install or configure DuckDB extensions.",
+        "i" = "Accessing remote data (e.g., from GCS) may not work.",
+        "x" = e$message
+      ))
+    }
+  )
 
   con
 }
@@ -129,8 +140,10 @@ ojo_connect <- function(db_config = NULL, ...) {
   # For SQLite, the 'host' is treated as the file path.
   if (is.null(db_config$host) || db_config$host == "") {
     rlang::abort(
-      c("SQLite config is missing the database file path.",
-        "i" = "Please provide the path in the `host` argument of `db_config()`.")
+      c(
+        "SQLite config is missing the database file path.",
+        "i" = "Please provide the path in the `host` argument of `db_config()`."
+      )
     )
   }
 
@@ -173,8 +186,10 @@ ojo_default_connection <- function(...) {
 
   # If no valid connection exists, create a new one.
   cli::cli_inform(
-    c("i" = "Creating a new default connection to the OJO database.",
-      "*" = "This connection will be closed automatically when your R session ends."),
+    c(
+      "i" = "Creating a new default connection to the OJO database.",
+      "*" = "This connection will be closed automatically when your R session ends."
+    ),
     .frequency = "once",
     .frequency_id = "ojo_connect_inform"
   )

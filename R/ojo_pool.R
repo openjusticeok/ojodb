@@ -67,15 +67,21 @@ ojo_pool <- function(config = NULL, ...) {
 
   # Ensure the config object is valid
   if (!inherits(config, "db_config")) {
-    rlang::abort("`config` must be a `db_config` object created by `db_config()`.")
+    rlang::abort(
+      "`config` must be a `db_config` object created by `db_config()`."
+    )
   }
 
   # Check if the selected driver supports connection pooling
   supported_drivers <- c("RPostgres", "RSQLite")
   if (!config$driver %in% supported_drivers) {
     rlang::abort(
-      glue::glue("Connection pooling is not supported for the '{config$driver}' driver."),
-      "i" = glue::glue("Supported drivers are: {paste(supported_drivers, collapse = ', ')}.")
+      glue::glue(
+        "Connection pooling is not supported for the '{config$driver}' driver."
+      ),
+      "i" = glue::glue(
+        "Supported drivers are: {paste(supported_drivers, collapse = ', ')}."
+      )
     )
   }
 
