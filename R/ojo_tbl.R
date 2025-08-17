@@ -1,7 +1,7 @@
 #' @title Get a table from a database connection
 #'
 #' @description Creates a lazy tibble from a table in a database. This is the
-#'   primary way to begin a database query with {ojodb}.
+#'   primary way to begin a database query with \{ojodb\}.
 #'
 #' @details For interactive use, if no connection is provided, this function will
 #'   automatically create and manage a default connection to the primary OJO

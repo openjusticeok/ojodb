@@ -16,7 +16,6 @@
 #' }
 #'
 ojo_list_tables <- function(schema = "public", ..., .con = NULL) {
-
   if (is.null(.con)) {
     .con <- ojo_connect()
   }

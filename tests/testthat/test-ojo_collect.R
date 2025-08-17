@@ -1,5 +1,5 @@
 test_that("ojo_collect works in interactive mode", {
-  skip_on_runiverse()
+  skip_if_no_db()
 
   expect_no_error({
     ojo_tbl("case") |>
@@ -13,6 +13,4 @@ test_that("ojo_collect works in interactive mode", {
       ojo_collect(),
     "tbl_df"
   )
-
-  withr::deferred_run(envir = ojo_env())
 })

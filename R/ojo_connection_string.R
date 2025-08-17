@@ -35,7 +35,9 @@ ojo_connection_string <- function(config = NULL) {
 
   # Ensure the config object is valid
   if (!inherits(config, "db_config")) {
-    rlang::abort("`config` must be a `db_config` object created by `db_config()`.")
+    rlang::abort(
+      "`config` must be a `db_config` object created by `db_config()`."
+    )
   }
 
   # Dispatch to the appropriate internal function based on the driver
@@ -44,7 +46,9 @@ ojo_connection_string <- function(config = NULL) {
     "RPostgres" = .create_postgres_string,
     "RSQLite" = .create_sqlite_string,
     "duckdb" = .create_duckdb_string,
-    rlang::abort(glue::glue("Connection string generation is not supported for the driver: '{config$driver}'."))
+    rlang::abort(glue::glue(
+      "Connection string generation is not supported for the driver: '{config$driver}'."
+    ))
   )
 
   # TODO: Return invisibly unless arg switch flipped
@@ -60,7 +64,8 @@ ojo_connection_string <- function(config = NULL) {
   missing_params <- setdiff(required, names(config))
   if (length(missing_params) > 0) {
     rlang::abort(
-      c("PostgreSQL config is missing required parameters to build a connection string.",
+      c(
+        "PostgreSQL config is missing required parameters to build a connection string.",
         "i" = glue::glue("Missing: {paste(missing_params, collapse = ', ')}")
       )
     )
@@ -89,8 +94,10 @@ ojo_connection_string <- function(config = NULL) {
   # If there are any parameters, format them into a query string
   if (length(query_params) > 0) {
     query_string <- paste(
-      names(query_params), query_params,
-      sep = "=", collapse = "&"
+      names(query_params),
+      query_params,
+      sep = "=",
+      collapse = "&"
     )
     return(paste0(base_uri, "?", query_string))
   } else {
@@ -106,8 +113,10 @@ ojo_connection_string <- function(config = NULL) {
   # An empty path signifies an in-memory database.
   if (is.null(config$host)) {
     rlang::abort(
-      c("DuckDB config is missing the database file path.",
-        "i" = "Please provide the path in the `host` argument of `db_config()`. For an in-memory database, use an empty string `''`.")
+      c(
+        "DuckDB config is missing the database file path.",
+        "i" = "Please provide the path in the `host` argument of `db_config()`. For an in-memory database, use an empty string `''`."
+      )
     )
   }
 
@@ -122,8 +131,10 @@ ojo_connection_string <- function(config = NULL) {
   # For SQLite, the 'host' is treated as the file path.
   if (is.null(config$host) || config$host == "") {
     rlang::abort(
-      c("SQLite config is missing the database file path.",
-        "i" = "Please provide the path in the `host` argument of `db_config()`.")
+      c(
+        "SQLite config is missing the database file path.",
+        "i" = "Please provide the path in the `host` argument of `db_config()`."
+      )
     )
   }
 

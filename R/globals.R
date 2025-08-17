@@ -1,0 +1,21 @@
+utils::globalVariables(
+  c(
+    "NAME",
+    "case_id",
+    "case_type",
+    "column_name",
+    "court",
+    "date_filed",
+    "description",
+    "disposition",
+    "disposition_date",
+    "district",
+    "schema",
+    "schema_name",
+    "table_name",
+    "table_schema",
+    "value",
+    "variable",
+    "year"
+  )
+)

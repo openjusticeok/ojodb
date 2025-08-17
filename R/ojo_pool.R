@@ -1,6 +1,6 @@
 #' @title Create a Database Connection Pool
 #'
-#' @description Creates a managed pool of database connections using the {pool}
+#' @description Creates a managed pool of database connections using the \{pool\}
 #'   package. This is the recommended way to connect to the database for
 #'   applications with concurrent users, such as Shiny apps.
 #'
@@ -21,7 +21,7 @@
 #'   environment variables.
 #' @title Create a Database Connection Pool
 #'
-#' @description Creates a managed pool of database connections using the {pool}
+#' @description Creates a managed pool of database connections using the \{pool\}
 #'   package. This is the recommended way to connect to the database for
 #'   applications with concurrent users, such as Shiny apps.
 #'
@@ -67,15 +67,21 @@ ojo_pool <- function(config = NULL, ...) {
 
   # Ensure the config object is valid
   if (!inherits(config, "db_config")) {
-    rlang::abort("`config` must be a `db_config` object created by `db_config()`.")
+    rlang::abort(
+      "`config` must be a `db_config` object created by `db_config()`."
+    )
   }
 
   # Check if the selected driver supports connection pooling
   supported_drivers <- c("RPostgres", "RSQLite")
   if (!config$driver %in% supported_drivers) {
     rlang::abort(
-      glue::glue("Connection pooling is not supported for the '{config$driver}' driver."),
-      "i" = glue::glue("Supported drivers are: {paste(supported_drivers, collapse = ', ')}.")
+      glue::glue(
+        "Connection pooling is not supported for the '{config$driver}' driver."
+      ),
+      "i" = glue::glue(
+        "Supported drivers are: {paste(supported_drivers, collapse = ', ')}."
+      )
     )
   }
 

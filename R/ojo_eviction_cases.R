@@ -41,13 +41,15 @@
 #' }
 #'
 
-ojo_eviction_cases <- function(districts = "all",
-                               ...,
-                               date_start = NULL,
-                               date_end = NULL,
-                               more_case_variables = NULL,
-                               more_issue_variables = NULL,
-                               get_judgments = TRUE) {
+ojo_eviction_cases <- function(
+  districts = "all",
+  ...,
+  date_start = NULL,
+  date_end = NULL,
+  more_case_variables = NULL,
+  more_issue_variables = NULL,
+  get_judgments = TRUE
+) {
   #### Variable Handling
   .district <- toupper(districts)
 
@@ -72,14 +74,21 @@ ojo_eviction_cases <- function(districts = "all",
 
   case_vars <- unique(
     c(
-      "id", "district", "date_filed", "date_closed", "status",
+      "id",
+      "district",
+      "date_filed",
+      "date_closed",
+      "status",
       more_case_variables
     )
   )
 
   issue_vars <- unique(
     c(
-      "id", "case_id", "description", "disposition",
+      "id",
+      "case_id",
+      "description",
+      "disposition",
       more_issue_variables
     )
   )
@@ -108,26 +117,33 @@ ojo_eviction_cases <- function(districts = "all",
 
   if (get_judgments == TRUE) {
     data <- data |>
-      dplyr::mutate(clean_disposition = case_when(
-        stringr::str_detect(disposition, "DISMISS") ~ "DISMISSED",
-        stringr::str_detect(disposition, "JUDGMENT|JUDGEMENT") ~
-          case_when(
-            stringr::str_detect(disposition, "DEFAULT") ~ "DEFAULT JUDGMENT",
-            stringr::str_detect(disposition, "PLAINTIFF") ~ "JUDGMENT FOR PLAINTIFF",
-            stringr::str_detect(disposition, "DEFENDANT") ~ "JUDGMENT FOR DEFENDANT",
-            TRUE ~ "JUDGMENT ENTERED"
-          ),
-        stringr::str_detect(disposition, "ADVISEMENT") ~ "UNDER ADVISEMENT"
-      ))
+      dplyr::mutate(
+        clean_disposition = case_when(
+          stringr::str_detect(disposition, "DISMISS") ~ "DISMISSED",
+          stringr::str_detect(disposition, "JUDGMENT|JUDGEMENT") ~
+            case_when(
+              stringr::str_detect(disposition, "DEFAULT") ~ "DEFAULT JUDGMENT",
+              stringr::str_detect(disposition, "PLAINTIFF") ~
+                "JUDGMENT FOR PLAINTIFF",
+              stringr::str_detect(disposition, "DEFENDANT") ~
+                "JUDGMENT FOR DEFENDANT",
+              TRUE ~ "JUDGMENT ENTERED"
+            ),
+          stringr::str_detect(disposition, "ADVISEMENT") ~ "UNDER ADVISEMENT"
+        )
+      )
 
     data <- data |>
       dplyr::mutate(
         judgment = dplyr::case_when(
           clean_disposition %in%
-            c("DEFAULT JUDGMENT", "JUDGMENT FOR PLAINTIFF") ~ "Eviction Granted",
+            c("DEFAULT JUDGMENT", "JUDGMENT FOR PLAINTIFF") ~
+            "Eviction Granted",
           clean_disposition == "JUDGMENT FOR DEFENDANT" ~ "Eviction Denied",
-          clean_disposition == "JUDGMENT ENTERED" ~ "Case Decided, Outcome Unknown",
-          clean_disposition == "DISMISSED" ~ "Case Dismissed (Settled Outside Court)",
+          clean_disposition == "JUDGMENT ENTERED" ~
+            "Case Decided, Outcome Unknown",
+          clean_disposition == "DISMISSED" ~
+            "Case Dismissed (Settled Outside Court)",
           clean_disposition == "UNDER ADVISEMENT" ~ "Case Under Advisement",
           .default = "Case Undecided"
         )

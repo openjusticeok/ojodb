@@ -19,27 +19,32 @@
 #' ojo_civ_cases(vars = c("updated_at", "created_at"))
 #' }
 #'
-ojo_civ_cases <- function(districts = "all", vars = NULL, case_types = c("CS", "SC", "CJ"),
-                          file_years = lubridate::year(Sys.Date()), ...) {
-
+ojo_civ_cases <- function(
+  districts = "all",
+  vars = NULL,
+  case_types = c("CS", "SC", "CJ"),
+  file_years = lubridate::year(Sys.Date()),
+  ...
+) {
   case_types_upper <- toupper(case_types)
 
   if (!all(case_types_upper %in% c("CS", "SC", "CJ"))) {
-    stop("The 'case_types' argument must only include 'CS', 'SC', or 'CJ' cases.")
+    stop(
+      "The 'case_types' argument must only include 'CS', 'SC', or 'CJ' cases."
+    )
   }
 
   data <- ojo_tbl("case") |>
     dplyr::filter(
-      .data$case_type %in% case_types_upper,
-      .data$year %in% file_years
+      case_type %in% case_types_upper,
+      year %in% file_years
     )
 
   if (all(districts != "all")) {
-
     districts_upper <- toupper(districts)
 
     data <- data |>
-      dplyr::filter(.data$district %in% districts_upper)
+      dplyr::filter(district %in% districts_upper)
   }
 
   selection <- c("id", "district", "case_type", "date_filed", "date_closed")
@@ -96,7 +101,11 @@ ojo_add_issues <- function(data, vars = NULL, ...) {
   if (is.null(vars)) {
     issues <- issues |>
       dplyr::select(
-        case_id, rank, description, disposition, disposition_date
+        case_id,
+        rank,
+        description,
+        disposition,
+        disposition_date
       )
   } else {
     if (vars != "all") {
@@ -107,10 +116,7 @@ ojo_add_issues <- function(data, vars = NULL, ...) {
   }
 
   data <- data |>
-    dplyr::left_join(issues,
-      by = c("id" = "case_id"),
-      suffix = c("", ".issue")
-    )
+    dplyr::left_join(issues, by = c("id" = "case_id"), suffix = c("", ".issue"))
 
   return(data)
 }
