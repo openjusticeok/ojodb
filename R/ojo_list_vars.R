@@ -4,8 +4,7 @@
 #'
 #' @param table The name of the table to query
 #' @param schema The name of the schema to query
-#' @param ... Placeholder for additional arguments
-#' @param .con The ojodb connection to use
+#' @param con The ojodb connection to use
 #'
 #' @export ojo_list_vars
 #'
@@ -17,11 +16,11 @@
 #' ojo_list_vars("inmate", "iic")
 #' }
 #'
-ojo_list_vars <- function(table, schema = "public", ..., .con = NULL) {
+ojo_list_vars <- function(table, schema = "public", con = NULL) {
   ojo_tbl(
     table = "columns",
     schema = "information_schema",
-    con = .con
+    con = con
   ) |>
     dplyr::filter(
       table_schema == schema,
