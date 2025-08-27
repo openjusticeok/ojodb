@@ -1,0 +1,75 @@
+┌─────────────────────────────────────────────────────────────────────────────┐
+| >> OJODB Roles Diagram <<<                                                  │
+└─────────────────────────────────────────────────────────────────────────────┘
+└─────────────────────────────────────────────────────────────────────────────┘
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌────────────────────┐
+│  all_table_owner   │  ←─ (LOGIN, CREATEDB, CREATEROLE, owns all objects, NOINHERIT)
+└────────────────────┘
+
+       (does not inherit or is inherited by anything)
+
+┌────────────────────┐
+│  all_table_admin   │  ←─ (NOLOGIN, ALL PRIVILEGES on all tables/schemas, inherits all_table_writer)
+└─────────┬──────────┘
+          │
+          ▼
+┌────────────────────┐
+│  all_table_writer  │  ←─ (NOLOGIN, INSERT, UPDATE on all tables/schemas, inherits all_table_reader)
+└─────────┬──────────┘
+          │
+          ▼
+┌────────────────────┐
+│  all_table_reader  │  ←─ (NOLOGIN, SELECT on all tables/schemas)
+└─────────┬──────────┘
+          │
+          ▼
+┌────────────────────┐
+│   ojo_analyst      │  ←─ (NOLOGIN, No direct permissions, inherits all_table_reader)
+└─────────┬──────────┘
+          │
+          ▼
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│                             User Roles (LOGIN)                                       │
+├────────────────────┬─────────────────┬───────────────┬─────────────────┬─────────────┤
+│ > abell            │ > aflores       │ > aharvey     │ > bgregory      │ > prozhkova │
+│                    │                 │               │                 │             │
+│ ojo_analyst        │ ojo_analyst     │ ojo_analyst   │ ojo_analyst     │ ojo_analyst │
+│ all_table_admin    │ all_table_admin │               │ all_table_admin │             │
+└────────────────────┴─────────────────┴───────────────┴─────────────────┴─────────────┘
+
+──────────────────────────────────────────────────────────────────────────────
+Domain-Specific Roles (no LOGIN):
+
+  For each domain (e.g., doc_tracker, eviction_addresses, ocdc_new, oscn, etc):
+
+    ┌────────────────────────────────────────────┐
+    │ domain_<domain>_reader                     │  (SELECT on <domain> schema)
+    └──────────────┬─────────────────────────────┘
+                   │
+                   ▼
+    ┌────────────────────────────────────────────┐
+    │ domain_<domain>_writer                     │  (INSERT, UPDATE on <domain> schema)
+    └────────────────────────────────────────────┘
+
+  (Each writer inherits its corresponding reader.)
+
+──────────────────────────────────────────────────────────────────────────────
+Integration Roles (LOGIN):
+
+  For each external integration (e.g. GitHub actions, Shiny, access for other orgs, etc.):
+
+    ┌────────────────────────────────────────────┐
+    │ integration_<integration_>                 │  (Inherits whatever permissions are needed for that specific purpose)
+    └────────────────────────────────────────────┘
+
+──────────────────────────────────────────────────────────────────────────────
+To create new tables / schemas / roles:
+
+  1) Log in as all_table_owner
+  2) Create new tables / schemas as needed, following general structure we already have
+  3) Create new roles as needed (e.g. domain_<new domain>_reader, domain_<new domain>_writer, integration_<new thing>)
+  4) Grant permissions to those roles, using existing domains as much as possible
+  5) Configure default privileges for those roles via ALTER DEFAULT PRIVILEGES ...
+  6) Ensure everything is documented in the script ojodb-base-config.sql and in Notion.
