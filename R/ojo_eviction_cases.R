@@ -16,6 +16,7 @@
 #' @param more_case_variables Additional variables from case table to include in the output
 #' @param more_issue_variables Additional variables from issue table to include in the output
 #' @param get_judgments Logical value indicating whether to include eviction judgment information in the output
+#' @param con The OJO database connection to use
 #'
 #' @importFrom dplyr filter select left_join mutate case_when
 #' @importFrom stringr str_detect
@@ -41,19 +42,22 @@
 #' }
 #'
 
-ojo_eviction_cases <- function(districts = "all",
-                               ...,
-                               date_start = NULL,
-                               date_end = NULL,
-                               more_case_variables = NULL,
-                               more_issue_variables = NULL,
-                               get_judgments = TRUE) {
+ojo_eviction_cases <- function(
+  districts = "all",
+  ...,
+  date_start = NULL,
+  date_end = NULL,
+  more_case_variables = NULL,
+  more_issue_variables = NULL,
+  get_judgments = TRUE,
+  con = NULL
+) {
   #### Variable Handling
   .district <- toupper(districts)
 
   ##### Data Wrangling / Cleaning
   ## Construct Data
-  data <- ojodb::ojo_tbl("case")
+  data <- ojodb::ojo_tbl("case", con = con)
 
   if (!any(.district == "ALL")) {
     data <- data |>
@@ -72,14 +76,21 @@ ojo_eviction_cases <- function(districts = "all",
 
   case_vars <- unique(
     c(
-      "id", "district", "date_filed", "date_closed", "status",
+      "id",
+      "district",
+      "date_filed",
+      "date_closed",
+      "status",
       more_case_variables
     )
   )
 
   issue_vars <- unique(
     c(
-      "id", "case_id", "description", "disposition",
+      "id",
+      "case_id",
+      "description",
+      "disposition",
       more_issue_variables
     )
   )
@@ -88,7 +99,7 @@ ojo_eviction_cases <- function(districts = "all",
     dplyr::filter(case_type == "SC") |>
     dplyr::select(dplyr::all_of(case_vars)) |>
     dplyr::left_join(
-      ojodb::ojo_tbl("issue") |>
+      ojodb::ojo_tbl("issue", con = con) |>
         dplyr::select(dplyr::all_of(issue_vars)),
       by = c("id" = "case_id"),
       suffix = c(".case", ".issue")
@@ -108,26 +119,33 @@ ojo_eviction_cases <- function(districts = "all",
 
   if (get_judgments == TRUE) {
     data <- data |>
-      dplyr::mutate(clean_disposition = case_when(
-        stringr::str_detect(disposition, "DISMISS") ~ "DISMISSED",
-        stringr::str_detect(disposition, "JUDGMENT|JUDGEMENT") ~
-          case_when(
-            stringr::str_detect(disposition, "DEFAULT") ~ "DEFAULT JUDGMENT",
-            stringr::str_detect(disposition, "PLAINTIFF") ~ "JUDGMENT FOR PLAINTIFF",
-            stringr::str_detect(disposition, "DEFENDANT") ~ "JUDGMENT FOR DEFENDANT",
-            TRUE ~ "JUDGMENT ENTERED"
-          ),
-        stringr::str_detect(disposition, "ADVISEMENT") ~ "UNDER ADVISEMENT"
-      ))
+      dplyr::mutate(
+        clean_disposition = case_when(
+          stringr::str_detect(disposition, "DISMISS") ~ "DISMISSED",
+          stringr::str_detect(disposition, "JUDGMENT|JUDGEMENT") ~
+            case_when(
+              stringr::str_detect(disposition, "DEFAULT") ~ "DEFAULT JUDGMENT",
+              stringr::str_detect(disposition, "PLAINTIFF") ~
+                "JUDGMENT FOR PLAINTIFF",
+              stringr::str_detect(disposition, "DEFENDANT") ~
+                "JUDGMENT FOR DEFENDANT",
+              TRUE ~ "JUDGMENT ENTERED"
+            ),
+          stringr::str_detect(disposition, "ADVISEMENT") ~ "UNDER ADVISEMENT"
+        )
+      )
 
     data <- data |>
       dplyr::mutate(
         judgment = dplyr::case_when(
           clean_disposition %in%
-            c("DEFAULT JUDGMENT", "JUDGMENT FOR PLAINTIFF") ~ "Eviction Granted",
+            c("DEFAULT JUDGMENT", "JUDGMENT FOR PLAINTIFF") ~
+            "Eviction Granted",
           clean_disposition == "JUDGMENT FOR DEFENDANT" ~ "Eviction Denied",
-          clean_disposition == "JUDGMENT ENTERED" ~ "Case Decided, Outcome Unknown",
-          clean_disposition == "DISMISSED" ~ "Case Dismissed (Settled Outside Court)",
+          clean_disposition == "JUDGMENT ENTERED" ~
+            "Case Decided, Outcome Unknown",
+          clean_disposition == "DISMISSED" ~
+            "Case Dismissed (Settled Outside Court)",
           clean_disposition == "UNDER ADVISEMENT" ~ "Case Under Advisement",
           .default = "Case Undecided"
         )

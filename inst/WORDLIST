@@ -16,9 +16,13 @@ Renviron
 SSL
 Stackoverflow
 Tibble
+URI
+YAML
+args
 auth
 casenum
 civ
+config
 crim
 dbConnect
 dbPool
@@ -27,6 +31,7 @@ dplyr
 duckdb
 env
 ggplot
+hardcoded
 namespacing
 ojo
 pkgdown

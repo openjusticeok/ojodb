@@ -1,5 +1,5 @@
 test_that("ojo_query executes SQL and returns a tibble", {
-  skip_on_runiverse()
+  skip_if_no_db()
 
   # A simple, safe query that assumes the existence of a 'case' table
   query <- 'SELECT * FROM "case" LIMIT 10'
@@ -16,13 +16,11 @@ test_that("ojo_query executes SQL and returns a tibble", {
       nrow(),
     10L
   )
-
-  withr::deferred_run(envir = ojo_env())
 })
 
 # Test error handling for malformed queries
 test_that("ojo_query handles SQL errors", {
-  skip_on_runiverse()
+  skip_if_no_db()
 
   # Intentionally malformed SQL query
   bad_query <- "SELEC * FROM nonexistent_table"
@@ -32,6 +30,4 @@ test_that("ojo_query handles SQL errors", {
     "Can't query fields",
     fixed = TRUE
   )
-
-  withr::deferred_run(envir = ojo_env())
 })

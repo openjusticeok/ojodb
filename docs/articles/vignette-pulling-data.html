@@ -5,67 +5,59 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Pulling court data with ojodb • ojodb</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Pulling court data with ojodb">
 <meta name="description" content="This guide will walk through the process of pulling and analyzing court data from the OJO databse.
 ">
-<title>Pulling court data with ojodb • ojodb</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
-<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Pulling court data with ojodb">
 <meta property="og:description" content="This guide will walk through the process of pulling and analyzing court data from the OJO databse.
 ">
 <meta property="og:image" content="/logo.png">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
-    
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
-    
+
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+
     <a class="navbar-brand me-2" href="../index.html">ojodb</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.11.1</small>
 
-    
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item">
-  <a class="nav-link" href="../reference/index.html">Reference</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/vignette-connecting-to-ojo.html">Connecting to ojodb</a>
-    <a class="dropdown-item" href="../articles/vignette-pulling-data.html">Pulling court data with ojodb</a>
-  </div>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/vignette-connecting-to-ojo.html">Connecting to ojodb</a></li>
+    <li><a class="dropdown-item" href="../articles/vignette-pulling-data.html">Pulling court data with ojodb</a></li>
+  </ul>
 </li>
-<li class="nav-item">
-  <a class="nav-link" href="../news/index.html">Changelog</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
-<form class="form-inline my-2 my-lg-0" role="search">
-        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
-</form>
-
-      <ul class="navbar-nav"></ul>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/openjusticeok/ojodb/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+      </ul>
 </div>
 
-    
+
   </div>
 </nav><div class="container template-article">
 
@@ -77,7 +69,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Pulling court data with ojodb</h1>
             
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/openjusticeok/ojodb/blob/HEAD/vignettes/vignette-pulling-data.Rmd" class="external-link"><code>vignettes/vignette-pulling-data.Rmd</code></a></small>
       <div class="d-none name"><code>vignette-pulling-data.Rmd</code></div>
     </div>
 
@@ -125,8 +117,8 @@ Tulsa county in each month from 2016-2022?</p>
 <h3 id="before-you-proceed">Before you proceed:<a class="anchor" aria-label="anchor" href="#before-you-proceed"></a>
 </h3>
 <p>This vignette assumes that A) you’ve already installed
-<code>{ojodb}</code>, and B) your credentials and access to the database
-are properly configured – most of the <code>{ojodb}</code> functions
+<a href="https://github.com/openjusticeok/ojodb" class="external-link">ojodb</a>, and B) your credentials and access to the database
+are properly configured – most of the <a href="https://github.com/openjusticeok/ojodb" class="external-link">ojodb</a> functions
 won’t work if not. It can be a bit tricky to get working, so please ask
 for help if you have any issues!</p>
 <!-- For more information on how to get everything set up, see `vignette("vignette-connecting-to-ojo")`. -->
@@ -142,21 +134,25 @@ big filing cabinet, we can imagine the schemas as separate drawers. You
 can see all of them using the <code><a href="../reference/ojo_list_schemas.html">ojo_list_schemas()</a></code>
 function.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">ojodb</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># Load the library if you haven't already:</span></span>
+<span><span class="co"># library(ojodb)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/ojo_list_schemas.html">ojo_list_schemas</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 1</span></span></span>
-<span><span class="co">#&gt;   schema            </span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> archive           </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> doc_tracker       </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> eviction_addresses</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> eviction_dashboard</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> iic               </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> ocdc              </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> odoc              </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> public</span></span></code></pre></div>
+<span><span class="co">#&gt; # A tibble: 12 × 1</span></span>
+<span><span class="co">#&gt;    schema            </span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;             </span></span>
+<span><span class="co">#&gt;  1 archive           </span></span>
+<span><span class="co">#&gt;  2 doc_tracker       </span></span>
+<span><span class="co">#&gt;  3 eviction_addresses</span></span>
+<span><span class="co">#&gt;  4 eviction_dashboard</span></span>
+<span><span class="co">#&gt;  5 iic               </span></span>
+<span><span class="co">#&gt;  6 ocdc              </span></span>
+<span><span class="co">#&gt;  7 ocdc_new          </span></span>
+<span><span class="co">#&gt;  8 odoc              </span></span>
+<span><span class="co">#&gt;  9 oscn              </span></span>
+<span><span class="co">#&gt; 10 oscn_test         </span></span>
+<span><span class="co">#&gt; 11 ppb               </span></span>
+<span><span class="co">#&gt; 12 public</span></span></code></pre></div>
 <p>Each schema, generally speaking, relates to one of our data types /
 topics / policy areas. Each one contains tables that store data related
 to that policy area. Among others, we have:</p>
@@ -179,27 +175,29 @@ default schema, <code>public</code>. Let’s open the “drawer” and see
 what kind of data is inside.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ojo_list_tables.html">ojo_list_tables</a></span><span class="op">(</span>schema <span class="op">=</span> <span class="st">"public"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 18 × 2</span></span></span>
+<span><span class="co">#&gt; # A tibble: 20 × 2</span></span>
 <span><span class="co">#&gt;    schema table           </span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> public appellate_count </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> public case            </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> public representation  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> public citation        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> public minute          </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> public issue           </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> public exception_log   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> public party           </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> public attorney_address</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> public count           </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> public migrations      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> public person_record   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> public marital_status  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> public attorney        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> public case_type       </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> public event           </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> public address         </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> public process_log</span></span></code></pre></div>
+<span><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;           </span></span>
+<span><span class="co">#&gt;  1 public _sqlx_migrations</span></span>
+<span><span class="co">#&gt;  2 public address         </span></span>
+<span><span class="co">#&gt;  3 public appellate_count </span></span>
+<span><span class="co">#&gt;  4 public attorney        </span></span>
+<span><span class="co">#&gt;  5 public attorney_address</span></span>
+<span><span class="co">#&gt;  6 public case            </span></span>
+<span><span class="co">#&gt;  7 public case_type       </span></span>
+<span><span class="co">#&gt;  8 public citation        </span></span>
+<span><span class="co">#&gt;  9 public count           </span></span>
+<span><span class="co">#&gt; 10 public document        </span></span>
+<span><span class="co">#&gt; 11 public event           </span></span>
+<span><span class="co">#&gt; 12 public exception_log   </span></span>
+<span><span class="co">#&gt; 13 public issue           </span></span>
+<span><span class="co">#&gt; 14 public marital_status  </span></span>
+<span><span class="co">#&gt; 15 public migrations      </span></span>
+<span><span class="co">#&gt; 16 public minute          </span></span>
+<span><span class="co">#&gt; 17 public party           </span></span>
+<span><span class="co">#&gt; 18 public person_record   </span></span>
+<span><span class="co">#&gt; 19 public process_log     </span></span>
+<span><span class="co">#&gt; 20 public representation</span></span></code></pre></div>
 <p>If a schema is a drawer in our filing cabinet, then tables are the
 folders inside. The <code>public</code> schema contains several
 different tables, all of which relate back to our court data. Here are
@@ -225,22 +223,20 @@ the <code><a href="../reference/ojo_list_vars.html">ojo_list_vars()</a></code> f
 closer look at the main <code>case</code> table:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ojo_list_vars.html">ojo_list_vars</a></span><span class="op">(</span>schema <span class="op">=</span> <span class="st">"public"</span>, table <span class="op">=</span> <span class="st">"case"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># Source:   SQL [?? x 1]</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># Database: postgres  [bgregory@34.122.10.67:5432/ojodb]</span></span></span>
-<span><span class="co">#&gt;    column_name</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> id         </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> title      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> district   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> case_type  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> year       </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> case_number</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> date_filed </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> date_closed</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> status     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> judge      </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with more rows</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; # A tibble: 21 × 1</span></span>
+<span><span class="co">#&gt;    column_name         </span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;               </span></span>
+<span><span class="co">#&gt;  1 appealed_from       </span></span>
+<span><span class="co">#&gt;  2 attorneys           </span></span>
+<span><span class="co">#&gt;  3 case_number         </span></span>
+<span><span class="co">#&gt;  4 case_type           </span></span>
+<span><span class="co">#&gt;  5 citation_information</span></span>
+<span><span class="co">#&gt;  6 counts              </span></span>
+<span><span class="co">#&gt;  7 created_at          </span></span>
+<span><span class="co">#&gt;  8 date_closed         </span></span>
+<span><span class="co">#&gt;  9 date_filed          </span></span>
+<span><span class="co">#&gt; 10 district            </span></span>
+<span><span class="co">#&gt; # ℹ 11 more rows</span></span></code></pre></div>
 <p>We’re interested in criminal cases right now, so we’ll be pulling
 data from this table for our example research question.</p>
 <!-- ### One more note: -->
@@ -279,16 +275,16 @@ the <code>count</code> table.</p>
 <span>                              case_types <span class="op">=</span> <span class="st">"CM"</span>, <span class="co"># "CM" is short for "criminal misdemeanor"</span></span>
 <span>                              file_years <span class="op">=</span> <span class="fl">2016</span><span class="op">:</span><span class="fl">2022</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="co"># you can add things like filter(), select(), etc. here</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>The <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code> function we’re using is from the
+<span>  <span class="fu">collect</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>The <code>collect()</code> function we’re using is from the
 <a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a> package. Our helper function
 <code><a href="../reference/ojo_crim_cases.html">ojo_crim_cases()</a></code> uses the provided arguments to put
-together a query to our database, and the <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code>
+together a query to our database, and the <code>collect()</code>
 function executes that query and returns the result as a lazy tibble
 into your R environment. If we wanted to, we could add in additional
 filtering, sorting, etc. by adding <a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a> functions like
-<code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code>, etc. before the
-<code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code> call. But for now, we want to see everything.</p>
+<code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code>, <code>select()</code>, etc. before the
+<code>collect()</code> call. But for now, we want to see everything.</p>
 <div class="section level3">
 <h3 id="exploring-the-data-weve-pulled">Exploring the data we’ve pulled<a class="anchor" aria-label="anchor" href="#exploring-the-data-weve-pulled"></a>
 </h3>
@@ -319,7 +315,7 @@ here:</p>
 <span><span class="co"># count the rows.</span></span>
 <span><span class="va">charge_data</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 111200</span></span>
+<span><span class="co">#&gt; [1] 169063</span></span>
 <span></span>
 <span><span class="co"># How many total cases? --------------------------------------------------------</span></span>
 <span><span class="co"># There's more than one charge per case sometimes, so we need to see how many</span></span>
@@ -327,41 +323,41 @@ here:</p>
 <span></span>
 <span><span class="co"># Approach #1: Creating a new, unique district + case_number variable</span></span>
 <span><span class="va">charge_data</span> <span class="op">|&gt;</span></span>
-<span>  <span class="co"># Case numbers are unique within districts; </span></span>
+<span>  <span class="co"># Case numbers are unique within districts;</span></span>
 <span>  <span class="co"># e.g. Tulsa's CM-2023-001 is a different case than Oklahoma's CM-2023-001.</span></span>
 <span>  <span class="co"># We can create a new variable that will always be unique -- district + case_number</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>case_number_with_district <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">district</span>, <span class="va">case_number</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span><span class="va">case_number_with_district</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>case_number_with_district <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">district</span>, <span class="va">case_number</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">distinct</span><span class="op">(</span><span class="va">case_number_with_district</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 62186</span></span>
+<span><span class="co">#&gt; [1] 62205</span></span>
 <span></span>
-<span><span class="co"># This approach returns the number of unique case_number / district combinations, </span></span>
+<span><span class="co"># This approach returns the number of unique case_number / district combinations,</span></span>
 <span><span class="co"># but not much else.</span></span>
 <span></span>
 <span><span class="co"># Approach 2: Making a new summary dataset with group_by() + summarize()</span></span>
 <span><span class="va">case_summary</span> <span class="op">&lt;-</span> <span class="va">charge_data</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">district</span>, <span class="va">case_number</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span></span>
-<span>    n_charges <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span></span>
-<span>    <span class="co"># Note: if you want, you can add further summary variables here. </span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">district</span>, <span class="va">case_number</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">summarize</span><span class="op">(</span></span>
+<span>    n_charges <span class="op">=</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="co"># Note: if you want, you can add further summary variables here.</span></span>
 <span>    <span class="co"># For example, maybe you want to know how many charges in each case led to</span></span>
 <span>    <span class="co"># a conviction. You could do something like this:</span></span>
 <span>    <span class="co"># n_convictions = sum(disposition == "CONVICTION", na.rm = T)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">case_summary</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 62186</span></span>
+<span><span class="co">#&gt; [1] 62205</span></span>
 <span></span>
 <span><span class="co"># This tells us the number, and also leaves us with a helpful new case_summary</span></span>
 <span><span class="co"># dataset that we can use later on, if we want to know more.</span></span></code></pre></div>
-<p>It looks like <code>charge_data</code> includes 111,200 rows. In
-other words, our data shows that there were 111,200 total
+<p>It looks like <code>charge_data</code> includes 169,063 rows. In
+other words, our data shows that there were 169,063 total
 <strong>charges</strong> filed in Oklahoma and Tulsa county misdemeanor
 cases from 2016-2022.</p>
-<p>On the other hand, it looks like there are 62,186 unique combinations
+<p>On the other hand, it looks like there are 62,205 unique combinations
 of <code>district</code> and <code>case_number</code> (and an equal
 number of rows in our new summary dataframe, <code>case_summary</code>).
-In other words, our data shows 62,186 total misdemeanor
+In other words, our data shows 62,205 total misdemeanor
 <strong>cases</strong> filed in Oklahoma and Tulsa county from
 2016-2022.</p>
 <p>If we wanted to, we could divide those numbers (or use our handy
@@ -370,12 +366,12 @@ charges per case:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Total charges / total cases = Avg. number of charges per case</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">charge_data</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">case_summary</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1.788184</span></span>
+<span><span class="co">#&gt; [1] 2.717836</span></span>
 <span></span>
 <span><span class="co"># Different approach, same thing</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">case_summary</span><span class="op">$</span><span class="va">n_charges</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1.788184</span></span></code></pre></div>
-<p>It seems there’s an average of 1.79 counts per misdemeanor case in
+<span><span class="co">#&gt; [1] 2.717836</span></span></code></pre></div>
+<p>It seems there’s an average of 2.72 counts per misdemeanor case in
 this dataset. Neat!</p>
 <p>It’s very helpful to always be thinking about what the rows in your
 data represent. Keeping track of what exactly you’re looking at
@@ -403,19 +399,21 @@ For example:</p>
 <span></span>
 <span><span class="co"># We're going to look at charges, not cases here</span></span>
 <span><span class="va">charge_data</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span></span>
 <span>    <span class="co"># Our end goal is to see monthly filings, so we'll use that same timeframe</span></span>
 <span>    month_filed <span class="op">=</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/round_date.html" class="external-link">floor_date</a></span><span class="op">(</span><span class="va">date_filed</span>, <span class="st">"months"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">district</span>, <span class="va">month_filed</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="co"># Our two most important checks, geography and time</span></span>
+<span>  <span class="fu">count</span><span class="op">(</span><span class="va">district</span>, <span class="va">month_filed</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="co"># Our two most important checks, geography and time</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">month_filed</span>,</span>
 <span>             y <span class="op">=</span> <span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="co"># I'm choosing geom_col() over geom_line() because I want to see any gaps clearly</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">district</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Total charges filed per month in CM cases"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="vignette-pulling-data_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
+<div class="float">
+<img src="figure/unnamed-chunk-9-1.png" alt="plot of chunk unnamed-chunk-9"><div class="figcaption">plot of chunk unnamed-chunk-9</div>
+</div>
 <p>This graph looks pretty much as we’d expect it to – there’s not a
 huge difference between Oklahoma and Tulsa counties (which makes sense,
 given that they’re similar in size), and there aren’t any conspicuously
@@ -517,14 +515,14 @@ string:</p>
 <p>While I was writing this vignette, I found it by searching “drugs”
 and “marijuana” on our Github. It should really be a lot easier and more
 streamlined than that, though, so in the future this will hopefully be
-integrated as part of the <code>{ojodb}</code> package.</p>
+integrated as part of the <a href="https://github.com/openjusticeok/ojodb" class="external-link">ojodb</a> package.</p>
 <p>We’ll start by adding a new variable that simply classifies each
 charge as drug-related or not.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># We'll save it as a new dataframe, charge_data_cleaned</span></span>
 <span><span class="va">charge_data_cleaned</span> <span class="op">&lt;-</span> <span class="va">charge_data</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">counts</span>, <span class="va">open_counts</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="co"># We don't need every column, so let's drop the extras</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">counts</span>, <span class="va">open_counts</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="co"># We don't need every column, so let's drop the extras</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span></span>
 <span>    drug_charge <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="va">drugs</span>, <span class="co"># Do any of our "drug" strings...</span></span>
 <span>                        x <span class="op">=</span> <span class="va">count_as_filed</span>, <span class="co"># ...show up in count_as_filed?</span></span>
 <span>                        ignore.case <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># ignore.case is important!</span></span>
@@ -541,34 +539,33 @@ too many assumptions about the data.</p>
 expect it to.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">charge_data_cleaned</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">district</span>, <span class="va">case_number</span>, <span class="va">count_as_filed</span>, <span class="va">drug_charge</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">drug_charge</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_sample</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="co"># We'll just look at a random sample of 10 in each category</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 4</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   drug_charge [2]</span></span></span>
-<span><span class="co">#&gt;    district case_number  count_as_filed                                  drug_…¹</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                           <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> TULSA    CM-2016-299  ES6, ATTEMPTING TO ELUDE A POLICE OFFICER       FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> TULSA    CM-2022-4275 FFP, FALSE PRETENSE UNDER $1000 OR CON GAME     FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> TULSA    CM-2017-536  OLAR, PETIT LARCENY                             FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> OKLAHOMA CM-2020-1278 FFP, OBTAINING PROPERTY BY TRICK/DECEPTION OR … FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> OKLAHOMA CM-2018-4264 ES6, ELUDING A POLICE OFFICER                   FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> TULSA    CM-2018-754  ST5, IMPROPER STOPPING                          FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> TULSA    CM-2017-1894 OLAR, PETIT LARCENY                             FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> TULSA    CM-2018-77   DL2, DRIVING UNDER SUSPENSION / DUS             FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> TULSA    CM-2021-3685 RCSP, RECEIVE/POSSESS OR CONCEAL STOLEN PROPER… FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> OKLAHOMA CM-2020-1057 RK1, RECKLESS DRIVING                           FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> TULSA    CM-2016-4412 DU4, POSSESSION OF CONTROLLED DRUG              TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> OKLAHOMA CM-2022-2831 DU9II, UNLAWFUL POSSESSION OF CDS- METHAPHETAM… TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> TULSA    CM-2018-2101 DR3, POSSESSION OF DRUG PARAPHERNALIA           TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> TULSA    CM-2018-3113 DI2M, DUI DRUGS &amp; ALCOHOL (MUNICIPAL ARREST)    TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> TULSA    CM-2022-2369 DU9, UNLAWFUL POSSESSION OF CONTROLLED DRUG     TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> TULSA    CM-2016-4125 DI2D, DUI DRUGS                                 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> OKLAHOMA CM-2020-1461 DU9II, POSSESSION OF CDS- COCAINE               TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> TULSA    CM-2018-4038 DR3, POSSESSION OF DRUG PARAPHERNALIA           TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> TULSA    CM-2016-4754 DR3MV, POSSESSION OF DRUG PARAPHERNALIA         TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> TULSA    CM-2022-1967 DR3, UNLAWFUL POSSESSION OF DRUG PARAPHERNALIA  TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with abbreviated variable name ¹​drug_charge</span></span></span></code></pre></div>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="va">district</span>, <span class="va">case_number</span>, <span class="va">count_as_filed</span>, <span class="va">drug_charge</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">drug_charge</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">slice_sample</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="co"># We'll just look at a random sample of 10 in each category</span></span>
+<span><span class="co">#&gt; # A tibble: 20 × 4</span></span>
+<span><span class="co">#&gt; # Groups:   drug_charge [2]</span></span>
+<span><span class="co">#&gt;    district case_number  count_as_filed          drug_charge</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;    &lt;chr&gt;        &lt;chr&gt;                   &lt;lgl&gt;      </span></span>
+<span><span class="co">#&gt;  1 OKLAHOMA CM-2019-3729 ABDOM, DOMESTIC ASSAUL… FALSE      </span></span>
+<span><span class="co">#&gt;  2 OKLAHOMA CM-2016-174  FFP, OBTAINING MONEY O… FALSE      </span></span>
+<span><span class="co">#&gt;  3 TULSA    CM-2018-2120 DI5, TRANSPORTING OPEN… FALSE      </span></span>
+<span><span class="co">#&gt;  4 TULSA    CM-2016-2639 WE6, TRANSPORTING LOAD… FALSE      </span></span>
+<span><span class="co">#&gt;  5 TULSA    CM-2018-5596 OBS, OBSTRUCTING AN OF… FALSE      </span></span>
+<span><span class="co">#&gt;  6 TULSA    CM-2022-3716 LMFR, LARCENY OF MERCH… FALSE      </span></span>
+<span><span class="co">#&gt;  7 OKLAHOMA CM-2021-3261 OBS, OBSTRUCTING AN OF… FALSE      </span></span>
+<span><span class="co">#&gt;  8 OKLAHOMA CM-2018-2871 OWN, MAKING A FALSE DE… FALSE      </span></span>
+<span><span class="co">#&gt;  9 OKLAHOMA CM-2022-3214 DI5, TRANSPORTING AN O… FALSE      </span></span>
+<span><span class="co">#&gt; 10 OKLAHOMA CM-2017-396  FR5, FAILURE TO CARRY … FALSE      </span></span>
+<span><span class="co">#&gt; 11 OKLAHOMA CM-2019-2013 DU9, POSSESSION OF A C… TRUE       </span></span>
+<span><span class="co">#&gt; 12 TULSA    CM-2016-5534 DI2DM, DUI DRUGS (MUNI… TRUE       </span></span>
+<span><span class="co">#&gt; 13 OKLAHOMA CM-2022-1459 DR3, UNLAWFUL POSSESSI… TRUE       </span></span>
+<span><span class="co">#&gt; 14 OKLAHOMA CM-2019-1679 DU9II, POSSESSION OF A… TRUE       </span></span>
+<span><span class="co">#&gt; 15 OKLAHOMA CM-2021-1077 DR3, UNLAWFUL POSSESSI… TRUE       </span></span>
+<span><span class="co">#&gt; 16 OKLAHOMA CM-2019-1648 DU9, POSSESSION OF A C… TRUE       </span></span>
+<span><span class="co">#&gt; 17 TULSA    CM-2018-95   DR3, POSSESSION OF DRU… TRUE       </span></span>
+<span><span class="co">#&gt; 18 TULSA    CM-2018-2695 DR3, POSSESSION OF DRU… TRUE       </span></span>
+<span><span class="co">#&gt; 19 OKLAHOMA CM-2022-2759 DR3, UNLAWFUL POSSESSI… TRUE       </span></span>
+<span><span class="co">#&gt; 20 TULSA    CM-2018-2544 DR3MV, POSSESSION OF D… TRUE</span></span></code></pre></div>
 <p>It looks like our regex search was pretty successful! Although it may
 raise some new questions: does driving under the influence count? Is
 alcohol technically a “drug” in those cases, or is that different? What
@@ -594,24 +591,24 @@ our <code>case_summary</code> dataframe, this time with a new variable
 <code>drug_charges_present</code>:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">case_summary_cleaned</span> <span class="op">&lt;-</span> <span class="va">charge_data_cleaned</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">district</span>, <span class="va">case_number</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">district</span>, <span class="va">case_number</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="co"># We want to keep the date_filed, so we'll use transmute() this time instead of summarize()</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/transmute.html" class="external-link">transmute</a></span><span class="op">(</span> </span>
+<span>  <span class="fu">transmute</span><span class="op">(</span></span>
 <span>    date_filed <span class="op">=</span> <span class="va">date_filed</span>,</span>
 <span>    <span class="co"># It will be helpful to have all the values of count_as_filed verbatim for double-checking</span></span>
 <span>    list_all_charges <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">count_as_filed</span>, collapse <span class="op">=</span> <span class="st">"; "</span><span class="op">)</span>,</span>
-<span>    n_total_charges <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    n_total_charges <span class="op">=</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    <span class="co"># Count the number of rows where drug_charge == TRUE</span></span>
 <span>    n_drug_charges <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">drug_charge</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>    drug_charges_present <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">n_drug_charges</span> <span class="op">&gt;</span> <span class="fl">0</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>    drug_charges_present <span class="op">=</span> <span class="fu">if_else</span><span class="op">(</span><span class="va">n_drug_charges</span> <span class="op">&gt;</span> <span class="fl">0</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># transmute() leaves duplicate rows, so we'll drop those</span></span>
+<span>  <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">distinct</span><span class="op">(</span><span class="op">)</span> <span class="co"># transmute() leaves duplicate rows, so we'll drop those</span></span>
 <span></span>
 <span><span class="co"># Alternative approach:</span></span>
 <span><span class="co"># case_summary_cleaned &lt;- charge_data_cleaned |&gt;</span></span>
 <span><span class="co">#   group_by(district, case_number) |&gt;</span></span>
-<span><span class="co">#   summarize( </span></span>
+<span><span class="co">#   summarize(</span></span>
 <span><span class="co">#     date_filed = unique(date_filed),</span></span>
 <span><span class="co">#     list_all_charges = paste(count_as_filed, collapse = "; "),</span></span>
 <span><span class="co">#     n_total_charges = n(),</span></span>
@@ -624,43 +621,43 @@ can double check the result just like before, and see how many drug
 cases we have total:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">case_summary_cleaned_drugs</span> <span class="op">&lt;-</span> <span class="va">case_summary_cleaned</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">drug_charges_present</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">drug_charges_present</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">case_summary_cleaned</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">drug_charges_present</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_sample</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 7</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   drug_charges_present [2]</span></span></span>
-<span><span class="co">#&gt;    district case_number  date_filed list_all_charges     n_tot…¹ n_dru…² drug_…³</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> TULSA    CM-2019-1793 2019-04-12 DI1, DUI ALCOHOL; S…       3       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> OKLAHOMA CM-2016-787  2016-03-21 DE0, OPERATING A VE…       2       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> OKLAHOMA CM-2019-566  2019-02-08 ABDOM, DOMESTIC ABU…       3       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> TULSA    CM-2017-1854 2017-04-26 ABDOM, ASSAULT AND …       1       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> OKLAHOMA CM-2018-1046 2018-03-20 DI1M, DRIVING WHILE…       2       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> TULSA    CM-2018-4359 2018-09-21 DI1, DUI ALCOHOL; I…       4       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> TULSA    CM-2018-2104 2018-05-17 CCV, UNAUTHORIZED U…       1       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> TULSA    CM-2020-3693 2020-10-27 DL1, DRIVING WITH L…       1       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> OKLAHOMA CM-2017-2462 2017-07-24 RK1, RECKLESS DRIVI…       3       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> OKLAHOMA CM-2017-1150 2017-04-13 ABDOM, DOMESTIC ABU…       2       0 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> OKLAHOMA CM-2020-3531 2020-12-01 DI1, DRIVING UNDER …       4       2 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> OKLAHOMA CM-2021-3015 2021-10-21 DU9II, UNLAWFUL POS…       1       1 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> OKLAHOMA CM-2019-561  2019-02-08 DL1, DRIVING WHILE …       2       1 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> OKLAHOMA CM-2017-3299 2017-09-13 DU9II, POSSESSION O…       1       1 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> OKLAHOMA CM-2019-1844 2019-06-03 DU9II, POSSESSION O…       1       1 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> OKLAHOMA CM-2022-3941 2022-11-14 DU9II, UNLAWFUL POS…       1       1 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> TULSA    CM-2022-2331 2022-07-12 DI2M, DRIVING UNDER…       1       1 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> TULSA    CM-2021-3428 2021-10-20 DU9II, UNLAWFUL POS…       1       1 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> TULSA    CM-2017-3621 2017-08-09 DR3MV, POSSESSION O…       4       3 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> OKLAHOMA CM-2018-3492 2018-09-06 DU9IV, POSSESSION O…       2       1 TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with abbreviated variable names ¹​n_total_charges, ²​n_drug_charges,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   ³​drug_charges_present</span></span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">drug_charges_present</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">slice_sample</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 20 × 7</span></span>
+<span><span class="co">#&gt; # Groups:   drug_charges_present [2]</span></span>
+<span><span class="co">#&gt;    district case_number  date_filed list_all_charges        </span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;    &lt;chr&gt;        &lt;date&gt;     &lt;chr&gt;                   </span></span>
+<span><span class="co">#&gt;  1 TULSA    CM-2016-3206 2016-06-23 OBS, OBSTRUCTING AN OFF…</span></span>
+<span><span class="co">#&gt;  2 OKLAHOMA CM-2020-1346 2020-05-19 OBS, OBSTRUCTING AN OFF…</span></span>
+<span><span class="co">#&gt;  3 TULSA    CM-2021-1960 2021-06-02 TLCIFM, TRESPASS ON RAI…</span></span>
+<span><span class="co">#&gt;  4 TULSA    CM-2016-3210 2016-06-23 OBS, OBSTRUCTING AN OFF…</span></span>
+<span><span class="co">#&gt;  5 OKLAHOMA CM-2019-2666 2019-08-13 FR5, FAILURE TO CARRY V…</span></span>
+<span><span class="co">#&gt;  6 OKLAHOMA CM-2021-3799 2021-12-28 LMFR, LARCENY OF MERCHA…</span></span>
+<span><span class="co">#&gt;  7 OKLAHOMA CM-2018-709  2018-02-23 DR1, BEING INTOXICATED …</span></span>
+<span><span class="co">#&gt;  8 OKLAHOMA CM-2017-2036 2017-06-15 DISDEC, DISTRUBING THE …</span></span>
+<span><span class="co">#&gt;  9 TULSA    CM-2022-1368 2022-04-25 FFP, FALSE PRETENSE UND…</span></span>
+<span><span class="co">#&gt; 10 OKLAHOMA CM-2022-1462 2022-05-12 ALC211, SELLING, FURNIS…</span></span>
+<span><span class="co">#&gt; 11 OKLAHOMA CM-2019-795  2019-03-06 DI1, DRIVING WHILE UNDE…</span></span>
+<span><span class="co">#&gt; 12 OKLAHOMA CM-2021-2385 2021-08-24 RCSP, RECEIVE, POSSESS …</span></span>
+<span><span class="co">#&gt; 13 TULSA    CM-2018-1467 2018-04-04 DI2D, DUI DRUGS; DU4II,…</span></span>
+<span><span class="co">#&gt; 14 OKLAHOMA CM-2020-454  2020-02-27 DU9II, UNLAWFUL POSSESS…</span></span>
+<span><span class="co">#&gt; 15 OKLAHOMA CM-2022-1249 2022-04-19 DU9, UNLAWFUL POSSESSIO…</span></span>
+<span><span class="co">#&gt; 16 TULSA    CM-2017-3743 2017-08-17 DU9, POSSESSION OF CONT…</span></span>
+<span><span class="co">#&gt; 17 OKLAHOMA CM-2019-275  2019-01-22 DU9IV, POSSESSION OF A …</span></span>
+<span><span class="co">#&gt; 18 TULSA    CM-2019-3339 2019-07-24 DU9II, POSSESSION OF CO…</span></span>
+<span><span class="co">#&gt; 19 OKLAHOMA CM-2021-616  2021-03-10 DI1, DRIVING UNDER THE …</span></span>
+<span><span class="co">#&gt; 20 TULSA    CM-2017-421  2017-01-27 DU4, POSSESSION OF CONT…</span></span>
+<span><span class="co">#&gt; # ℹ 3 more variables: n_total_charges &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   n_drug_charges &lt;int&gt;, drug_charges_present &lt;lgl&gt;</span></span>
 <span></span>
 <span><span class="co"># view(case_summary_cleaned)</span></span>
 <span></span>
 <span><span class="co"># What proportion of these CM cases feature a drug charge?</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">case_summary_cleaned_drugs</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">case_summary_cleaned</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.2604766</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.260381</span></span></code></pre></div>
 <p>Nice! Now we have some nice, clean datasets to visualize. This stage
 of analysis is tough sometimes; it involves a lot of subjective
 decision-making, a lot of making the most of messy data, and a lot of
@@ -676,21 +673,21 @@ free to blaze your own path a little bit too!</p>
 <p>To finish things off, we’re going to make ourselves a nice, pretty
 graph showing how many of our drug cases were filed each month
 throughout the timespan of our data. We’ll be using the
-<code><a href="../reference/ojo_theme.html">ojo_theme()</a></code> and <code>ojo_colors()</code> functions from
-<code>{ojodb}</code> to take care of most of the styling.</p>
+<code>ojo_theme()</code> and <code>ojo_colors()</code> functions from
+<a href="https://github.com/openjusticeok/ojodb" class="external-link">ojodb</a> to take care of most of the styling.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">case_summary_cleaned_drugs</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span></span>
 <span>    month_filed <span class="op">=</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/round_date.html" class="external-link">floor_date</a></span><span class="op">(</span><span class="va">date_filed</span>, <span class="st">"months"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">month_filed</span>, <span class="va">district</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">count</span><span class="op">(</span><span class="va">month_filed</span>, <span class="va">district</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">month_filed</span>,</span>
 <span>             y <span class="op">=</span> <span class="va">n</span>,</span>
 <span>             color <span class="op">=</span> <span class="va">district</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="co"># Usually we want to show the y-axis down to zero</span></span>
-<span>  <span class="fu"><a href="../reference/ojo_theme.html">ojo_theme</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="../reference/ojo_color.html">ojo_color</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ojo_theme</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ojo_color</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"CM cases involving at least one drug charge,"</span>,</span>
 <span>    subtitle <span class="op">=</span> <span class="st">"Oklahoma and Tulsa county district courts, 2016-2022"</span>,</span>
@@ -700,7 +697,9 @@ throughout the timespan of our data. We’ll be using the
 <span><span class="st">    of Oklahoma State Court Network (OSCN.net) data."</span>,</span>
 <span>    color <span class="op">=</span> <span class="st">"District"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="vignette-pulling-data_files/figure-html/unnamed-chunk-15-1.png" width="700"></p>
+<div class="float">
+<img src="figure/unnamed-chunk-15-1.png" alt="plot of chunk unnamed-chunk-15"><div class="figcaption">plot of chunk unnamed-chunk-15</div>
+</div>
 <p>Looking good! If you’re curious about the increase seen around July
 of 2017, you can read about why that happened <a href="https://okpolicy.org/sq-780-already-reshaping-oklahomas-justice-system/" class="external-link">here</a>.</p>
 <p>We also frequently need to send out data in spreadsheet form. You’ll
@@ -754,28 +753,26 @@ please don’t hesitate to just ask! There’s a good chance OJO has been
 there before, and if not, we’ll figure it out together. Thanks for
 reading!</p>
 </div>
-  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
 
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p>
-<p>Developed by Brancen Gregory, Ryan Gentzler, Andrew Bell.</p>
+  <p>Developed by Brancen Gregory, Ryan Gentzler, Andrew Bell, Anthony Flores.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer>
 </div>
 
-  
 
-  
+
+
 
   </body>
 </html>

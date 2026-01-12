@@ -4,10 +4,12 @@
 \alias{ojo_add_minutes}
 \title{Query minutes for a given case}
 \usage{
-ojo_add_minutes(data, ...)
+ojo_add_minutes(data, con = NULL, ...)
 }
 \arguments{
 \item{data}{A lazy tibble containing the cases to query}
+
+\item{con}{The OJO database connection to use}
 
 \item{...}{Placeholder for additional arguments}
 }

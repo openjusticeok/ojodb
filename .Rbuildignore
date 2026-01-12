@@ -11,3 +11,5 @@
 ^Meta$
 ^_pkgdown\.yml$
 ^pkgdown$
+^.Renviron
+^[.]?air[.]toml$

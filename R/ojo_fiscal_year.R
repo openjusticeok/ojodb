@@ -2,7 +2,7 @@
 #'
 #' Returns the Oklahoma state fiscal year (July 1 - June 30) in which a given Date falls.
 #'
-#' @param date An atomic value of class Date 
+#' @param date An atomic value of class Date
 #'
 #' @export ojo_fiscal_year
 #' @return Fiscal year of a Date as an integer
