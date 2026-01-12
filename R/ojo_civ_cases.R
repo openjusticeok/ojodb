@@ -6,6 +6,7 @@
 #' @param vars A character vector of variables to return
 #' @param case_types A character vector of case types to query
 #' @param file_years A character vector of years to query
+#' @param con The OJO database connection to use
 #' @param ... Placeholder for additional arguments
 #'
 #' @export ojo_civ_cases ojo_add_issues
@@ -24,6 +25,7 @@ ojo_civ_cases <- function(
   vars = NULL,
   case_types = c("CS", "SC", "CJ"),
   file_years = lubridate::year(Sys.Date()),
+  con = NULL,
   ...
 ) {
   case_types_upper <- toupper(case_types)
@@ -34,7 +36,7 @@ ojo_civ_cases <- function(
     )
   }
 
-  data <- ojo_tbl("case") |>
+  data <- ojo_tbl("case", con = con) |>
     dplyr::filter(
       case_type %in% case_types_upper,
       year %in% file_years
@@ -52,12 +54,12 @@ ojo_civ_cases <- function(
   if (is.null(vars)) {
     data <- data |>
       dplyr::select(dplyr::all_of(selection)) |>
-      ojo_add_issues()
+      ojo_add_issues(con = con)
     return(data)
   } else {
     if (any(vars == "all")) {
       data <- data |>
-        ojo_add_issues()
+        ojo_add_issues(con = con)
       return(data)
     } else {
       selection <- append(selection, vars) |>
@@ -65,7 +67,7 @@ ojo_civ_cases <- function(
 
       data <- data |>
         dplyr::select(dplyr::all_of(selection)) |>
-        ojo_add_issues()
+        ojo_add_issues(con = con)
 
       return(data)
     }
@@ -78,6 +80,7 @@ ojo_civ_cases <- function(
 #'
 #' @param data A lazy tibble of civil cases
 #' @param vars A character vector of variables to return
+#' @param con The OJO database connection to use
 #' @param ... Placeholder for additional arguments
 #'
 #' @export ojo_add_issues
@@ -89,14 +92,14 @@ ojo_civ_cases <- function(
 #'  ojo_add_issues()
 #' }
 #'
-ojo_add_issues <- function(data, vars = NULL, ...) {
+ojo_add_issues <- function(data, vars = NULL, con = NULL, ...) {
   if (!inherits(data, "tbl_lazy")) {
     stop("Don't use `collect()` before this function")
   }
 
   columns <- colnames(data)
 
-  issues <- ojo_tbl("issue")
+  issues <- ojo_tbl("issue", con = con)
 
   if (is.null(vars)) {
     issues <- issues |>

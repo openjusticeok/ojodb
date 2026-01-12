@@ -19,15 +19,17 @@ with_clean_ojo_env <- function(code) {
 test_that("ojo_connect creates a side-effect-free connection", {
   skip_if_no_db()
 
-  con <- ojo_connect()
-  # Defer disconnection to ensure it happens even if tests fail
-  withr::defer(DBI::dbDisconnect(con))
+  with_clean_ojo_env({
+    con <- ojo_connect()
+    # Defer disconnection to ensure it happens even if tests fail
+    withr::defer(DBI::dbDisconnect(con))
 
-  expect_true(DBI::dbIsValid(con), "Connection should be valid")
+    expect_true(DBI::dbIsValid(con), "Connection should be valid")
 
-  # The key test: the package environment should be empty because
-  # ojo_connect() does not have side effects.
-  expect_equal(length(ls(envir = .ojo_env)), 0)
+    # The key test: the package environment should be empty because
+    # ojo_connect() does not have side effects.
+    expect_equal(length(ls(envir = .ojo_env)), 0)
+  })
 })
 
 test_that("ojo_default_connection creates and caches a connection", {
@@ -78,4 +80,14 @@ test_that("ojo_default_connection handles different backends separately", {
       ojo_default_connection(db_config = duckdb_config)
     )
   })
+})
+
+test_that("ojo_pool creates a valid connection pool", {
+  skip_if_no_db()
+
+  pool <- ojo_pool()
+  on.exit(pool::poolClose(pool))
+
+  expect_true(inherits(pool, "Pool"))
+  expect_true(DBI::dbIsValid(pool))
 })

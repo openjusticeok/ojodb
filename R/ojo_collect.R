@@ -106,7 +106,7 @@ estimate_results <- function(data, silent) {
   n_results <- data |>
     dplyr::ungroup() |>
     dplyr::tally() |>
-    dplyr::pull(n = n)
+    dplyr::pull(n)
 
   if (!silent) {
     cli::cli_progress_step(

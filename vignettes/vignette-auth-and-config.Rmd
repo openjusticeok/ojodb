@@ -1,0 +1,192 @@
+---
+title: "Authentication and Configuration"
+output: rmarkdown::html_vignette
+description: >
+  A comprehensive guide to configuring database connections, authenticating, and migrating from older versions of ojodb.
+vignette: >
+  %\VignetteIndexEntry{Authentication and Configuration}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+As of version 3.0.0, `ojodb` introduces a unified and flexible system for managing database configuration and authentication. This vignette explains how to set up your environment, manage credentials securely, and migrate your existing workflows from previous versions.
+
+## Configuration Overview
+
+The package uses a configuration object (`db_config`) to store connection details. This object can be populated from three sources, in order of precedence:
+
+1.  **Direct Arguments**: Parameters passed directly to `db_config()`.
+2.  **Configuration File**: A YAML file (typically `~/.ojo_config.yaml`).
+3.  **Environment Variables**: System or `.Renviron` variables.
+
+This flexibility allows you to set global defaults using environment variables while overriding specific parameters for individual scripts or sessions.
+
+## Setting up Authentication
+
+### Method 1: Environment Variables (Recommended)
+
+The most secure and persistent way to configure `ojodb` is by setting environment variables in your `.Renviron` file. You can do this easily using the `ojo_auth()` function.
+
+1.  **Create a configuration object** with your credentials:
+
+    ```r
+    library(ojodb)
+    
+    # Replace with your actual credentials
+    my_config <- db_config(
+      driver = "RPostgres",
+      host = "db.example.com",
+      port = "5432",
+      database = "ojodb",
+      username = "my_user",
+      password = "my_password",
+      ssl_mode = "require"
+    )
+    ```
+
+2.  **Save the configuration**:
+    
+    Use `ojo_auth()` with `.install = TRUE` to write these settings to your `.Renviron` file. This ensures they are available in future R sessions.
+
+    ```r
+    ojo_auth(db_config = my_config, .install = TRUE)
+    ```
+
+    *Note: You will need to restart your R session for these changes to take effect.*
+
+### Method 2: YAML Configuration File
+
+You can also store credentials in a YAML file. This is useful for managing multiple configurations or sharing non-sensitive configs.
+
+Create a file named `.ojo_config.yaml` in your home directory (or elsewhere):
+
+```yaml
+ojodb:
+  driver: "RPostgres"
+  host: "db.example.com"
+  port: "5432"
+  database: "ojodb"
+  username: "my_user"
+  password: "my_password"
+  ssl_mode: "require"
+```
+
+Then load it:
+
+```r
+config <- db_config(config_file = "~/.ojo_config.yaml")
+ojo_connect(db_config = config)
+```
+
+### Method 3: Session-Only Configuration
+
+For temporary access or testing, you can set credentials for the current session only:
+
+```r
+ojo_auth(
+  db_config = db_config(
+    host = "db.example.com",
+    username = "guest",
+    password = "guest_pass"
+  )
+)
+```
+
+## Connecting to the Database
+
+Once configured (either via `.Renviron` or a config object), connecting is simple:
+
+```r
+# Uses environment variables by default
+con <- ojo_connect()
+```
+
+If you need to use a specific configuration object:
+
+```r
+con <- ojo_connect(db_config = my_custom_config)
+```
+
+### Connection Pooling
+
+For Shiny applications or long-running scripts, use `ojo_pool()` to manage connections automatically:
+
+```r
+pool <- ojo_pool()
+
+# Don't forget to close it when done!
+pool::poolClose(pool)
+```
+
+## Migration Guide (v2 to v3)
+
+If you are upgrading from an older version of `ojodb`, here are the key changes you need to know.
+
+### 1. Unified Environment Variables
+
+Old versions used separate variables for "admin" and "default" users. These have been consolidated.
+
+| Old Variable | New Variable |
+| :--- | :--- |
+| `OJO_ADMIN_USER` | `OJO_USER` |
+| `OJO_DEFAULT_USER` | `OJO_USER` |
+| `OJO_ADMIN_PASS` | `OJO_PASS` |
+| `OJO_DEFAULT_PASS` | `OJO_PASS` |
+
+**Action Required**: Run `ojo_auth()` with your credentials to update your `.Renviron` file to the new format.
+
+### 2. No More "Magic" Connections
+
+In previous versions, `ojo_connect()` created a connection and stored it in a hidden package environment. Functions would then magically find this connection.
+
+In v3.0.0+:
+*   `ojo_connect()` returns a connection object.
+*   Query functions (`ojo_query`, `ojo_tbl`, etc.) attempt to use a default connection if one isn't provided, but they also accept a `con` argument for explicit control.
+
+**Old Pattern:**
+```r
+ojo_connect() # No return value
+ojo_query("SELECT * FROM table")
+```
+
+**New Pattern:**
+```r
+con <- ojo_connect() # explicit return
+ojo_query("SELECT * FROM table", con = con)
+# OR (using default connection management)
+ojo_query("SELECT * FROM table")
+```
+
+### 3. Explicit SSL Configuration
+
+SSL settings are no longer hardcoded. You must specify `ssl_mode` (e.g., "require", "verify-ca", "verify-full") and paths to certificates if using verification modes.
+
+```r
+# Example SSL config
+db_config(
+  ssl_mode = "verify-ca",
+  ssl_root_cert = "server-ca.pem",
+  ssl_cert = "client-cert.pem",
+  ssl_key = "client-key.pem"
+)
+```
+
+## Troubleshooting
+
+**Error: "Missing required configuration"**
+*   Check your `.Renviron` file (`usethis::edit_r_environ()`).
+*   Ensure variables are named correctly (e.g., `OJO_HOST`, not `OJO_DB_HOST`).
+
+**Error: "SSL certificate files not found"**
+*   If `ssl_mode` is "verify-ca" or "verify-full", ensure the paths to your certificate files are correct and the files exist.
+*   Try `ssl_mode = "require"` if you cannot verify the server's certificate.
+
+**Connection fails after upgrade**
+*   Try re-running `ojo_auth(..., .install = TRUE, .overwrite = TRUE)` to completely refresh your configuration.
