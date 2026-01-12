@@ -53,8 +53,8 @@ ojo_connect <- function(db_config = NULL, ...) {
     rlang::abort(
       c(
         "Database configuration is missing required parameters.",
-        "i" = glue::glue("Missing: {paste(missing_params, collapse = ', ')}"),
-        "*" = "Please set them with `ojo_auth()` or in your `db_config()` call."
+        "i" = "Missing: driver",
+        "*" = "Please set it with `ojo_auth()` or in your `db_config()` call."
       )
     )
   }

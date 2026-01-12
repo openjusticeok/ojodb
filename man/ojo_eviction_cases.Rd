@@ -11,7 +11,8 @@ ojo_eviction_cases(
   date_end = NULL,
   more_case_variables = NULL,
   more_issue_variables = NULL,
-  get_judgments = TRUE
+  get_judgments = TRUE,
+  con = NULL
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ ojo_eviction_cases(
 \item{more_issue_variables}{Additional variables from issue table to include in the output}
 
 \item{get_judgments}{Logical value indicating whether to include eviction judgment information in the output}
+
+\item{con}{The OJO database connection to use}
 }
 \value{
 A dataframe containing eviction data

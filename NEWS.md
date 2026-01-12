@@ -1,3 +1,33 @@
+# ojodb 3.0.0
+
+## Breaking Changes
+- **Connection Management:** `ojo_connect()` now requires a `db_config` object (or creates a default one) and returns a connection object directly, instead of using side effects to store it in a package environment. The arguments `.admin`, `.driver`, `.global`, `.env`, and `.pool` have been removed.
+- **Authentication:** `ojo_auth()` now accepts a `db_config` object. The arguments `host`, `port`, `username`, `password`, `.admin`, and `.overwrite` (old signature) have been replaced/consolidated.
+- **Environment Variables:**
+    - `OJO_ADMIN_USER` and `OJO_DEFAULT_USER` have been consolidated into `OJO_USER`.
+    - `OJO_ADMIN_PASS` and `OJO_DEFAULT_PASS` have been consolidated into `OJO_PASS`.
+    - `OJO_SSL_MODE` is no longer hardcoded to "verify-ca".
+    - `OJO_SSL_ROOT_CERT`, `OJO_SSL_CERT`, and `OJO_SSL_KEY` are now standard environment variables.
+- Removed deprecated functions: `ojo_env()`, `ojo_show_row()`, and `ojo_search_minutes()`.
+- Removed `tbl_from_gcs_arrow()`, `tbl_from_gcs_duckdb()`, and `tbl_from_rpostgres()`.
+- Standardized naming conventions across the package.
+
+## New Features
+- **Flexible Configuration:** Added `db_config()` to create configuration objects from arguments, YAML files, or environment variables.
+- **Connection Pooling:** Added `ojo_pool()` to easily create managed connection pools for applications (e.g., Shiny).
+- **Explicit Connections:** Added `con` argument to all major query functions (`ojo_case_types()`, `ojo_civ_cases()`, `ojo_crim_cases()`, `ojo_eviction_cases()`, `ojo_tbl()`, `ojo_query()`, etc.) to allow passing specific connection objects.
+- **Default Connection:** `ojo_default_connection()` now manages the interactive singleton connection, ensuring a smoother user experience for interactive sessions.
+- Improved sorting in `ojo_list_tables()` and `ojo_list_schemas()`.
+
+## Bug Fixes
+- Fixed `ojo_check_ssl()` to correctly handle both single connections and connection pools.
+- Fixed `ojo_add_party_details()` to properly handle lazy tibbles and provide better error messages.
+- Fixed a bug in `ojo_collect()`'s result estimation.
+
+## Package Maintenance
+- Significant increase in test coverage, including tests for previously untested utility and query functions.
+- Documentation updates and standardization.
+
 # ojodb 2.11.1 (2025-07-01)
 
 ## Bug Fixes

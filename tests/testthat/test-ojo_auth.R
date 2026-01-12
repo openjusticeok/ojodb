@@ -78,12 +78,18 @@ test_that("ojo_auth validates db_config input", {
 })
 
 test_that("ojo_auth works with session-only mode", {
-  # withr::local_envvar() will restore the environment variables to their
-  # original state after the test block finishes, even if it errors.
-  # This is ideal for testing functions that have side effects.
-  withr::local_envvar(.local_envir = teardown_env())
+  # Capture current state of OJO variables to restore them later
+  ojo_vars <- c("OJO_DRIVER", "OJO_DATABASE", "OJO_HOST", "OJO_PORT", "OJO_USER", "OJO_PASS", "OJO_SSL_MODE", "OJO_SSL_ROOT_CERT", "OJO_SSL_CERT", "OJO_SSL_KEY")
+  old_vars <- Sys.getenv(ojo_vars, names = TRUE)
+  
+  # Restore them when the test finishes
+  withr::defer({
+    do.call(Sys.setenv, as.list(old_vars))
+  })
 
   config <- db_config(
+    driver = "RPostgres",
+    database = "ojodb",
     host = "localhost",
     port = "5432",
     username = "testuser",

@@ -17,7 +17,7 @@ Check whether the database connection is using SSL properly
 }
 \examples{
 \dontrun{
-# Identifies the table
+# Check SSL status for the default connection
 ojo_check_ssl()
 }
 

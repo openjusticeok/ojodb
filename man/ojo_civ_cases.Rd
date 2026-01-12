@@ -9,6 +9,7 @@ ojo_civ_cases(
   vars = NULL,
   case_types = c("CS", "SC", "CJ"),
   file_years = lubridate::year(Sys.Date()),
+  con = NULL,
   ...
 )
 }
@@ -20,6 +21,8 @@ ojo_civ_cases(
 \item{case_types}{A character vector of case types to query}
 
 \item{file_years}{A character vector of years to query}
+
+\item{con}{The OJO database connection to use}
 
 \item{...}{Placeholder for additional arguments}
 }
