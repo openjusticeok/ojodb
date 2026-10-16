@@ -13,3 +13,6 @@
 ^pkgdown$
 ^.Renviron
 ^[.]?air[.]toml$
+^flake\.nix$
+^flake\.lock$
+^result$
