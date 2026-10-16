@@ -11,3 +11,8 @@
 ^Meta$
 ^_pkgdown\.yml$
 ^pkgdown$
+^.Renviron
+^[.]?air[.]toml$
+^flake\.nix$
+^flake\.lock$
+^result$

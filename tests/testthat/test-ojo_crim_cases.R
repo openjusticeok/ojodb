@@ -1,7 +1,7 @@
 test_that("ojo_crim_cases works", {
-  skip_on_runiverse()
+  skip_if_no_db()
 
-  testthat::expect_no_error({
+  expect_no_error({
     ojo_crim_cases()
   })
 })

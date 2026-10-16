@@ -2,55 +2,71 @@
 % Please edit documentation in R/ojo_auth.R
 \name{ojo_auth}
 \alias{ojo_auth}
-\title{Create configuration for OJO database connection}
+\title{Configure OJO database authentication}
 \usage{
-ojo_auth(
-  host,
-  port,
-  username,
-  password,
-  ...,
-  .admin = F,
-  .overwrite = T,
-  .install = T
-)
+ojo_auth(..., db_config, .install = FALSE, .overwrite = FALSE)
 }
 \arguments{
-\item{host}{The host name of the database server}
+\item{...}{Placeholder for future arguments}
 
-\item{port}{The port number of the database server}
+\item{db_config}{A db_config object created by \code{db_config()}}
 
-\item{username}{The username to use to connect to the database}
+\item{.install}{Logical indicating whether to save configuration to .Renviron (TRUE) or use for current session only (FALSE)}
 
-\item{password}{The password to use to connect to the database}
-
-\item{...}{Placeholder for additional arguments}
-
-\item{.admin}{A logical value indicating whether to connect to the database as an administrator}
-
-\item{.overwrite}{A logical value indicating whether to overwrite the existing .Renviron file}
-
-\item{.install}{A logical value indicating whether to install the database connection or use it only for the current session}
+\item{.overwrite}{Logical indicating whether to overwrite existing .Renviron entries}
 }
 \value{
-Nothing
+Invisible NULL
 }
 \description{
-Configure credentials for the Open Justice Oklahoma database
+Sets up authentication for the Open Justice Oklahoma database using a db_config object.
 }
 \details{
-Assists the user in populating a .Renviron file with the necessary environment variables to connect to the Open Justice Oklahoma database.
+This function takes a db_config object and sets up the database authentication.
+When .install = FALSE (default), credentials are only set for the current R session.
+When .install = TRUE, credentials are saved to .Renviron for persistent use.
 }
-\section{Side Effects}{
-
-The first time this function is run, it will prompt the user for a username, password, and host name.
-It will then store these credentials in the user's .Renviron file.
-If the .Renviron file already exists, it will be backed up and the new credentials will be appended to the end of the file.
-If the .Renviron file does not exist, it will be created and the credentials will be stored there.
-}
-
 \examples{
 \dontrun{
-ojo_auth()
+# Create config and authenticate for a remote server
+config <- db_config(
+  driver = "RPostgres",
+  database = "ojodb",
+  host = "remote.db.com",
+  port = "5432",
+  username = "user",
+  password = "pass",
+  ssl_mode = "require"
+)
+ojo_auth(db_config = config)
+
+# One-liner with explicit parameters
+ojo_auth(db_config = db_config(
+  driver = "RPostgres",
+  database = "ojodb",
+  host = "remote.db.com",
+  port = "5432",
+  username = "user",
+  password = "pass",
+  ssl_mode = "require"
+))
+
+# From config file
+ojo_auth(db_config = db_config(config_file = "~/.ojo_config.yaml"))
+
+# Permanent configuration
+ojo_auth(
+  db_config = db_config(
+    driver = "RPostgres",
+    database = "ojodb",
+    host = "remote.db.com",
+    port = "5432",
+    username = "user",
+    password = "pass",
+    ssl_mode = "require"
+  ),
+  .install = TRUE
+)
 }
+
 }

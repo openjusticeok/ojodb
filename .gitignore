@@ -6,3 +6,10 @@ inst/doc
 /doc/
 /Meta/
 docs
+.Renviron
+.direnv/
+.env
+ssl/
+
+# nix build output
+result

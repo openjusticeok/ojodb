@@ -9,6 +9,7 @@ ojo_crim_cases(
   vars = NULL,
   case_types = c("CM", "CF", "TR"),
   file_years = 2000:lubridate::year(Sys.Date()),
+  con = NULL,
   ...
 )
 }
@@ -20,6 +21,8 @@ ojo_crim_cases(
 \item{case_types}{A character vector of case types to query}
 
 \item{file_years}{A character vector of years to query}
+
+\item{con}{The OJO database connection to use}
 
 \item{...}{Placeholder for additional arguments}
 }

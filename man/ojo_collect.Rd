@@ -4,14 +4,12 @@
 \alias{ojo_collect}
 \title{OJO Collect}
 \usage{
-ojo_collect(.data, ..., .silent = !rlang::is_interactive())
+ojo_collect(data, silent = !rlang::is_interactive())
 }
 \arguments{
-\item{.data}{The lazy tibble to be pulled}
+\item{data}{The lazy tibble to be pulled}
 
-\item{...}{Placeholder for additional arguments}
-
-\item{.silent}{Should the command line interface elements be shown? Defaults to \code{TRUE} if the user is in an interactive session, and \code{FALSE} if they are not.}
+\item{silent}{Should the command line interface elements be shown? Defaults to \code{TRUE} if the user is in an interactive session, and \code{FALSE} if they are not.}
 }
 \value{
 A local tibble

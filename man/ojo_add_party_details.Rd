@@ -4,12 +4,14 @@
 \alias{ojo_add_party_details}
 \title{Add party details to a parties query}
 \usage{
-ojo_add_party_details(data, vars = NULL, ...)
+ojo_add_party_details(data, vars = NULL, con = NULL, ...)
 }
 \arguments{
 \item{data}{A lazy tibble containing the results of a parties query}
 
 \item{vars}{A character vector of variables to return}
+
+\item{con}{The OJO database connection to use}
 
 \item{...}{Placeholder for additional arguments}
 }

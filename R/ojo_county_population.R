@@ -23,19 +23,19 @@ ojo_county_population <- function(years) {
       geography = "county",
       state = "OK"
     ) |>
-      dplyr::filter(.data$variable == "POP") |>
+      dplyr::filter(variable == "POP") |>
       dplyr::mutate(year = y) |>
       dplyr::bind_rows(d)
   }
 
   d <- d |>
     dplyr::mutate(
-      court = .data$NAME |>
+      court = NAME |>
         stringi::stri_replace_all_regex(" County.*", "") |>
         stringi::stri_trans_toupper() |>
         stringi::stri_replace_all_regex(" ", "")
     ) |>
-    dplyr::select(.data$court, .data$year, pop = .data$value)
+    dplyr::select(court, year, pop = value)
 
   return(d)
 }

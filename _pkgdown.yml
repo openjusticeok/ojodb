@@ -13,15 +13,10 @@ reference:
   - ojo_add_minutes
   - ojo_add_issues
   - ojo_add_party_details
-  - ojo_search_minutes
   - ojo_collect
 - title: "Functions to help aid with analysis"
   desc: "These include some other helpful functions you might use in your analysis."
   contents:
-  - ojo_color
-  - ojo_fill
-  - ojo_pal
-  - ojo_theme
   - ojo_county_population
   - ojo_fiscal_year
 - title: "Database management functions"
@@ -31,15 +26,16 @@ reference:
   - ojo_list_tables
   - ojo_list_vars
   - ojo_case_types
-  - ojo_show_row
 - title: "'Behind the scenes' functions"
   desc: "These are the most basic / fundamental functions in the package. Generally, we shouldn't need to use them directly."
   contents:
   - ojo_connect
+  - ojo_pool
+  - ojo_connection_string
   - ojo_tbl
   - ojo_query
   - ojo_check_ssl
   - ojo_auth
-  - ojo_env
+  - db_config
   - ojo_version
 

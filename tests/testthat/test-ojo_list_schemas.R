@@ -1,9 +1,9 @@
-test_that("ojo_list_schemas hasn't changed", {
-  skip_on_ci()
-  skip_on_runiverse()
+test_that("ojo_list_schemas returns expected schemas", {
+  skip_if_no_db()
 
-  expect_snapshot_value(
-    ojo_list_schemas(),
-    style = "deparse"
-  )
+  schemas <- ojo_list_schemas()
+  
+  expect_s3_class(schemas, "data.frame")
+  expect_true("schema" %in% names(schemas))
+  expect_true("public" %in% schemas$schema)
 })

@@ -1,27 +1,36 @@
-#' @title OJO Query
+#' @title Send a raw SQL query to the database
 #'
-#' @description Query the Open Justice Oklahoma database
+#' @description Executes a raw SQL query against a database connection. This
+#'   function is backend-agnostic and will send the query to any valid DBI
+#'   connection.
 #'
-#' @param ... Arguments to pass to glue::glue_sql
-#' @param .con The ojodb connection to use
-#' @param query The query to send to ojodb
+#' @param query The SQL query to send to the database. The user is responsible
+#'   for ensuring the syntax is correct for the target database backend.
+#' @param con The database connection to use. If `NULL`, a default connection
+#'   to the primary Postgres database will be created and used.
 #'
-#' @export ojo_query
-#' @returns data, a lazy tibble containing the results of the query
+#' @export
+#' @returns A lazy tibble with the `ojo_tbl` class.
+#'
 #' @examples
 #' \dontrun{
-#' ojo_query("SELECT * FROM \"case\" LIMIT 10")
-#' ojo_query("SELECT * FROM iic.inmate LIMIT 10")
-#' }
+#' # Run a query against the default Postgres database
+#' ojo_query("SELECT * FROM case LIMIT 10")
 #'
-ojo_query <- function(query, ..., .con = NULL) {
-  if (is.null(.con)) {
-    .con <- ojo_connect(...)
+#' # Run a query against a manual DuckDB connection
+#' duck_con <- ojo_connect(db_config = db_config(.driver = "duckdb"))
+#' ojo_query("SELECT * FROM 'my_duck_db_file.parquet' LIMIT 5", con = duck_con)
+#' }
+ojo_query <- function(query, con = NULL) {
+  # If no connection is provided, get the default singleton connection.
+  if (is.null(con)) {
+    con <- ojo_default_connection()
   }
 
-  if (!inherits(.con, "PqConnection")) {
-    rlang::abort("Direct SQL querying is currently only supported for Postgres backends. Make sure your connection is using `ojo_connect(.driver = 'RPostgres')`")
-  }
+  # Create a lazy tibble from the raw SQL query
+  data <- dplyr::tbl(con, dbplyr::sql(query))
 
-  dplyr::tbl(.con, sql(query))
+  # Add the ojo_tbl class for consistency with ojo_tbl()
+  class(data) <- c("ojo_tbl", class(data))
+  return(data)
 }

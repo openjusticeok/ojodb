@@ -66,10 +66,9 @@ arrow::open_dataset("~/.cache/ojo/oscn/case", format = "parquet") |>
     n = n()
   ) |>
   collect()
-  # |>
-  # ggplot(aes(x = date_filed, y = n)) +
-  #   geom_line()
-
+# |>
+# ggplot(aes(x = date_filed, y = n)) +
+#   geom_line()
 
 data <- arrow::open_dataset("~/.cache/ojo/oscn/case", format = "arrow") |>
   arrow::to_duckdb(table_name = "case")

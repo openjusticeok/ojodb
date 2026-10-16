@@ -1,6 +1,6 @@
 Package: ojodb
 Title: Analyze Data from the Open Justice Oklahoma Database
-Version: 2.11.1
+Version: 3.0.0
 Authors@R: c(
   person(
     given = "Brancen",
@@ -33,23 +33,23 @@ Authors@R: c(
   ))
 Description: {ojodb} provides convenient functions to query court data from the Open Justice Oklahoma database.
 Imports:
-  cli,
-  dbplyr,
-  DBI,
-  ggplot2,
-  glue,
-  lifecycle,
-  lubridate,
-  pool,
-  purrr,
-  rlang,
-  RPostgres,
-  stringi,
-  stringr,
-  tibble,
-  tidyr,
-  utils,
-  withr
+	cli,
+	dbplyr,
+	DBI,
+	digest,
+	glue,
+	lubridate,
+	pool,
+	purrr,
+	rlang,
+	RPostgres,
+	stringi,
+	stringr,
+	tibble,
+	tidyr,
+	utils,
+	withr,
+	yaml
 Suggests:
   arrow,
   attachment,
@@ -64,10 +64,12 @@ Suggests:
   janitor,
   knitr,
   languageserver,
+	lifecycle,
   lintr,
   readr,
   roxygen2,
   rmarkdown,
+	RSQLite,
   rvest,
   styler,
   testthat (>= 3.0.0),
@@ -75,6 +77,7 @@ Suggests:
   usethis,
   xml2
 Depends:
+	R (>= 4.1.0),
   dplyr
 Remotes:
   nx10/httpgd
@@ -84,7 +87,6 @@ LazyData: true
 RoxygenNote: 7.3.2
 VignetteBuilder: knitr
 Config/testthat/edition: 3
-Config/testthat/parallel: true
 URL: https://github.com/openjusticeok/ojodb
 BugReports: https://github.com/openjusticeok/ojodb/issues
 Roxygen: list(markdown = TRUE)
