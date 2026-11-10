@@ -4,14 +4,16 @@
 \alias{ojo_tbl}
 \title{Get a table from a database connection}
 \usage{
-ojo_tbl(table, schema = "public", con = NULL)
+ojo_tbl(table, schema = "public", ..., .con = NULL)
 }
 \arguments{
 \item{table}{The name of the table to query.}
 
 \item{schema}{The name of the schema where the table resides.}
 
-\item{con}{A database connection object. If \code{NULL} (the default), a managed
+\item{...}{Placeholder for additional arguments}
+
+\item{.con}{A database connection object. If \code{NULL} (the default), a managed
 default connection will be created and used automatically.}
 }
 \value{
@@ -26,7 +28,7 @@ For interactive use, if no connection is provided, this function will
 automatically create and manage a default connection to the primary OJO
 Postgres database. To connect to other backends (like DuckDB or SQLite),
 you must first create a connection object with \code{ojo_connect()} and pass it
-via the \code{con} argument.
+via the \code{.con} argument.
 }
 \examples{
 \dontrun{
@@ -35,6 +37,6 @@ case_tbl <- ojo_tbl("case")
 
 # Connect to a table on a manually created DuckDB connection
 my_duckdb_con <- ojo_connect(db_config = db_config(.driver = "duckdb"))
-my_duckdb_tbl <- ojo_tbl("some_table", con = my_duckdb_con)
+my_duckdb_tbl <- ojo_tbl("some_table", .con = my_duckdb_con)
 }
 }

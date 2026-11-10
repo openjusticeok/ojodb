@@ -4,10 +4,12 @@
 \alias{ojo_check_ssl}
 \title{Check whether the database connection is using SSL properly}
 \usage{
-ojo_check_ssl(con = NULL)
+ojo_check_ssl(..., .con = NULL)
 }
 \arguments{
-\item{con}{The ojodb connection to use}
+\item{...}{Placeholder for additional arguments}
+
+\item{.con}{The ojodb connection to use}
 }
 \value{
 A logical indicator of whether the db connection is properly using SSL

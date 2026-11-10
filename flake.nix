@@ -43,6 +43,9 @@
             rcmdcheck
             pkgload
             pkgbuild
+            # Suggests-package backends exercised by the test suite
+            duckdb
+            RSQLite
           ];
 
           ojodb = pkgs.rPackages.buildRPackage {

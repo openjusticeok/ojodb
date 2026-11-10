@@ -15,7 +15,6 @@
 ## New Features
 - **Flexible Configuration:** Added `db_config()` to create configuration objects from arguments, YAML files, or environment variables.
 - **Connection Pooling:** Added `ojo_pool()` to easily create managed connection pools for applications (e.g., Shiny).
-- **Explicit Connections:** Added `con` argument to all major query functions (`ojo_case_types()`, `ojo_civ_cases()`, `ojo_crim_cases()`, `ojo_eviction_cases()`, `ojo_tbl()`, `ojo_query()`, etc.) to allow passing specific connection objects.
 - **Default Connection:** `ojo_default_connection()` now manages the interactive singleton connection, ensuring a smoother user experience for interactive sessions.
 - Improved sorting in `ojo_list_tables()` and `ojo_list_schemas()`.
 

@@ -47,13 +47,13 @@ ojo_collect <- function(data, silent = !rlang::is_interactive()) {
   }
 
   # Extract the database connection
-  con <- dbplyr::remote_con(data)
+  .con <- dbplyr::remote_con(data)
   if (inherits(data, "tbl_Pool")) {
-    con <- pool::localCheckout(con)
+    .con <- pool::localCheckout(.con)
   }
 
   # Ensure the connection is valid
-  if (!DBI::dbIsValid(con)) {
+  if (!DBI::dbIsValid(.con)) {
     rlang::abort(
       "The connection to the OJO database is no longer valid. Please reconnect to the database using `ojo_connect()`."
     )
@@ -61,7 +61,7 @@ ojo_collect <- function(data, silent = !rlang::is_interactive()) {
 
   # CLI output
   if (!silent) {
-    con_desc <- dbplyr::db_connection_describe(con) |>
+    con_desc <- dbplyr::db_connection_describe(.con) |>
       gsub(pattern = "postgres", replacement = "") |>
       trimws()
 
@@ -88,7 +88,7 @@ ojo_collect <- function(data, silent = !rlang::is_interactive()) {
   n_results <- estimate_results(data, silent)
 
   # Collect data
-  res <- collect_data(con, data, n_results, silent)
+  res <- collect_data(.con, data, n_results, silent)
 
   return(res)
 }
@@ -121,9 +121,9 @@ estimate_results <- function(data, silent) {
   return(n_results)
 }
 
-collect_data <- function(con, data, n_results, silent) {
+collect_data <- function(.con, data, n_results, silent) {
   query <- dbplyr::sql_render(data)
-  req <- DBI::dbSendQuery(con, query)
+  req <- DBI::dbSendQuery(.con, query)
   withr::defer(DBI::dbClearResult(req), envir = parent.frame())
 
   res <- NULL

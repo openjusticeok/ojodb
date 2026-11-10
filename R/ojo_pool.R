@@ -32,7 +32,7 @@
 #' pool <- ojo_pool()
 #'
 #' # Use the pool with ojo_tbl or dplyr
-#' ojo_tbl("case", con = pool)
+#' ojo_tbl("case", .con = pool)
 #'
 #' # When your application stops, close the pool
 #' pool::poolClose(pool)

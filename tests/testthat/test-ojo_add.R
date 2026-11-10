@@ -35,7 +35,7 @@ test_that("ojo_add_party_details checks for party column", {
   on.exit(DBI::dbDisconnect(con))
 
   # Create a query that doesn't have 'party' but has 'parties'
-  bad_data <- ojo_tbl("case", con = con) |>
+  bad_data <- ojo_tbl("case", .con = con) |>
     dplyr::mutate(parties = "test")
 
   expect_error(

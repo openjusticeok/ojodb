@@ -9,8 +9,8 @@ ojo_crim_cases(
   vars = NULL,
   case_types = c("CM", "CF", "TR"),
   file_years = 2000:lubridate::year(Sys.Date()),
-  con = NULL,
-  ...
+  ...,
+  .con = NULL
 )
 }
 \arguments{
@@ -22,9 +22,9 @@ ojo_crim_cases(
 
 \item{file_years}{A character vector of years to query}
 
-\item{con}{The OJO database connection to use}
-
 \item{...}{Placeholder for additional arguments}
+
+\item{.con}{The OJO database connection to use}
 }
 \value{
 data, a lazy tibble containing the resulting criminal cases

@@ -4,16 +4,16 @@
 \alias{ojo_add_issues}
 \title{Add issues to civil cases}
 \usage{
-ojo_add_issues(data, vars = NULL, con = NULL, ...)
+ojo_add_issues(data, vars = NULL, ..., .con = NULL)
 }
 \arguments{
 \item{data}{A lazy tibble of civil cases}
 
 \item{vars}{A character vector of variables to return}
 
-\item{con}{The OJO database connection to use}
-
 \item{...}{Placeholder for additional arguments}
+
+\item{.con}{The OJO database connection to use}
 }
 \value{
 data, a lazy tibble containing the resulting civil cases

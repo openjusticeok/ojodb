@@ -4,13 +4,15 @@
 \alias{ojo_query}
 \title{Send a raw SQL query to the database}
 \usage{
-ojo_query(query, con = NULL)
+ojo_query(query, ..., .con = NULL)
 }
 \arguments{
 \item{query}{The SQL query to send to the database. The user is responsible
 for ensuring the syntax is correct for the target database backend.}
 
-\item{con}{The database connection to use. If \code{NULL}, a default connection
+\item{...}{Placeholder for additional arguments}
+
+\item{.con}{The database connection to use. If \code{NULL}, a default connection
 to the primary Postgres database will be created and used.}
 }
 \value{
@@ -28,6 +30,6 @@ ojo_query("SELECT * FROM case LIMIT 10")
 
 # Run a query against a manual DuckDB connection
 duck_con <- ojo_connect(db_config = db_config(.driver = "duckdb"))
-ojo_query("SELECT * FROM 'my_duck_db_file.parquet' LIMIT 5", con = duck_con)
+ojo_query("SELECT * FROM 'my_duck_db_file.parquet' LIMIT 5", .con = duck_con)
 }
 }
