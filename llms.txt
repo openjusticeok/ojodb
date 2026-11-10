@@ -1,0 +1,173 @@
+# ojodb
+
+[ojodb](https://openjusticeok.github.io/ojodb/) is a package that
+assists [Open Justice Oklahoma](https://openjustice.okpolicy.org/)
+analysts to access and analyze court, jail, prison, and other data
+collected from various sources.
+
+The pkgdown website for the ojodb package can be found
+[here](https://openjusticeok.github.io/ojodb/).
+
+## Installation
+
+Install the devtools package if you don’t have it yet, then install the
+ojodb package from GitHub with:
+
+``` r
+
+if (!"devtools" %in% installed.packages()) {
+  install.packages("devtools")
+}
+
+devtools::install_github("openjusticeok/ojodb")
+```
+
+After installation, you can update it with the same commands.
+
+## Purpose and Goals
+
+The goal of Open Justice Oklahoma is to collect and analyze
+hard-to-access data in order to better understand our state’s justice
+system. The backbone of our work is our database, which consists of
+administrative data, produced in court’s daily activities, gathered
+mainly from courts, jails, and prisons across the state. The data is
+collected through a variety of methods including webscraping and
+database file downloads. The
+[ojodb](https://openjusticeok.github.io/ojodb/) package was built to
+give analysts a way to access this data and analyze it using shared
+methodological standards.
+
+Because the data we analyze is mostly administrative data generated for
+case-by-case uses, it is always messy and contains errors. OJO’s work
+depends on our processes to work through and around the imperfections in
+order to extract useful information, while acknowledging the limitations
+of the data.
+
+For some data sources, OJO processes periodically pull new data into our
+database. For example, we have OSCN scrapers set up to periodically
+visit small claims case pages like [this
+one](https://www.oscn.net/dockets/GetCaseInformation.aspx?db=tulsa&number=SC-2019-10)
+every few days, gathering new data that appears in the course of a case.
+
+![Example case](reference/figures/case_example.png)
+
+Example case
+
+We’re generally not interested in what happens in a single case, but
+rather in aggregate trends at the county or state level. In the case
+linked above, for instance, we see that the eviction case was filed on
+January 2, 2019, and granted by default judgment on January 11. We can
+use small claims data collected from OSCN and ODCR to figure out how
+many eviction cases are filed, resulted in a judgment, and dismissed.
+This is information that isn’t compiled anywhere else, so our database
+gives us the unique opportunity to understand what is really happening,
+day by day and in close to real-time, in Oklahoma’s justice system.
+
+In addition to court data, which is available on OSCN in near-real time,
+we collect data from the Oklahoma Department of Corrections, the Tulsa
+County Jail, the Oklahoma County Jail, the Pardon and Parole Board, and
+other sources.
+
+# Guides and Resources
+
+Our documentation, like everything else, is a work in progress.
+
+- See the article on using
+  [ojodb](https://openjusticeok.github.io/ojodb/) to pull data from the
+  Oklahoma State Court Network here –
+  [`vignette("vignette-pulling-data")`](https://openjusticeok.github.io/ojodb/articles/vignette-pulling-data.md)
+- The general Open Justice Oklahoma documentation website –
+  <https://ojo-documentation-ie5mdr3jgq-uc.a.run.app/>
+- The Open Justice Oklahoma public-facing website –
+  <https://openjustice.okpolicy.org/>
+- The Oklahoma Policy Institute Stackoverflow Teams site –
+  <https://stackoverflowteams.com/c/oklahoma-policy-institute/questions>
+
+# Package index
+
+## Functions for pulling court data
+
+These functions are for pulling and manipulating Oklahoma district court
+data scraped from OSCN.net and ODCR.net.
+
+- [`ojo_civ_cases()`](https://openjusticeok.github.io/ojodb/reference/ojo_civ_cases.md)
+  : Query civil cases from the OJO database
+- [`ojo_crim_cases()`](https://openjusticeok.github.io/ojodb/reference/ojo_crim_cases.md)
+  : Query criminal cases from the OJO database
+- [`ojo_eviction_cases()`](https://openjusticeok.github.io/ojodb/reference/ojo_eviction_cases.md)
+  : OJO Eviction Cases
+- [`ojo_add_counts()`](https://openjusticeok.github.io/ojodb/reference/ojo_add_counts.md)
+  : Add counts to a tibble of cases
+- [`ojo_add_minutes()`](https://openjusticeok.github.io/ojodb/reference/ojo_add_minutes.md)
+  : Query minutes for a given case
+- [`ojo_add_issues()`](https://openjusticeok.github.io/ojodb/reference/ojo_add_issues.md)
+  : Add issues to civil cases
+- [`ojo_add_party_details()`](https://openjusticeok.github.io/ojodb/reference/ojo_add_party_details.md)
+  : Add party details to a parties query
+- [`ojo_collect()`](https://openjusticeok.github.io/ojodb/reference/ojo_collect.md)
+  : OJO Collect
+
+## Functions to help aid with analysis
+
+These include some other helpful functions you might use in your
+analysis.
+
+- [`ojo_county_population()`](https://openjusticeok.github.io/ojodb/reference/ojo_county_population.md)
+  : Get population data by county for Oklahoma from the Census Bureau's
+  American Community Survey
+- [`ojo_fiscal_year()`](https://openjusticeok.github.io/ojodb/reference/ojo_fiscal_year.md)
+  : Determine the Oklahoma state fiscal year that a Date falls in
+
+## Database management functions
+
+These functions allow you to look at and interact with the OJO
+database’s structure.
+
+- [`ojo_list_schemas()`](https://openjusticeok.github.io/ojodb/reference/ojo_list_schemas.md)
+  : List all schemas on the OJO database
+- [`ojo_list_tables()`](https://openjusticeok.github.io/ojodb/reference/ojo_list_tables.md)
+  : List all tables on the OJO database
+- [`ojo_list_vars()`](https://openjusticeok.github.io/ojodb/reference/ojo_list_vars.md)
+  : List all variables in a table on the ojodb database
+- [`ojo_case_types()`](https://openjusticeok.github.io/ojodb/reference/ojo_case_types.md)
+  : List the case types present in the OJO database
+
+## ‘Behind the scenes’ functions
+
+These are the most basic / fundamental functions in the package.
+Generally, we shouldn’t need to use them directly.
+
+- [`ojo_connect()`](https://openjusticeok.github.io/ojodb/reference/ojo_connect.md)
+  : Connect to an OJO Database Backend
+- [`ojo_pool()`](https://openjusticeok.github.io/ojodb/reference/ojo_pool.md)
+  : Create a Database Connection Pool
+- [`ojo_connection_string()`](https://openjusticeok.github.io/ojodb/reference/ojo_connection_string.md)
+  : Create a Database Connection String
+- [`ojo_tbl()`](https://openjusticeok.github.io/ojodb/reference/ojo_tbl.md)
+  : Get a table from a database connection
+- [`ojo_query()`](https://openjusticeok.github.io/ojodb/reference/ojo_query.md)
+  : Send a raw SQL query to the database
+- [`ojo_check_ssl()`](https://openjusticeok.github.io/ojodb/reference/ojo_check_ssl.md)
+  : Check whether the database connection is using SSL properly
+- [`ojo_auth()`](https://openjusticeok.github.io/ojodb/reference/ojo_auth.md)
+  : Configure OJO database authentication
+- [`db_config()`](https://openjusticeok.github.io/ojodb/reference/db_config.md)
+  : Create database configuration object
+- [`ojo_version()`](https://openjusticeok.github.io/ojodb/reference/ojo_version.md)
+  : OJO Version
+
+# Articles
+
+### All vignettes
+
+- [Authentication and
+  Configuration](https://openjusticeok.github.io/ojodb/articles/vignette-auth-and-config.md):
+
+  A comprehensive guide to configuring database connections,
+  authenticating, and migrating from older versions of ojodb.
+
+- [Pulling court data with
+  ojodb](https://openjusticeok.github.io/ojodb/articles/vignette-pulling-data.md):
+
+  This guide will walk through the process of pulling and analyzing
+  court data from the OJO databse.

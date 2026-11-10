@@ -1,0 +1,32 @@
+# Determine the Oklahoma state fiscal year that a Date falls in
+
+Returns the Oklahoma state fiscal year (July 1 - June 30) in which a
+given Date falls.
+
+## Usage
+
+``` r
+ojo_fiscal_year(date)
+```
+
+## Arguments
+
+- date:
+
+  An atomic value of class Date
+
+## Value
+
+Fiscal year of a Date as an integer
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+ojo_fiscal_year(ymd("2018-06-30"))
+# Returns 2018
+
+ojo_fiscal_year(ymd("2018-07-01"))
+# Returns 2019
+} # }
+```

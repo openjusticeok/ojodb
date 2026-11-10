@@ -1,0 +1,295 @@
+# Changelog
+
+## ojodb 3.0.0 (2026-11-10)
+
+### Breaking Changes
+
+- **Connection Management:**
+  [`ojo_connect()`](https://openjusticeok.github.io/ojodb/reference/ojo_connect.md)
+  now requires a `db_config` object (or creates a default one) and
+  returns a connection object directly, instead of using side effects to
+  store it in a package environment. The arguments `.admin`, `.driver`,
+  `.global`, `.env`, and `.pool` have been removed.
+- **Authentication:**
+  [`ojo_auth()`](https://openjusticeok.github.io/ojodb/reference/ojo_auth.md)
+  now accepts a `db_config` object. The arguments `host`, `port`,
+  `username`, `password`, `.admin`, and `.overwrite` (old signature)
+  have been replaced/consolidated.
+- **Environment Variables:**
+  - `OJO_ADMIN_USER` and `OJO_DEFAULT_USER` have been consolidated into
+    `OJO_USER`.
+  - `OJO_ADMIN_PASS` and `OJO_DEFAULT_PASS` have been consolidated into
+    `OJO_PASS`.
+  - `OJO_SSL_MODE` is no longer hardcoded to “verify-ca”.
+  - `OJO_SSL_ROOT_CERT`, `OJO_SSL_CERT`, and `OJO_SSL_KEY` are now
+    standard environment variables.
+- Removed deprecated functions: `ojo_env()`, `ojo_show_row()`, and
+  `ojo_search_minutes()`.
+- Removed `tbl_from_gcs_arrow()`, `tbl_from_gcs_duckdb()`, and
+  `tbl_from_rpostgres()`.
+- Standardized naming conventions across the package.
+
+### New Features
+
+- **Flexible Configuration:** Added
+  [`db_config()`](https://openjusticeok.github.io/ojodb/reference/db_config.md)
+  to create configuration objects from arguments, YAML files, or
+  environment variables.
+- **Connection Pooling:** Added
+  [`ojo_pool()`](https://openjusticeok.github.io/ojodb/reference/ojo_pool.md)
+  to easily create managed connection pools for applications (e.g.,
+  Shiny).
+- **Default Connection:**
+  [`ojo_default_connection()`](https://openjusticeok.github.io/ojodb/reference/ojo_default_connection.md)
+  now manages the interactive singleton connection, ensuring a smoother
+  user experience for interactive sessions.
+- Improved sorting in
+  [`ojo_list_tables()`](https://openjusticeok.github.io/ojodb/reference/ojo_list_tables.md)
+  and
+  [`ojo_list_schemas()`](https://openjusticeok.github.io/ojodb/reference/ojo_list_schemas.md).
+
+### Bug Fixes
+
+- Fixed
+  [`ojo_check_ssl()`](https://openjusticeok.github.io/ojodb/reference/ojo_check_ssl.md)
+  to correctly handle both single connections and connection pools.
+- Fixed
+  [`ojo_add_party_details()`](https://openjusticeok.github.io/ojodb/reference/ojo_add_party_details.md)
+  to properly handle lazy tibbles and provide better error messages.
+- Fixed a bug in
+  [`ojo_collect()`](https://openjusticeok.github.io/ojodb/reference/ojo_collect.md)’s
+  result estimation.
+
+### Package Maintenance
+
+- Significant increase in test coverage, including tests for previously
+  untested utility and query functions.
+- Documentation updates and standardization.
+
+## ojodb 2.11.1 (2025-07-01)
+
+### Bug Fixes
+
+- Remote repo added to DESCRIPTION for
+  [httpgd](https://github.com/nx10/httpgd) due to it being yeeted from
+  CRAN
+
+## ojodb 2.11.0 (2025-03-25)
+
+### New Features
+
+- `ojo_query` now returns a lazy tibble!
+
+### Bug Fixes
+
+- `ojo_add_counts` (internally used in `ojo_crim_cases`) now uses the
+  `count` table to get counts for OCIS districts.
+
+## ojodb 2.10.0 (2024-08-01)
+
+### New Features
+
+- Adds `ojo_eviction_cases` as a nice helper for users, and to version
+  control our eviction identification methodology.
+
+## ojodb 2.9.0 (2024-06-10)
+
+### New Features
+
+- Adds initial support for DuckDB
+
+## ojodb 2.8.1 (2024-05-23)
+
+### Dependency Fix
+
+- Makes [arrow](https://github.com/apache/arrow/) and optional
+  dependency and checks whether it is available when `source = "gcs"` is
+  used in `ojo_tbl`.
+
+## ojodb 2.8.0 (2024-05-20)
+
+### New Features
+
+- Adds initial support for Arrow.
+
+### Package Maintenance
+
+- Uses [lifecycle](https://lifecycle.r-lib.org/) for function
+  development status.
+
+## ojodb 2.7.0 (2023-09-01)
+
+### Bug Fixes
+
+- Fixed bugs in
+  [`ojo_auth()`](https://openjusticeok.github.io/ojodb/reference/ojo_auth.md)
+  which prevented it from successfully backing up the `.Renviron` file.
+
+### Package Maintenance
+
+- Changed from Base R file paths to the [fs](https://fs.r-lib.org)
+  package.
+- Adjusted GitHub Actions workflows to not run on draft PRs.
+- Added spellcheck GitHub Actions.
+- Changed SSL certs to all use `.pem` extensions
+
+### Analyst Tools
+
+- `ojo_search_minutes()` now allows for queries that include a space.
+  Postgres operators like `|`, `<->`, and `!!` still work too; queries
+  with spaces are now wrapped in quotes and treated as a single search
+  string.
+- [`ojo_crim_cases()`](https://openjusticeok.github.io/ojodb/reference/ojo_crim_cases.md)
+  and
+  [`ojo_civ_cases()`](https://openjusticeok.github.io/ojodb/reference/ojo_civ_cases.md)
+  were changed to make the `case_type` argument no longer
+  case-sensitive. It also throws an error now when you ask for
+  nonexistent values of `case_type`.
+
+## ojodb 2.6.1
+
+### Bug Fixes
+
+- Fixed a bug related to the `rlang` package.
+- Removed `renv` from development environment in favor of package
+  management using the DESCRIPTION file. This will only affect the
+  development of the package going forward, and shouldn’t affect
+  analysts’ use of the package.
+
+## ojodb 2.6.0
+
+### Aesthetics
+
+- A fun loading message will now appear when the package is loaded. This
+  can be disabled by setting `OJO_LOAD_MESSAGE=FALSE` in your local R
+  environment.
+- The [ojodb](https://openjusticeok.github.io/ojodb/) package now has
+  its own tidyverse-compliant sticker design.
+
+### Package Maintenance
+
+- The `ojo_list_` functions
+  ([`ojo_list_schemas()`](https://openjusticeok.github.io/ojodb/reference/ojo_list_schemas.md),
+  [`ojo_list_tables()`](https://openjusticeok.github.io/ojodb/reference/ojo_list_tables.md),
+  and
+  [`ojo_list_vars()`](https://openjusticeok.github.io/ojodb/reference/ojo_list_vars.md))
+  now return a sorted list instead of an unsorted one.
+- Documentation and namespacing errors
+  (e.g. [dplyr](https://dplyr.tidyverse.org) functions missing an
+  explicit `.data` reference, missing namespace prefixes, etc.) were
+  corrected. Consequently,
+  [`devtools::check()`](https://devtools.r-lib.org/reference/check.html)
+  now passes with minimal warnings / notes.
+
+## ojodb 2.5.0 (2023-04-18)
+
+### Analyst Tools
+
+- You can now use `ojo_collect` to `collect` but with a progress bar and
+  helpful information.
+
+### Package Maintenance
+
+- Added `ojo_version` function to return the version of the package.
+  Useful for debugging.
+
+## ojodb 2.4.0 (2023-04-13)
+
+### Package Maintenance
+
+- Exposed the `ojo_env` function to easily access the package-level
+  environment where database connections are stored.
+- Changed the default behavior of `ojo_connect` to use
+  [`DBI::dbConnect()`](https://dbi.r-dbi.org/reference/dbConnect.html)
+  instead of
+  [`pool::dbPool()`](http://rstudio.github.io/pool/reference/dbPool.md).
+  Connection pools are still available by passing `pool = TRUE` to
+  `ojo_connect`.
+
+## ojodb 2.3.4 (2023-04-13)
+
+### Analyst Tools
+
+- You can now cancel queries immediately with `Ctrl + c` or `Cmd + c` in
+  the console.
+
+## ojodb 2.3.3 (2023-04-12)
+
+### Package Maintenance
+
+- Implemented schema scoping for `ojo_tbl` using
+  [`DBI::Id()`](https://dbi.r-dbi.org/reference/Id.html) instead of
+  [`dbplyr::in_schema()`](https://dbplyr.tidyverse.org/reference/in_schema.html)
+  to match common practice.
+
+## ojodb 2.3.2 (2023-03-28)
+
+### Analyst Tools
+
+- Allows lowercase inputs to the `district` argument of `ojo_civ_cases`
+  and `ojo_crim_cases`
+- You no longer need to import [dplyr](https://dplyr.tidyverse.org)
+  manually!
+- Database connections are handled for you by default. You won’t even
+  know it’s there.
+
+### Package Maintenance
+
+- Added Github Actions for automated package checks
+- Added [dplyr](https://dplyr.tidyverse.org) to `Depends` field of the
+  package `Description`
+- Overhauled database connection management using package-level
+  environment scoping. See `ojo_connect`, `ojo_tbl`, and `ojo_query` for
+  more information.
+- Replaced [odbc](https://odbc.r-dbi.org) dependency with
+  [RPostgres](https://rpostgres.r-dbi.org)
+
+## ojodb 2.3.1 (2023-03-02)
+
+### Package Maintenance
+
+- Add SQL file to create database roles
+- Bump [renv](https://rstudio.github.io/renv/) version to 0.17.0
+- Add `docs/` folder to `.gitignore`
+- Add `dontrun` to examples
+
+## ojodb 2.3.0 (2023-03-02)
+
+### Analyst Tools
+
+- Fixed the `ojo_list_vars` function
+
+### Package Maintenance
+
+- Removed direct class comparisons in favor of `inherits`
+- Added documentation for `ojo_add_issues` function
+- Removed improper data import and resulting hard dependency on
+  [readr](https://readr.tidyverse.org)
+
+## ojodb 2.2.0 (2022-11-09)
+
+### Analyst Tools
+
+- Added the `ojo_county_population` function, which will return the
+  population for Oklahoma counties for the given years, in a format
+  ready to join to OJO tables.
+
+### Package Maintenance
+
+- Pruned as many dependencies as possible and moved many more to
+  `Suggests`.
+- Added [`person()`](https://rdrr.io/r/utils/person.html) syntax to
+  `DESCRIPTION`.
+
+## ojodb 2.1.0 (2022-05-03)
+
+### Analyst Tools
+
+- Added the function `ojo_fiscal_year` to return the fiscal year of a
+  given Date.
+- Removed `ojo_table` alias for consistency and transparency.
+
+### Package Maintenance
+
+- Added a `NEWS.md` file to track changes to the package.
+- Changed file name of png for portability.
