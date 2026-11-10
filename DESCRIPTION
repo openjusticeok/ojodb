@@ -6,7 +6,8 @@ Authors@R: c(
     given = "Brancen",
     family = "Gregory",
     email = "brancengregory@gmail.com",
-    role = c("cre", "aut")
+    role = c("cre", "aut"),
+    comment = c(ORCID = "0009-0008-5060-9494")
   ),
   person(
     given = "Ryan",
@@ -59,6 +60,7 @@ Suggests:
   duckdb,
   fledge,
   fs,
+  ggplot2,
   httpgd,
   httr,
   janitor,
@@ -86,7 +88,7 @@ Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
 Config/testthat/edition: 3
-URL: https://github.com/openjusticeok/ojodb
+URL: https://openjusticeok.github.io/ojodb/, https://github.com/openjusticeok/ojodb
 BugReports: https://github.com/openjusticeok/ojodb/issues
 Roxygen: list(markdown = TRUE)
 Config/roxygen2/version: 8.1.1

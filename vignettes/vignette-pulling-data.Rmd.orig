@@ -14,7 +14,10 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  # Not "figure/": R CMD check treats a vignette-level `figure` directory as a
+  # leftover knitr artifact and NOTEs on it.
+  fig.path = "figures/"
 )
 
 # Vignette written by Andrew Bell
@@ -372,7 +375,7 @@ Nice! Now we have some nice, clean datasets to visualize. This stage of analysis
 
 # Step 4: Visualizing and exporting the data
 
-To finish things off, we're going to make ourselves a nice, pretty graph showing how many of our drug cases were filed each month throughout the timespan of our data. We'll be using the `ojo_theme()` and `ojo_colors()` functions from `{ojodb}` to take care of most of the styling.
+To finish things off, we're going to make ourselves a nice, pretty graph showing how many of our drug cases were filed each month throughout the timespan of our data. We'll style it with `{ggplot2}` directly.
 
 ```{r}
 case_summary_cleaned_drugs |>
@@ -385,8 +388,8 @@ case_summary_cleaned_drugs |>
              color = district)) +
   geom_line() +
   scale_y_continuous(limits = c(0, NA)) + # Usually we want to show the y-axis down to zero
-  ojo_theme() +
-  ojo_color() +
+  theme_minimal() +
+  scale_color_viridis_d(end = 0.8) +
   labs(
     title = "CM cases involving at least one drug charge,",
     subtitle = "Oklahoma and Tulsa county district courts, 2016-2022",

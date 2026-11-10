@@ -367,17 +367,23 @@ ojo_auth <- function(..., db_config, .install = FALSE, .overwrite = FALSE) {
     cat("Configuration saved to .Renviron\n")
     cat("To use now, restart R or run readRenviron('~/.Renviron')\n")
   } else {
-    # Set environment variables for current session only
-    Sys.setenv(OJO_DRIVER = db_config$driver)
-    Sys.setenv(OJO_DATABASE = db_config$database)
-    Sys.setenv(OJO_HOST = db_config$host)
-    Sys.setenv(OJO_PORT = db_config$port)
-    Sys.setenv(OJO_USER = db_config$username)
-    Sys.setenv(OJO_PASS = db_config$password)
-    Sys.setenv(OJO_SSL_MODE = db_config$ssl_mode)
-    Sys.setenv(OJO_SSL_ROOT_CERT = db_config$ssl_root_cert)
-    Sys.setenv(OJO_SSL_CERT = db_config$ssl_cert)
-    Sys.setenv(OJO_SSL_KEY = db_config$ssl_key)
+    # Set environment variables for current session only.
+    # `Sys.setenv()` refuses NULL values, and an absent field is equivalent to
+    # an empty one as far as `db_config()` is concerned (it treats "" as unset).
+    session_vars <- list(
+      OJO_DRIVER = db_config$driver,
+      OJO_DATABASE = db_config$database,
+      OJO_HOST = db_config$host,
+      OJO_PORT = db_config$port,
+      OJO_USER = db_config$username,
+      OJO_PASS = db_config$password,
+      OJO_SSL_MODE = db_config$ssl_mode,
+      OJO_SSL_ROOT_CERT = db_config$ssl_root_cert,
+      OJO_SSL_CERT = db_config$ssl_cert,
+      OJO_SSL_KEY = db_config$ssl_key
+    )
+    session_vars <- lapply(session_vars, function(x) if (is.null(x)) "" else x)
+    rlang::exec(Sys.setenv, !!!session_vars)
 
     cat("Configuration set for current session only\n")
     cat("To persist configuration, run with .install = TRUE\n")

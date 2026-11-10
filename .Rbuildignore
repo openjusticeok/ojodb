@@ -20,3 +20,6 @@
 ^.env$
 ^.envrc$
 ^ssl$
+# Authoring sources for the pre-rendered vignettes. The *.Rmd files are checked-in
+# render output so CI can build the site without database credentials.
+\.orig$
