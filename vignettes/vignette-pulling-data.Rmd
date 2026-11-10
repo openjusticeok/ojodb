@@ -55,21 +55,24 @@ Our database is divided into a few "schemas" -- if our database is a big filing 
 # library(ojodb)
 
 ojo_list_schemas()
-#> # A tibble: 12 × 1
-#>    schema            
-#>    <chr>             
-#>  1 archive           
-#>  2 doc_tracker       
-#>  3 eviction_addresses
-#>  4 eviction_dashboard
-#>  5 iic               
-#>  6 ocdc              
-#>  7 ocdc_new          
-#>  8 odoc              
-#>  9 oscn              
-#> 10 oscn_test         
-#> 11 ppb               
-#> 12 public
+#> # A tibble: 15 × 1
+#>    schema              
+#>    <chr>               
+#>  1 archive             
+#>  2 doc_tracker         
+#>  3 eviction_addresses  
+#>  4 eviction_dashboard  
+#>  5 iic                 
+#>  6 ocdc                
+#>  7 odcr                
+#>  8 odoc                
+#>  9 oklahoma_county_jail
+#> 10 oscn                
+#> 11 oscn_scraper        
+#> 12 pg_toast            
+#> 13 ppb                 
+#> 14 public              
+#> 15 tulsa_county_jail
 ```
 
 Each schema, generally speaking, relates to one of our data types / topics / policy areas. Each one contains tables that store data related to that policy area. Among others, we have:
@@ -87,7 +90,7 @@ The court data that we're interested in right now is stored in the default schem
 
 ``` r
 ojo_list_tables(schema = "public")
-#> # A tibble: 20 × 2
+#> # A tibble: 19 × 2
 #>    schema table           
 #>    <chr>  <chr>           
 #>  1 public _sqlx_migrations
@@ -104,12 +107,11 @@ ojo_list_tables(schema = "public")
 #> 12 public exception_log   
 #> 13 public issue           
 #> 14 public marital_status  
-#> 15 public migrations      
-#> 16 public minute          
-#> 17 public party           
-#> 18 public person_record   
-#> 19 public process_log     
-#> 20 public representation
+#> 15 public minute          
+#> 16 public party           
+#> 17 public person_record   
+#> 18 public process_log     
+#> 19 public representation
 ```
 
 If a schema is a drawer in our filing cabinet, then tables are the folders inside. The `public` schema contains several different tables, all of which relate back to our court data. Here are the most important ones to know:
@@ -210,7 +212,7 @@ You'll probably notice that our dataframe includes data on the individual charge
 # count the rows.
 charge_data |>
   nrow()
-#> [1] 169063
+#> [1] 155324
 
 # How many total cases? --------------------------------------------------------
 # There's more than one charge per case sometimes, so we need to see how many
@@ -224,7 +226,7 @@ charge_data |>
   mutate(case_number_with_district = paste(district, case_number)) |>
   distinct(case_number_with_district) |>
   nrow()
-#> [1] 62205
+#> [1] 62211
 
 # This approach returns the number of unique case_number / district combinations,
 # but not much else.
@@ -241,16 +243,16 @@ case_summary <- charge_data |>
   )
 
 nrow(case_summary)
-#> [1] 62205
+#> [1] 62211
 
 # This tells us the number, and also leaves us with a helpful new case_summary
 # dataset that we can use later on, if we want to know more.
 
 ```
 
-It looks like `charge_data` includes 169,063 rows. In other words, our data shows that there were 169,063 total **charges** filed in Oklahoma and Tulsa county misdemeanor cases from 2016-2022.
+It looks like `charge_data` includes 155,324 rows. In other words, our data shows that there were 155,324 total **charges** filed in Oklahoma and Tulsa county misdemeanor cases from 2016-2022.
 
-On the other hand, it looks like there are 62,205 unique combinations of `district` and `case_number` (and an equal number of rows in our new summary dataframe, `case_summary`). In other words, our data shows 62,205 total misdemeanor **cases** filed in Oklahoma and Tulsa county from 2016-2022.
+On the other hand, it looks like there are 62,211 unique combinations of `district` and `case_number` (and an equal number of rows in our new summary dataframe, `case_summary`). In other words, our data shows 62,211 total misdemeanor **cases** filed in Oklahoma and Tulsa county from 2016-2022.
 
 If we wanted to, we could divide those numbers (or use our handy `case_summary` dataframe) to see the average number of charges per case:
 
@@ -258,14 +260,14 @@ If we wanted to, we could divide those numbers (or use our handy `case_summary` 
 ``` r
 # Total charges / total cases = Avg. number of charges per case
 nrow(charge_data) / nrow(case_summary)
-#> [1] 2.717836
+#> [1] 2.496729
 
 # Different approach, same thing
 mean(case_summary$n_charges)
-#> [1] 2.717836
+#> [1] 2.496729
 ```
 
-It seems there's an average of 2.72 counts per misdemeanor case in this dataset. Neat!
+It seems there's an average of 2.5 counts per misdemeanor case in this dataset. Neat!
 
 It's very helpful to always be thinking about what the rows in your data represent. Keeping track of what exactly you're looking at (charges, cases, defendants, etc.) can be one of the most challenging parts of these analyses, especially when our client isn't exactly sure which they want to know about.
 
@@ -296,7 +298,7 @@ charge_data |>
   labs(title = "Total charges filed per month in CM cases")
 ```
 
-![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png)
+![plot of chunk unnamed-chunk-9](figures/unnamed-chunk-9-1.png)
 
 This graph looks pretty much as we'd expect it to -- there's not a huge difference between Oklahoma and Tulsa counties (which makes sense, given that they're similar in size), and there aren't any conspicuously missing months, suspiciously massive and sudden spikes / drops, etc. And while there is a lot of variation (particularly in Oklahoma county), there's nothing that looks suspicious enough for me to suspect a data issue.
 
@@ -369,28 +371,28 @@ charge_data_cleaned |>
   slice_sample(n = 10) # We'll just look at a random sample of 10 in each category
 #> # A tibble: 20 × 4
 #> # Groups:   drug_charge [2]
-#>    district case_number  count_as_filed          drug_charge
-#>    <chr>    <chr>        <chr>                   <lgl>      
-#>  1 OKLAHOMA CM-2019-3729 ABDOM, DOMESTIC ASSAUL… FALSE      
-#>  2 OKLAHOMA CM-2016-174  FFP, OBTAINING MONEY O… FALSE      
-#>  3 TULSA    CM-2018-2120 DI5, TRANSPORTING OPEN… FALSE      
-#>  4 TULSA    CM-2016-2639 WE6, TRANSPORTING LOAD… FALSE      
-#>  5 TULSA    CM-2018-5596 OBS, OBSTRUCTING AN OF… FALSE      
-#>  6 TULSA    CM-2022-3716 LMFR, LARCENY OF MERCH… FALSE      
-#>  7 OKLAHOMA CM-2021-3261 OBS, OBSTRUCTING AN OF… FALSE      
-#>  8 OKLAHOMA CM-2018-2871 OWN, MAKING A FALSE DE… FALSE      
-#>  9 OKLAHOMA CM-2022-3214 DI5, TRANSPORTING AN O… FALSE      
-#> 10 OKLAHOMA CM-2017-396  FR5, FAILURE TO CARRY … FALSE      
-#> 11 OKLAHOMA CM-2019-2013 DU9, POSSESSION OF A C… TRUE       
-#> 12 TULSA    CM-2016-5534 DI2DM, DUI DRUGS (MUNI… TRUE       
-#> 13 OKLAHOMA CM-2022-1459 DR3, UNLAWFUL POSSESSI… TRUE       
-#> 14 OKLAHOMA CM-2019-1679 DU9II, POSSESSION OF A… TRUE       
-#> 15 OKLAHOMA CM-2021-1077 DR3, UNLAWFUL POSSESSI… TRUE       
-#> 16 OKLAHOMA CM-2019-1648 DU9, POSSESSION OF A C… TRUE       
-#> 17 TULSA    CM-2018-95   DR3, POSSESSION OF DRU… TRUE       
-#> 18 TULSA    CM-2018-2695 DR3, POSSESSION OF DRU… TRUE       
-#> 19 OKLAHOMA CM-2022-2759 DR3, UNLAWFUL POSSESSI… TRUE       
-#> 20 TULSA    CM-2018-2544 DR3MV, POSSESSION OF D… TRUE
+#>    district case_number  count_as_filed                              drug_charge
+#>    <chr>    <chr>        <chr>                                       <lgl>      
+#>  1 TULSA    CM-2019-5282 DL2, DRIVING UNDER SUSPENSION / DUS         FALSE      
+#>  2 TULSA    CM-2016-1788 DI5, TRANSPORTING OPEN CONTAINER - LIQUOR   FALSE      
+#>  3 OKLAHOMA CM-2019-27   ABDOM, DOMESTIC ABUSE ASSAULT & BATTERY     FALSE      
+#>  4 OKLAHOMA CM-2018-1997 WE2, TRANSPORTING A LOADED FIREARM IN A LA… FALSE      
+#>  5 TULSA    CM-2017-5449 DI1, DUI ALCOHOL                            FALSE      
+#>  6 TULSA    CM-2018-2455 AD1, DUI UNDER 21 YEARS OF AGE (ALCOHOL)    FALSE      
+#>  7 OKLAHOMA CM-2020-2375 DI1, DRIVING UNDER THE INFLUENCE OF ALCOHOL FALSE      
+#>  8 TULSA    CM-2021-396  ABDOM, DOMESTIC ASSAULT & BATTERY           FALSE      
+#>  9 OKLAHOMA CM-2022-1217 BH, THREATEN AN ACT OF VIOLENCE             FALSE      
+#> 10 OKLAHOMA CM-2017-1081 DL2, DRIVING WHILE PRIVILEGE SUSPENDED      FALSE      
+#> 11 TULSA    CM-2019-3979 DU9II, POSSESSION OF CONTROLLED DRUG METHA… TRUE       
+#> 12 OKLAHOMA CM-2022-2123 DU9II, UNLAWFUL POSSESSION OF CDS- METHAMP… TRUE       
+#> 13 TULSA    CM-2021-1987 DU9II, UNLAWFUL POSSESSION OF CONTROLLED D… TRUE       
+#> 14 OKLAHOMA CM-2018-2309 DU9II, POSSESSION OF A CDS- METHAMPHETAMINE TRUE       
+#> 15 TULSA    CM-2017-4166 DU4II, POSSESSION OF CONTROLLED DRUG        TRUE       
+#> 16 OKLAHOMA CM-2022-2457 DR3, UNLAWFUL POSSESSION OF DRUG PARAPHERN… TRUE       
+#> 17 OKLAHOMA CM-2017-3480 DU9II, POSSESSION OF A CDS - METHAMPHETAMI… TRUE       
+#> 18 TULSA    CM-2019-3575 DR3, POSSESSION OF DRUG PARAPHERNALIA       TRUE       
+#> 19 TULSA    CM-2016-1558 DR3, POSSESSIO OF DRUG PARAPHERNALIA        TRUE       
+#> 20 TULSA    CM-2022-1081 DU9II, UNLAWFUL POSSESSION OF CONTROLLED D… TRUE
 ```
 
 It looks like our regex search was pretty successful! Although it may raise some new questions: does driving under the influence count? Is alcohol technically a "drug" in those cases, or is that different? What about a count description that says "Carrying a firearm while under the influence o drugs or alcohol"?
@@ -444,43 +446,42 @@ case_summary_cleaned |>
   slice_sample(n = 10)
 #> # A tibble: 20 × 7
 #> # Groups:   drug_charges_present [2]
-#>    district case_number  date_filed list_all_charges        
-#>    <chr>    <chr>        <date>     <chr>                   
-#>  1 TULSA    CM-2016-3206 2016-06-23 OBS, OBSTRUCTING AN OFF…
-#>  2 OKLAHOMA CM-2020-1346 2020-05-19 OBS, OBSTRUCTING AN OFF…
-#>  3 TULSA    CM-2021-1960 2021-06-02 TLCIFM, TRESPASS ON RAI…
-#>  4 TULSA    CM-2016-3210 2016-06-23 OBS, OBSTRUCTING AN OFF…
-#>  5 OKLAHOMA CM-2019-2666 2019-08-13 FR5, FAILURE TO CARRY V…
-#>  6 OKLAHOMA CM-2021-3799 2021-12-28 LMFR, LARCENY OF MERCHA…
-#>  7 OKLAHOMA CM-2018-709  2018-02-23 DR1, BEING INTOXICATED …
-#>  8 OKLAHOMA CM-2017-2036 2017-06-15 DISDEC, DISTRUBING THE …
-#>  9 TULSA    CM-2022-1368 2022-04-25 FFP, FALSE PRETENSE UND…
-#> 10 OKLAHOMA CM-2022-1462 2022-05-12 ALC211, SELLING, FURNIS…
-#> 11 OKLAHOMA CM-2019-795  2019-03-06 DI1, DRIVING WHILE UNDE…
-#> 12 OKLAHOMA CM-2021-2385 2021-08-24 RCSP, RECEIVE, POSSESS …
-#> 13 TULSA    CM-2018-1467 2018-04-04 DI2D, DUI DRUGS; DU4II,…
-#> 14 OKLAHOMA CM-2020-454  2020-02-27 DU9II, UNLAWFUL POSSESS…
-#> 15 OKLAHOMA CM-2022-1249 2022-04-19 DU9, UNLAWFUL POSSESSIO…
-#> 16 TULSA    CM-2017-3743 2017-08-17 DU9, POSSESSION OF CONT…
-#> 17 OKLAHOMA CM-2019-275  2019-01-22 DU9IV, POSSESSION OF A …
-#> 18 TULSA    CM-2019-3339 2019-07-24 DU9II, POSSESSION OF CO…
-#> 19 OKLAHOMA CM-2021-616  2021-03-10 DI1, DRIVING UNDER THE …
-#> 20 TULSA    CM-2017-421  2017-01-27 DU4, POSSESSION OF CONT…
-#> # ℹ 3 more variables: n_total_charges <int>,
-#> #   n_drug_charges <int>, drug_charges_present <lgl>
+#>    district case_number  date_filed list_all_charges             n_total_charges
+#>    <chr>    <chr>        <date>     <chr>                                  <int>
+#>  1 OKLAHOMA CM-2016-1754 2016-06-28 HR1, FAILURE TO GIVE INFORM…               3
+#>  2 OKLAHOMA CM-2021-861  2021-04-05 BC, OBTAINING PROPERTY BY F…               1
+#>  3 OKLAHOMA CM-2017-2753 2017-08-10 OBS, OBSTRUCTING AN OFFICER…               3
+#>  4 OKLAHOMA CM-2017-3220 2017-09-11 DI1, DRIVING WHILE UNDER TH…               1
+#>  5 OKLAHOMA CM-2019-179  2019-01-16 FR5, FAILURE TO CARRY VALID…               3
+#>  6 OKLAHOMA CM-2016-1466 2016-05-27 LC1, DRIVING LEFT OF CENTER…               3
+#>  7 OKLAHOMA CM-2019-2130 2019-06-27 OBS, OBSTRUCTING AN OFFICER…               3
+#>  8 OKLAHOMA CM-2022-1695 2022-06-02 VPO, VIOLATION OF PROTECTIV…               3
+#>  9 OKLAHOMA CM-2018-2742 2018-07-09 DI1M, DRIVING WHILE UNDER T…               1
+#> 10 OKLAHOMA CM-2022-1376 2022-05-03 DI1M, DRIVING UNDER THE INF…               1
+#> 11 TULSA    CM-2021-3682 2021-11-10 RCSP, RECEIVE/POSSESS OR CO…               3
+#> 12 OKLAHOMA CM-2021-3075 2021-10-26 DU9II, UNLAWFUL POSSESSION …               1
+#> 13 TULSA    CM-2020-2893 2020-08-24 DU9, POSSESSION OF CONTROLL…               3
+#> 14 OKLAHOMA CM-2022-4111 2022-11-22 DU9II, UNLAWFUL POSSESSION …               7
+#> 15 OKLAHOMA CM-2022-930  2022-03-21 DU9II, UNLAWFUL POSSESSION …               1
+#> 16 TULSA    CM-2020-1354 2020-04-03 FORG, POSSESSION OF FORGED …               5
+#> 17 TULSA    CM-2017-4709 2017-10-13 DL2, DRIVING UNDER SUSPENSI…               6
+#> 18 TULSA    CM-2018-922  2018-03-01 DI2D, DUI DRUGS; DL2, DRIVI…              11
+#> 19 OKLAHOMA CM-2022-3250 2022-09-22 DU9II, UNLAWFUL POSSESSION …               3
+#> 20 TULSA    CM-2022-1294 2022-04-21 DR3MV, POSSESSION OF DRUG P…               5
+#> # ℹ 2 more variables: n_drug_charges <int>, drug_charges_present <lgl>
 
 # view(case_summary_cleaned)
 
 # What proportion of these CM cases feature a drug charge?
 nrow(case_summary_cleaned_drugs) / nrow(case_summary_cleaned)
-#> [1] 0.260381
+#> [1] 0.2603559
 ```
 
 Nice! Now we have some nice, clean datasets to visualize. This stage of analysis is tough sometimes; it involves a lot of subjective decision-making, a lot of making the most of messy data, and a lot of double-checking of work. But even though we're aiming for standardized methods, it's also one of the areas where we get to exercise a little bit of creativity and come up with our own solutions to things, so feel free to blaze your own path a little bit too!
 
 # Step 4: Visualizing and exporting the data
 
-To finish things off, we're going to make ourselves a nice, pretty graph showing how many of our drug cases were filed each month throughout the timespan of our data. We'll be using the `ojo_theme()` and `ojo_colors()` functions from `{ojodb}` to take care of most of the styling.
+To finish things off, we're going to make ourselves a nice, pretty graph showing how many of our drug cases were filed each month throughout the timespan of our data. We'll style it with `{ggplot2}` directly.
 
 
 ``` r
@@ -494,8 +495,8 @@ case_summary_cleaned_drugs |>
              color = district)) +
   geom_line() +
   scale_y_continuous(limits = c(0, NA)) + # Usually we want to show the y-axis down to zero
-  ojo_theme() +
-  ojo_color() +
+  theme_minimal() +
+  scale_color_viridis_d(end = 0.8) +
   labs(
     title = "CM cases involving at least one drug charge,",
     subtitle = "Oklahoma and Tulsa county district courts, 2016-2022",
@@ -507,7 +508,7 @@ case_summary_cleaned_drugs |>
   )
 ```
 
-![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15-1.png)
+![plot of chunk unnamed-chunk-15](figures/unnamed-chunk-15-1.png)
 
 Looking good! If you're curious about the increase seen around July of 2017, you can read about why that happened [here](https://okpolicy.org/sq-780-already-reshaping-oklahomas-justice-system/).
 

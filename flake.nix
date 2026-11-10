@@ -46,6 +46,8 @@
             # Suggests-package backends exercised by the test suite
             duckdb
             RSQLite
+            # Needed to render vignette-pulling-data.Rmd.orig (double render)
+            ggplot2
           ];
 
           ojodb = pkgs.rPackages.buildRPackage {
