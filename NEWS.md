@@ -1,4 +1,4 @@
-# ojodb 3.0.0
+# ojodb 3.0.0 (2026-11-10)
 
 ## Breaking Changes
 - **Connection Management:** `ojo_connect()` now requires a `db_config` object (or creates a default one) and returns a connection object directly, instead of using side effects to store it in a package environment. The arguments `.admin`, `.driver`, `.global`, `.env`, and `.pool` have been removed.

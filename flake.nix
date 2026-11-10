@@ -48,6 +48,7 @@
             RSQLite
             # Needed to render vignette-pulling-data.Rmd.orig (double render)
             ggplot2
+            nanonext
           ];
 
           ojodb = pkgs.rPackages.buildRPackage {
