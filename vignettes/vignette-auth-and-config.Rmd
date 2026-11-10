@@ -148,7 +148,7 @@ In previous versions, `ojo_connect()` created a connection and stored it in a hi
 
 In v3.0.0+:
 *   `ojo_connect()` returns a connection object.
-*   Query functions (`ojo_query`, `ojo_tbl`, etc.) attempt to use a default connection if one isn't provided, but they also accept a `con` argument for explicit control.
+*   Query functions (`ojo_query`, `ojo_tbl`, etc.) attempt to use a default connection if one isn't provided, but they also accept a `.con` argument for explicit control.
 
 **Old Pattern:**
 ```r
@@ -159,7 +159,7 @@ ojo_query("SELECT * FROM table")
 **New Pattern:**
 ```r
 con <- ojo_connect() # explicit return
-ojo_query("SELECT * FROM table", con = con)
+ojo_query("SELECT * FROM table", .con = con)
 # OR (using default connection management)
 ojo_query("SELECT * FROM table")
 ```

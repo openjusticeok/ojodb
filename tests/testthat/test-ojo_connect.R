@@ -59,6 +59,7 @@ test_that("ojo_default_connection creates and caches a connection", {
 
 test_that("ojo_default_connection handles different backends separately", {
   skip_if_no_db()
+  skip_if_not_installed("duckdb")
 
   with_clean_ojo_env({
     # Create and cache a default Postgres connection

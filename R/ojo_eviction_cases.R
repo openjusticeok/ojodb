@@ -10,13 +10,13 @@
 #' be updated to reflect those changes.
 #'
 #' @param districts District codes for which to collect data (default is "all", which collects data for all districts)
-#' @param ... Placeholder for additional arguments
 #' @param date_start Start date for the data collection period
 #' @param date_end End date for the data collection period (default is NULL, which collects the most up-to-date data)
 #' @param more_case_variables Additional variables from case table to include in the output
 #' @param more_issue_variables Additional variables from issue table to include in the output
 #' @param get_judgments Logical value indicating whether to include eviction judgment information in the output
-#' @param con The OJO database connection to use
+#' @param ... Placeholder for additional arguments
+#' @param .con The OJO database connection to use
 #'
 #' @importFrom dplyr filter select left_join mutate case_when
 #' @importFrom stringr str_detect
@@ -44,20 +44,20 @@
 
 ojo_eviction_cases <- function(
   districts = "all",
-  ...,
   date_start = NULL,
   date_end = NULL,
   more_case_variables = NULL,
   more_issue_variables = NULL,
   get_judgments = TRUE,
-  con = NULL
+  ...,
+  .con = NULL
 ) {
   #### Variable Handling
   .district <- toupper(districts)
 
   ##### Data Wrangling / Cleaning
   ## Construct Data
-  data <- ojodb::ojo_tbl("case", con = con)
+  data <- ojodb::ojo_tbl("case", .con = .con)
 
   if (!any(.district == "ALL")) {
     data <- data |>
@@ -99,7 +99,7 @@ ojo_eviction_cases <- function(
     dplyr::filter(case_type == "SC") |>
     dplyr::select(dplyr::all_of(case_vars)) |>
     dplyr::left_join(
-      ojodb::ojo_tbl("issue", con = con) |>
+      ojodb::ojo_tbl("issue", .con = .con) |>
         dplyr::select(dplyr::all_of(issue_vars)),
       by = c("id" = "case_id"),
       suffix = c(".case", ".issue")

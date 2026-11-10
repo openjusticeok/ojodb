@@ -2,7 +2,8 @@
 #'
 #' @export ojo_check_ssl
 #'
-#' @param con The ojodb connection to use
+#' @param ... Placeholder for additional arguments
+#' @param .con The ojodb connection to use
 #'
 #' @return A logical indicator of whether the db connection is properly using SSL
 #' @examples
@@ -11,16 +12,16 @@
 #' ojo_check_ssl()
 #' }
 #'
-ojo_check_ssl <- function(con = NULL) {
-  if (is.null(con)) {
-    con <- ojo_default_connection()
+ojo_check_ssl <- function(..., .con = NULL) {
+  if (is.null(.con)) {
+    .con <- ojo_default_connection()
   }
 
-  if (inherits(con, "Pool")) {
-    pool_src <- pool::poolCheckout(con)
+  if (inherits(.con, "Pool")) {
+    pool_src <- pool::poolCheckout(.con)
     on.exit(pool::poolReturn(pool_src), add = TRUE)
   } else {
-    pool_src <- con
+    pool_src <- .con
   }
 
   pool_src |>

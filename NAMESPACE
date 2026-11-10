@@ -24,11 +24,15 @@ export(ojo_query)
 export(ojo_tbl)
 export(ojo_version)
 import(dplyr)
-importFrom(dplyr,case_when)
-importFrom(dplyr,filter)
-importFrom(dplyr,left_join)
-importFrom(dplyr,mutate)
-importFrom(dplyr,select)
-importFrom(lubridate,as_date)
-importFrom(lubridate,floor_date)
+importFrom(dplyr,
+  case_when,
+  filter,
+  left_join,
+  mutate,
+  select
+)
+importFrom(lubridate,
+  as_date,
+  floor_date
+)
 importFrom(stringr,str_detect)

@@ -4,16 +4,16 @@
 \alias{ojo_add_counts}
 \title{Add counts to a tibble of cases}
 \usage{
-ojo_add_counts(data, vars = NULL, con = NULL, ...)
+ojo_add_counts(data, vars = NULL, ..., .con = NULL)
 }
 \arguments{
 \item{data}{A tibble returned by an \code{ojo_} prefixed function}
 
 \item{vars}{Variable names from the \code{count} table to include}
 
-\item{con}{The OJO database connection to use}
-
 \item{...}{Placeholder for future arguments}
+
+\item{.con}{The OJO database connection to use}
 }
 \value{
 A lazy tibble with counts for each case

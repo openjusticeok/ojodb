@@ -9,8 +9,8 @@ ojo_civ_cases(
   vars = NULL,
   case_types = c("CS", "SC", "CJ"),
   file_years = lubridate::year(Sys.Date()),
-  con = NULL,
-  ...
+  ...,
+  .con = NULL
 )
 }
 \arguments{
@@ -22,9 +22,9 @@ ojo_civ_cases(
 
 \item{file_years}{A character vector of years to query}
 
-\item{con}{The OJO database connection to use}
-
 \item{...}{Placeholder for additional arguments}
+
+\item{.con}{The OJO database connection to use}
 }
 \value{
 data, a lazy tibble containing the resulting civil cases

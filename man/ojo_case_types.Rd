@@ -4,10 +4,12 @@
 \alias{ojo_case_types}
 \title{List the case types present in the OJO database}
 \usage{
-ojo_case_types(con = NULL)
+ojo_case_types(..., .con = NULL)
 }
 \arguments{
-\item{con}{The OJO database connection to use.}
+\item{...}{Placeholder for additional arguments}
+
+\item{.con}{The OJO database connection to use.}
 }
 \value{
 Tibble of case types

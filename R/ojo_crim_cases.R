@@ -6,8 +6,8 @@
 #' @param vars A character vector of variables to return
 #' @param case_types A character vector of case types to query
 #' @param file_years A character vector of years to query
-#' @param con The OJO database connection to use
 #' @param ... Placeholder for additional arguments
+#' @param .con The OJO database connection to use
 #'
 #' @export ojo_crim_cases
 #' @return data, a lazy tibble containing the resulting criminal cases
@@ -24,8 +24,8 @@ ojo_crim_cases <- function(
   vars = NULL,
   case_types = c("CM", "CF", "TR"),
   file_years = 2000:lubridate::year(Sys.Date()),
-  con = NULL,
-  ...
+  ...,
+  .con = NULL
 ) {
   case_types_upper <- toupper(case_types)
 
@@ -35,7 +35,7 @@ ojo_crim_cases <- function(
     )
   }
 
-  data <- ojo_tbl("case", con = con) |>
+  data <- ojo_tbl("case", .con = .con) |>
     dplyr::filter(
       # `upper()` is evaluated in SQL; debug and use `show_query()` to verify
       case_type %in% case_types_upper,
@@ -63,12 +63,12 @@ ojo_crim_cases <- function(
   if (is.null(vars)) {
     data <- data |>
       dplyr::select(dplyr::all_of(selection)) |>
-      ojo_add_counts(con = con)
+      ojo_add_counts(.con = .con)
     return(data)
   } else {
     if (any(vars == "all")) {
       data <- data |>
-        ojo_add_counts(con = con)
+        ojo_add_counts(.con = .con)
       return(data)
     } else {
       selection <- append(selection, vars) |>
@@ -76,7 +76,7 @@ ojo_crim_cases <- function(
 
       data <- data |>
         dplyr::select(dplyr::all_of(selection)) |>
-        ojo_add_counts(con = con)
+        ojo_add_counts(.con = .con)
 
       return(data)
     }
@@ -88,8 +88,8 @@ ojo_crim_cases <- function(
 #'
 #' @param data A tibble returned by an `ojo_` prefixed function
 #' @param vars Variable names from the `count` table to include
-#' @param con The OJO database connection to use
 #' @param ... Placeholder for future arguments
+#' @param .con The OJO database connection to use
 #'
 #' @return A lazy tibble with counts for each case
 #' @export
@@ -105,7 +105,7 @@ ojo_crim_cases <- function(
 #'   ojo_add_counts()
 #'}
 #'
-ojo_add_counts <- function(data, vars = NULL, con = NULL, ...) {
+ojo_add_counts <- function(data, vars = NULL, ..., .con = NULL) {
   if (!inherits(data, "tbl_lazy")) {
     stop("Don't use `collect()` before this function")
   }
@@ -118,7 +118,7 @@ ojo_add_counts <- function(data, vars = NULL, con = NULL, ...) {
 
   counts_data <- data |>
     dplyr::left_join(
-      ojo_tbl("count", con = con),
+      ojo_tbl("count", .con = .con),
       by = c("id" = "case_id"),
       suffix = c("", ".count")
     )

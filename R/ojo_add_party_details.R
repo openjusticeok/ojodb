@@ -4,8 +4,8 @@
 #'
 #' @param data A lazy tibble containing the results of a parties query
 #' @param vars A character vector of variables to return
-#' @param con The OJO database connection to use
 #' @param ... Placeholder for additional arguments
+#' @param .con The OJO database connection to use
 #'
 #' @export ojo_add_party_details
 #' @return data, a lazy tibble containing the resulting party details
@@ -14,7 +14,7 @@
 #' ojo_add_party_details()
 #' }
 #'
-ojo_add_party_details <- function(data, vars = NULL, con = NULL, ...) {
+ojo_add_party_details <- function(data, vars = NULL, ..., .con = NULL) {
   if (!inherits(data, "tbl_lazy")) {
     stop("Don't use `collect()` before this function")
   }
@@ -33,7 +33,7 @@ ojo_add_party_details <- function(data, vars = NULL, con = NULL, ...) {
 
   data <- data |>
     dplyr::left_join(
-      ojo_tbl("person_record", con = con),
+      ojo_tbl("person_record", .con = .con),
       by = c("party" = "id")
     )
 
